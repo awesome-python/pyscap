@@ -39,11 +39,12 @@ class LinuxHost(Host):
 
         # TODO lsb_release -a
 
-        self.id = self.target.line_from_command("blkid `mount -l | grep 'on / ' | awk '{print $1}'` | cut -d'\"' -f2").strip()
-        # TODO otherwise use hostname?
-
     def discover_hardware(self):
+        self.facts['root_uuid'] = self.target.line_from_priv_command("blkid `mount -l | grep 'on / ' | awk '{print $1}'` | cut -d'\"' -f2").strip()
+        logger.debug('Root FS UUID: ' + self.facts['root_uuid'])
+
         # TODO hardware CPEs
+
         self.facts['hardware'] = {}
         # ai.computing_device.motherboard-guid
         try:
@@ -181,11 +182,13 @@ class LinuxHost(Host):
     def test_rule(self, rule, values, content):
         pass
 
-    def get_arf_1_1_asset(self):
-        tag = ET.Element('{http://scap.nist.gov/schema/asset-reporting-format/1.1}asset')
-        tag.attrib['id'] = 'asset_' + self.id
+    def get_arf_1_1(self):
+        asset_el = ET.Element('{http://scap.nist.gov/schema/asset-reporting-format/1.1}asset')
+        asset_id = 'asset_' + self.facts['root_uuid']
+        asset_el.attrib['id'] = asset_id
+        # TODO otherwise use hostname?
 
-        ai = ET.SubElement(tag, '{http://scap.nist.gov/schema/asset-identification/1.1}computing-device')
+        ai = ET.SubElement(asset_el, '{http://scap.nist.gov/schema/asset-identification/1.1}computing-device')
         ai.attrib['cpe'] = self.facts['os_cpe'].to_uri_string()
         ai.attrib['default-route'] = self.facts['default_route']
         ai.attrib['fqdn'] = self.facts['fqdn']
@@ -206,17 +209,27 @@ class LinuxHost(Host):
 
         # network services
         for svc in self.facts['network_services']:
-            ai = ET.SubElement(tag, '{http://scap.nist.gov/schema/asset-identification/1.1}service')
+            ai = ET.SubElement(asset_el, '{http://scap.nist.gov/schema/asset-identification/1.1}service')
             ai.attrib['host'] = svc['ip_address']
             ai.attrib['port'] = svc['port']
             ai.attrib['protocol'] = svc['protocol']
 
-        return tag
 
-    def get_arf_1_1_report(self):
-        tag = ET.Element('{http://scap.nist.gov/schema/asset-reporting-format/1.1}report')
-        return tag
+        report_el = ET.Element('{http://scap.nist.gov/schema/asset-reporting-format/1.1}report')
+        import uuid
+        report_id = 'report_' + uuid.uuid4().hex
+        report_el.attrib['id'] = report_id
 
-    def get_arf_1_1_relationships(self):
-        tag = ET.Element('{http://scap.nist.gov/schema/asset-reporting-format/1.1}relationship')
-        return tag
+        # TODO embed content
+
+        relationships = []
+        rel_el = ET.Element('{http://scap.nist.gov/schema/asset-reporting-format/1.1}relationship')
+        rel_el.attrib['subject'] = report_id
+        rel_el.attrib['type'] = 'isAbout'
+        rel_el.attrib['ref'] = asset_id
+
+        # TODO createdFor relationship
+
+        relationships.append(rel_el)
+
+        return (asset_el, report_el, relationships)

@@ -133,15 +133,17 @@ class SCAP1_2Engine(scap.engine.engine.Engine):
 
     def report(self):
         arc = ET.ElementTree(element=ET.Element('{http://scap.nist.gov/schema/asset-reporting-format/1.1}asset-report-collection'))
-        root = arc.getroot()
-        reports = ET.SubElement(root, '{http://scap.nist.gov/schema/asset-reporting-format/1.1}reports')
-        assets = ET.SubElement(root, '{http://scap.nist.gov/schema/asset-reporting-format/1.1}assets')
-        relationships = ET.SubElement(root, '{http://scap.nist.gov/schema/reporting-core/1.1}relationships')
+        root_el = arc.getroot()
+        assets_el = ET.SubElement(root_el, '{http://scap.nist.gov/schema/asset-reporting-format/1.1}assets')
+        reports_el = ET.SubElement(root_el, '{http://scap.nist.gov/schema/asset-reporting-format/1.1}reports')
+        relationships_el = ET.SubElement(root_el, '{http://scap.nist.gov/schema/reporting-core/1.1}relationships')
 
         for host in self.hosts:
-            assets.append(host.get_arf_1_1_asset())
-            reports.append(host.get_arf_1_1_report())
-            relationships.append(host.get_arf_1_1_relationships())
+            (asset, report, relationships) = host.get_arf_1_1()
+            assets_el.append(asset)
+            reports_el.append(report)
+            for rel in relationships:
+                relationships_el.append(rel)
 
         from StringIO import StringIO
         sio = StringIO()

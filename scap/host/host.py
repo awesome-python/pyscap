@@ -24,5 +24,5 @@ class Host(object):
         raise NotImplementedError(inspect.stack()[0][3] + '() has not been implemented for class: ' + self.__class__.__name__)
     def test_rule(self, rule, values, content):
         raise NotImplementedError(inspect.stack()[0][3] + '() has not been implemented for class: ' + self.__class__.__name__)
-    def report(self):
+    def get_arf_1_1(self):
         raise NotImplementedError(inspect.stack()[0][3] + '() has not been implemented for class: ' + self.__class__.__name__)
