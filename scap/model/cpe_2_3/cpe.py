@@ -194,6 +194,7 @@ class CPE(object):
             '%': '%25',
         }
         URI_UNQUOTE_MAP = {v: k for k, v in URI_QUOTE_MAP.items()}
+        URI_QUOTE_MAP[' '] = '_'
 
         def to_uri(self):
             # special values
@@ -467,7 +468,7 @@ class CPE(object):
             raise RuntimeError('Could not parse CPE from ' + s)
         return cpe
 
-    def __init__(self, s = None):
+    def __init__(self, s=None, **kwargs):
         self.values = {}
         for k in self.INDEX:
             self.values[k] = CPE.Value()
@@ -481,6 +482,12 @@ class CPE(object):
                 self.from_uri_string(s)
             else:
                 raise RuntimeError('Could not parse CPE from ' + s)
+        else:
+            for key in kwargs:
+                if key in self.INDEX:
+                    self.set_value(key, kwargs[key])
+                else:
+                    logger.warning("Unknown CPE keyword arg: " + key)
 
     def is_value_any(self, name):
         if name not in CPE.INDEX:
@@ -530,7 +537,7 @@ class CPE(object):
     def set_value(self, name, value):
         if name not in CPE.INDEX:
             raise RuntimeError('Invalid component name: ' + name)
-        self.values[name].set(value)
+        self.values[name].set(value.lower())
 
     ####### WFN #######
     def from_wfn_string(self, s):

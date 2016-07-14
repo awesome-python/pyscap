@@ -24,28 +24,18 @@ logger = logging.getLogger(__name__)
 class LinuxHost(Host):
     def __init__(self, uname, target):
         self.target = target
-        self.facts = {}
-        cpe = CPE()
-        cpe.set_value('part', 'o')
-        cpe.set_value('vendor', 'linux')
-        cpe.set_value('product', 'linux_kernel')
-
-        m = re.match(r'^Linux \S+ ([0-9.]+)-(\S+)', uname)
-        if m:
-            cpe.set_value('version', m.group(1))
-            cpe.set_value('update', m.group(2))
-
-        self.facts['os_cpe'] = cpe
+        self.facts = {'uname': uname}
 
         # TODO lsb_release -a
 
     def discover_hardware(self):
-        self.facts['root_uuid'] = self.target.line_from_priv_command("blkid `mount -l | grep 'on / ' | awk '{print $1}'` | cut -d'\"' -f2").strip()
+        self.facts['root_uuid'] = self.target.line_from_priv_command("blkid -o value `mount -l | grep 'on / ' | awk '{print $1}'` | head -n1").strip()
         logger.debug('Root FS UUID: ' + self.facts['root_uuid'])
 
         # TODO hardware CPEs
 
         self.facts['hardware'] = {}
+        self.facts['cpe'] = []
         # ai.computing_device.motherboard-guid
         try:
             path = [self.facts['hardware']]
@@ -54,6 +44,12 @@ class LinuxHost(Host):
             for line in lines:
                 m = re.match(r'^([ ]+)\*-(\S+)', line)
                 if m:
+                    if 'vendor' in path[-1] and 'product' in path[-1] and path[-1]['vendor'] != '000000000000':
+                        cpe = CPE(part='h', vendor=path[-1]['vendor'], product=path[-1]['product'])
+                        if 'version' in path[-1]:
+                            cpe.set_value('version', path[-1]['version'])
+                        self.facts['cpe'].append(cpe)
+
                     indent = len(m.group(1))
                     hw_class = m.group(2)
                     cur_indent = indents[-1]
@@ -118,11 +114,29 @@ class LinuxHost(Host):
         except RuntimeError as e:
             logger.warning("Couldn't run lshw on host using sudo" + str(e))
 
+        import pprint
+        pp = pprint.PrettyPrinter()
+        logger.debug(pp.pformat(self.facts['hardware']))
+
+        for cpe in self.facts['cpe']:
+            logger.debug(cpe.to_uri_string())
+
         # TODO ai.circuit
         # TODO ai.network; this would likely be  used on routers, switches & other net devices
-        pass
 
     def discover_software(self):
+        # OS CPE
+        cpe = CPE()
+        cpe.set_value('part', 'o')
+        cpe.set_value('vendor', 'linux')
+        cpe.set_value('product', 'linux_kernel')
+
+        m = re.match(r'^Linux \S+ ([0-9.]+)-(\S+)', self.facts['uname'])
+        if m:
+            cpe.set_value('version', m.group(1))
+            cpe.set_value('update', m.group(2))
+        self.facts['cpe'].append(cpe)
+
         # ai.computing_device.default-route
         ip_route = self.target.lines_from_command('ip route')
         logger.debug('ip_route: ' + str(ip_route))
@@ -185,11 +199,12 @@ class LinuxHost(Host):
     def get_arf_1_1(self):
         asset_el = ET.Element('{http://scap.nist.gov/schema/asset-reporting-format/1.1}asset')
         asset_id = 'asset_' + self.facts['root_uuid']
+        # TODO: fallback to mobo guid, eth0 mac address, eth0 ip address, hostname
         asset_el.attrib['id'] = asset_id
-        # TODO otherwise use hostname?
 
         ai = ET.SubElement(asset_el, '{http://scap.nist.gov/schema/asset-identification/1.1}computing-device')
-        ai.attrib['cpe'] = self.facts['os_cpe'].to_uri_string()
+        # motherboard should be the first discovered hardware cpe
+        ai.attrib['cpe'] = self.facts['cpe'][0].to_uri_string()
         ai.attrib['default-route'] = self.facts['default_route']
         ai.attrib['fqdn'] = self.facts['fqdn']
         ai.attrib['hostname'] = self.facts['hostname']
@@ -213,7 +228,6 @@ class LinuxHost(Host):
             ai.attrib['host'] = svc['ip_address']
             ai.attrib['port'] = svc['port']
             ai.attrib['protocol'] = svc['protocol']
-
 
         report_el = ET.Element('{http://scap.nist.gov/schema/asset-reporting-format/1.1}report')
         import uuid
