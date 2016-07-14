@@ -28,4 +28,4 @@ warn() {
 
 #[ "$(./pyscap.py --target test --list-hosts)" == "Hosts: test" ] || die 'list-hosts tests failed'
 
-./pyscap.py -vvv --credentials ~/creds.ini --target localhost --benchmark --content content/USGCB-Windows/scap_gov.nist_USGCB-ie8.xml --pretty
+./pyscap.py -vvv --credentials ~/creds.ini --target localhost --benchmark --content sample_content/USGCB-Windows/scap_gov.nist_USGCB-ie8.xml --pretty
