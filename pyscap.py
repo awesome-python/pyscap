@@ -123,15 +123,8 @@ if args.benchmark:
                     hosts.append(Host.parse(line))
 
     content = ET.parse(args.content[0])
-    b_args = {}
-    if args.data_stream:
-        b_args['data_stream'] = args.data_stream[0]
-        if args.checklist:
-            b_args['checklist'] = args.checklist[0]
-    if args.profile:
-        b_args['profile'] = args.profile[0]
-    engine = Engine.get_engine(content, b_args, hosts)
-    engine.collect()
+    engine = Engine(content, hosts)
+    engine.collect(args)
     report = engine.report()
     if args.pretty:
         import xml.dom.minidom

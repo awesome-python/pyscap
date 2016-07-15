@@ -15,12 +15,12 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
+from scap.engine.engine import Engine
 import logging, sys, urlparse
 import xml.etree.ElementTree as ET
-import scap.engine.engine
 
 logger = logging.getLogger(__name__)
-class SCAP1_2Engine(scap.engine.engine.Engine):
+class SCAP1_2Engine(Engine):
     def __init__(self, content, args, hosts):
         self.content = content
         self.hosts = hosts
@@ -28,7 +28,7 @@ class SCAP1_2Engine(scap.engine.engine.Engine):
         root = content.getroot()
         # find the specified data stream or the only data stream if none specified
         data_streams = {}
-        for ds in root.findall("./scap_1_2:data-stream", SCAP1_2Engine.namespaces):
+        for ds in root.findall("./scap_1_2:data-stream", self.namespaces):
             data_streams[ds.attrib['id']] = ds
 
         if 'data_stream' in args:
@@ -48,8 +48,8 @@ class SCAP1_2Engine(scap.engine.engine.Engine):
         checklist_ids = []
         xpath = "./scap_1_2:checklists"
         xpath += "/scap_1_2:component-ref"
-        for c in self.data_stream.findall(xpath, SCAP1_2Engine.namespaces):
-            checklist_ids.append(c.attrib['{' + SCAP1_2Engine.namespaces['xlink'] + '}href'][1:])
+        for c in self.data_stream.findall(xpath, self.namespaces):
+            checklist_ids.append(c.attrib['{' + self.namespaces['xlink'] + '}href'][1:])
         if 'checklist' in args:
             if args['checklist'] not in checklist_ids:
                 logger.critical('Specified --checklist, ' + args['checklist'] + ', not found in content. Available checklists: ' + str(checklist_ids))
@@ -62,13 +62,13 @@ class SCAP1_2Engine(scap.engine.engine.Engine):
             else:
                 logger.critical('No --checklist specified and unable to implicitly choose one. Available checklists: ' + str(checklist_ids))
                 sys.exit()
-        self.checklist = root.find("./scap_1_2:component[@id='" + checklist_id + "']", SCAP1_2Engine.namespaces)
+        self.checklist = root.find("./scap_1_2:component[@id='" + checklist_id + "']", self.namespaces)
         logger.info('Using checklist ' + self.checklist.attrib['id'])
 
         profiles = {}
         xpath = "./xccdf_1_2:Benchmark"
         xpath += "/xccdf_1_2:Profile"
-        for p in self.checklist.findall(xpath, SCAP1_2Engine.namespaces):
+        for p in self.checklist.findall(xpath, self.namespaces):
             profiles[p.attrib['id']] = p
         if 'profile' in args:
             if args['profile'] not in profiles:
@@ -89,9 +89,9 @@ class SCAP1_2Engine(scap.engine.engine.Engine):
 
         self.rules = {}
         xpath = ".//xccdf_1_2:Rule"
-        for r in self.checklist.findall(xpath, SCAP1_2Engine.namespaces):
+        for r in self.checklist.findall(xpath, self.namespaces):
             xpath = "./xccdf_1_2:select[@idref='" + r.attrib['id'] + "']"
-            s = self.profile.find(xpath, SCAP1_2Engine.namespaces)
+            s = self.profile.find(xpath, self.namespaces)
             if s is not None:
                 if s.attrib['selected'] == 'true':
                     logger.info('Rule selected by profile: ' + r.attrib['id'])
@@ -103,12 +103,12 @@ class SCAP1_2Engine(scap.engine.engine.Engine):
 
         self.values = {}
         xpath = ".//xccdf_1_2:Value"
-        for v in self.checklist.findall(xpath, SCAP1_2Engine.namespaces):
+        for v in self.checklist.findall(xpath, self.namespaces):
             v_id = v.attrib['id']
             logger.debug('Collecting value ' + v_id)
             self.values[v_id] = { 'element': v }
             selectors = {}
-            for vs in v.findall('xccdf_1_2:value', SCAP1_2Engine.namespaces):
+            for vs in v.findall('xccdf_1_2:value', self.namespaces):
                 if 'selector' in vs.attrib:
                     logger.debug('Selector value of ' + v_id + ' ' + vs.attrib['selector'] + ' = ' + str(vs.text))
                     selectors[vs.attrib['selector']] = vs.text
@@ -116,20 +116,11 @@ class SCAP1_2Engine(scap.engine.engine.Engine):
                     logger.debug('Default value of ' + v_id + ' is ' + str(vs.text))
                     self.values[v_id]['value'] = vs.text
             xpath = "./xccdf_1_2:refine-value[@idref='" + v_id + "']"
-            rv = self.profile.find(xpath, SCAP1_2Engine.namespaces)
+            rv = self.profile.find(xpath, self.namespaces)
             if rv is not None:
                 logger.info('Modifying value ' + v_id + ' by profile ' + self.profile.attrib['id'] + ' using selector ' + rv.attrib['selector'])
                 self.values[v_id]['value'] = selectors[rv.attrib['selector']]
             logger.info('Using ' + v.attrib['type'] + ' ' + v.attrib['operator'] + ' ' + str(self.values[v_id]['value']) + ' for value ' + v_id)
-
-    def collect(self):
-        for host in self.hosts:
-            host.connect()
-            host.collect_facts()
-
-            #for rule_id in self.rules:
-                #host.test_rule(self.rules[rule_id], self.values, self.content)
-            host.disconnect()
 
     def report(self):
         arc = ET.ElementTree(element=ET.Element('{http://scap.nist.gov/schema/asset-reporting-format/1.1}asset-report-collection'))

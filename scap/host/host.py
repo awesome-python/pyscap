@@ -67,14 +67,19 @@ class Host(object):
         return self.exec_privileged_command(cmd).readlines()
 
     def connect(self):
+        import inspect
         raise NotImplementedError(inspect.stack()[0][3] + '() has not been implemented in subclass: ' + self.__class__.__name__)
     def disconnect(self):
+        import inspect
         raise NotImplementedError(inspect.stack()[0][3] + '() has not been implemented in subclass: ' + self.__class__.__name__)
     def exec_command(self, cmd):
+        import inspect
         raise NotImplementedError(inspect.stack()[0][3] + '() has not been implemented in subclass: ' + self.__class__.__name__)
     def can_privileged_command(self):
+        import inspect
         raise NotImplementedError(inspect.stack()[0][3] + '() has not been implemented in subclass: ' + self.__class__.__name__)
     def exec_privileged_command(self):
+        import inspect
         raise NotImplementedError(inspect.stack()[0][3] + '() has not been implemented in subclass: ' + self.__class__.__name__)
 
     def collect_facts(self):

@@ -44,20 +44,76 @@ class Engine(object):
         'xmldsig_2000_09': 'http://www.w3.org/2000/09/xmldsig',
     }
 
-    @staticmethod
-    def get_engine(content, args, hosts):
+    def __init__(self, content, hosts):
+        self.hosts = hosts
+        self.content = Content.load(content)
 
-        root = content.getroot()
-        if root.tag.startswith('{' + Engine.namespaces['scap_1_2']):
-            from scap.engine.scap_1_2_engine import SCAP1_2Engine
-            return SCAP1_2Engine(content, args, hosts)
-        else:
-            # TODO data stream contains supported dictionaries, checklists, and checks
-            logger.critical('Unsupported content with root namespace: ' + str(content.get_root_namespace()))
-            sys.exit()
+    def collect(self, args):
+        for host in self.hosts:
+            host.connect()
+            host.collect_facts()
 
-    def collect(self):
-        raise NotImplementedError(inspect.stack()[0][3] + '() has not been implemented in subclass: ' + self.__class__.__name__)
+            #for rule_id in self.rules:
+                #host.test_rule(self.rules[rule_id], self.values, self.content)
+            host.disconnect()
 
     def report(self):
-        raise NotImplementedError(inspect.stack()[0][3] + '() has not been implemented in subclass: ' + self.__class__.__name__)
+        arc = ET.ElementTree(element=ET.Element('{http://scap.nist.gov/schema/asset-reporting-format/1.1}asset-report-collection'))
+        root_el = arc.getroot()
+        assets_el = ET.SubElement(root_el, '{http://scap.nist.gov/schema/asset-reporting-format/1.1}assets')
+        reports_el = ET.SubElement(root_el, '{http://scap.nist.gov/schema/asset-reporting-format/1.1}reports')
+        relationships_el = ET.SubElement(root_el, '{http://scap.nist.gov/schema/reporting-core/1.1}relationships')
+
+        for host in self.hosts:
+            asset_el = ET.SubElement(assets_el, '{http://scap.nist.gov/schema/asset-reporting-format/1.1}asset')
+            asset_id = 'asset_' + host.facts['root_uuid']
+            # TODO: fallback to mobo guid, eth0 mac address, eth0 ip address, hostname
+            asset_el.attrib['id'] = asset_id
+
+            ai = ET.SubElement(asset_el, '{http://scap.nist.gov/schema/asset-identification/1.1}computing-device')
+            # motherboard should be the first discovered hardware cpe
+            ai.attrib['cpe'] = host.facts['hw_cpe'][0].to_uri_string()
+            ai.attrib['default-route'] = host.facts['default_route']
+            ai.attrib['fqdn'] = host.facts['fqdn']
+            ai.attrib['hostname'] = host.facts['hostname']
+            try:
+                ai.attrib['motherboard-guid'] = host.facts['hardware']['configuration']['uuid']
+            except KeyError:
+                logger.debug("Couldn't parse motherboard-guid")
+            conns = ET.SubElement(ai, '{http://scap.nist.gov/schema/asset-identification/1.1}connections')
+            for c in host.facts['network_connections']:
+                conn = ET.SubElement(conns, '{http://scap.nist.gov/schema/asset-identification/1.1}connection')
+                # mac-address
+                conn.attrib['mac-address'] = c['mac_address']
+                # ip-address
+                conn.attrib['ip-address'] = c['ip_address']
+                # subnet-mask
+                conn.attrib['subnet-mask'] = c['subnet_mask']
+
+            # network services
+            for svc in host.facts['network_services']:
+                ai = ET.SubElement(asset_el, '{http://scap.nist.gov/schema/asset-identification/1.1}service')
+                ai.attrib['host'] = svc['ip_address']
+                ai.attrib['port'] = svc['port']
+                ai.attrib['protocol'] = svc['protocol']
+
+            report_el = ET.SubElement(reports_el, '{http://scap.nist.gov/schema/asset-reporting-format/1.1}report')
+            import uuid
+            report_id = 'report_' + uuid.uuid4().hex
+            report_el.attrib['id'] = report_id
+
+            # TODO embed content
+
+            relationships = []
+            rel_el = ET.SubElement(relationships_el, '{http://scap.nist.gov/schema/asset-reporting-format/1.1}relationship')
+            rel_el.attrib['subject'] = report_id
+            rel_el.attrib['type'] = 'isAbout'
+            rel_el.attrib['ref'] = asset_id
+
+            # TODO createdFor relationship
+
+        from StringIO import StringIO
+        sio = StringIO()
+        arc.write(sio, encoding='UTF-8', xml_declaration=True)
+        sio.write("\n")
+        return sio.getvalue()
