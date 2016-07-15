@@ -22,7 +22,7 @@ from StringIO import StringIO
 import xml.etree.ElementTree as ET
 from scap.colorformatter import ColorFormatter
 from scap.engine.engine import Engine
-from scap.target.target import Target
+from scap.host.host import Host
 from scap.credential_store import CredentialStore
 
 # set up logging
@@ -49,9 +49,9 @@ arg_parser.add_argument('--version', action='version', version='%(prog)s 1.0')
 arg_parser.add_argument('--verbose', '-v', action='count')
 
 group = arg_parser.add_mutually_exclusive_group()
-group.add_argument('--benchmark', help='benchmark targets', action='store_true')
-group.add_argument('--list-hosts', help='outputs a list of the hosts that would be targeted', action='store_true')
-# group.add_argument('--test', help='perform a test on the selected targets', nargs='+')
+group.add_argument('--benchmark', help='benchmark hosts', action='store_true')
+group.add_argument('--list-hosts', help='outputs a list of the hosts', action='store_true')
+# group.add_argument('--test', help='perform a test on the selected hosts', nargs='+')
 group.add_argument('--parse', help='parse the supplied files', nargs='+', type=argparse.FileType('r'))
 
 # pre-parse arguments
@@ -72,8 +72,8 @@ elif(args[0].verbose >= 3):
 if args[0].benchmark:
     logger.info("Benchmark operation")
     arg_parser.add_argument('--credentials', nargs='+')
-    arg_parser.add_argument('--target', nargs='+')
-    arg_parser.add_argument('--targets', nargs='+')
+    arg_parser.add_argument('--host', nargs='+')
+    arg_parser.add_argument('--hosts', nargs='+')
     arg_parser.add_argument('--content', required=True, nargs=1, type=argparse.FileType('r'))
     arg_parser.add_argument('--data_stream', nargs=1)
     arg_parser.add_argument('--checklist', nargs=1)
@@ -81,10 +81,11 @@ if args[0].benchmark:
     arg_parser.add_argument('--output', type=argparse.FileType('wb', 0), default='-')
     arg_parser.add_argument('--pretty', action='store_true')
 elif args[0].list_hosts:
-    arg_parser.add_argument('--target', required=True, nargs='+')
+    arg_parser.add_argument('--host', nargs='+')
+    arg_parser.add_argument('--hosts', nargs='+')
 # elif args[0].test:
 #     logger.info("Test operation")
-#     arg_parser.add_argument('--target', required=True, nargs='+')
+#     arg_parser.add_argument('--host', required=True, nargs='+')
 #     # test argument is already defined
 #     arg_parser.add_argument('--object', required=True, nargs='+')
 #     arg_parser.add_argument('--state', required=True, nargs='+')
@@ -108,18 +109,18 @@ if args.benchmark:
                     CredentialStore().readfp(fp)
             except IOError:
                 logger.error('Could not read from file ' + filename)
-    if not args.target and not args.targets:
-        logger.critical('Either --target <host> or --targets <file> must be supplied')
+    if not args.host and not args.hosts:
+        logger.critical('Either --host <host> or --hosts <file> must be supplied')
         sys.exit()
-    targets = []
-    if args.target:
-        for t in args.target:
-            targets.append(Target.parse(t))
-    if args.targets:
-        for filename in args.targets:
+    hosts = []
+    if args.host:
+        for t in args.host:
+            hosts.append(Host.parse(t))
+    if args.hosts:
+        for filename in args.hosts:
             with open(filename, 'r') as f:
                 for line in f:
-                    targets.append(Target.parse(line))
+                    hosts.append(Host.parse(line))
 
     content = ET.parse(args.content[0])
     b_args = {}
@@ -129,8 +130,8 @@ if args.benchmark:
             b_args['checklist'] = args.checklist[0]
     if args.profile:
         b_args['profile'] = args.profile[0]
-    engine = Engine.get_engine(content, b_args)
-    engine.collect(targets)
+    engine = Engine.get_engine(content, b_args, hosts)
+    engine.collect()
     report = engine.report()
     if args.pretty:
         import xml.dom.minidom

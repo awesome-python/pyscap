@@ -15,11 +15,12 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-import target, paramiko.client, logging, sys, binascii, os
+from scap.host.host import Host
+import paramiko.client, logging, sys, binascii, os
 from scap.credential_store import CredentialStore
 
 logger = logging.getLogger(__name__)
-class SSHTarget(target.Target):
+class SSHHost(Host):
     class AskHostKeyPolicy(paramiko.client.MissingHostKeyPolicy):
         def missing_host_key(self, client, hostname, key):
             response = raw_input('Accept key ' + binascii.hexlify(key.get_fingerprint()) + ' for host ' + hostname + ' (Y/n)? ')
@@ -45,6 +46,10 @@ class SSHTarget(target.Target):
 
     def __init__(self, hostname, port):
         super(self.__class__, self).__init__(hostname, port)
+
+        from scap.collector.uname_collector import UNameCollector
+        self.collectors.append(UNameCollector(self))
+
         creds = CredentialStore()
         if not creds.has_section(hostname):
             logger.critical('No credentials defined for host ' + hostname)
@@ -105,18 +110,3 @@ class SSHTarget(target.Target):
 
     def disconnect(self):
         self.client.close()
-
-    def discover_host(self):
-        try:
-            uname = self.line_from_command('uname -a')
-            if uname.startswith('Linux'):
-                from scap.host.linux_host import LinuxHost
-                return LinuxHost(uname, self)
-            elif uname.startswith('Darwin'):
-                raise NotImplementedError('Apple target discovery has not been implemented')
-            elif uname.startswith('Windows NT'):
-                raise NotImplementedError('Microsoft target discovery has not been implemented')
-            else:
-                raise NotImplementedError('Target discovery has not been implemented for uname: ' + uname)
-        except RuntimeError:
-            logger.info("Unable to determine OS from uname")

@@ -1,5 +1,3 @@
-#!/bin/bash
-
 # Copyright 2016 Casey Jaymes
 
 # This file is part of PySCAP.
@@ -17,15 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-die() {
-  (>&2 echo $1)
-  exit 1
-}
+from scap.host.host import Host
 
-warn() {
-  (>&2 echo $1)
-}
-
-#[ "$(./pyscap.py --target test --list-hosts)" == "Hosts: test" ] || die 'list-hosts tests failed'
-
-./pyscap.py -vvv --credentials ~/creds.ini --host localhost --benchmark --content sample_content/USGCB-Windows/scap_gov.nist_USGCB-ie8.xml --pretty
+class WinRMHost(Host):
+    pass

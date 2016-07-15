@@ -15,8 +15,6 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.host.host import Host
-
-class MicrosoftHost(Host):
-    pass
-#key “MachineGuid” in: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Cryptography
+class Collector(object):
+    def __init__(self, host):
+        self.host = host

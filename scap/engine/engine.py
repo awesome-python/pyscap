@@ -45,19 +45,19 @@ class Engine(object):
     }
 
     @staticmethod
-    def get_engine(content, args):
+    def get_engine(content, args, hosts):
 
         root = content.getroot()
         if root.tag.startswith('{' + Engine.namespaces['scap_1_2']):
             from scap.engine.scap_1_2_engine import SCAP1_2Engine
-            return SCAP1_2Engine(content, args)
+            return SCAP1_2Engine(content, args, hosts)
         else:
             # TODO data stream contains supported dictionaries, checklists, and checks
             logger.critical('Unsupported content with root namespace: ' + str(content.get_root_namespace()))
             sys.exit()
 
-    def collect(self, targets):
-        logger.error(inspect.stack()[0][3] + '() has not been implemented in subclass: ' + self.__class__.__name__)
+    def collect(self):
+        raise NotImplementedError(inspect.stack()[0][3] + '() has not been implemented in subclass: ' + self.__class__.__name__)
 
     def report(self):
-        logger.error(inspect.stack()[0][3] + '() has not been implemented in subclass: ' + self.__class__.__name__)
+        raise NotImplementedError(inspect.stack()[0][3] + '() has not been implemented in subclass: ' + self.__class__.__name__)

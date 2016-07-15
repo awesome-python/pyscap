@@ -15,7 +15,12 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.host.host import Host
+from scap.collector.collector import Collector
+import re, logging
 
-class VMWareHost(Host):
-    pass
+logger = logging.getLogger(__name__)
+class HostnameCollector(Collector):
+    def collect_facts(self):
+        hostname = self.host.line_from_command('hostname').strip()
+        logger.debug('hostname: ' + str(hostname))
+        self.host.facts['hostname'] = hostname
