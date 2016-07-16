@@ -46,6 +46,7 @@ class Engine(object):
 
     def __init__(self, content, hosts):
         self.hosts = hosts
+        from scap.model.content import Content
         self.content = Content.load(content)
 
     def collect(self, args):

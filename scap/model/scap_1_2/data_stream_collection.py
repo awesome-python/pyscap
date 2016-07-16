@@ -26,30 +26,20 @@ class DataStreamCollection(Content):
         # find the specified data stream or the only data stream if none specified
         self.data_streams = {}
 
-        for ds_el in root.findall("./scap_1_2:data-stream", Engine.namespaces):
-            self.data_streams[ds_el.attrib['id']] = DataStream(root, ds_el)
+        for ds_el in root_el.findall("./scap_1_2:data-stream", Engine.namespaces):
+            self.data_streams[ds_el.attrib['id']] = DataStream(self, root_el, ds_el)
 
     def select_rules(self, args):
-        # b_args = {}
-        # if args.data_stream:
-        #     b_args['data_stream'] = args.data_stream[0]
-        #     if args.checklist:
-        #         b_args['checklist'] = args.checklist[0]
-        # if args.profile:
-        #     b_args['profile'] = args.profile[0]
-
-        # if 'data_stream' in args:
-        #     if args['data_stream'] not in data_streams:
-        #         logger.critical('Specified --data_stream, ' + args['data_stream'] + ', not found in content. Available data streams: ' + str(data_streams.keys()))
-        #         sys.exit()
-        #     else:
-        #         self.data_stream = data_streams[args['data_stream']]
-        # else:
-        #     if len(data_streams) == 1:
-        #         self.data_stream = data_streams.values()[0]
-        #     else:
-        #         logger.critical('No --data_stream specified and unable to implicitly choose one. Available data-streams: ' + str(data_streams.keys()))
-        #         sys.exit()
-        # logger.info('Using data stream ' + self.data_stream.attrib['id'])
-
-        pass
+        if args.data_stream:
+            data_stream = args.data_stream[0]
+            if data_stream not in self.data_streams:
+                logger.critical('Specified --data_stream, ' + data_stream + ', not found in content. Available data streams: ' + str(self.data_streams.keys()))
+                sys.exit()
+            else:
+                return self.data_streams[data_stream].select_rules(args)
+        else:
+            if len(self.data_streams) == 1:
+                return self.data_streams.values()[0].select_rules(args)
+            else:
+                logger.critical('No --data_stream specified and unable to implicitly choose one. Available data-streams: ' + str(self.data_streams.keys()))
+                sys.exit()

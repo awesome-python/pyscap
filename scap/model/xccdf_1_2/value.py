@@ -15,22 +15,24 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
+from scap.model.content import Content
 import logging
 from scap.engine.engine import Engine
 
 logger = logging.getLogger(__name__)
-class Content(object):
-    @staticmethod
-    def load(content):
-        root = content.getroot()
-        if root.tag.startswith('{' + Engine.namespaces['scap_1_2']):
-            from scap.model.scap_1_2.data_stream_collection import DataStreamCollection
-            return DataStreamCollection(root)
-            # TODO data stream contains supported dictionaries, checklists, and checks
-        else:
-            logger.critical('Unsupported content with root namespace: ' + str(content.get_root_namespace()))
-            sys.exit()
+class Value(Content):
+    def __init__(self, parent, root_el, el):
+        self.parent = parent
+        self.id = el.attrib['id']
+        self.type = el.attrib['type']
+        self.operator = el.attrib['operator']
 
-    def select_rules(self, args):
-        import inspect
-        raise NotImplementedError(inspect.stack()[0][3] + '() has not been implemented in subclass: ' + self.__class__.__name__)
+        self.selectors = {}
+        self.default = None
+        for vs in el.findall('xccdf_1_2:value', Engine.namespaces):
+            if 'selector' in vs.attrib:
+                logger.debug('Selector value of ' + el.attrib['id'] + ' ' + vs.attrib['selector'] + ' = ' + str(vs.text))
+                self.selectors[vs.attrib['selector']] = vs.text
+            else:
+                logger.debug('Default value of ' + el.attrib['id'] + ' is ' + str(vs.text))
+                self.default = vs.text

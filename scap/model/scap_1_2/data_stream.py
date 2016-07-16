@@ -22,35 +22,27 @@ from scap.model.xccdf_1_2.benchmark import Benchmark
 
 logger = logging.getLogger(__name__)
 class DataStream(Content):
-    def __init__(self, root_el, el):
-        self.checklists = {}
+    def __init__(self, parent, root_el, el):
+        self.parent = parent
 
+        self.checklists = {}
         xpath = "./scap_1_2:checklists"
         xpath += "/scap_1_2:component-ref"
         for c in el.findall(xpath, Engine.namespaces):
             checklist_id = c.attrib['{' + Engine.namespaces['xlink'] + '}href'][1:]
-            self.checklists[checklist_id] = Benchmark(root.find("./scap_1_2:component[@id='" + checklist_id + "']", Engine.namespaces))
+            self.checklists[checklist_id] = Benchmark(self, root_el, root_el.find("./scap_1_2:component[@id='" + checklist_id + "']", Engine.namespaces))
 
-    def select_rules(self):
-        # b_args = {}
-        # if args.data_stream:
-        #     b_args['data_stream'] = args.data_stream[0]
-        #     if args.checklist:
-        #         b_args['checklist'] = args.checklist[0]
-        # if args.profile:
-        #     b_args['profile'] = args.profile[0]
-
-        # if 'checklist' in args:
-        #     if args['checklist'] not in checklist_ids:
-        #         logger.critical('Specified --checklist, ' + args['checklist'] + ', not found in content. Available checklists: ' + str(checklist_ids))
-        #         sys.exit()
-        #     else:
-        #         checklist_id = args['checklist']
-        # else:
-        #     if len(checklist_ids) == 1:
-        #         checklist_id = checklist_ids[0]
-        #     else:
-        #         logger.critical('No --checklist specified and unable to implicitly choose one. Available checklists: ' + str(checklist_ids))
-        #         sys.exit()
-
-        pass
+    def select_rules(self, args):
+        if args.checklist:
+            checklist_id = args.checklist[0]
+            if checklist_id not in self.checklists:
+                logger.critical('Specified --checklist, ' + checklist_id + ', not found in content. Available checklists: ' + str(self.checklists.keys()))
+                sys.exit()
+            else:
+                return self.checklists[checklist_id].select_rules(args)
+        else:
+            if len(self.checklists) == 1:
+                return self.checklists.values()[0].select_rules(args)
+            else:
+                logger.critical('No --checklist specified and unable to implicitly choose one. Available checklists: ' + str(self.checklists.keys()))
+                sys.exit()

@@ -15,22 +15,15 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
+from scap.model.content import Content
 import logging
-from scap.engine.engine import Engine
 
 logger = logging.getLogger(__name__)
-class Content(object):
-    @staticmethod
-    def load(content):
-        root = content.getroot()
-        if root.tag.startswith('{' + Engine.namespaces['scap_1_2']):
-            from scap.model.scap_1_2.data_stream_collection import DataStreamCollection
-            return DataStreamCollection(root)
-            # TODO data stream contains supported dictionaries, checklists, and checks
+class Rule(Content):
+    def __init__(self, parent, root_el, el):
+        self.parent = parent
+        self.id = el.attrib['id']
+        if el.attrib['selected'] == 'true':
+            self.selected = True
         else:
-            logger.critical('Unsupported content with root namespace: ' + str(content.get_root_namespace()))
-            sys.exit()
-
-    def select_rules(self, args):
-        import inspect
-        raise NotImplementedError(inspect.stack()[0][3] + '() has not been implemented in subclass: ' + self.__class__.__name__)
+            self.selected = False
