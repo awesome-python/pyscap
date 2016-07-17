@@ -73,18 +73,26 @@ class Check(Content):
             self.multi_check = False
 
         self.check_content = None
-        for el in el:
-            if not el.tag.startswith('{' + Engine.namespaces['xccdf_1_2'] + '}'):
-                raise RuntimeError('Unknown tag in check: ' + el.tag)
-            tag = el.tag[len('{' + Engine.namespaces['xccdf_1_2'] + '}'):]
+        for check_el in el:
+            if not check_el.tag.startswith('{' + Engine.namespaces['xccdf_1_2'] + '}'):
+                raise RuntimeError('Unknown tag in check: ' + check_el.tag)
+            tag = check_el.tag[len('{' + Engine.namespaces['xccdf_1_2'] + '}'):]
             if tag == 'check-export':
                 pass
             elif tag == 'check-content-ref':
-                self.check_content = self.resolve_reference(el.attrib['href'])
+                content_el = self.resolve_reference(check_el.attrib['href'])
+                if not content_el.tag.startswith('{' + el.attrib['system']):
+                    raise RuntimeError('Check system does not match loaded reference')
+                if el.attrib['system'] == Engine.namespaces['oval_defs_5']:
+                    from scap.model.oval_defs_5.oval_definitions import OVALDefinitions
+                    self.check_content = OVALDefinitions(self, content_el)
+                elif el.attrib['system'] == Engine.namespaces['ocil_2_0'] or el.attrib['system'] == Engine.namespaces['ocil_2']:
+                    from scap.model.ocil_2_0.ocil import OCIL
+                    self.check_content = OCIL(self, content_el)
             else:
                 raise NotImplementedError(tag + ' elements are not implemented for checks')
         if self.check_content is None:
-            logger.critical('Check for rule ' + parent.id + ' could not be found')
+            logger.critical('Check for rule ' + parent.id + ' could not be loaded')
             import sys
             sys.exit()
 
