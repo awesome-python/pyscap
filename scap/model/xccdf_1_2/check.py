@@ -86,9 +86,11 @@ class Check(Content):
                 if el.attrib['system'] == Engine.namespaces['oval_defs_5']:
                     from scap.model.oval_defs_5.oval_definitions import OVALDefinitions
                     self.check_content = OVALDefinitions(self, content_el)
+                    # TODO need to specify def name
                 elif el.attrib['system'] == Engine.namespaces['ocil_2_0'] or el.attrib['system'] == Engine.namespaces['ocil_2']:
                     from scap.model.ocil_2_0.ocil import OCIL
                     self.check_content = OCIL(self, content_el)
+                    # TODO need to specify using name
             else:
                 raise NotImplementedError(tag + ' elements are not implemented for checks')
         if self.check_content is None:

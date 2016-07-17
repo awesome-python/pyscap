@@ -23,3 +23,15 @@ logger = logging.getLogger(__name__)
 class Definition(Content):
     def __init__(self, parent, el):
         super(self.__class__, self).__init__(parent, el)
+
+        self.id = el.attrib['id']
+
+        self.criteria = None
+        for child in el:
+            if child.tag.endswith('criteria'):
+                from scap.model.oval_defs_5.criteria import Criteria
+                self.criteria = Criteria(self, child)
+        if self.criteria is None:
+            logger.critical('No criteria found for definition ' + self.id)
+            import sys
+            sys.exit()
