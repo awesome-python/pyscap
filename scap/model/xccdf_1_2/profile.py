@@ -43,6 +43,12 @@ class Profile(Content):
                     logger.info('Rule selected by default: ' + r.id)
                     self.rules[r.id] = r
 
+            xpath = "./xccdf_1_2:refine-rule[@idref='" + r.id + "']"
+            s = el.find(xpath, Engine.namespaces)
+            if s is not None:
+                logger.info('Selecting check ' + s.attrib['selector'] + ' for rule ' + r.id)
+                r.select_check(s.attrib['selector'])
+
         self.values = {}
         for v in parent.values.values():
             logger.debug('Collecting value ' + v.id)

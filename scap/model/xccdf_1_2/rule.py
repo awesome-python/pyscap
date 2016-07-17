@@ -17,6 +17,7 @@
 
 from scap.model.content import Content
 import logging
+from scap.engine.engine import Engine
 
 logger = logging.getLogger(__name__)
 class Rule(Content):
@@ -28,3 +29,32 @@ class Rule(Content):
             self.selected = True
         else:
             self.selected = False
+
+        self.check = None
+        comp_el = el.find("./xccdf_1_2:complex-check", Engine.namespaces)
+        if comp_el:
+            from scap.model.xccdf_1_2.check import ComplexCheck
+            self.check = ComplexCheck(self, el)
+        else:
+            self.checks = {}
+            from scap.model.xccdf_1_2.check import Check
+            for el in el.findall("./xccdf_1_2:check", Engine.namespaces):
+                check = Check(self, el)
+                if 'selector' in el.attrib:
+                    self.checks[el.attrib['selector']] = check
+                    if self.check is None:
+                        self.check = check
+                else:
+                    self.check = check
+        if self.check is None:
+            logger.critical('Could not load check from rule ' + self.id)
+            import sys
+            sys.exit()
+
+        # TODO: multiple
+
+    def select_check(self, selector):
+        self.check = self.checks[selector]
+
+    def get_result(self):
+        return self.check.get_result()

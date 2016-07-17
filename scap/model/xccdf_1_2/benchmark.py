@@ -18,9 +18,6 @@
 from scap.model.content import Content
 import logging
 from scap.engine.engine import Engine
-from scap.model.xccdf_1_2.profile import Profile
-from scap.model.xccdf_1_2.rule import Rule
-from scap.model.xccdf_1_2.value import Value
 
 logger = logging.getLogger(__name__)
 class Benchmark(Content):
@@ -29,17 +26,21 @@ class Benchmark(Content):
 
         self.id = el.attrib['id']
 
+        from scap.model.xccdf_1_2.rule import Rule
         self.rules = {}
+        # TODO: this needs to be more sophisticated to incorporate Groups
         xpath = ".//xccdf_1_2:Rule"
         for r in el.findall(xpath, Engine.namespaces):
             self.rules[r.attrib['id']] = Rule(self, r)
 
+        from scap.model.xccdf_1_2.value import Value
         self.values = {}
         xpath = ".//xccdf_1_2:Value"
         for v in el.findall(xpath, Engine.namespaces):
             self.values[v.attrib['id']] = Value(self, v)
 
         # load profiles last so they can find .rules and .values
+        from scap.model.xccdf_1_2.profile import Profile
         self.profiles = {}
         xpath = "./xccdf_1_2:Profile"
         for p in el.findall(xpath, Engine.namespaces):

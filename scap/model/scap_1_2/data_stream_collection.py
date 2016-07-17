@@ -18,15 +18,17 @@
 from scap.model.content import Content
 import logging
 from scap.engine.engine import Engine
-from scap.model.scap_1_2.data_stream import DataStream
 
 logger = logging.getLogger(__name__)
 class DataStreamCollection(Content):
     def __init__(self, root_el):
         super(self.__class__, self).__init__(None, root_el)
-        # find the specified data stream or the only data stream if none specified
-        self.data_streams = {}
 
+        self.components = {}
+
+        # find the specified data stream or the only data stream if none specified
+        from scap.model.scap_1_2.data_stream import DataStream
+        self.data_streams = {}
         for ds_el in root_el.findall("./scap_1_2:data-stream", Engine.namespaces):
             self.data_streams[ds_el.attrib['id']] = DataStream(self, ds_el)
 
@@ -38,8 +40,11 @@ class DataStreamCollection(Content):
 
         if ref[0] == '#':
             ref = ref[1:]
+            if ref in self.components:
+                return self.components[ref]
+
             comp_el = self.element.find("./scap_1_2:component[@id='" + ref + "']", Engine.namespaces)
-            if not comp_el:
+            if comp_el is None:
                 logger.critical('unresolved ref: ' + ref)
                 import sys
                 sys.exit()
@@ -47,17 +52,18 @@ class DataStreamCollection(Content):
             el = list(comp_el)[0]
             if el.tag == '{http://checklists.nist.gov/xccdf/1.2}Benchmark':
                 from scap.model.xccdf_1_2.benchmark import Benchmark
-                return Benchmark(self, el)
+                self.components[ref] = Benchmark(self, el)
             elif el.tag == '{http://scap.nist.gov/schema/ocil/2.0}ocil':
                 from scap.model.ocil_2_0.ocil import OCIL
-                return OCIL(self, el)
+                self.components[ref] = OCIL(self, el)
             elif el.tag == '{http://oval.mitre.org/XMLSchema/oval-definitions-5}oval_definitions':
                 from scap.model.oval_defs_5.oval_definitions import OVALDefinitions
-                return OVALDefinitions(self, el)
+                self.components[ref] = OVALDefinitions(self, el)
             else:
                 logger.critical('unknown component: ' + el.tag + ' for ref: ' + ref)
                 import sys
                 sys.exit()
+            return self.components[ref]
         else:
             logger.critical('only local references are supported: ' + ref)
             import sys

@@ -55,8 +55,14 @@ class Engine(object):
 
             host.collect_facts()
 
+            from scap.model.xccdf_1_2.check import Check
             for rule_id, rule in self.content.select_rules(args).items():
                 logger.debug('Testing rule: ' + rule_id)
+                #try:
+                result = rule.get_result()
+                #except:
+                #    result = Check.ERROR
+                logger.info('Result: ' + result)
 
             host.disconnect()
 
