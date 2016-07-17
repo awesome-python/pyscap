@@ -25,3 +25,6 @@ class Object(Content):
         super(self.__class__, self).__init__(parent, el)
 
         self.id = el.attrib['id']
+
+        if 'deprecated' in el.attrib and el.attrib['deprecated']:
+            logger.warning('Using deprecated object: ' + self.id)

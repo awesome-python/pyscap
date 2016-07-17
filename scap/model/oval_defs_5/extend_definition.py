@@ -23,3 +23,20 @@ logger = logging.getLogger(__name__)
 class ExtendDefinition(Content):
     def __init__(self, parent, el):
         super(self.__class__, self).__init__(parent, el)
+
+        if 'negate' in el.attrib and (el.attrib['negate'] == 'true' or el.attrib['negate'] == '1'):
+            self.negate = True
+        else:
+            self.negate = False
+
+        if 'applicability_check' in el.attrib and (el.attrib['applicability_check'] == 'true' or el.attrib['applicability_check'] == '1'):
+            self.applicability_check = True
+        else:
+            self.applicability_check = False
+
+        if 'definition_ref' in el.attrib :
+            self.test_ref = el.attrib['definition_ref']
+        else:
+            logger.critical('definition_ref not defined in extend_definition')
+            import sys
+            sys.exit()

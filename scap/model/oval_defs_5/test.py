@@ -25,3 +25,23 @@ class Test(Content):
         super(self.__class__, self).__init__(parent, el)
 
         self.id = el.attrib['id']
+
+        if 'check_existence' in el.attrib :
+            self.check_existence = el.attrib['check_existence']
+        else:
+            self.check_existence = 'at_least_one_exists'
+
+        if 'check' in el.attrib :
+            self.check = el.attrib['check']
+        else:
+            logger.critical('check not defined in test')
+            import sys
+            sys.exit()
+
+        if 'state_operator' in el.attrib :
+            self.state_operator = el.attrib['state_operator']
+        else:
+            self.state_operator = 'AND'
+
+        if 'deprecated' in el.attrib and el.attrib['deprecated']:
+            logger.warning('Using deprecated test: ' + self.id)
