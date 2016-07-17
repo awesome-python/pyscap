@@ -21,8 +21,8 @@ from scap.engine.engine import Engine
 
 logger = logging.getLogger(__name__)
 class Benchmark(Content):
-    def __init__(self, parent, el):
-        super(self.__class__, self).__init__(parent, el)
+    def __init__(self, parent, el, ref_mapping=None):
+        super(self.__class__, self).__init__(parent, el, ref_mapping=ref_mapping)
 
         self.id = el.attrib['id']
 

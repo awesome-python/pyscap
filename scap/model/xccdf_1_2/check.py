@@ -21,32 +21,72 @@ from scap.engine.engine import Engine
 
 logger = logging.getLogger(__name__)
 class Check(Content):
-    PASS = 'pass' # [P] The target system or system component satisfied all the conditions of the <xccdf:Rule>.
-    FAIL = 'fail' # [F] The target system or system component did not satisfy all the conditions of the
-    # <xccdf:Rule>.
-    ERROR = 'error' # [E] The checking engine could not complete the evaluation, therefore the status of the target's
-    # compliance with the <xccdf:Rule> is not certain. This could happen, for example, if a testing
-    # tool was run with insufficient privileges and could not gather all of the necessary information.
-    UNKNOWN = 'unknown' # [U] The testing tool encountered some problem and the result is unknown. For example, a result of
-    # 'unknown' might be given if the testing tool was unable to interpret the output of the checking
-    # engine (the output has no meaning to the testing tool).
-    NOT_APPLICABLE = 'notapplicable' # [N] The <xccdf:Rule> was not applicable to the target of the test. For example, the
-    # <xccdf:Rule> might have been specific to a different version of the target OS, or it might
-    # have been a test against a platform feature that was not installed.
-    NOT_CHECKED = 'notchecked' # [K] The <xccdf:Rule> was not evaluated by the checking engine. This status is designed for
-    # <xccdf:Rule> elements that have no <xccdf:check> elements or that correspond to an
-    # unsupported checking system. It may also correspond to a status returned by a checking
-    # engine if the checking engine does not support the indicated check code.
-    NOT_SELECTED = 'notselected' # [S] The <xccdf:Rule> was not selected in the benchmark.
-    INFORMATIONAL = 'informational' # [I] The <xccdf:Rule> was checked, but the output from the checking engine is simply
-    # information for auditors or administrators; it is not a compliance category. This status value is
-    # designed for <xccdf:Rule> elements whose main purpose is to extract information from the
-    # target rather than test the target.
-    FIXED = 'fixed' # [X] The <xccdf:Rule> had failed, but was then fixed (possibly by a tool that can automatically
-    # apply remediation, or possibly by the human auditor).
+    class Result(object):
+        PASS = 'pass' # [P] The target system or system component satisfied all the conditions of the <xccdf:Rule>.
+        FAIL = 'fail' # [F] The target system or system component did not satisfy all the conditions of the
+        # <xccdf:Rule>.
+        ERROR = 'error' # [E] The checking engine could not complete the evaluation, therefore the status of the target's
+        # compliance with the <xccdf:Rule> is not certain. This could happen, for example, if a testing
+        # tool was run with insufficient privileges and could not gather all of the necessary information.
+        UNKNOWN = 'unknown' # [U] The testing tool encountered some problem and the result is unknown. For example, a result of
+        # 'unknown' might be given if the testing tool was unable to interpret the output of the checking
+        # engine (the output has no meaning to the testing tool).
+        NOT_APPLICABLE = 'notapplicable' # [N] The <xccdf:Rule> was not applicable to the target of the test. For example, the
+        # <xccdf:Rule> might have been specific to a different version of the target OS, or it might
+        # have been a test against a platform feature that was not installed.
+        NOT_CHECKED = 'notchecked' # [K] The <xccdf:Rule> was not evaluated by the checking engine. This status is designed for
+        # <xccdf:Rule> elements that have no <xccdf:check> elements or that correspond to an
+        # unsupported checking system. It may also correspond to a status returned by a checking
+        # engine if the checking engine does not support the indicated check code.
+        NOT_SELECTED = 'notselected' # [S] The <xccdf:Rule> was not selected in the benchmark.
+        INFORMATIONAL = 'informational' # [I] The <xccdf:Rule> was checked, but the output from the checking engine is simply
+        # information for auditors or administrators; it is not a compliance category. This status value is
+        # designed for <xccdf:Rule> elements whose main purpose is to extract information from the
+        # target rather than test the target.
+        FIXED = 'fixed' # [X] The <xccdf:Rule> had failed, but was then fixed (possibly by a tool that can automatically
+        # apply remediation, or possibly by the human auditor).
 
     def __init__(self, parent, el):
         super(self.__class__, self).__init__(parent, el)
 
+        if 'id' in el.attrib:
+            self.id = el.attrib['id']
+
+        supported = [
+            Engine.namespaces['oval_defs_5'],
+            Engine.namespaces['ocil_2_0'],
+            Engine.namespaces['ocil_2'],
+        ]
+        if el.attrib['system'] not in supported:
+            raise NotImplementedError('Check system ' + el.attrib['system'] + ' is not implemented')
+
+        if 'negate' in el.attrib and el.attrib['negate'] == 'true':
+            self.negate = True
+        else:
+            self.negate = False
+
+        # don't need selector
+
+        if 'multi-check' in el.attrib and el.attrib['multi-check'] == 'true':
+            self.multi_check = True
+        else:
+            self.multi_check = False
+
+        self.check_content = None
+        for el in el:
+            if not el.tag.startswith('{' + Engine.namespaces['xccdf_1_2'] + '}'):
+                raise RuntimeError('Unknown tag in check: ' + el.tag)
+            tag = el.tag[len('{' + Engine.namespaces['xccdf_1_2'] + '}'):]
+            if tag == 'check-export':
+                pass
+            elif tag == 'check-content-ref':
+                self.check_content = self.resolve_reference(el.attrib['href'])
+            else:
+                raise NotImplementedError(tag + ' elements are not implemented for checks')
+        if self.check_content is None:
+            logger.critical('Check for rule ' + parent.id + ' could not be found')
+            import sys
+            sys.exit()
+
     def get_result(self):
-        return Check.NOT_CHECKED
+        return Check.Result.NOT_CHECKED

@@ -31,17 +31,27 @@ class DataStream(Content):
         self.checklists = {}
         xpath = "./scap_1_2:checklists"
         xpath += "/scap_1_2:component-ref"
-        for c in el.findall(xpath, Engine.namespaces):
-            href = c.attrib['{' + Engine.namespaces['xlink'] + '}href']
-            #checklist_el = self.parent.resolve_reference(href)
-            checklist = self.parent.resolve_reference(href)
-            self.checklists[checklist.id] = checklist
+        for comp in el.findall(xpath, Engine.namespaces):
+            ref_mapping = None
+            href = comp.attrib['{' + Engine.namespaces['xlink'] + '}href']
+            for cat in comp:
+                if cat.tag == '{' + Engine.namespaces['xml_cat'] + '}' + 'catalog':
+                    logger.debug('Loading catalog for ' + href)
+                    from scap.model.xml_cat.catalog import Catalog
+                    ref_mapping = Catalog(self, cat).to_dict()
 
-            ref_catalogs = el.findall('./xml_cat:catalog', Engine.namespaces)
-            if len(ref_catalogs) > 0:
-                from scap.model.xml_cat.catalog import Catalog
-                cat = Catalog(self, ref_catalogs[0])
-                self.checklists[checklist.id].set_ref_mapping(cat.to_dict())
+            ref_el = self.parent.resolve_reference(href)
+            if ref_el.tag == '{http://checklists.nist.gov/xccdf/1.2}Benchmark':
+                from scap.model.xccdf_1_2.benchmark import Benchmark
+                checklist = Benchmark(self, ref_el, ref_mapping=ref_mapping)
+            elif ref_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}ocil':
+                from scap.model.ocil_2_0.ocil import OCIL
+                checklist = OCIL(self, ref_el, ref_mapping=ref_mapping)
+            else:
+                logger.critical('unknown component: ' + ref_el.tag + ' for ref: ' + href)
+                import sys
+                sys.exit()
+            self.checklists[checklist.id] = checklist
 
         #from scap.model.xccdf_1_2.benchmark import Benchmark
         self.checks = {}

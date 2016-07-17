@@ -23,8 +23,11 @@ logger = logging.getLogger(__name__)
 class Catalog(Content):
     def __init__(self, parent, el):
         super(self.__class__, self).__init__(parent, el)
+
+        self.entries = {}
         for entry in el.findall('./xml_cat:uri', Engine.namespaces):
             self.entries[entry.attrib['name']] = entry.attrib['uri']
 
     def to_dict(self):
+        logger.debug('Catalog entries: ' + str(self.entries))
         return self.entries

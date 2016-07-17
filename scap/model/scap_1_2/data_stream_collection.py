@@ -32,37 +32,29 @@ class DataStreamCollection(Content):
         for ds_el in root_el.findall("./scap_1_2:data-stream", Engine.namespaces):
             self.data_streams[ds_el.attrib['id']] = DataStream(self, ds_el)
 
+        # TODO data stream contains supported dictionaries, checklists, and checks
+
     def resolve_reference(self, ref):
         if ref in self.ref_mapping:
             logger.debug('Mapping reference ' + ref + ' to ' + self.ref_mapping[ref])
-            import sys
-            sys.exit()
+            ref = self.ref_mapping[ref]
 
         if ref[0] == '#':
             ref = ref[1:]
-            if ref in self.components:
-                return self.components[ref]
+            if ref not in self.components:
+                comp_el = self.element.find("./scap_1_2:component[@id='" + ref + "']", Engine.namespaces)
+                if comp_el is not None:
+                    self.components[ref] = list(comp_el)[0]
+                else:
+                    comp_ref_el = self.element.find(".//scap_1_2:component-ref[@id='" + ref + "']", Engine.namespaces)
+                    if comp_ref_el is not None:
+                        href = comp_ref_el.attrib['{' + Engine.namespaces['xlink'] + '}href']
+                        self.components[ref] = self.resolve_reference(href)
+                    else:
+                        logger.critical('unresolved ref: ' + ref)
+                        import sys
+                        sys.exit()
 
-            comp_el = self.element.find("./scap_1_2:component[@id='" + ref + "']", Engine.namespaces)
-            if comp_el is None:
-                logger.critical('unresolved ref: ' + ref)
-                import sys
-                sys.exit()
-
-            el = list(comp_el)[0]
-            if el.tag == '{http://checklists.nist.gov/xccdf/1.2}Benchmark':
-                from scap.model.xccdf_1_2.benchmark import Benchmark
-                self.components[ref] = Benchmark(self, el)
-            elif el.tag == '{http://scap.nist.gov/schema/ocil/2.0}ocil':
-                from scap.model.ocil_2_0.ocil import OCIL
-                self.components[ref] = OCIL(self, el)
-            elif el.tag == '{http://oval.mitre.org/XMLSchema/oval-definitions-5}oval_definitions':
-                from scap.model.oval_defs_5.oval_definitions import OVALDefinitions
-                self.components[ref] = OVALDefinitions(self, el)
-            else:
-                logger.critical('unknown component: ' + el.tag + ' for ref: ' + ref)
-                import sys
-                sys.exit()
             return self.components[ref]
         else:
             logger.critical('only local references are supported: ' + ref)

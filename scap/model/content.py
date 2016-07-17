@@ -26,22 +26,29 @@ class Content(object):
         if root.tag.startswith('{' + Engine.namespaces['scap_1_2']):
             from scap.model.scap_1_2.data_stream_collection import DataStreamCollection
             return DataStreamCollection(root)
-            # TODO data stream contains supported dictionaries, checklists, and checks
         else:
             logger.critical('Unsupported content with root namespace: ' + str(content.get_root_namespace()))
             sys.exit()
 
-    def __init__(self, parent, el):
+    def __init__(self, parent, el, ref_mapping=None):
         self.parent = parent
         self.element = el
-        self.ref_mapping = {}
+        if ref_mapping is None:
+            self.ref_mapping = {}
+        else:
+            self.ref_mapping = ref_mapping
 
     def resolve_reference(self, ref):
+        if ref in self.ref_mapping:
+            logger.debug('Mapping reference ' + ref + ' to ' + self.ref_mapping[ref])
+            ref = self.ref_mapping[ref]
+
         if not self.parent:
             raise RuntimeError("Got to null parent without resolving reference")
         return self.parent.resolve_reference(ref)
 
     def set_ref_mapping(self, mapping):
+        logger.debug('Updating reference mapping with ' + str(mapping))
         self.ref_mapping.update(mapping)
 
     def select_rules(self, args):

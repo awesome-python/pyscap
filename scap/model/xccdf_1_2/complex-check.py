@@ -26,4 +26,4 @@ class ComplexCheck(Content):
         super(self.__class__, self).__init__(parent, el)
 
     def get_result(self):
-        return Check.NOT_CHECKED
+        return Check.Result.NOT_CHECKED

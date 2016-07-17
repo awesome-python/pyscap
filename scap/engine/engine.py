@@ -28,6 +28,7 @@ class Engine(object):
         'cpe_lang_2_0': 'http://cpe.mitre.org/language/2.0',
         'dc_el_1_1': 'http://purl.org/dc/elements/1.1/',
         'ocil_2_0': 'http://scap.nist.gov/schema/ocil/2.0',
+        'ocil_2': 'http://scap.nist.gov/schema/ocil/2',
         'oval_common_5': 'http://oval.mitre.org/XMLSchema/oval-common-5',
         'oval_defs_5': 'http://oval.mitre.org/XMLSchema/oval-definitions-5',
         'oval_defs_5_independent': 'http://oval.mitre.org/XMLSchema/oval-definitions-5#independent',
@@ -58,10 +59,10 @@ class Engine(object):
             from scap.model.xccdf_1_2.check import Check
             for rule_id, rule in self.content.select_rules(args).items():
                 logger.debug('Testing rule: ' + rule_id)
-                #try:
-                result = rule.get_result()
-                #except:
-                #    result = Check.ERROR
+                try:
+                    result = rule.get_result()
+                except:
+                   result = Check.Result.ERROR
                 logger.info('Result: ' + result)
 
             host.disconnect()
