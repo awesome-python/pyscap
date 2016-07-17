@@ -18,19 +18,39 @@
 from scap.model.content import Content
 import logging
 from scap.engine.engine import Engine
-from scap.model.xccdf_1_2.benchmark import Benchmark
 
 logger = logging.getLogger(__name__)
 class DataStream(Content):
-    def __init__(self, parent, root_el, el):
-        self.parent = parent
+    def __init__(self, parent, el):
+        super(self.__class__, self).__init__(parent, el)
+
+        self.id = el.attrib['id']
+
+        # TODO dictionaries
 
         self.checklists = {}
         xpath = "./scap_1_2:checklists"
         xpath += "/scap_1_2:component-ref"
         for c in el.findall(xpath, Engine.namespaces):
-            checklist_id = c.attrib['{' + Engine.namespaces['xlink'] + '}href'][1:]
-            self.checklists[checklist_id] = Benchmark(self, root_el, root_el.find("./scap_1_2:component[@id='" + checklist_id + "']", Engine.namespaces))
+            href = c.attrib['{' + Engine.namespaces['xlink'] + '}href'][1:]
+            #checklist_el = self.parent.resolve_reference(href)
+            checklist = self.parent.resolve_reference(href)
+            self.checklists[checklist.id] = checklist
+
+            # ref_catalogs = el.findall('./xml_cat:catalog', Engine.namespaces)
+            # if len(ref_catalogs) > 0:
+            #     self.checklists[c.attrib['id']].set_ref_catalog()
+
+        #from scap.model.xccdf_1_2.benchmark import Benchmark
+        self.checks = {}
+        xpath = "./scap_1_2:checks"
+        xpath += "/scap_1_2:component-ref"
+        for c in el.findall(xpath, Engine.namespaces):
+            href = c.attrib['{' + Engine.namespaces['xlink'] + '}href'][1:]
+            checks_el = self.parent.resolve_reference(href)
+            #self.checks[c.attrib['id']] = Benchmark(self, checks_el)
+
+        # TODO: extended-components
 
     def select_rules(self, args):
         if args.checklist:
@@ -39,10 +59,13 @@ class DataStream(Content):
                 logger.critical('Specified --checklist, ' + checklist_id + ', not found in content. Available checklists: ' + str(self.checklists.keys()))
                 sys.exit()
             else:
+                logger.info('Selecting checklist ' + checklist_id)
                 return self.checklists[checklist_id].select_rules(args)
         else:
             if len(self.checklists) == 1:
-                return self.checklists.values()[0].select_rules(args)
+                checklist = self.checklists.values()[0]
+                logger.info('Selecting checklist ' + checklist.id)
+                return checklist.select_rules(args)
             else:
                 logger.critical('No --checklist specified and unable to implicitly choose one. Available checklists: ' + str(self.checklists.keys()))
                 sys.exit()

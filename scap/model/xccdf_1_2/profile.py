@@ -21,8 +21,10 @@ from scap.engine.engine import Engine
 
 logger = logging.getLogger(__name__)
 class Profile(Content):
-    def __init__(self, parent, root_el, el):
-        self.parent = parent
+    def __init__(self, parent, el):
+        super(self.__class__, self).__init__(parent, el)
+
+        self.id = el.attrib['id']
 
         if 'extends' in el.attrib:
             logger.critical('Profiles with @extends are not supported')

@@ -24,25 +24,27 @@ from scap.model.xccdf_1_2.value import Value
 
 logger = logging.getLogger(__name__)
 class Benchmark(Content):
-    def __init__(self, parent, root_el, el):
-        self.parent = parent
+    def __init__(self, parent, el):
+        super(self.__class__, self).__init__(parent, el)
+
+        self.id = el.attrib['id']
 
         self.rules = {}
         xpath = ".//xccdf_1_2:Rule"
         for r in el.findall(xpath, Engine.namespaces):
-            self.rules[r.attrib['id']] = Rule(self, root_el, r)
+            self.rules[r.attrib['id']] = Rule(self, r)
 
         self.values = {}
         xpath = ".//xccdf_1_2:Value"
         for v in el.findall(xpath, Engine.namespaces):
-            self.values[v.attrib['id']] = Value(self, root_el, v)
+            self.values[v.attrib['id']] = Value(self, v)
 
         # load profiles last so they can find .rules and .values
         self.profiles = {}
-        xpath = "./xccdf_1_2:Benchmark"
-        xpath += "/xccdf_1_2:Profile"
+        xpath = "./xccdf_1_2:Profile"
         for p in el.findall(xpath, Engine.namespaces):
-            self.profiles[p.attrib['id']] = Profile(self, root_el, p)
+            logger.debug('found profile ' + p.attrib['id'])
+            self.profiles[p.attrib['id']] = Profile(self, p)
 
     def select_rules(self, args):
         if args.profile:
@@ -51,10 +53,13 @@ class Benchmark(Content):
                 logger.critical('Specified --profile, ' + profile_id + ', not found in content. Available profiles: ' + str(self.profiles.keys()))
                 sys.exit()
             else:
+                logger.info('Selecting profile ' + profile_id)
                 return self.profiles[profile_id].select_rules()
         else:
             if len(self.profiles) == 1:
-                return self.profiles.values()[0].select_rules()
+                profile = self.profiles.values()[0]
+                logger.info('Selecting profile ' + profile.id)
+                return profile.select_rules()
             else:
                 logger.critical('No --profile specified and unable to implicitly choose one. Available profiles: ' + str(self.profiles.keys()))
                 sys.exit()

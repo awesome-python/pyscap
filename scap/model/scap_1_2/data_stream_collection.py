@@ -23,11 +23,34 @@ from scap.model.scap_1_2.data_stream import DataStream
 logger = logging.getLogger(__name__)
 class DataStreamCollection(Content):
     def __init__(self, root_el):
+        super(self.__class__, self).__init__(None, root_el)
         # find the specified data stream or the only data stream if none specified
         self.data_streams = {}
 
         for ds_el in root_el.findall("./scap_1_2:data-stream", Engine.namespaces):
-            self.data_streams[ds_el.attrib['id']] = DataStream(self, root_el, ds_el)
+            self.data_streams[ds_el.attrib['id']] = DataStream(self, ds_el)
+
+    def resolve_reference(self, ref):
+        comp_el = self.element.find("./scap_1_2:component[@id='" + ref + "']", Engine.namespaces)
+        if len(comp_el) == 0:
+            logger.critical('unresolved ref: ' + ref)
+            import sys
+            sys.exit()
+
+        el = list(comp_el)[0]
+        if el.tag == '{http://checklists.nist.gov/xccdf/1.2}Benchmark':
+            from scap.model.xccdf_1_2.benchmark import Benchmark
+            return Benchmark(self, el)
+        elif el.tag == '{http://scap.nist.gov/schema/ocil/2.0}ocil':
+            from scap.model.ocil_2_0.ocil import OCIL
+            return OCIL(self, el)
+        elif el.tag == '{http://oval.mitre.org/XMLSchema/oval-definitions-5}oval_definitions':
+            from scap.model.oval_defs_5.oval_definitions import OVALDefinitions
+            return OVALDefinitions(self, el)
+        else:
+            logger.critical('unknown component: ' + el.tag + ' for ref: ' + ref)
+            import sys
+            sys.exit()
 
     def select_rules(self, args):
         if args.data_stream:
@@ -36,10 +59,13 @@ class DataStreamCollection(Content):
                 logger.critical('Specified --data_stream, ' + data_stream + ', not found in content. Available data streams: ' + str(self.data_streams.keys()))
                 sys.exit()
             else:
+                logger.info('Selecting data stream ' + data_stream)
                 return self.data_streams[data_stream].select_rules(args)
         else:
             if len(self.data_streams) == 1:
-                return self.data_streams.values()[0].select_rules(args)
+                ds = self.data_streams.values()[0]
+                logger.info('Selecting data stream ' + ds.id)
+                return ds.select_rules(args)
             else:
                 logger.critical('No --data_stream specified and unable to implicitly choose one. Available data-streams: ' + str(self.data_streams.keys()))
                 sys.exit()

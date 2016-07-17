@@ -52,10 +52,12 @@ class Engine(object):
     def collect(self, args):
         for host in self.hosts:
             host.connect()
+
             host.collect_facts()
 
-            #for rule_id in self.rules:
-                #host.test_rule(self.rules[rule_id], self.values, self.content)
+            for rule_id, rule in self.content.select_rules(args).items():
+                logger.debug('Testing rule: ' + rule_id)
+
             host.disconnect()
 
     def report(self):

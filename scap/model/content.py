@@ -31,6 +31,15 @@ class Content(object):
             logger.critical('Unsupported content with root namespace: ' + str(content.get_root_namespace()))
             sys.exit()
 
+    def __init__(self, parent, el):
+        self.parent = parent
+        self.element = el
+
+    def resolve_reference(self, ref):
+        if not self.parent:
+            raise RuntimeError("Got to null parent without resolving reference")
+        return self.parent.resolve_reference(ref)
+
     def select_rules(self, args):
         import inspect
         raise NotImplementedError(inspect.stack()[0][3] + '() has not been implemented in subclass: ' + self.__class__.__name__)

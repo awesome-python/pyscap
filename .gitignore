@@ -92,3 +92,4 @@ bin/
 include/
 local/
 pip-selfcheck.json
+.~lock*
