@@ -31,24 +31,35 @@ class DataStreamCollection(Content):
             self.data_streams[ds_el.attrib['id']] = DataStream(self, ds_el)
 
     def resolve_reference(self, ref):
-        comp_el = self.element.find("./scap_1_2:component[@id='" + ref + "']", Engine.namespaces)
-        if len(comp_el) == 0:
-            logger.critical('unresolved ref: ' + ref)
+        if ref in self.ref_mapping:
+            logger.debug('Mapping reference ' + ref + ' to ' + self.ref_mapping[ref])
             import sys
             sys.exit()
 
-        el = list(comp_el)[0]
-        if el.tag == '{http://checklists.nist.gov/xccdf/1.2}Benchmark':
-            from scap.model.xccdf_1_2.benchmark import Benchmark
-            return Benchmark(self, el)
-        elif el.tag == '{http://scap.nist.gov/schema/ocil/2.0}ocil':
-            from scap.model.ocil_2_0.ocil import OCIL
-            return OCIL(self, el)
-        elif el.tag == '{http://oval.mitre.org/XMLSchema/oval-definitions-5}oval_definitions':
-            from scap.model.oval_defs_5.oval_definitions import OVALDefinitions
-            return OVALDefinitions(self, el)
+        if ref[0] == '#':
+            ref = ref[1:]
+            comp_el = self.element.find("./scap_1_2:component[@id='" + ref + "']", Engine.namespaces)
+            if not comp_el:
+                logger.critical('unresolved ref: ' + ref)
+                import sys
+                sys.exit()
+
+            el = list(comp_el)[0]
+            if el.tag == '{http://checklists.nist.gov/xccdf/1.2}Benchmark':
+                from scap.model.xccdf_1_2.benchmark import Benchmark
+                return Benchmark(self, el)
+            elif el.tag == '{http://scap.nist.gov/schema/ocil/2.0}ocil':
+                from scap.model.ocil_2_0.ocil import OCIL
+                return OCIL(self, el)
+            elif el.tag == '{http://oval.mitre.org/XMLSchema/oval-definitions-5}oval_definitions':
+                from scap.model.oval_defs_5.oval_definitions import OVALDefinitions
+                return OVALDefinitions(self, el)
+            else:
+                logger.critical('unknown component: ' + el.tag + ' for ref: ' + ref)
+                import sys
+                sys.exit()
         else:
-            logger.critical('unknown component: ' + el.tag + ' for ref: ' + ref)
+            logger.critical('only local references are supported: ' + ref)
             import sys
             sys.exit()
 

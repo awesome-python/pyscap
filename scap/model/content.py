@@ -34,11 +34,15 @@ class Content(object):
     def __init__(self, parent, el):
         self.parent = parent
         self.element = el
+        self.ref_mapping = {}
 
     def resolve_reference(self, ref):
         if not self.parent:
             raise RuntimeError("Got to null parent without resolving reference")
         return self.parent.resolve_reference(ref)
+
+    def set_ref_mapping(self, mapping):
+        self.ref_mapping.update(mapping)
 
     def select_rules(self, args):
         import inspect

@@ -32,21 +32,23 @@ class DataStream(Content):
         xpath = "./scap_1_2:checklists"
         xpath += "/scap_1_2:component-ref"
         for c in el.findall(xpath, Engine.namespaces):
-            href = c.attrib['{' + Engine.namespaces['xlink'] + '}href'][1:]
+            href = c.attrib['{' + Engine.namespaces['xlink'] + '}href']
             #checklist_el = self.parent.resolve_reference(href)
             checklist = self.parent.resolve_reference(href)
             self.checklists[checklist.id] = checklist
 
-            # ref_catalogs = el.findall('./xml_cat:catalog', Engine.namespaces)
-            # if len(ref_catalogs) > 0:
-            #     self.checklists[c.attrib['id']].set_ref_catalog()
+            ref_catalogs = el.findall('./xml_cat:catalog', Engine.namespaces)
+            if len(ref_catalogs) > 0:
+                from scap.model.xml_cat.catalog import Catalog
+                cat = Catalog(self, ref_catalogs[0])
+                self.checklists[checklist.id].set_ref_mapping(cat.to_dict())
 
         #from scap.model.xccdf_1_2.benchmark import Benchmark
         self.checks = {}
         xpath = "./scap_1_2:checks"
         xpath += "/scap_1_2:component-ref"
         for c in el.findall(xpath, Engine.namespaces):
-            href = c.attrib['{' + Engine.namespaces['xlink'] + '}href'][1:]
+            href = c.attrib['{' + Engine.namespaces['xlink'] + '}href']
             checks_el = self.parent.resolve_reference(href)
             #self.checks[c.attrib['id']] = Benchmark(self, checks_el)
 
