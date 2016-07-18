@@ -22,8 +22,8 @@ from scap.engine.engine import Engine
 
 logger = logging.getLogger(__name__)
 class ArithmeticFunction(Function):
-    def __init__(self, parent, el):
-        super(self.__class__, self).__init__(parent, el)
+    def from_xml(self, parent, el):
+        super(self.__class__, self).from_xml(parent, el)
 
         if 'arithmetic_operation' not in el.attrib:
             logger.critical('ArithmeticFunction does not define arithmetic_operation')

@@ -21,8 +21,8 @@ from scap.engine.engine import Engine
 
 logger = logging.getLogger(__name__)
 class Rule(Content):
-    def __init__(self, parent, el):
-        super(self.__class__, self).__init__(parent, el)
+    def from_xml(self, parent, el):
+        super(self.__class__, self).from_xml(parent, el)
 
         self.id = el.attrib['id']
         if el.attrib['selected'] == 'true' or el.attrib['selected'] == '1':
@@ -34,12 +34,14 @@ class Rule(Content):
         comp_el = el.find("./xccdf_1_2:complex-check", Engine.namespaces)
         if comp_el:
             from scap.model.xccdf_1_2.check import ComplexCheck
-            self.check = ComplexCheck(self, el)
+            self.check = ComplexCheck()
+            self.check.from_xml(self, el)
         else:
             self.checks = {}
             from scap.model.xccdf_1_2.check import Check
             for el in el.findall("./xccdf_1_2:check", Engine.namespaces):
-                check = Check(self, el)
+                check = Check()
+                check.from_xml(self, el)
                 if 'selector' in el.attrib:
                     self.checks[el.attrib['selector']] = check
                     if self.check is None:

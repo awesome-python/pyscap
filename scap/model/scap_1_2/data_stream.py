@@ -21,8 +21,8 @@ from scap.engine.engine import Engine
 
 logger = logging.getLogger(__name__)
 class DataStream(Content):
-    def __init__(self, parent, el):
-        super(self.__class__, self).__init__(parent, el)
+    def from_xml(self, parent, el):
+        super(self.__class__, self).from_xml(parent, el)
 
         self.id = el.attrib['id']
 
@@ -34,19 +34,23 @@ class DataStream(Content):
         for comp in el.findall(xpath, Engine.namespaces):
             ref_mapping = None
             href = comp.attrib['{' + Engine.namespaces['xlink'] + '}href']
-            for cat in comp:
-                if cat.tag == '{' + Engine.namespaces['xml_cat'] + '}' + 'catalog':
+            for cat_el in comp:
+                if cat_el.tag == '{' + Engine.namespaces['xml_cat'] + '}' + 'catalog':
                     logger.debug('Loading catalog for ' + href)
                     from scap.model.xml_cat.catalog import Catalog
-                    ref_mapping = Catalog(self, cat).to_dict()
+                    cat = Catalog()
+                    cat.from_xml(self, cat_el)
+                    ref_mapping = cat.to_dict()
 
             ref_el = self.parent.resolve_reference(href)
             if ref_el.tag == '{http://checklists.nist.gov/xccdf/1.2}Benchmark':
                 from scap.model.xccdf_1_2.benchmark import Benchmark
-                checklist = Benchmark(self, ref_el, ref_mapping=ref_mapping)
+                checklist = Benchmark()
+                checklist.from_xml(self, ref_el, ref_mapping=ref_mapping)
             elif ref_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}ocil':
                 from scap.model.ocil_2_0.ocil import OCIL
-                checklist = OCIL(self, ref_el, ref_mapping=ref_mapping)
+                checklist = OCIL()
+                checklist.from_xml(self, ref_el, ref_mapping=ref_mapping)
             else:
                 logger.critical('unknown component: ' + ref_el.tag + ' for ref: ' + href)
                 import sys

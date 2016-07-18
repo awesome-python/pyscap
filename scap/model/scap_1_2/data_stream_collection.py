@@ -21,8 +21,8 @@ from scap.engine.engine import Engine
 
 logger = logging.getLogger(__name__)
 class DataStreamCollection(Content):
-    def __init__(self, root_el):
-        super(self.__class__, self).__init__(None, root_el)
+    def from_xml(self, root_el):
+        super(self.__class__, self).from_xml(None, root_el)
 
         self.components = {}
 
@@ -30,7 +30,9 @@ class DataStreamCollection(Content):
         from scap.model.scap_1_2.data_stream import DataStream
         self.data_streams = {}
         for ds_el in root_el.findall("./scap_1_2:data-stream", Engine.namespaces):
-            self.data_streams[ds_el.attrib['id']] = DataStream(self, ds_el)
+            ds = DataStream()
+            ds.from_xml(self, ds_el)
+            self.data_streams[ds_el.attrib['id']] = ds
 
         # TODO data stream contains supported dictionaries, checklists, and checks
 

@@ -69,4 +69,6 @@ class Component(Content):
             logger.critical('Unknown component tag: ' + comp_el.tag)
             import sys
             sys.exit()
-        return Component.comp_map[tag](parent, comp_el)
+        comp = Component.comp_map[tag]()
+        comp.from_xml(parent, comp_el)
+        return comp

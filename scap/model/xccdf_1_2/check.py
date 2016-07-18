@@ -46,8 +46,8 @@ class Check(Content):
         FIXED = 'fixed' # [X] The <xccdf:Rule> had failed, but was then fixed (possibly by a tool that can automatically
         # apply remediation, or possibly by the human auditor).
 
-    def __init__(self, parent, el):
-        super(self.__class__, self).__init__(parent, el)
+    def from_xml(self, parent, el):
+        super(self.__class__, self).from_xml(parent, el)
 
         if 'id' in el.attrib:
             self.id = el.attrib['id']
@@ -85,11 +85,13 @@ class Check(Content):
                     raise RuntimeError('Check system does not match loaded reference')
                 if el.attrib['system'] == Engine.namespaces['oval_defs_5']:
                     from scap.model.oval_defs_5.oval_definitions import OVALDefinitions
-                    self.check_content = OVALDefinitions(self, content_el)
+                    self.check_content = OVALDefinitions()
+                    self.check_content.from_xml(self, content_el)
                     # TODO need to specify def name
                 elif el.attrib['system'] == Engine.namespaces['ocil_2_0'] or el.attrib['system'] == Engine.namespaces['ocil_2']:
                     from scap.model.ocil_2_0.ocil import OCIL
-                    self.check_content = OCIL(self, content_el)
+                    self.check_content = OCIL()
+                    self.check_content.from_xml(self, content_el)
                     # TODO need to specify using name
             else:
                 raise NotImplementedError(tag + ' elements are not implemented for checks')

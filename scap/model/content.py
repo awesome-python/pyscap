@@ -25,12 +25,14 @@ class Content(object):
         root = content.getroot()
         if root.tag.startswith('{' + Engine.namespaces['scap_1_2']):
             from scap.model.scap_1_2.data_stream_collection import DataStreamCollection
-            return DataStreamCollection(root)
+            dsc = DataStreamCollection()
+            dsc.from_xml(root)
+            return dsc
         else:
             logger.critical('Unsupported content with root namespace: ' + str(content.get_root_namespace()))
             sys.exit()
 
-    def __init__(self, parent, el, ref_mapping=None):
+    def from_xml(self, parent, el, ref_mapping=None):
         self.parent = parent
         self.element = el
         if ref_mapping is None:

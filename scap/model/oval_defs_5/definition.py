@@ -21,8 +21,8 @@ from scap.engine.engine import Engine
 
 logger = logging.getLogger(__name__)
 class Definition(Content):
-    def __init__(self, parent, el):
-        super(self.__class__, self).__init__(parent, el)
+    def from_xml(self, parent, el):
+        super(self.__class__, self).from_xml(parent, el)
 
         self.id = el.attrib['id']
 
@@ -30,7 +30,9 @@ class Definition(Content):
         for child in el:
             if child.tag.endswith('criteria'):
                 from scap.model.oval_defs_5.criteria import Criteria
-                self.criteria = Criteria(self, child)
+                c = Criteria()
+                c.from_xml(self, child)
+                self.criteria = c
         if self.criteria is None:
             logger.critical('No criteria found for definition ' + self.id)
             import sys
