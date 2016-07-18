@@ -23,3 +23,17 @@ logger = logging.getLogger(__name__)
 class RegexCaptureFunction(Function):
     def __init__(self, parent, el):
         super(self.__class__, self).__init__(parent, el)
+
+        if 'pattern' not in el.attrib:
+            logger.critical('RegexCaptureFunction without pattern attribute')
+            import sys
+            sys.exit()
+        self.pattern = el.attrib['pattern']
+
+        self.values = []
+        for comp_el in el:
+            self.values.append(Component.load(self, comp_el))
+        if len(self.values) != 1:
+            logger.critical('RegexCaptureFunction with != len(values)')
+            import sys
+            sys.exit()

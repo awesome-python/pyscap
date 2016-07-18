@@ -34,3 +34,7 @@ class ArithmeticFunction(Function):
         self.values = []
         for comp_el in el:
             self.values.append(Component.load(self, comp_el))
+        if len(self.values) < 2:
+            logger.critical('ArithmeticFunction with len(values) < 2')
+            import sys
+            sys.exit()

@@ -23,3 +23,17 @@ logger = logging.getLogger(__name__)
 class EndFunction(Function):
     def __init__(self, parent, el):
         super(self.__class__, self).__init__(parent, el)
+
+        if 'character' not in el.attrib:
+            logger.critical('EndFunction does not define character')
+            import sys
+            sys.exit()
+        self.character = el.attrib['character']
+
+        self.values = []
+        for comp_el in el:
+            self.values.append(Component.load(self, comp_el))
+        if len(self.values) != 1:
+            logger.critical('EndFunction with != len(values)')
+            import sys
+            sys.exit()
