@@ -16,6 +16,7 @@
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
 from scap.model.oval_defs_5.component.function.function import Function
+from scap.model.oval_defs_5.component.component import Component
 import logging
 from scap.engine.engine import Engine
 
@@ -23,3 +24,13 @@ logger = logging.getLogger(__name__)
 class ArithmeticFunction(Function):
     def __init__(self, parent, el):
         super(self.__class__, self).__init__(parent, el)
+
+        if 'arithmetic_operation' not in el.attrib:
+            logger.critical('ArithmeticFunction does not define arithmetic_operation')
+            import sys
+            sys.exit()
+        self.arithmetic_operation = el.attrib['arithmetic_operation']
+
+        self.values = []
+        for comp_el in el:
+            self.values.append(Component.load(self, comp_el))

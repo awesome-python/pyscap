@@ -24,21 +24,6 @@ class LocalVariable(Variable):
     def __init__(self, parent, el):
         super(self.__class__, self).__init__(parent, el)
 
-        from scap.model.oval_defs_5.component.object_component import ObjectComponent
-        from scap.model.oval_defs_5.component.variable_component import VariableComponent
-        from scap.model.oval_defs_5.component.literal_component import LiteralComponent
-        from scap.model.oval_defs_5.component.functions_group import FunctionsGroup
         self.components = []
         for comp_el in el:
-            if comp_el.tag.endswith('object_component'):
-                self.components.append(ObjectComponent(self, comp_el))
-            elif comp_el.tag.endswith('variable_component'):
-                self.components.append(VariableComponent(self, comp_el))
-            elif comp_el.tag.endswith('literal_component'):
-                self.components.append(LiteralComponent(self, comp_el))
-            elif comp_el.tag.endswith('functions'):
-                self.components.append(FunctionsGroup(self, comp_el))
-            else:
-                logger.critical('Unknown component in variable ' + self.id)
-                import sys
-                sys.exit()
+            self.components.append(Component.load(self, comp_el))
