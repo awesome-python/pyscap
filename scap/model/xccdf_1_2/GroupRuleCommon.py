@@ -22,20 +22,20 @@ from scap.Engine import Engine
 logger = logging.getLogger(__name__)
 class GroupRuleCommon(Item):
     def parse_attrib(self, name, value):
-        attribs = ['selected', 'weight']
-        if name in attribs:
+        ignore = ['selected', 'weight']
+        if name in ignore:
             return True
         else:
             return super(GroupRuleCommon, self).parse_attrib(name, value)
 
     def parse_sub_el(self, sub_el):
-        el_tags = [
+        ignore = [
             '{http://checklists.nist.gov/xccdf/1.2}rationale',
             '{http://checklists.nist.gov/xccdf/1.2}platform',
             '{http://checklists.nist.gov/xccdf/1.2}requires',
             '{http://checklists.nist.gov/xccdf/1.2}conflicts',
         ]
-        if sub_el.tag in el_tags:
+        if sub_el.tag in ignore:
             return True
         else:
             return super(GroupRuleCommon, self).parse_sub_el(sub_el)

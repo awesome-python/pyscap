@@ -27,49 +27,41 @@ class Benchmark(Simple):
         self.rules = {}
         self.values = {}
         self.profiles = {}
+        self.test_results = {}
 
     def parse_attrib(self, name, value):
-        if name == 'Id':
-            pass
-        elif name == 'resolved':
-            pass
-        elif name == 'style':
-            pass
-        elif name == 'style-href':
-            pass
+        ignore = [
+            'Id',
+            'resolved',
+            'style',
+            'style-href',
+        ]
+        if name in ignore:
+            return True
         else:
             return super(Benchmark, self).parse_attrib(name, value)
-        return True
 
     def parse_sub_el(self, sub_el):
-        if sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}status':
-            pass
-        elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}dc-status':
-            pass
-        elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}title':
-            pass
-        elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}description':
-            pass
+        ignore = [
+            '{http://checklists.nist.gov/xccdf/1.2}status',
+            '{http://checklists.nist.gov/xccdf/1.2}dc-status',
+            '{http://checklists.nist.gov/xccdf/1.2}title',
+            '{http://checklists.nist.gov/xccdf/1.2}description',
+            '{http://checklists.nist.gov/xccdf/1.2}front-matter',
+            '{http://checklists.nist.gov/xccdf/1.2}rear-matter',
+            '{http://checklists.nist.gov/xccdf/1.2}reference',
+            '{http://checklists.nist.gov/xccdf/1.2}plain-text',
+            '{http://cpe.mitre.org/language/2.0}platform-specification',
+            '{http://checklists.nist.gov/xccdf/1.2}platform',
+            '{http://checklists.nist.gov/xccdf/1.2}version',
+            '{http://checklists.nist.gov/xccdf/1.2}metadata',
+            '{http://checklists.nist.gov/xccdf/1.2}model',
+            '{http://checklists.nist.gov/xccdf/1.2}signature',
+        ]
+        if sub_el.tag in ignore:
+            return True
         elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}notice':
-            logger.info('Notice: ' + sub_el.text)
-        elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}front-matter':
-            pass
-        elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}rear-matter':
-            pass
-        elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}reference':
-            pass
-        elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}plain-text':
-            pass
-        elif sub_el.tag == '{http://cpe.mitre.org/language/2.0}platform-specification':
-            pass
-        elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}platform':
-            pass
-        elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}version':
-            pass
-        elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}metadata':
-            pass
-        elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}model':
-            pass
+            logger.info('Notice: \n' + sub_el.text)
         elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}Profile':
             from scap.model.xccdf_1_2.Profile import Profile
             logger.debug('found profile ' + sub_el.attrib['id'])
@@ -86,15 +78,17 @@ class Benchmark(Simple):
             g = Group()
             g.from_xml(self, sub_el)
             self.rules.update(g.get_rules())
+            self.values.update(g.get_rules())
         elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}Rule':
             from scap.model.xccdf_1_2.Rule import Rule
             r = Rule()
             r.from_xml(self, sub_el)
             self.rules[sub_el.attrib['id']] = r
         elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}TestResult':
-            pass
-        elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}signature':
-            pass
+            from scap.model.xccdf_1_2.TestResult import TestResult
+            t = TestResult()
+            t.from_xml(self, sub_el)
+            self.test_results[sub_el.attrib['id']] = t
         else:
             return super(Benchmark, self).parse_sub_el(name, value)
         return True

@@ -50,3 +50,9 @@ class Simple(Model):
 
     def parse_sub_el(self, sub_el):
         return False
+
+    def parse_boolean(self, value):
+        if value == 'true' or value == '1':
+            return True
+        else:
+            return False

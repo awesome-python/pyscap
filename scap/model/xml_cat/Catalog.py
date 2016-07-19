@@ -22,7 +22,7 @@ from scap.Engine import Engine
 logger = logging.getLogger(__name__)
 class Catalog(Model):
     def from_xml(self, parent, el):
-        super(self.__class__, self).from_xml(parent, el)
+        super(Catalog, self).from_xml(parent, el)
 
         self.entries = {}
         for entry in el.findall('./xml_cat:uri', Engine.namespaces):

@@ -21,39 +21,61 @@ from scap.Engine import Engine
 
 logger = logging.getLogger(__name__)
 class Rule(GroupRuleCommon):
-    def from_xml(self, parent, el):
-        super(self.__class__, self).from_xml(parent, el)
+    def __init__(self):
+        super(Rule, self).__init__()
+        self.selected = False
+        self.selector = None
+        self.selected_check = None
+        self.checks = {}
 
-        self.id = el.attrib['id']
-        if el.attrib['selected'] == 'true' or el.attrib['selected'] == '1':
-            self.selected = True
+    def parse_attrib(self, name, value):
+        ignore = [
+            'role',
+            'severity',
+            'multiple',
+        ]
+        if name in ignore:
+            return True
         else:
-            self.selected = False
+            return super(Rule, self).parse_attrib(name, value)
+        return True
 
-        self.check = None
-        comp_el = el.find("./xccdf_1_2:complex-check", Engine.namespaces)
-        if comp_el:
+    def parse_sub_el(self, sub_el):
+        ignore = [
+            '{http://checklists.nist.gov/xccdf/1.2}ident',
+            '{http://checklists.nist.gov/xccdf/1.2}impact-metric',
+            '{http://checklists.nist.gov/xccdf/1.2}profile-note',
+            '{http://checklists.nist.gov/xccdf/1.2}fixtext',
+            '{http://checklists.nist.gov/xccdf/1.2}fix',
+            '{http://checklists.nist.gov/xccdf/1.2}signature',
+        ]
+        if sub_el.tag in ignore:
+            return True
+        elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}complex-check':
             from scap.model.xccdf_1_2.ComplexCheck import ComplexCheck
-            self.check = ComplexCheck()
-            self.check.from_xml(self, el)
-        else:
-            self.checks = {}
+            self.selected_check = ComplexCheck()
+            self.selected_check.from_xml(self, sub_el)
+        elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}check':
             from scap.model.xccdf_1_2.Check import Check
-            for el in el.findall("./xccdf_1_2:check", Engine.namespaces):
-                check = Check()
-                check.from_xml(self, el)
-                if 'selector' in el.attrib:
-                    self.checks[el.attrib['selector']] = check
-                    if self.check is None:
-                        self.check = check
-                else:
-                    self.check = check
-        if self.check is None:
+            check = Check()
+            check.from_xml(self, sub_el)
+            if 'selector' in sub_el.attrib:
+                self.checks[sub_el.attrib['selector']] = check
+                if self.selected_check is None:
+                    self.selected_check = check
+            else:
+                self.selected_check = check
+        else:
+            return super(Rule, self).parse_sub_el(sub_el)
+        return True
+
+    def from_xml(self, parent, el):
+        super(Rule, self).from_xml(parent, el)
+
+        if self.selected_check is None:
             logger.critical('Could not load check from rule ' + self.id)
             import sys
             sys.exit()
-
-        # TODO: multiple
 
     def select_check(self, selector):
         self.check = self.checks[selector]

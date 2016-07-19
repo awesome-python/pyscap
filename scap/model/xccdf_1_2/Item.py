@@ -22,14 +22,14 @@ from scap.Engine import Engine
 logger = logging.getLogger(__name__)
 class Item(Simple):
     def parse_attrib(self, name, value):
-        attribs = ['abstract', 'cluster-id', 'extends', 'hidden', 'prohibitChanges', 'Id' ]
-        if name in attribs:
+        ignore = ['abstract', 'cluster-id', 'extends', 'hidden', 'prohibitChanges', 'Id' ]
+        if name in ignore:
             return True
         else:
             return super(Item, self).parse_attrib(name, value)
 
     def parse_sub_el(self, sub_el):
-        el_tags = [
+        ignore = [
             '{http://checklists.nist.gov/xccdf/1.2}status',
             '{http://checklists.nist.gov/xccdf/1.2}dc-status',
             '{http://checklists.nist.gov/xccdf/1.2}version',
@@ -40,7 +40,7 @@ class Item(Simple):
             '{http://checklists.nist.gov/xccdf/1.2}reference',
             '{http://checklists.nist.gov/xccdf/1.2}metadata',
         ]
-        if sub_el.tag in el_tags:
+        if sub_el.tag in ignore:
             return True
         else:
             return super(Item, self).parse_sub_el(sub_el)

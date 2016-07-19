@@ -28,10 +28,10 @@ class Group(GroupRuleCommon):
         self.groups = {}
 
     def parse_sub_el(self, sub_el):
-        el_tags = [
+        ignore = [
             '{http://checklists.nist.gov/xccdf/1.2}signature',
         ]
-        if sub_el.tag in el_tags:
+        if sub_el.tag in ignore:
             return True
         elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}Value':
             from scap.model.xccdf_1_2.Value import Value
@@ -51,8 +51,14 @@ class Group(GroupRuleCommon):
             return super(Group, self).parse_sub_el(sub_el)
         return True
 
+    def get_values(self):
+        values = self.values.copy()
+        for g in self.groups.values():
+            values.update(g.get_values())
+        return values
+
     def get_rules(self):
         rules = self.rules.copy()
         for g in self.groups.values():
-            rules.update(g.get_rules)
+            rules.update(g.get_rules())
         return rules
