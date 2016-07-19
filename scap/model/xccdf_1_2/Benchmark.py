@@ -52,21 +52,3 @@ class Benchmark(Model):
             p = Profile()
             p.from_xml(self, p_el)
             self.profiles[p_el.attrib['id']] = p
-
-    def select_rules(self, args):
-        if args.profile:
-            profile_id = args.profile[0]
-            if profile_id not in self.profiles:
-                logger.critical('Specified --profile, ' + profile_id + ', not found in content. Available profiles: ' + str(self.profiles.keys()))
-                sys.exit()
-            else:
-                logger.info('Selecting profile ' + profile_id)
-                return self.profiles[profile_id].select_rules()
-        else:
-            if len(self.profiles) == 1:
-                profile = self.profiles.values()[0]
-                logger.info('Selecting profile ' + profile.id)
-                return profile.select_rules()
-            else:
-                logger.critical('No --profile specified and unable to implicitly choose one. Available profiles: ' + str(self.profiles.keys()))
-                sys.exit()
