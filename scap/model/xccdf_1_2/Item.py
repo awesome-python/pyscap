@@ -27,6 +27,7 @@ class Item(Simple):
             return True
         else:
             return super(Item, self).parse_attrib(name, value)
+        return True
 
     def parse_sub_el(self, sub_el):
         ignore = [
@@ -44,3 +45,4 @@ class Item(Simple):
             return True
         else:
             return super(Item, self).parse_sub_el(sub_el)
+        return True

@@ -27,6 +27,7 @@ class GroupRuleCommon(Item):
             return True
         else:
             return super(GroupRuleCommon, self).parse_attrib(name, value)
+        return True
 
     def parse_sub_el(self, sub_el):
         ignore = [
@@ -39,3 +40,4 @@ class GroupRuleCommon(Item):
             return True
         else:
             return super(GroupRuleCommon, self).parse_sub_el(sub_el)
+        return True

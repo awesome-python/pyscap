@@ -78,4 +78,4 @@ class Rule(GroupRuleCommon):
             sys.exit()
 
     def select_check(self, selector):
-        self.check = self.checks[selector]
+        self.selected_check = self.checks[selector]

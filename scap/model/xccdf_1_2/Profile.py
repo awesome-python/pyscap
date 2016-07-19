@@ -15,50 +15,86 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.Model import Model
+from scap.model.Simple import Simple
 import logging
 from scap.Engine import Engine
 
 logger = logging.getLogger(__name__)
-class Profile(Model):
-    def from_xml(self, parent, el):
-        super(Profile, self).from_xml(parent, el)
-
-        self.id = el.attrib['id']
-
-        if 'extends' in el.attrib:
-            logger.critical('Profiles with @extends are not supported')
-            sys.exit()
-
+class Profile(Simple):
+    def __init__(self):
+        super(Profile, self).__init__()
         self.rules = {}
-        for r in parent.rules.values():
-            xpath = "./xccdf_1_2:select[@idref='" + r.id + "']"
-            s = el.find(xpath, Engine.namespaces)
-            if s is not None:
-                if s.attrib['selected'] == 'true':
-                    logger.info('Rule selected by profile: ' + r.id)
-                    self.rules[r.id] = r
-            else:
-                if r.selected:
-                    logger.info('Rule selected by default: ' + r.id)
-                    self.rules[r.id] = r
-
-            xpath = "./xccdf_1_2:refine-rule[@idref='" + r.id + "']"
-            s = el.find(xpath, Engine.namespaces)
-            if s is not None:
-                logger.info('Selecting check ' + s.attrib['selector'] + ' for rule ' + r.id)
-                r.select_check(s.attrib['selector'])
-
         self.values = {}
+
+    def parse_attrib(self, name, value):
+        ignore = [
+        ]
+        if name in ignore:
+            return True
+        elif name == 'extends':
+            logger.critical('Profiles with @extends are not supported')
+            import sys
+            sys.exit()
+        else:
+            return super(Profile, self).parse_attrib(name, value)
+        return True
+
+    def parse_sub_el(self, sub_el):
+        ignore = [
+            '{http://checklists.nist.gov/xccdf/1.2}status',
+            '{http://checklists.nist.gov/xccdf/1.2}dc-status',
+            '{http://checklists.nist.gov/xccdf/1.2}version',
+            '{http://checklists.nist.gov/xccdf/1.2}title',
+            '{http://checklists.nist.gov/xccdf/1.2}description',
+            '{http://checklists.nist.gov/xccdf/1.2}reference',
+            '{http://checklists.nist.gov/xccdf/1.2}platform',
+            '{http://checklists.nist.gov/xccdf/1.2}metadata',
+            '{http://checklists.nist.gov/xccdf/1.2}signature',
+        ]
+        if sub_el.tag in ignore:
+            return True
+        elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}select':
+            if sub_el.attrib['idref'] not in self.parent.rules:
+                logger.critical('Rule idref in Profile not found: ' + sub_el.attrib['idref'])
+                import sys
+                sys.exit()
+            r = self.parent.rules[sub_el.attrib['idref']]
+            if sub_el.attrib['selected'] == 'true':
+                logger.info('Rule selected by profile: ' + r.id)
+                self.rules[r.id] = r
+        elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}set-complex-value':
+            logger.critical('set-complex-value is not supported')
+            import sys
+            sys.exit()
+        elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}set-value':
+            logger.critical('set-value is not supported')
+            import sys
+            sys.exit()
+        elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}refine-value':
+            if sub_el.attrib['idref'] not in self.parent.values:
+                logger.critical('Value idref in Profile not found: ' + sub_el.attrib['idref'])
+                import sys
+                sys.exit()
+            v = self.parent.values[sub_el.attrib['idref']]
+            logger.info('Selecting value for ' + v.id + ' using selector ' + sub_el.attrib['selector'] + ' in profile ' + self.id)
+            self.values[v.id]['value'] = v.selectors[sub_el.attrib['selector']]
+        elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}refine-rule':
+            if sub_el.attrib['idref'] not in self.parent.rules:
+                logger.critical('Rule idref in Profile not found: ' + sub_el.attrib['idref'])
+                import sys
+                sys.exit()
+            r = self.parent.rules[sub_el.attrib['idref']]
+            logger.info('Selecting check ' + sub_el.attrib['selector'] + ' for rule ' + r.id)
+            r.select_check(sub_el.attrib['selector'])
+        else:
+            return super(Profile, self).parse_sub_el(sub_el)
+        return True
+
+    def from_xml(self, parent, el):
+        # copy in the rules that are selected by default
+        for rule_id in parent.selected_rules:
+            self.rules[rule_id] = parent.rules[rule_id]
         for v in parent.values.values():
-            logger.debug('Collecting value ' + v.id)
-            self.values[v.id] = { 'model': v }
-            self.values[v.id]['value'] = v.default
+            self.values[v.id] = { 'model': v, 'value': v.default }
 
-            xpath = "./xccdf_1_2:refine-value[@idref='" + v.id + "']"
-            rv = el.find(xpath, Engine.namespaces)
-            if rv is not None:
-                logger.info('Modifying value ' + v.id + ' by profile ' + el.attrib['id'] + ' using selector ' + rv.attrib['selector'])
-                self.values[v.id]['value'] = v.selectors[rv.attrib['selector']]
-
-            logger.info('Using ' + v.type + ' ' + v.operator + ' ' + str(self.values[v.id]['value']) + ' for value ' + v.id)
+        super(Profile, self).from_xml(parent, el)
