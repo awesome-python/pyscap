@@ -94,7 +94,7 @@ class Check(Model):
                     self.check_content.from_xml(self, content_el)
                     # TODO need to specify using name
                 else:
-                    raise RuntimeError('Unknown content type: ' + el.attrib['system'])
+                    raise RuntimeError('Unknown check content type: ' + el.attrib['system'])
             else:
                 raise NotImplementedError(tag + ' elements are not implemented for checks')
         if self.check_content is None:

@@ -15,17 +15,10 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.collector.ResultCollector import ResultCollector
-from scap.Engine import Engine
+from scap.Model import Model
 import logging
+from scap.Engine import Engine
 
 logger = logging.getLogger(__name__)
-class RuleCollector(ResultCollector):
-    def __init__(self, host, content, args, values):
-        super(RuleCollector, self).__init__(host, content, args)
-
-        self.values = values
-        
-    def collect_results(self):
-        from scap.model.xccdf_1_2.Check import Check
-        self.host.results[self.content.id] = Check.Result.NOT_CHECKED
+class Tailoring(Model):
+    pass

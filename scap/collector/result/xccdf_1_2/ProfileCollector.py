@@ -24,4 +24,4 @@ class ProfileCollector(ResultCollector):
     def collect_results(self):
         for rule_id, rule in self.content.rules.items():
             from scap.collector.result.xccdf_1_2.RuleCollector import RuleCollector
-            self.host.add_result_collector(RuleCollector(self.host, rule, self.args))
+            self.host.add_result_collector(RuleCollector(self.host, rule, self.args, self.content.values))

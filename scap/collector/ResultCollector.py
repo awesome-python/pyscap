@@ -31,7 +31,6 @@ class ResultCollector(Collector):
         else:
             logger.critical('Collector not found for content: ' + content.__class__.__name__)
             sys.exit()
-        #self.content.select_rules(args)
 
     def __init__(self, host, content, args):
         super(ResultCollector, self).__init__(host)

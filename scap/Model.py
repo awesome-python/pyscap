@@ -53,6 +53,6 @@ class Model(object):
         logger.debug('Updating reference mapping with ' + str(mapping))
         self.ref_mapping.update(mapping)
 
-    def select_rules(self, args):
+    def to_xml(self):
         import inspect
         raise NotImplementedError(inspect.stack()[0][3] + '() has not been implemented in subclass: ' + self.__class__.__name__)
