@@ -16,7 +16,7 @@
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
 import unittest, logging
-from cpe import CPE
+from CPE import CPE
 
 class TestCPE(unittest.TestCase):
     def test_from_uri(self):

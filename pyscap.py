@@ -20,10 +20,10 @@
 import logging, argparse, sys, time, atexit
 from StringIO import StringIO
 import xml.etree.ElementTree as ET
-from scap.colorformatter import ColorFormatter
-from scap.engine.engine import Engine
-from scap.host.host import Host
-from scap.credential_store import CredentialStore
+from scap.ColorFormatter import ColorFormatter
+from scap.Engine import Engine
+from scap.Host import Host
+from scap.CredentialStore import CredentialStore
 
 # set up logging
 rootLogger = logging.getLogger()
