@@ -22,7 +22,7 @@ from scap.Engine import Engine
 logger = logging.getLogger(__name__)
 class TimeDifference(Function):
     def from_xml(self, parent, el):
-        super(self.__class__, self).from_xml(parent, el)
+        super(TimeDifference, self).from_xml(parent, el)
 
         if 'format_1' in el.attrib:
             self.format_1 = el.attrib['format_1']

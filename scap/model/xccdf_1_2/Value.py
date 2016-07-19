@@ -15,12 +15,12 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.Model import Model
+from scap.model.xccdf_1_2.Item import Item
 import logging
 from scap.Engine import Engine
 
 logger = logging.getLogger(__name__)
-class Value(Model):
+class Value(Item):
     def from_xml(self, parent, el):
         super(self.__class__, self).from_xml(parent, el)
 

@@ -22,7 +22,7 @@ from scap.Engine import Engine
 logger = logging.getLogger(__name__)
 class ExtendDefinition(Model):
     def from_xml(self, parent, el):
-        super(self.__class__, self).from_xml(parent, el)
+        super(ExtendDefinition, self).from_xml(parent, el)
 
         if 'negate' in el.attrib and (el.attrib['negate'] == 'true' or el.attrib['negate'] == '1'):
             self.negate = True

@@ -22,4 +22,4 @@ from scap.Engine import Engine
 logger = logging.getLogger(__name__)
 class OCIL(Model):
     def from_xml(self, parent, el):
-        super(self.__class__, self).from_xml(parent, el)
+        super(OCIL, self).from_xml(parent, el)

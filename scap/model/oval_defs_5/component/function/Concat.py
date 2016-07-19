@@ -22,7 +22,7 @@ from scap.Engine import Engine
 logger = logging.getLogger(__name__)
 class Concat(Function):
     def from_xml(self, parent, el):
-        super(self.__class__, self).from_xml(parent, el)
+        super(Concat, self).from_xml(parent, el)
 
         self.values = []
         for comp_el in el:

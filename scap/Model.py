@@ -32,6 +32,9 @@ class Model(object):
             logger.critical('Unsupported content with root namespace: ' + str(content.get_root_namespace()))
             sys.exit()
 
+    def __init__(self):
+        pass
+
     def from_xml(self, parent, el, ref_mapping=None):
         self.parent = parent
         self.element = el

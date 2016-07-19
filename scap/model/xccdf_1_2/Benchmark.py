@@ -15,40 +15,86 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.Model import Model
+from scap.model.Simple import Simple
 import logging
 from scap.Engine import Engine
 
 logger = logging.getLogger(__name__)
-class Benchmark(Model):
-    def from_xml(self, parent, el, ref_mapping=None):
-        super(self.__class__, self).from_xml(parent, el, ref_mapping=ref_mapping)
+class Benchmark(Simple):
+    def __init__(self):
+        super(Benchmark, self).__init__()
 
-        self.id = el.attrib['id']
-
-        from scap.model.xccdf_1_2.Rule import Rule
         self.rules = {}
-        # TODO: this needs to be more sophisticated to incorporate Groups
-        xpath = ".//xccdf_1_2:Rule"
-        for r_el in el.findall(xpath, Engine.namespaces):
-            r = Rule()
-            r.from_xml(self, r_el)
-            self.rules[r_el.attrib['id']] = r
-
-        from scap.model.xccdf_1_2.Value import Value
         self.values = {}
-        xpath = ".//xccdf_1_2:Value"
-        for v_el in el.findall(xpath, Engine.namespaces):
-            v = Value()
-            v.from_xml(self, v_el)
-            self.values[v_el.attrib['id']] = v
-
-        # load profiles last so they can find .rules and .values
-        from scap.model.xccdf_1_2.Profile import Profile
         self.profiles = {}
-        xpath = "./xccdf_1_2:Profile"
-        for p_el in el.findall(xpath, Engine.namespaces):
-            logger.debug('found profile ' + p_el.attrib['id'])
+
+    def parse_attrib(self, name, value):
+        if name == 'Id':
+            pass
+        elif name == 'resolved':
+            pass
+        elif name == 'style':
+            pass
+        elif name == 'style-href':
+            pass
+        else:
+            return super(Benchmark, self).parse_attrib(name, value)
+        return True
+
+    def parse_sub_el(self, sub_el):
+        if sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}status':
+            pass
+        elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}dc-status':
+            pass
+        elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}title':
+            pass
+        elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}description':
+            pass
+        elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}notice':
+            logger.info('Notice: ' + sub_el.text)
+        elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}front-matter':
+            pass
+        elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}rear-matter':
+            pass
+        elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}reference':
+            pass
+        elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}plain-text':
+            pass
+        elif sub_el.tag == '{http://cpe.mitre.org/language/2.0}platform-specification':
+            pass
+        elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}platform':
+            pass
+        elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}version':
+            pass
+        elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}metadata':
+            pass
+        elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}model':
+            pass
+        elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}Profile':
+            from scap.model.xccdf_1_2.Profile import Profile
+            logger.debug('found profile ' + sub_el.attrib['id'])
             p = Profile()
-            p.from_xml(self, p_el)
-            self.profiles[p_el.attrib['id']] = p
+            p.from_xml(self, sub_el)
+            self.profiles[sub_el.attrib['id']] = p
+        elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}Value':
+            from scap.model.xccdf_1_2.Value import Value
+            v = Value()
+            v.from_xml(self, sub_el)
+            self.values[sub_el.attrib['id']] = v
+        elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}Group':
+            from scap.model.xccdf_1_2.Group import Group
+            g = Group()
+            g.from_xml(self, sub_el)
+            self.rules.update(g.get_rules())
+        elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}Rule':
+            from scap.model.xccdf_1_2.Rule import Rule
+            r = Rule()
+            r.from_xml(self, sub_el)
+            self.rules[sub_el.attrib['id']] = r
+        elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}TestResult':
+            pass
+        elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}signature':
+            pass
+        else:
+            return super(Benchmark, self).parse_sub_el(name, value)
+        return True

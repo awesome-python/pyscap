@@ -22,7 +22,7 @@ from scap.Engine import Engine
 logger = logging.getLogger(__name__)
 class LocalVariable(Variable):
     def from_xml(self, parent, el):
-        super(self.__class__, self).from_xml(parent, el)
+        super(LocalVariable, self).from_xml(parent, el)
 
         self.components = []
         for comp_el in el:

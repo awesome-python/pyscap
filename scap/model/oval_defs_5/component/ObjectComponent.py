@@ -22,7 +22,7 @@ from scap.Engine import Engine
 logger = logging.getLogger(__name__)
 class ObjectComponent(Component):
     def from_xml(self, parent, el):
-        super(self.__class__, self).from_xml(parent, el)
+        super(ObjectComponent, self).from_xml(parent, el)
 
         if 'object_ref' not in el.attrib:
             logger.critical('object component missing object_ref attribute')

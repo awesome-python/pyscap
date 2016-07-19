@@ -22,7 +22,7 @@ from scap.Engine import Engine
 logger = logging.getLogger(__name__)
 class End(Function):
     def from_xml(self, parent, el):
-        super(self.__class__, self).from_xml(parent, el)
+        super(End, self).from_xml(parent, el)
 
         if 'character' not in el.attrib:
             logger.critical('EndFunction does not define character')

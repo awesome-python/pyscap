@@ -45,7 +45,7 @@ class SSHHost(Host):
                 raise RuntimeError('Key for ' + hostname + ' not accepted')
 
     def __init__(self, hostname, port):
-        super(self.__class__, self).__init__(hostname, port)
+        super(SSHHost, self).__init__(hostname, port)
 
         from scap.collector.fact.UNameCollector import UNameCollector
         self.fact_collectors.append(UNameCollector(self))

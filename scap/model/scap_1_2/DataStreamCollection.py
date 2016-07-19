@@ -22,7 +22,7 @@ from scap.Engine import Engine
 logger = logging.getLogger(__name__)
 class DataStreamCollection(Model):
     def from_xml(self, root_el):
-        super(self.__class__, self).from_xml(None, root_el)
+        super(DataStreamCollection, self).from_xml(None, root_el)
 
         self.components = {}
 

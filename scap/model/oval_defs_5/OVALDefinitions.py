@@ -22,7 +22,7 @@ from scap.Engine import Engine
 logger = logging.getLogger(__name__)
 class OVALDefinitions(Model):
     def from_xml(self, parent, el):
-        super(self.__class__, self).from_xml(parent, el)
+        super(OVALDefinitions, self).from_xml(parent, el)
 
         from scap.model.oval_defs_5.Definition import Definition
         self.definitions = {}

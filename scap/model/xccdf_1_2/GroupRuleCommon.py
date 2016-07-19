@@ -15,25 +15,27 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.model.oval_defs_5.component.function import Function
+from scap.model.xccdf_1_2.Item import Item
 import logging
 from scap.Engine import Engine
 
 logger = logging.getLogger(__name__)
-class Begin(Function):
-    def from_xml(self, parent, el):
-        super(Begin, self).from_xml(parent, el)
+class GroupRuleCommon(Item):
+    def parse_attrib(self, name, value):
+        attribs = ['selected', 'weight']
+        if name in attribs:
+            return True
+        else:
+            return super(GroupRuleCommon, self).parse_attrib(name, value)
 
-        if 'character' not in el.attrib:
-            logger.critical('BeginFunction does not define character')
-            import sys
-            sys.exit()
-        self.character = el.attrib['character']
-
-        self.values = []
-        for comp_el in el:
-            self.values.append(Component.load(self, comp_el))
-        if len(self.values) != 1:
-            logger.critical('BeginFunction with != len(values)')
-            import sys
-            sys.exit()
+    def parse_sub_el(self, sub_el):
+        el_tags = [
+            '{http://checklists.nist.gov/xccdf/1.2}rationale',
+            '{http://checklists.nist.gov/xccdf/1.2}platform',
+            '{http://checklists.nist.gov/xccdf/1.2}requires',
+            '{http://checklists.nist.gov/xccdf/1.2}conflicts',
+        ]
+        if sub_el.tag in el_tags:
+            return True
+        else:
+            return super(GroupRuleCommon, self).parse_sub_el(sub_el)

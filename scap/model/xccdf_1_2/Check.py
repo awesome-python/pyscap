@@ -47,7 +47,7 @@ class Check(Model):
         # apply remediation, or possibly by the human auditor).
 
     def from_xml(self, parent, el):
-        super(self.__class__, self).from_xml(parent, el)
+        super(Check, self).from_xml(parent, el)
 
         if 'id' in el.attrib:
             self.id = el.attrib['id']
