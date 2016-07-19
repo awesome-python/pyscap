@@ -62,6 +62,3 @@ class Profile(Model):
                 self.values[v.id]['value'] = v.selectors[rv.attrib['selector']]
 
             logger.info('Using ' + v.type + ' ' + v.operator + ' ' + str(self.values[v.id]['value']) + ' for value ' + v.id)
-
-    def select_rules(self):
-        return self.rules

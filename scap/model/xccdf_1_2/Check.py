@@ -101,6 +101,3 @@ class Check(Model):
             logger.critical('Check for rule ' + parent.id + ' could not be loaded')
             import sys
             sys.exit()
-
-    def test(self, host):
-        return Check.Result.NOT_CHECKED

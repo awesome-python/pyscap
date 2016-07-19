@@ -24,6 +24,3 @@ logger = logging.getLogger(__name__)
 class ComplexCheck(Model):
     def from_xml(self, parent, el):
         super(self.__class__, self).from_xml(parent, el)
-
-    def test(self, host):
-        return Check.Result.NOT_CHECKED

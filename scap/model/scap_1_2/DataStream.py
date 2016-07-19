@@ -67,21 +67,3 @@ class DataStream(Model):
             #self.checks[c.attrib['id']] = Benchmark(self, checks_el)
 
         # TODO: extended-components
-
-    def select_rules(self, args):
-        if args.checklist:
-            checklist_id = args.checklist[0]
-            if checklist_id not in self.checklists:
-                logger.critical('Specified --checklist, ' + checklist_id + ', not found in content. Available checklists: ' + str(self.checklists.keys()))
-                sys.exit()
-            else:
-                logger.info('Selecting checklist ' + checklist_id)
-                return self.checklists[checklist_id].select_rules(args)
-        else:
-            if len(self.checklists) == 1:
-                checklist = self.checklists.values()[0]
-                logger.info('Selecting checklist ' + checklist.id)
-                return checklist.select_rules(args)
-            else:
-                logger.critical('No --checklist specified and unable to implicitly choose one. Available checklists: ' + str(self.checklists.keys()))
-                sys.exit()
