@@ -32,11 +32,10 @@ class ResultCollector(Collector):
             logger.critical('Collector not found for content: ' + content.__class__.__name__)
             sys.exit()
 
-    def __init__(self, host, content, args):
+    def __init__(self, host, content):
         super(ResultCollector, self).__init__(host)
 
         self.content = content
-        self.args = args
 
     def collect_results(self):
         import inspect

@@ -23,9 +23,6 @@ logger = logging.getLogger(__name__)
 class Rule(GroupRuleCommon):
     def __init__(self):
         super(Rule, self).__init__()
-        self.selected = False
-        self.selector = None
-        self.selected_check = None
         self.checks = {}
 
     def parse_attrib(self, name, value):
@@ -53,29 +50,17 @@ class Rule(GroupRuleCommon):
             return True
         elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}complex-check':
             from scap.model.xccdf_1_2.ComplexCheck import ComplexCheck
-            self.selected_check = ComplexCheck()
-            self.selected_check.from_xml(self, sub_el)
+            check = ComplexCheck()
+            check.from_xml(self, sub_el)
+            self.checks[None] = check
         elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}check':
             from scap.model.xccdf_1_2.Check import Check
             check = Check()
             check.from_xml(self, sub_el)
             if 'selector' in sub_el.attrib:
                 self.checks[sub_el.attrib['selector']] = check
-                if self.selected_check is None:
-                    self.selected_check = check
             else:
-                self.selected_check = check
+                self.checks[None] = check
         else:
             return super(Rule, self).parse_sub_el(sub_el)
         return True
-
-    def from_xml(self, parent, el):
-        super(Rule, self).from_xml(parent, el)
-
-        if self.selected_check is None:
-            logger.critical('Could not load check from rule ' + self.id)
-            import sys
-            sys.exit()
-
-    def select_check(self, selector):
-        self.selected_check = self.checks[selector]

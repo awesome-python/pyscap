@@ -21,11 +21,13 @@ import logging
 
 logger = logging.getLogger(__name__)
 class RuleCollector(ResultCollector):
-    def __init__(self, host, content, args, values):
-        super(RuleCollector, self).__init__(host, content, args)
+    def __init__(self, host, content, values, check_selector):
+        super(RuleCollector, self).__init__(host, content)
 
         self.values = values
-        
+        self.check_selector = check_selector
+
     def collect_results(self):
         from scap.model.xccdf_1_2.Check import Check
         self.host.results[self.content.id] = Check.Result.NOT_CHECKED
+        logger.debug('Result of rule ' + self.content.id + ': ' + self.host.results[self.content.id])

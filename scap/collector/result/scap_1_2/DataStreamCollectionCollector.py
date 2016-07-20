@@ -21,6 +21,10 @@ import logging
 
 logger = logging.getLogger(__name__)
 class DataStreamCollectionCollector(ResultCollector):
+    def __init__(self, host, content, args):
+        super(DataStreamCollectionCollector, self).__init__(host, content)
+        self.args = args
+
     def collect_results(self):
         if self.args.data_stream:
             ds_name = self.args.data_stream[0]

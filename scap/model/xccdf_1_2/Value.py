@@ -24,7 +24,6 @@ class Value(Item):
     def __init__(self):
         super(Value, self).__init__()
         self.selectors = {}
-        self.default = None
 
     def parse_attrib(self, name, value):
         ignore = [
@@ -47,10 +46,16 @@ class Value(Item):
         elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}value':
             if 'selector' in sub_el.attrib:
                 logger.debug('Selector value of ' + self.id + ' ' + sub_el.attrib['selector'] + ' = ' + str(sub_el.text))
-                self.selectors[sub_el.attrib['selector']] = sub_el.text
+                if sub_el.text is None:
+                    self.selectors[sub_el.attrib['selector']] = ''
+                else:
+                    self.selectors[sub_el.attrib['selector']] = sub_el.text
             else:
                 logger.debug('Default value of ' + self.id + ' is ' + str(sub_el.text))
-                self.default = sub_el.text
+                if sub_el.text is None:
+                    self.selectors[None] = ''
+                else:
+                    self.selectors[None] = sub_el.text
         else:
             return super(Value, self).parse_sub_el(sub_el)
         return True
