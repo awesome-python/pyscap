@@ -25,19 +25,22 @@ class ProfileCollector(ResultCollector):
         # expand values
         values = {}
         for value_id, value in self.content.parent.values.items():
+            values[value_id] = {}
             if value_id in self.content.value_selections:
-                values[value_id] = value.selectors[self.content.value_selections[value_id]]
+                values[value_id]['value'] = value.selectors[self.content.value_selections[value_id]]
             else:
                 if None in value.selectors:
-                    values[value_id] = value.selectors[None]
+                    values[value_id]['value'] = value.selectors[None]
                 elif len(value.selectors.values()) > 0:
-                    values[value_id] = value.selectors.values()[0]
-            if value_id not in values or values[value_id] is None:
+                    values[value_id]['value'] = value.selectors.values()[0]
+            if 'value' not in values[value_id] or values[value_id]['value'] is None:
                 logger.critical('Valid value not selected for ' + value_id + ': ' + str(value.selectors))
                 import sys
                 sys.exit()
+            values[value_id]['operator'] = value.operator
+            values[value_id]['type'] = value.type
 
-            logger.debug('Using value ' + values[value_id] + ' for value ' + value_id)
+            logger.debug('Using value ' + values[value_id]['operator'] + ' ' + values[value_id]['value'] + ' for ' + values[value_id]['type'] + ' value ' + value_id)
 
         for rule_id in self.content.selected_rules:
             from scap.collector.result.xccdf_1_2.RuleCollector import RuleCollector

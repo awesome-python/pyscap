@@ -24,6 +24,8 @@ class Value(Item):
     def __init__(self):
         super(Value, self).__init__()
         self.selectors = {}
+        self.type = 'string'
+        self.operator = 'equals'
 
     def parse_attrib(self, name, value):
         ignore = [
