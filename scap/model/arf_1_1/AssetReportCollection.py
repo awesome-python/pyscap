@@ -17,16 +17,27 @@
 
 from scap.Model import Model
 import logging
-from scap.Engine import Engine
 
 logger = logging.getLogger(__name__)
 class AssetReportCollection(Model):
+    def __init__(self):
+        self.assets = []
+        self.reports = []
+        self.relationships = []
+
     def to_xml(self):
-        arc = ET.ElementTree(element=ET.Element('{http://scap.nist.gov/schema/asset-reporting-format/1.1}asset-report-collection'))
-        root_el = arc.getroot()
+        arc_et = ET.ElementTree(element=ET.Element('{http://scap.nist.gov/schema/asset-reporting-format/1.1}asset-report-collection'))
+        root_el = arc_et.getroot()
         assets_el = ET.SubElement(root_el, '{http://scap.nist.gov/schema/asset-reporting-format/1.1}assets')
         reports_el = ET.SubElement(root_el, '{http://scap.nist.gov/schema/asset-reporting-format/1.1}reports')
         relationships_el = ET.SubElement(root_el, '{http://scap.nist.gov/schema/reporting-core/1.1}relationships')
+
+        for asset in self.assets:
+            assets_el.append(asset.to_xml())
+        for report in self.reports:
+            reports_el.append(report.to_xml())
+        for relationship in self.relationships:
+            relationships_el.append(relationship.to_xml())
 
         from StringIO import StringIO
         sio = StringIO()

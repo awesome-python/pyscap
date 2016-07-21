@@ -62,17 +62,14 @@ class Engine(object):
             host.disconnect()
 
     def report(self):
-        arc = ET.ElementTree(element=ET.Element('{http://scap.nist.gov/schema/asset-reporting-format/1.1}asset-report-collection'))
-        root_el = arc.getroot()
-        assets_el = ET.SubElement(root_el, '{http://scap.nist.gov/schema/asset-reporting-format/1.1}assets')
-        reports_el = ET.SubElement(root_el, '{http://scap.nist.gov/schema/asset-reporting-format/1.1}reports')
-        relationships_el = ET.SubElement(root_el, '{http://scap.nist.gov/schema/reporting-core/1.1}relationships')
+        from scap.model.arf_1_1.AssetReportCollection import AssetReportCollection
+        arc = AssetReportCollection()
 
         for host in self.hosts:
-            asset_el = ET.SubElement(assets_el, '{http://scap.nist.gov/schema/asset-reporting-format/1.1}asset')
-            asset_id = 'asset_' + host.facts['root_uuid']
+            from scap.model.arf_1_1.Asset import Asset
+            asset = Asset()
+            asset.id = 'asset_' + host.facts['root_uuid']
             # TODO: fallback to mobo guid, eth0 mac address, eth0 ip address, hostname
-            asset_el.attrib['id'] = asset_id
 
             ai = ET.SubElement(asset_el, '{http://scap.nist.gov/schema/asset-identification/1.1}computing-device')
             # motherboard should be the first discovered hardware cpe
@@ -112,12 +109,8 @@ class Engine(object):
             rel_el = ET.SubElement(relationships_el, '{http://scap.nist.gov/schema/asset-reporting-format/1.1}relationship')
             rel_el.attrib['subject'] = report_id
             rel_el.attrib['type'] = 'isAbout'
-            rel_el.attrib['ref'] = asset_id
+            rel_el.attrib['ref'] = asset._id
 
             # TODO createdFor relationship
 
-        from StringIO import StringIO
-        sio = StringIO()
-        arc.write(sio, encoding='UTF-8', xml_declaration=True)
-        sio.write("\n")
-        return sio.getvalue()
+        return arc.to_xml()
