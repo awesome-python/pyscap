@@ -32,7 +32,7 @@ class AssetReportCollection(RelationshipsContainer):
         return '{http://scap.nist.gov/schema/asset-reporting-format/1.1}asset-report-collection'
 
     def get_sub_elements(self):
-        sub_els = super(AssetReportCollection, self).get_sub_elements()
+        sub_els = []
 
         if len(self.report_requests) > 0:
             report_requests_el = ET.Element('{http://scap.nist.gov/schema/asset-reporting-format/1.1}report-requests')
@@ -59,5 +59,8 @@ class AssetReportCollection(RelationshipsContainer):
                 sub_els.append(ei)
                 extended_infos_el.append(ei.to_xml())
             sub_els.append(extended_infos_el)
+
+        # want the relationships from superclass to come at the end
+        sub_els.extend(super(AssetReportCollection, self).get_sub_elements())
 
         return sub_els

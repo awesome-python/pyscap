@@ -128,7 +128,7 @@ if args.benchmark:
     report = engine.report()
     if args.pretty:
         import xml.dom.minidom
-        pretty_xml = xml.dom.minidom.parseString(report).toprettyxml()
+        pretty_xml = xml.dom.minidom.parseString(report).toprettyxml(indent='  ')
         args.output.write(pretty_xml)
     else:
         args.output.write(report)
