@@ -15,12 +15,12 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.Model import Model
+from scap.model.Simple import Simple
 import logging
 from scap.Engine import Engine
 
 logger = logging.getLogger(__name__)
-class Check(Model):
+class Check(Simple):
     class Result(object):
         PASS = 'pass' # [P] The target system or system component satisfied all the conditions of the <xccdf:Rule>.
         FAIL = 'fail' # [F] The target system or system component did not satisfy all the conditions of the
@@ -46,57 +46,61 @@ class Check(Model):
         FIXED = 'fixed' # [X] The <xccdf:Rule> had failed, but was then fixed (possibly by a tool that can automatically
         # apply remediation, or possibly by the human auditor).
 
-    def from_xml(self, parent, el):
-        super(Check, self).from_xml(parent, el)
-
-        if 'id' in el.attrib:
-            self.id = el.attrib['id']
-
-        supported = [
-            Engine.namespaces['oval_defs_5'],
-            Engine.namespaces['ocil_2_0'],
-            Engine.namespaces['ocil_2'],
-        ]
-        if el.attrib['system'] not in supported:
-            raise NotImplementedError('Check system ' + el.attrib['system'] + ' is not implemented')
-
-        if 'negate' in el.attrib and el.attrib['negate'] == 'true':
-            self.negate = True
-        else:
-            self.negate = False
-
-        # don't need selector
-
-        if 'multi-check' in el.attrib and el.attrib['multi-check'] == 'true':
-            self.multi_check = True
-        else:
-            self.multi_check = False
-
+    def __init__(self):
+        super(Check, self).__init__()
         self.check_content = None
-        for check_el in el:
-            if not check_el.tag.startswith('{' + Engine.namespaces['xccdf_1_2'] + '}'):
-                raise RuntimeError('Unknown tag in check: ' + check_el.tag)
-            tag = check_el.tag[len('{' + Engine.namespaces['xccdf_1_2'] + '}'):]
-            if tag == 'check-export':
-                pass
-            elif tag == 'check-content-ref':
-                content_el = self.resolve_reference(check_el.attrib['href'])
-                if not content_el.tag.startswith('{' + el.attrib['system']):
+
+    def parse_attrib(self, name, value):
+        ignore = []
+        if name in ignore:
+            return True
+        elif name == 'negate':
+            self.negate = self.parse_boolean(value)
+        elif name == 'multi-check':
+            self.multi_check = self.parse_boolean(value)
+        elif name == 'system':
+            supported = [
+                Engine.namespaces['oval_defs_5'],
+                Engine.namespaces['ocil_2_0'],
+                Engine.namespaces['ocil_2'],
+            ]
+            if value not in supported:
+                raise NotImplementedError('Check system ' + value + ' is not implemented')
+            else:
+                self.system = value
+        else:
+            return super(Item, self).parse_attrib(name, value)
+        return True
+
+    def parse_sub_el(self, sub_el):
+        ignore = [
+            '{http://checklists.nist.gov/xccdf/1.2}check-import',
+            '{http://checklists.nist.gov/xccdf/1.2}check-export',
+        ]
+        if sub_el.tag in ignore:
+            return True
+        elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}check-content-ref':
+                content_el = self.resolve_reference(sub_el.attrib['href'])
+                if not content_el.tag.startswith('{' + self.system):
                     raise RuntimeError('Check system does not match loaded reference')
-                if el.attrib['system'] == Engine.namespaces['oval_defs_5']:
+                if self.system == Engine.namespaces['oval_defs_5']:
                     from scap.model.oval_defs_5.OVALDefinitions import OVALDefinitions
                     self.check_content = OVALDefinitions()
                     self.check_content.from_xml(self, content_el)
                     # TODO need to specify def name
-                elif el.attrib['system'] == Engine.namespaces['ocil_2_0'] or el.attrib['system'] == Engine.namespaces['ocil_2']:
+                elif self.system == Engine.namespaces['ocil_2_0'] or self.system == Engine.namespaces['ocil_2']:
                     from scap.model.ocil_2_0.OCIL import OCIL
                     self.check_content = OCIL()
                     self.check_content.from_xml(self, content_el)
                     # TODO need to specify using name
                 else:
-                    raise RuntimeError('Unknown check content type: ' + el.attrib['system'])
-            else:
-                raise NotImplementedError(tag + ' elements are not implemented for checks')
+                    raise RuntimeError('Unknown check content type: ' + self.system)
+        else:
+            return super(Item, self).parse_sub_el(sub_el)
+        return True
+
+    def from_xml(self, parent, el):
+        super(Check, self).from_xml(parent, el)
         if self.check_content is None:
             logger.critical('Check for rule ' + parent.id + ' could not be loaded')
             import sys

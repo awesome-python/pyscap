@@ -15,10 +15,10 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.Model import Model
+from scap.model.Simple import Simple
 import logging
 from scap.Engine import Engine
 
 logger = logging.getLogger(__name__)
-class Result(Model):
+class Result(Simple):
     pass

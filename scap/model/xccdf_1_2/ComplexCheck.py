@@ -15,12 +15,11 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.Model import Model
+from scap.model.Simple import Simple
 import logging
 from scap.Engine import Engine
 from scap.model.xccdf_1_2.check import Check
 
 logger = logging.getLogger(__name__)
-class ComplexCheck(Model):
-    def from_xml(self, parent, el):
-        super(ComplexCheck, self).from_xml(parent, el)
+class ComplexCheck(Simple):
+    pass
