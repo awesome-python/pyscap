@@ -19,8 +19,5 @@ from scap.model.Simple import Simple
 import logging
 
 logger = logging.getLogger(__name__)
-class Asset(Simple):
-    def to_xml(self):
-        asset_el = ET.Element('{http://scap.nist.gov/schema/asset-reporting-format/1.1}asset')
-        asset_el.attrib['id'] = asset.id
-        return asset_el
+class ObjectRef(Simple):
+    pass

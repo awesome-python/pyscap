@@ -70,7 +70,10 @@ class Engine(object):
             asset = Asset()
             asset.id = 'asset_' + host.facts['root_uuid']
             # TODO: fallback to mobo guid, eth0 mac address, eth0 ip address, hostname
+            arc.assets.append(asset)
 
+            from scap.model.ai_1_1.ComputingDevice import ComputingDevice
+            comp = ComputingDevice()
             ai = ET.SubElement(asset_el, '{http://scap.nist.gov/schema/asset-identification/1.1}computing-device')
             # motherboard should be the first discovered hardware cpe
             ai.attrib['cpe'] = host.facts['hw_cpe'][0].to_uri_string()
