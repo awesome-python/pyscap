@@ -21,6 +21,10 @@ import logging
 
 logger = logging.getLogger(__name__)
 class DataStreamCollector(ResultCollector):
+    def __init__(self, host, content, args):
+        super(DataStreamCollector, self).__init__(host, content)
+        self.args = args
+        
     def collect_results(self):
         if self.args.checklist:
             checklist_id = self.args.checklist[0]

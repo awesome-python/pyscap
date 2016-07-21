@@ -23,8 +23,9 @@ logger = logging.getLogger(__name__)
 class Profile(Simple):
     def __init__(self):
         super(Profile, self).__init__()
-        self.rules = {}
-        self.values = {}
+        self.selected_rules = []
+        self.rule_check_selections = {}
+        self.value_selections = {}
 
     def parse_attrib(self, name, value):
         ignore = [
@@ -60,8 +61,17 @@ class Profile(Simple):
                 sys.exit()
             r = self.parent.rules[sub_el.attrib['idref']]
             if sub_el.attrib['selected'] == 'true':
-                logger.info('Rule selected by profile: ' + r.id)
-                self.rules[r.id] = r
+                logger.debug('Rule ' + sub_el.attrib['idref'] + ' selected by profile ' + self.id)
+                self.selected_rules.append(sub_el.attrib['idref'])
+
+                if sub_el.attrib['idref'] not in self.rule_check_selections:
+                    self.rule_check_selections[sub_el.attrib['idref']] = None
+            else:
+                try:
+                    logger.debug('Rule ' + sub_el.attrib['idref'] + ' un-selected by profile ' + self.id)
+                    self.selected_rules.remove(sub_el.attrib['idref'])
+                except KeyError:
+                    logger.warning('Rule ' + sub_el.attrib['idref'] + ' was not previously selected by profile ' + self.id)
         elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}set-complex-value':
             logger.critical('set-complex-value is not supported')
             import sys
@@ -76,16 +86,19 @@ class Profile(Simple):
                 import sys
                 sys.exit()
             v = self.parent.values[sub_el.attrib['idref']]
-            logger.info('Selecting value for ' + v.id + ' using selector ' + sub_el.attrib['selector'] + ' in profile ' + self.id)
-            self.values[v.id]['value'] = v.selectors[sub_el.attrib['selector']]
+            if sub_el.attrib['selector'] not in v.selectors:
+                logger.critical('Selector in Value not found: ' + sub_el.attrib['selector'])
+                import sys
+                sys.exit()
+            logger.info('Using selector ' + sub_el.attrib['selector'] + ' for value ' + v.id + ' in profile ' + self.id)
+            self.value_selections[v.id] = sub_el.attrib['selector']
         elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}refine-rule':
             if sub_el.attrib['idref'] not in self.parent.rules:
                 logger.critical('Rule idref in Profile not found: ' + sub_el.attrib['idref'])
                 import sys
                 sys.exit()
-            r = self.parent.rules[sub_el.attrib['idref']]
-            logger.info('Selecting check ' + sub_el.attrib['selector'] + ' for rule ' + r.id)
-            r.select_check(sub_el.attrib['selector'])
+            logger.info('Using check selector ' + sub_el.attrib['selector'] + ' for rule ' + sub_el.attrib['idref'] + ' in profile ' + self.id)
+            self.rule_check_selections[sub_el.attrib['idref']] = sub_el.attrib['selector']
         else:
             return super(Profile, self).parse_sub_el(sub_el)
         return True
@@ -93,8 +106,6 @@ class Profile(Simple):
     def from_xml(self, parent, el):
         # copy in the rules that are selected by default
         for rule_id in parent.selected_rules:
-            self.rules[rule_id] = parent.rules[rule_id]
-        for v in parent.values.values():
-            self.values[v.id] = { 'model': v, 'value': v.default }
+            self.selected_rules[rule_id] = parent.rules[rule_id]
 
         super(Profile, self).from_xml(parent, el)

@@ -18,8 +18,40 @@
 from scap.model.Simple import Simple
 import logging
 from scap.Engine import Engine
-from scap.model.xccdf_1_2.check import Check
 
 logger = logging.getLogger(__name__)
 class ComplexCheck(Simple):
-    pass
+    def __init__(self):
+        super(ComplexCheck, self).__init__()
+        self.checks = []
+        self.negate = False
+        self.operator = 'AND'
+
+    def parse_attrib(self, name, value):
+        ignore = []
+        if name in ignore:
+            return True
+        elif name == 'negate':
+            self.negate = self.parse_boolean(value)
+        elif name == 'operator':
+            self.negate = value
+        else:
+            return super(Rule, self).parse_attrib(name, value)
+        return True
+
+    def parse_sub_el(self, sub_el):
+        ignore = []
+        if sub_el.tag in ignore:
+            return True
+        elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}complex-check':
+            check = ComplexCheck()
+            check.from_xml(self, sub_el)
+            self.checks.append(check)
+        elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}check':
+            from scap.model.xccdf_1_2.Check import Check
+            check = Check()
+            check.from_xml(self, sub_el)
+            self.checks.append(check)
+        else:
+            return super(Rule, self).parse_sub_el(sub_el)
+        return True
