@@ -16,6 +16,8 @@
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
 class RelationshipTypes(object):
+    URI = 'http://scap.nist.gov/specifications/ai/vocabulary/relationships/1.0'
+    
     #Term Domain Range Description
     HAS_TERMINATION_DEVICE = 'hasTerminationDevice' #ai:circuit ai:computing-device The circuit is terminated by the device.
     HAS_SERVICE_PROVIDER = 'hasServiceProvider' #ai:circuit ai:organization The circuit is owner/operated by the organization.
