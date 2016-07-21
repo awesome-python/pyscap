@@ -89,14 +89,16 @@ class Engine(object):
             asset.asset = comp
 
             from scap.model.ai_1_1.Connection import Connection
-            for c in host.facts['network_connections']:
-                conn = Connection()
-                conn.mac_address = c['mac_address']
-                conn.ip_address = c['ip_address']
-                conn.subnet_mask = c['subnet_mask']
-                #TODO
-                #conn.default_route = c['default_route']
-                comp.connections.append(conn)
+            for dev, net_con in host.facts['network_connections'].items():
+                logger.debug('Producing Connection for device ' + dev)
+                for address in net_con['network_addresses']:
+                    conn = Connection()
+                    conn.mac_address = host.facts['network_connections'][dev]['mac_address']
+                    conn.ip_address = address['address']
+                    conn.subnet_mask = address['subnet_mask']
+                    if 'default_route' in host.facts['network_connections'][dev]:
+                        conn.default_route = host.facts['network_connections'][dev]['default_route']
+                    comp.connections.append(conn)
 
             # network services
             from scap.model.ai_1_1.Service import Service

@@ -21,22 +21,30 @@ import re, logging
 logger = logging.getLogger(__name__)
 class IPAddrCollector(FactCollector):
     def collect_facts(self):
-        self.host.facts['network_connections'] = []
+        if 'network_connections' not in self.host.facts:
+            self.host.facts['network_connections'] = {}
         for line in self.host.lines_from_command('ip addr'):
+            # index line
+            m = re.match(r'^\d+:\s+([A-Za-z0-9.]+):', line)
+            if m:
+                dev = m.group(1)
+                self.host.facts['network_connections'][dev] = {'network_addresses': []}
+                continue
+
             # link line
             m = re.match(r'^\s+link/(ether|loopback) ([:a-f0-9]+)', line)
             if m:
-                mac_address = m.group(2)
+                self.host.facts['network_connections'][dev]['mac_address'] = m.group(2)
                 continue
 
             # inet line
             m = re.match(r'^\s+inet ([0-9.]+)(/\d+)', line)
             if m:
-                self.host.facts['network_connections'].append({'mac_address': mac_address, 'ip_address': m.group(1), 'subnet_mask': m.group(2)})
+                self.host.facts['network_connections'][dev]['network_addresses'].append({'type': 'ipv4', 'address': m.group(1), 'subnet_mask': m.group(2)})
                 continue
 
             # inet6 line
             m = re.match(r'^\s+inet6 ([0-9:]+)(/\d+)', line)
             if m:
-                self.host.facts['network_connections'].append({'mac_address': mac_address, 'ip_address': m.group(1), 'subnet_mask': m.group(2)})
+                self.host.facts['network_connections'][dev]['network_addresses'].append({'type': 'ipv6', 'address': m.group(1), 'subnet_mask': m.group(2)})
                 continue

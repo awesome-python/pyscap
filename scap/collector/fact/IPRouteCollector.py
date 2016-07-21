@@ -24,7 +24,11 @@ class IPRouteCollector(FactCollector):
         ip_route = self.host.lines_from_command('ip route')
         logger.debug('ip_route: ' + str(ip_route))
         for line in ip_route:
-            m = re.match(r'^default via ([0-9.]+) dev', line)
+            m = re.match(r'^default via ([0-9.]+) dev\s+([A-Za-z0-9.]+)', line)
             if m:
-                logger.debug('default-route: ' + m.group(1))
-                self.host.facts['default_route'] = m.group(1)
+                logger.debug('default-route: ' + m.group(1) + ' for device ' + m.group(2))
+                if 'network_connections' not in self.host.facts:
+                    self.host.facts['network_connections'] = {}
+                if m.group(2) not in self.host.facts['network_connections']:
+                    self.host.facts['network_connections'][m.group(2)] = {}
+                self.host.facts['network_connections'][m.group(2)]['default_route'] = m.group(1)

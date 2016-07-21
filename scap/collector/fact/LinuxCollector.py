@@ -44,9 +44,6 @@ class LinuxCollector(FactCollector):
             cpe.set_value('update', m.group(2))
         self.host.facts['o_cpe'] = cpe
 
-        from scap.collector.fact.IPRouteCollector import IPRouteCollector
-        self.host.add_fact_collector(IPRouteCollector(self.host))
-
         from scap.collector.fact.HostnameAllFQDNsCollector import HostnameAllFQDNsCollector
         self.host.add_fact_collector(HostnameAllFQDNsCollector(self.host))
 
@@ -55,6 +52,9 @@ class LinuxCollector(FactCollector):
 
         from scap.collector.fact.IPAddrCollector import IPAddrCollector
         self.host.add_fact_collector(IPAddrCollector(self.host))
+
+        from scap.collector.fact.IPRouteCollector import IPRouteCollector
+        self.host.add_fact_collector(IPRouteCollector(self.host))
 
         from scap.collector.fact.NetstatCollector import NetstatCollector
         self.host.add_fact_collector(NetstatCollector(self.host))
