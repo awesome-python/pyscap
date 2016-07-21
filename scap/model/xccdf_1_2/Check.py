@@ -21,53 +21,28 @@ from scap.Engine import Engine
 
 logger = logging.getLogger(__name__)
 class Check(Simple):
-    class Result(object):
-        PASS = 'pass' # [P] The target system or system component satisfied all the conditions of the <xccdf:Rule>.
-        FAIL = 'fail' # [F] The target system or system component did not satisfy all the conditions of the
-        # <xccdf:Rule>.
-        ERROR = 'error' # [E] The checking engine could not complete the evaluation, therefore the status of the target's
-        # compliance with the <xccdf:Rule> is not certain. This could happen, for example, if a testing
-        # tool was run with insufficient privileges and could not gather all of the necessary information.
-        UNKNOWN = 'unknown' # [U] The testing tool encountered some problem and the result is unknown. For example, a result of
-        # 'unknown' might be given if the testing tool was unable to interpret the output of the checking
-        # engine (the output has no meaning to the testing tool).
-        NOT_APPLICABLE = 'notapplicable' # [N] The <xccdf:Rule> was not applicable to the target of the test. For example, the
-        # <xccdf:Rule> might have been specific to a different version of the target OS, or it might
-        # have been a test against a platform feature that was not installed.
-        NOT_CHECKED = 'notchecked' # [K] The <xccdf:Rule> was not evaluated by the checking engine. This status is designed for
-        # <xccdf:Rule> elements that have no <xccdf:check> elements or that correspond to an
-        # unsupported checking system. It may also correspond to a status returned by a checking
-        # engine if the checking engine does not support the indicated check code.
-        NOT_SELECTED = 'notselected' # [S] The <xccdf:Rule> was not selected in the benchmark.
-        INFORMATIONAL = 'informational' # [I] The <xccdf:Rule> was checked, but the output from the checking engine is simply
-        # information for auditors or administrators; it is not a compliance category. This status value is
-        # designed for <xccdf:Rule> elements whose main purpose is to extract information from the
-        # target rather than test the target.
-        FIXED = 'fixed' # [X] The <xccdf:Rule> had failed, but was then fixed (possibly by a tool that can automatically
-        # apply remediation, or possibly by the human auditor).
-
     def __init__(self):
         super(Check, self).__init__()
         self.check_content = None
 
     def parse_attrib(self, name, value):
-        ignore = []
+        ignore = ['selector']
         if name in ignore:
             return True
-        elif name == 'negate':
-            self.negate = self.parse_boolean(value)
-        elif name == 'multi-check':
-            self.multi_check = self.parse_boolean(value)
         elif name == 'system':
             supported = [
-                Engine.namespaces['oval_defs_5'],
-                Engine.namespaces['ocil_2_0'],
-                Engine.namespaces['ocil_2'],
+                'http://oval.mitre.org/XMLSchema/oval-definitions-5',
+                'http://scap.nist.gov/schema/ocil/2.0',
+                'http://scap.nist.gov/schema/ocil/2',
             ]
             if value not in supported:
                 raise NotImplementedError('Check system ' + value + ' is not implemented')
             else:
                 self.system = value
+        elif name == 'negate':
+            self.negate = self.parse_boolean(value)
+        elif name == 'multi-check':
+            self.multi_check = self.parse_boolean(value)
         else:
             return super(Item, self).parse_attrib(name, value)
         return True

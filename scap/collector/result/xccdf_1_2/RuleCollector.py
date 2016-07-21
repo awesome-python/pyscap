@@ -39,11 +39,11 @@ class RuleCollector(ResultCollector):
         from scap.model.xccdf_1_2.ComplexCheck import ComplexCheck
         if isinstance(check, Check):
             from scap.collector.result.xccdf_1_2.CheckCollector import CheckCollector
-            col = CheckCollector(self.host, check, values)
+            col = CheckCollector(self.host, check, self.values)
             self.host.results[self.content.id] = col.collect_results()
         elif isinstance(check, ComplexCheck):
             from scap.collector.result.xccdf_1_2.ComplexCheckCollector import ComplexCheckCollector
-            col = ComplexCheckCollector(self.host, check, values)
+            col = ComplexCheckCollector(self.host, check, self.values)
             self.host.results[self.content.id] = col.collect_results()
         else:
             logger.warning('Unknown check type ' + check.__class__.__name__ + ' for rule ' + self.content.id)
