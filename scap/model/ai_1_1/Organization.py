@@ -20,4 +20,11 @@ import logging
 
 logger = logging.getLogger(__name__)
 class Organization(Asset):
-    pass
+    def __init__(self):
+        super(Organization, self).__init__()
+
+        self.email_addresses = []
+        self.telephone_numbers = []
+        self.website_urls = []
+
+        self.name_details = []

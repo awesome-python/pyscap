@@ -20,4 +20,9 @@ import logging
 
 logger = logging.getLogger(__name__)
 class Asset(Simple):
-    pass
+    def __init__(self):
+        super(Asset, self).__init__()
+
+        self.synthetic_ids = []
+        self.locations = []
+        self.extended_information = []

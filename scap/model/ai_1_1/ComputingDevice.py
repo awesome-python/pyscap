@@ -20,4 +20,9 @@ import logging
 
 logger = logging.getLogger(__name__)
 class ComputingDevice(ITAsset):
-    pass
+    def __init__(self):
+        super(ComputingDevice, self).__init__()
+
+        self.cpes = []
+
+        self.connections = []

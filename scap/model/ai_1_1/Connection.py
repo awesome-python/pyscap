@@ -20,4 +20,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 class Connection(Simple):
-    pass
+    def __init__(self):
+        super(Person, self).__init__()
+
+        self.urls = []

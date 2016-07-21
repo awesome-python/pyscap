@@ -20,4 +20,8 @@ import logging
 
 logger = logging.getLogger(__name__)
 class Person(Asset):
-    pass
+    def __init__(self):
+        super(Person, self).__init__()
+
+        self.email_addresses = []
+        self.telephone_numbers = []

@@ -20,4 +20,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 class Software(ITAsset):
-    pass
+    def __init__(self):
+        super(Person, self).__init__()
+
+        self.licenses = []

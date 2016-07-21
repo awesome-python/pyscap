@@ -20,4 +20,8 @@ import logging
 
 logger = logging.getLogger(__name__)
 class Service(ITAsset):
-    pass
+    def __init__(self):
+        super(Service, self).__init__()
+
+        self.ports = []
+        self.port_ranges = []
