@@ -17,6 +17,7 @@
 
 from scap.model.ai_1_1.ITAsset import ITAsset
 import logging
+import xml.etree.ElementTree as ET
 
 logger = logging.getLogger(__name__)
 class System(ITAsset):

@@ -15,9 +15,10 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.model.Simple import Simple
+from scap.model.ai_1_1.AI import AI
 import logging
+import xml.etree.ElementTree as ET
 
 logger = logging.getLogger(__name__)
-class SyntheticID(Simple):
+class SyntheticID(AI):
     pass

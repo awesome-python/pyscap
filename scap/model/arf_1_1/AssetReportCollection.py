@@ -15,48 +15,49 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.model.Simple import Simple
+from scap.model.rep_core_1_1.RelationshipsContainer import RelationshipsContainer
+import xml.etree.ElementTree as ET
 import logging
 
 logger = logging.getLogger(__name__)
-class AssetReportCollection(Simple):
+class AssetReportCollection(RelationshipsContainer):
     def __init__(self):
+        super(AssetReportCollection, self).__init__()
         self.report_requests = []
         self.assets = []
         self.reports = []
-        self.relationships = []
         self.extended_infos = []
 
-    def to_xml(self):
-        arc_et = ET.ElementTree(element=ET.Element('{http://scap.nist.gov/schema/asset-reporting-format/1.1}asset-report-collection'))
-        root_el = arc_et.getroot()
+    def get_tag(self):
+        return '{http://scap.nist.gov/schema/asset-reporting-format/1.1}asset-report-collection'
+
+    def get_sub_elements(self):
+        sub_els = super(AssetReportCollection, self).get_sub_elements()
 
         if len(self.report_requests) > 0:
-            report_requests_el = ET.SubElement(root_el, '{http://scap.nist.gov/schema/asset-reporting-format/1.1}report-requests')
+            report_requests_el = ET.Element('{http://scap.nist.gov/schema/asset-reporting-format/1.1}report-requests')
             for report_request in self.report_requests:
                 report_requests_el.append(report_request.to_xml())
+            sub_els.append(report_requests_el)
 
         if len(self.assets) > 0:
-            assets_el = ET.SubElement(root_el, '{http://scap.nist.gov/schema/asset-reporting-format/1.1}assets')
+            assets_el = ET.Element('{http://scap.nist.gov/schema/asset-reporting-format/1.1}assets')
             for asset in self.assets:
                 assets_el.append(asset.to_xml())
+            sub_els.append(assets_el)
 
-        reports_el = ET.SubElement(root_el, '{http://scap.nist.gov/schema/asset-reporting-format/1.1}reports')
+        reports_el = ET.Element('{http://scap.nist.gov/schema/asset-reporting-format/1.1}reports')
         for report in self.reports:
             reports_el.append(report.to_xml())
-
-        if len(self.relationships) > 0:
-            relationships_el = ET.SubElement(root_el, '{http://scap.nist.gov/schema/reporting-core/1.1}relationships')
-            for relationship in self.relationships:
-                relationships_el.append(relationship.to_xml())
+        sub_els.append(reports_el)
 
         if len(self.extended_infos) > 0:
-            extended_infos_el = ET.SubElement(root_el, '{http://scap.nist.gov/schema/reporting-core/1.1}extended-infos')
+            extended_infos_el = ET.Element('{http://scap.nist.gov/schema/asset-reporting-format/1.1}extended-infos')
             for extended_info in self.extended_infos:
-                extended_infos_el.append(extended_info.to_xml())
+                ei = ET.Element('{http://scap.nist.gov/schema/asset-reporting-format/1.1}extended-info')
+                ei.append(extended_info.to_xml())
+                sub_els.append(ei)
+                extended_infos_el.append(ei.to_xml())
+            sub_els.append(extended_infos_el)
 
-        from StringIO import StringIO
-        sio = StringIO()
-        arc.write(sio, encoding='UTF-8', xml_declaration=True)
-        sio.write("\n")
-        return sio.getvalue()
+        return sub_els

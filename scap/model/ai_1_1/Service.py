@@ -17,11 +17,33 @@
 
 from scap.model.ai_1_1.ITAsset import ITAsset
 import logging
+import xml.etree.ElementTree as ET
 
 logger = logging.getLogger(__name__)
 class Service(ITAsset):
     def __init__(self):
         super(Service, self).__init__()
 
+        self.host = None
         self.ports = []
         self.port_ranges = []
+        self.protocol = None
+
+    def get_tag(self):
+        return '{http://scap.nist.gov/schema/asset-identification/1.1}service'
+
+    def get_sub_elements(self):
+        sub_els = super(Service, self).get_sub_elements()
+
+        if self.host is not None:
+            sub_els.append(self.host.to_xml())
+
+        for port in self.ports:
+            sub_els.append(self.get_text_element('{http://scap.nist.gov/schema/asset-identification/1.1}port', port))
+
+        for port_range in self.port_ranges:
+            sub_els.append(port_range.to_xml())
+
+        if self.protocol is not None:
+            sub_els.append(self.get_text_element('{http://scap.nist.gov/schema/asset-identification/1.1}protocol', self.protocol))
+        return sub_els

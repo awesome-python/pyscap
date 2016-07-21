@@ -17,10 +17,29 @@
 
 from scap.model.Simple import Simple
 import logging
+import xml.etree.ElementTree as ET
 
 logger = logging.getLogger(__name__)
 class Asset(Simple):
-    def to_xml(self):
-        asset_el = ET.Element('{http://scap.nist.gov/schema/asset-reporting-format/1.1}asset')
-        asset_el.attrib['id'] = asset.id
-        return asset_el
+    def __init__(self):
+        super(Asset, self).__init__()
+        self.asset = None
+
+        self.required_attributes.append('id')
+
+    def get_tag(self):
+        return '{http://scap.nist.gov/schema/asset-reporting-format/1.1}asset'
+
+    def get_sub_elements(self):
+        sub_els = super(Asset, self).get_sub_elements()
+
+        import scap.model.ai_1_1.Asset
+        from scap.model.arf_1_1.RemoteResource import RemoteResource
+        if isinstance(self.asset, scap.model.ai_1_1.Asset.Asset) or isinstance(self.asset, RemoteResource):
+            sub_els.append(self.asset.to_xml())
+        else:
+            logger.critical('Asset must define an asset or remote-resource')
+            import sys
+            sys.exit()
+
+        return sub_els

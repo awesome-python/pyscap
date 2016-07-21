@@ -55,6 +55,8 @@ class Engine(object):
             host.connect()
 
             host.collect_facts()
+            #TODO cache facts
+
             from scap.collector.ResultCollector import ResultCollector
             host.add_result_collector(ResultCollector.learn(host, self.content, args))
             host.collect_results()
@@ -65,6 +67,8 @@ class Engine(object):
         from scap.model.arf_1_1.AssetReportCollection import AssetReportCollection
         arc = AssetReportCollection()
 
+        #TODO report requests
+
         for host in self.hosts:
             from scap.model.arf_1_1.Asset import Asset
             asset = Asset()
@@ -74,46 +78,52 @@ class Engine(object):
 
             from scap.model.ai_1_1.ComputingDevice import ComputingDevice
             comp = ComputingDevice()
-            ai = ET.SubElement(asset_el, '{http://scap.nist.gov/schema/asset-identification/1.1}computing-device')
-            # motherboard should be the first discovered hardware cpe
-            ai.attrib['cpe'] = host.facts['hw_cpe'][0].to_uri_string()
-            ai.attrib['default-route'] = host.facts['default_route']
-            ai.attrib['fqdn'] = host.facts['fqdn']
-            ai.attrib['hostname'] = host.facts['hostname']
+            for cpe in host.facts['hw_cpe']:
+                comp.cpes.append(cpe)
+            comp.fqdn = host.facts['fqdn']
+            comp.hostname = host.facts['hostname']
             try:
-                ai.attrib['motherboard-guid'] = host.facts['hardware']['configuration']['uuid']
+                comp.motherboard_guid = host.facts['hardware']['configuration']['uuid']
             except KeyError:
                 logger.debug("Couldn't parse motherboard-guid")
-            conns = ET.SubElement(ai, '{http://scap.nist.gov/schema/asset-identification/1.1}connections')
+            asset.asset = comp
+
+            from scap.model.ai_1_1.Connection import Connection
             for c in host.facts['network_connections']:
-                conn = ET.SubElement(conns, '{http://scap.nist.gov/schema/asset-identification/1.1}connection')
-                # mac-address
-                conn.attrib['mac-address'] = c['mac_address']
-                # ip-address
-                conn.attrib['ip-address'] = c['ip_address']
-                # subnet-mask
-                conn.attrib['subnet-mask'] = c['subnet_mask']
+                conn = Connection()
+                conn.mac_address = c['mac_address']
+                conn.ip_address = c['ip_address']
+                conn.subnet_mask = c['subnet_mask']
+                #TODO
+                #conn.default_route = c['default_route']
+                comp.connections.append(conn)
 
             # network services
+            from scap.model.ai_1_1.Service import Service
             for svc in host.facts['network_services']:
-                ai = ET.SubElement(asset_el, '{http://scap.nist.gov/schema/asset-identification/1.1}service')
-                ai.attrib['host'] = svc['ip_address']
-                ai.attrib['port'] = svc['port']
-                ai.attrib['protocol'] = svc['protocol']
+                s = Service()
+                s.host = svc['ip_address']
+                s.port = svc['port']
+                s.protocol = svc['protocol']
 
-            report_el = ET.SubElement(reports_el, '{http://scap.nist.gov/schema/asset-reporting-format/1.1}report')
+            from scap.model.arf_1_1.Report import Report
             import uuid
-            report_id = 'report_' + uuid.uuid4().hex
-            report_el.attrib['id'] = report_id
+            report = Report()
+            report.id = 'report_' + uuid.uuid4().hex
+            arc.reports.append(report)
 
-            # TODO embed content
-
-            relationships = []
-            rel_el = ET.SubElement(relationships_el, '{http://scap.nist.gov/schema/asset-reporting-format/1.1}relationship')
-            rel_el.attrib['subject'] = report_id
-            rel_el.attrib['type'] = 'isAbout'
-            rel_el.attrib['ref'] = asset._id
+            from scap.model.rep_core_1_1.Relationship import Relationship
+            rel = Relationship()
+            rel.subject = report.id
+            rel.type = 'isAbout'
+            rel.refs.append(asset.id)
+            arc.relationships.append(rel)
 
             # TODO createdFor relationship
 
-        return arc.to_xml()
+        arc_et = ET.ElementTree(element=arc.to_xml())
+        from StringIO import StringIO
+        sio = StringIO()
+        arc_et.write(sio, encoding='UTF-8', xml_declaration=True)
+        sio.write("\n")
+        return sio.getvalue()

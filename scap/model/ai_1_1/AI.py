@@ -15,10 +15,26 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.model.ai_1_1.AI import AI
+from scap.model.Simple import Simple
 import logging
 import xml.etree.ElementTree as ET
 
 logger = logging.getLogger(__name__)
-class IPNetRange(AI):
-    pass
+class AI(Simple):
+    def __init__(self):
+        super(AI, self).__init__()
+
+        # attribs
+        self.timestamp = None
+        self.source = None
+
+    def get_attributes(self):
+        attribs = super(AI, self).get_attributes()
+
+        if self.timestamp is not None:
+            attribs['timestamp'] = self.timestamp
+
+        if self.source is not None:
+            attribs['source'] = self.source
+
+        return attribs

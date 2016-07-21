@@ -33,15 +33,15 @@ class Model(object):
             sys.exit()
 
     def __init__(self):
-        pass
+        self.parent = None
+        self.element = None
+        self.ref_mapping = {}
 
     def from_xml(self, parent, el, ref_mapping=None):
         self.parent = parent
         self.element = el
-        if ref_mapping is None:
-            self.ref_mapping = {}
-        else:
-            self.ref_mapping = ref_mapping
+        if ref_mapping is not None:
+            self.ref_mapping.update(ref_mapping)
 
     def resolve_reference(self, ref):
         if ref in self.ref_mapping:
