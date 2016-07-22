@@ -50,30 +50,22 @@ class Rule(GroupRuleCommon):
         super(Rule, self).__init__()
         self.checks = {}
 
-    def parse_attrib(self, name, value):
-        ignore = [
+        self.ignore_attributes.extend([
             'role',
             'severity',
             'multiple',
-        ]
-        if name in ignore:
-            return True
-        else:
-            return super(Rule, self).parse_attrib(name, value)
-        return True
-
-    def parse_sub_el(self, sub_el):
-        ignore = [
+        ])
+        self.ignore_sub_elements.extend([
             '{http://checklists.nist.gov/xccdf/1.2}ident',
             '{http://checklists.nist.gov/xccdf/1.2}impact-metric',
             '{http://checklists.nist.gov/xccdf/1.2}profile-note',
             '{http://checklists.nist.gov/xccdf/1.2}fixtext',
             '{http://checklists.nist.gov/xccdf/1.2}fix',
             '{http://checklists.nist.gov/xccdf/1.2}signature',
-        ]
-        if sub_el.tag in ignore:
-            return True
-        elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}complex-check':
+        ])
+
+    def parse_sub_el(self, sub_el):
+        if sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}complex-check':
             from scap.model.xccdf_1_2.ComplexCheck import ComplexCheck
             check = ComplexCheck()
             check.from_xml(self, sub_el)

@@ -28,10 +28,7 @@ class ComplexCheck(Simple):
         self.operator = 'AND'
 
     def parse_attrib(self, name, value):
-        ignore = []
-        if name in ignore:
-            return True
-        elif name == 'negate':
+        if name == 'negate':
             self.negate = self.parse_boolean(value)
         elif name == 'operator':
             self.negate = value
@@ -40,10 +37,7 @@ class ComplexCheck(Simple):
         return True
 
     def parse_sub_el(self, sub_el):
-        ignore = []
-        if sub_el.tag in ignore:
-            return True
-        elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}complex-check':
+        if sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}complex-check':
             check = ComplexCheck()
             check.from_xml(self, sub_el)
             self.checks.append(check)

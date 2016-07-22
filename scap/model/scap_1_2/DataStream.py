@@ -15,55 +15,87 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.Model import Model
+from scap.model.Simple import Simple
 import logging
-from scap.Engine import Engine
 
 logger = logging.getLogger(__name__)
-class DataStream(Model):
-    def from_xml(self, parent, el):
-        super(DataStream, self).from_xml(parent, el)
-
-        self.id = el.attrib['id']
-
-        # TODO dictionaries
+class DataStream(Simple):
+    def __init__(self):
+        super(DataStream, self).__init__()
 
         self.checklists = {}
-        xpath = "./scap_1_2:checklists"
-        xpath += "/scap_1_2:component-ref"
-        for comp in el.findall(xpath, Engine.namespaces):
-            ref_mapping = None
-            href = comp.attrib['{' + Engine.namespaces['xlink'] + '}href']
-            for cat_el in comp:
-                if cat_el.tag == '{' + Engine.namespaces['xml_cat'] + '}' + 'catalog':
-                    logger.debug('Loading catalog for ' + href)
-                    from scap.model.xml_cat.Catalog import Catalog
-                    cat = Catalog()
-                    cat.from_xml(self, cat_el)
-                    ref_mapping = cat.to_dict()
+        self.checks = []
 
-            ref_el = self.parent.resolve_reference(href)
-            if ref_el.tag == '{http://checklists.nist.gov/xccdf/1.2}Benchmark':
-                from scap.model.xccdf_1_2.Benchmark import Benchmark
-                checklist = Benchmark()
-                checklist.from_xml(self, ref_el, ref_mapping=ref_mapping)
-            elif ref_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}ocil':
-                from scap.model.ocil_2_0.OCIL import OCIL
-                checklist = OCIL()
-                checklist.from_xml(self, ref_el, ref_mapping=ref_mapping)
-            else:
-                logger.critical('unknown component: ' + ref_el.tag + ' for ref: ' + href)
+        self.required_attributes.extend([
+            'id',
+            'use-case',
+            'scap-version',
+            'timestamp',
+        ])
+        self.ignore_attributes.extend([
+            'use-case',
+            'scap-version',
+            'timestamp',
+        ])
+        self.ignore_sub_elements.extend([
+            '{http://scap.nist.gov/schema/scap/source/1.2}dictionaries',
+            '{http://scap.nist.gov/schema/scap/source/1.2}extended-components',
+        ])
+
+    def parse_comp_ref(self, sub_el, comp_ref_el):
+        if comp_ref_el.tag != '{http://scap.nist.gov/schema/scap/source/1.2}component-ref':
+            logger.critical(sub_el.tag + ' element can only contain component-ref elements')
+            import sys
+            sys.exit()
+        ref_mapping = None
+        href = comp_ref_el.attrib['{http://www.w3.org/1999/xlink}href']
+        for cat_el in comp_ref_el:
+            if cat_el.tag != '{urn:oasis:names:tc:entity:xmlns:xml:catalog}catalog':
+                logger.critical('component-ref element can only contain xml-cat:catalog elements')
                 import sys
                 sys.exit()
-            self.checklists[checklist.id] = checklist
+            logger.debug('Loading catalog for ' + href)
+            from scap.model.xml_cat.Catalog import Catalog
+            cat = Catalog()
+            cat.from_xml(self, cat_el)
+            ref_mapping = cat.to_dict()
+        comp_el = self.parent.resolve_reference(href)
 
-        #from scap.model.xccdf_1_2.benchmark import Benchmark
-        self.checks = {}
-        xpath = "./scap_1_2:checks"
-        xpath += "/scap_1_2:component-ref"
-        for c in el.findall(xpath, Engine.namespaces):
-            href = c.attrib['{' + Engine.namespaces['xlink'] + '}href']
-            checks_el = self.parent.resolve_reference(href)
-            #self.checks[c.attrib['id']] = Benchmark(self, checks_el)
+        return comp_el, ref_mapping
 
-        # TODO: extended-components
+    def parse_sub_el(self, sub_el):
+        if sub_el.tag == '{http://scap.nist.gov/schema/scap/source/1.2}checklists':
+            for comp_ref_el in sub_el:
+                comp_el, ref_mapping = self.parse_comp_ref(sub_el, comp_ref_el)
+                if comp_el.tag == '{http://checklists.nist.gov/xccdf/1.2}Benchmark':
+                    from scap.model.xccdf_1_2.Benchmark import Benchmark
+                    comp = Benchmark()
+                    comp.from_xml(self, comp_el, ref_mapping=ref_mapping)
+                elif comp_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}ocil':
+                    from scap.model.ocil_2_0.OCIL import OCIL
+                    comp = OCIL()
+                    comp.from_xml(self, comp_el, ref_mapping=ref_mapping)
+                else:
+                    logger.critical('unknown checklists component: ' + comp_el.tag + ' for ref: ' + comp_ref_el.attrib['{http://www.w3.org/1999/xlink}href'])
+                    import sys
+                    sys.exit()
+                self.checklists[comp.id] = comp
+        elif sub_el.tag == '{http://scap.nist.gov/schema/scap/source/1.2}checks':
+            for comp_ref_el in sub_el:
+                comp_el, ref_mapping = self.parse_comp_ref(sub_el, comp_ref_el)
+                if comp_el.tag == '{http://oval.mitre.org/XMLSchema/oval-definitions-5}oval_definitions':
+                    from scap.model.oval_defs_5.OVALDefinitions import OVALDefinitions
+                    comp = OVALDefinitions()
+                    comp.from_xml(self, comp_el, ref_mapping=ref_mapping)
+                elif comp_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}ocil':
+                    from scap.model.ocil_2_0.OCIL import OCIL
+                    comp = OCIL()
+                    comp.from_xml(self, comp_el, ref_mapping=ref_mapping)
+                else:
+                    logger.critical('unknown checks component: ' + comp_el.tag + ' for ref: ' + comp_ref_el.attrib['{http://www.w3.org/1999/xlink}href'])
+                    import sys
+                    sys.exit()
+                self.checks.append(comp)
+        else:
+            return super(DataStream, self).parse_sub_el(sub_el)
+        return True

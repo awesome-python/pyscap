@@ -31,21 +31,13 @@ class Benchmark(Simple):
         self.test_results = {}
         self.selected_rules = []
 
-    def parse_attrib(self, name, value):
-        ignore = [
+        self.ignore_attributes.extend([
             'Id',
             'resolved',
             'style',
             'style-href',
-        ]
-        if name in ignore:
-            return True
-        else:
-            return super(Benchmark, self).parse_attrib(name, value)
-        return True
-
-    def parse_sub_el(self, sub_el):
-        ignore = [
+        ])
+        self.ignore_sub_elements.extend([
             '{http://checklists.nist.gov/xccdf/1.2}status',
             '{http://checklists.nist.gov/xccdf/1.2}dc-status',
             '{http://checklists.nist.gov/xccdf/1.2}title',
@@ -60,10 +52,10 @@ class Benchmark(Simple):
             '{http://checklists.nist.gov/xccdf/1.2}metadata',
             '{http://checklists.nist.gov/xccdf/1.2}model',
             '{http://checklists.nist.gov/xccdf/1.2}signature',
-        ]
-        if sub_el.tag in ignore:
-            return True
-        elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}notice':
+        ])
+
+    def parse_sub_el(self, sub_el):
+        if sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}notice':
             logger.info('Notice: \n' + sub_el.text)
         elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}Profile':
             from scap.model.xccdf_1_2.Profile import Profile
@@ -96,7 +88,7 @@ class Benchmark(Simple):
             t.from_xml(self, sub_el)
             self.test_results[sub_el.attrib['id']] = t
         else:
-            return super(Benchmark, self).parse_sub_el(name, value)
+            return super(Benchmark, self).parse_sub_el(sub_el)
         return True
 
     def from_xml(self, parent, el, ref_mapping=None):

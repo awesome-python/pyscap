@@ -27,13 +27,12 @@ class Group(GroupRuleCommon):
         self.rules = {}
         self.groups = {}
 
-    def parse_sub_el(self, sub_el):
-        ignore = [
+        self.ignore_sub_elements.extend([
             '{http://checklists.nist.gov/xccdf/1.2}signature',
-        ]
-        if sub_el.tag in ignore:
-            return True
-        elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}Value':
+        ])
+
+    def parse_sub_el(self, sub_el):
+        if sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}Value':
             from scap.model.xccdf_1_2.Value import Value
             v = Value()
             v.from_xml(self, sub_el)

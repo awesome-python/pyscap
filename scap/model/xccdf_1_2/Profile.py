@@ -27,21 +27,8 @@ class Profile(Simple):
         self.rule_check_selections = {}
         self.value_selections = {}
 
-    def parse_attrib(self, name, value):
-        ignore = [
-        ]
-        if name in ignore:
-            return True
-        elif name == 'extends':
-            logger.critical('Profiles with @extends are not supported')
-            import sys
-            sys.exit()
-        else:
-            return super(Profile, self).parse_attrib(name, value)
-        return True
-
-    def parse_sub_el(self, sub_el):
-        ignore = [
+        self.ignore_attributes.extend(['selected', 'weight'])
+        self.ignore_sub_elements.extend([
             '{http://checklists.nist.gov/xccdf/1.2}status',
             '{http://checklists.nist.gov/xccdf/1.2}dc-status',
             '{http://checklists.nist.gov/xccdf/1.2}version',
@@ -51,10 +38,19 @@ class Profile(Simple):
             '{http://checklists.nist.gov/xccdf/1.2}platform',
             '{http://checklists.nist.gov/xccdf/1.2}metadata',
             '{http://checklists.nist.gov/xccdf/1.2}signature',
-        ]
-        if sub_el.tag in ignore:
-            return True
-        elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}select':
+        ])
+
+    def parse_attrib(self, name, value):
+        if name == 'extends':
+            logger.critical('Profiles with @extends are not supported')
+            import sys
+            sys.exit()
+        else:
+            return super(Profile, self).parse_attrib(name, value)
+        return True
+
+    def parse_sub_el(self, sub_el):
+        if sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}select':
             if sub_el.attrib['idref'] not in self.parent.rules:
                 logger.critical('Rule idref in Profile not found: ' + sub_el.attrib['idref'])
                 import sys

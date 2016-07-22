@@ -15,11 +15,22 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.Model import Model
+from scap.model.Simple import Simple
 import logging
 from scap.Engine import Engine
 
 logger = logging.getLogger(__name__)
-class OCIL(Model):
-    def from_xml(self, parent, el):
-        super(OCIL, self).from_xml(parent, el)
+class OCIL(Simple):
+    def __init__(self):
+        super(OCIL, self).__init__()
+
+        self.ignore_sub_elements.extend([
+            '{http://scap.nist.gov/schema/ocil/2.0}generator',
+            '{http://scap.nist.gov/schema/ocil/2.0}document',
+            '{http://scap.nist.gov/schema/ocil/2.0}questionnaires',
+            '{http://scap.nist.gov/schema/ocil/2.0}test_actions',
+            '{http://scap.nist.gov/schema/ocil/2.0}questions',
+        ])
+
+    def from_xml(self, parent, el, ref_mapping=None):
+        super(OCIL, self).from_xml(parent, el, ref_mapping)

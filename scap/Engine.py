@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-import logging, inspect
+import logging, inspect, uuid
 import xml.etree.ElementTree as ET
 
 logger = logging.getLogger(__name__)
@@ -42,7 +42,7 @@ class Engine(object):
         'xml_cat': 'urn:oasis:names:tc:entity:xmlns:xml:catalog',
         'xml_dsig_1_0': 'http://scap.nist.gov/schema/xml-dsig/1.0',
         'xml_schema_instance': 'http://www.w3.org/2001/XMLSchema-instance',
-        'xmldsig_2000_09': 'http://www.w3.org/2000/09/xmldsig',
+        'xmldsig_2000_09': 'http://www.w3.org/2000/09/xmldsig#',
     }
 
     def __init__(self, content, hosts):
@@ -67,7 +67,12 @@ class Engine(object):
         from scap.model.arf_1_1.AssetReportCollection import AssetReportCollection
         arc = AssetReportCollection()
 
-        #TODO report requests
+        #TODO commented to reduce amoutn of output
+        # from scap.model.arf_1_1.ReportRequest import ReportRequest
+        # rr = ReportRequest()
+        # rr.id = 'report-request_' + uuid.uuid4().hex
+        # rr.content = self.content.to_xml()
+        # arc.report_requests.append(rr)
 
         for host in self.hosts:
             from scap.model.arf_1_1.Asset import Asset
@@ -109,7 +114,6 @@ class Engine(object):
                 s.protocol = svc['protocol']
 
             from scap.model.arf_1_1.Report import Report
-            import uuid
             report = Report()
             report.id = 'report_' + uuid.uuid4().hex
             arc.reports.append(report)

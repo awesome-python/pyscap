@@ -26,7 +26,7 @@ class Model(object):
         if root.tag.startswith('{' + Engine.namespaces['scap_1_2']):
             from scap.model.scap_1_2.DataStreamCollection import DataStreamCollection
             dsc = DataStreamCollection()
-            dsc.from_xml(root)
+            dsc.from_xml(None, root)
             return dsc
         else:
             logger.critical('Unsupported content with root namespace: ' + str(content.get_root_namespace()))

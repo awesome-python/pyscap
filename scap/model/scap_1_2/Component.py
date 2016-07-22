@@ -17,22 +17,20 @@
 
 from scap.model.Simple import Simple
 import logging
-from scap.Engine import Engine
 
 logger = logging.getLogger(__name__)
-class Item(Simple):
+class DataStreamCollection(Simple):
     def __init__(self):
-        super(Item, self).__init__()
+        super(DataStreamCollection, self).__init__()
 
-        self.ignore_attributes.extend(['abstract', 'cluster-id', 'extends', 'hidden', 'prohibitChanges', 'Id' ])
-        self.ignore_sub_elements.extend([
-            '{http://checklists.nist.gov/xccdf/1.2}status',
-            '{http://checklists.nist.gov/xccdf/1.2}dc-status',
-            '{http://checklists.nist.gov/xccdf/1.2}version',
-            '{http://checklists.nist.gov/xccdf/1.2}title',
-            '{http://checklists.nist.gov/xccdf/1.2}description',
-            '{http://checklists.nist.gov/xccdf/1.2}warning',
-            '{http://checklists.nist.gov/xccdf/1.2}question',
-            '{http://checklists.nist.gov/xccdf/1.2}reference',
-            '{http://checklists.nist.gov/xccdf/1.2}metadata',
+        self.ignore_attributes.extend([
         ])
+        self.ignore_sub_elements.extend([
+        ])
+
+    def parse_sub_el(self, sub_el):
+        if sub_el.tag == '{http://scap.nist.gov/schema/scap/source/1.2}data-stream':
+
+        else:
+            return super(DataStreamCollection, self).parse_sub_el(sub_el)
+        return True

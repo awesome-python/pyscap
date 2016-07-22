@@ -25,6 +25,9 @@ class Simple(Model):
         super(Simple, self).__init__()
         self.id = None
         self.required_attributes = []
+        self.ignore_attributes = []
+        self.ignore_sub_elements = []
+        self.tag_name = None
 
     def from_xml(self, parent, el, ref_mapping=None):
         super(Simple, self).from_xml(parent, el, ref_mapping)
@@ -50,12 +53,26 @@ class Simple(Model):
             pass
         elif name == 'id':
             self.id = value
+        elif name in self.ignore_attributes:
+            pass
         else:
             return False
         return True
 
     def parse_sub_el(self, sub_el):
+        if sub_el.tag in self.ignore_sub_elements:
+            return True
         return False
+
+    # Template
+    # def parse_sub_el(self, sub_el):
+    #     if super(SubClass, self).parse_sub_el(sub_el):
+    #         return True
+    #     elif sub_el.tag == '{namespace}tag':
+    #         #  stuff
+    #     else:
+    #         return False
+    #     return True
 
     def parse_boolean(self, value):
         if value == 'true' or value == '1':
@@ -64,6 +81,8 @@ class Simple(Model):
             return False
 
     def get_tag(self):
+        if self.tag_name is not None:
+            return self.tag_name
         import inspect
         raise NotImplementedError(inspect.stack()[0][3] + '() has not been implemented in subclass: ' + self.__class__.__name__)
 
@@ -84,6 +103,7 @@ class Simple(Model):
     #
     #     return attribs
     #
+    # Template
     # def get_sub_elements(self):
     #     sub_els = super(Simple, self).get_sub_elements()
     #
@@ -93,19 +113,19 @@ class Simple(Model):
         return []
 
     def to_xml(self):
-        self.element = ET.Element(self.get_tag())
+        if self.element is None:
+            self.element = ET.Element(self.get_tag())
 
+            for name, value in self.get_attributes().items():
+                self.element.attrib[name] = value
 
-        for name, value in self.get_attributes().items():
-            self.element.attrib[name] = value
+            for attrib in self.required_attributes:
+                if attrib not in self.element.attrib:
+                    logger.critical(self.__class__.__name__ + ' must define ' + attrib + ' attribute')
+                    import sys
+                    sys.exit()
 
-        for attrib in self.required_attributes:
-            if attrib not in self.element.attrib:
-                logger.critical(self.__class__.__name__ + ' must define ' + attrib + ' attribute')
-                import sys
-                sys.exit()
-
-        for sub_el in self.get_sub_elements():
-            self.element.append(sub_el)
+            for sub_el in self.get_sub_elements():
+                self.element.append(sub_el)
 
         return self.element

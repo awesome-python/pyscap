@@ -15,28 +15,49 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.Model import Model
+from scap.model.Simple import Simple
 import logging
-from scap.Engine import Engine
 
 logger = logging.getLogger(__name__)
-class DataStreamCollection(Model):
-    def from_xml(self, root_el):
-        super(DataStreamCollection, self).from_xml(None, root_el)
+class DataStreamCollection(Simple):
+    def __init__(self):
+        super(DataStreamCollection, self).__init__()
 
         self.components = {}
-
-        # find the specified data stream or the only data stream if none specified
-        from scap.model.scap_1_2.DataStream import DataStream
         self.data_streams = {}
-        for ds_el in root_el.findall("./scap_1_2:data-stream", Engine.namespaces):
-            ds = DataStream()
-            ds.from_xml(self, ds_el)
-            self.data_streams[ds_el.attrib['id']] = ds
+        self.extended_components = {}
 
-        # TODO data stream contains supported dictionaries, checklists, and checks
+        self.required_attributes.extend([
+            'id',
+            'schematron-version',
+        ])
+
+        self.ignore_attributes.extend([
+            'schematron-version',
+        ])
+        self.ignore_sub_elements.extend([
+            '{http://www.w3.org/2000/09/xmldsig#}Signature',
+        ])
+
+    def parse_sub_el(self, sub_el):
+        if sub_el.tag == '{http://scap.nist.gov/schema/scap/source/1.2}data-stream':
+            from scap.model.scap_1_2.DataStream import DataStream
+            ds = DataStream()
+            ds.from_xml(self, sub_el)
+            self.data_streams[sub_el.attrib['id']] = ds
+        elif sub_el.tag == '{http://scap.nist.gov/schema/scap/source/1.2}component':
+            self.components[sub_el.attrib['id']] = sub_el
+        elif sub_el.tag == '{http://scap.nist.gov/schema/scap/source/1.2}extended-component':
+            self.extended_components[sub_el.attrib['id']] = sub_el
+        elif sub_el.tag == '{http://www.w3.org/2000/09/xmldsig#}extended-component':
+            self.extended_componenets[sub_el.attrib['id']] = sub_el
+        else:
+            return super(DataStreamCollection, self).parse_sub_el(sub_el)
+        return True
 
     def resolve_reference(self, ref):
+        # TODO incorporate simple parsing
+        from scap.Engine import Engine
         if ref in self.ref_mapping:
             logger.debug('Mapping reference ' + ref + ' to ' + self.ref_mapping[ref])
             ref = self.ref_mapping[ref]
@@ -50,7 +71,7 @@ class DataStreamCollection(Model):
                 else:
                     comp_ref_el = self.element.find(".//scap_1_2:component-ref[@id='" + ref + "']", Engine.namespaces)
                     if comp_ref_el is not None:
-                        href = comp_ref_el.attrib['{' + Engine.namespaces['xlink'] + '}href']
+                        href = comp_ref_el.attrib['{http://www.w3.org/1999/xlink}href']
                         self.components[ref] = self.resolve_reference(href)
                     else:
                         logger.critical('unresolved ref: ' + ref)

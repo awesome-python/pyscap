@@ -28,11 +28,7 @@ class Value(Item):
         self.operator = 'equals'
 
     def parse_attrib(self, name, value):
-        ignore = [
-        ]
-        if name in ignore:
-            return True
-        elif name == 'type':
+        if name == 'type':
             self.type = value
         elif name == 'operator':
             self.operator = value
@@ -41,11 +37,7 @@ class Value(Item):
         return True
 
     def parse_sub_el(self, sub_el):
-        ignore = [
-        ]
-        if sub_el.tag in ignore:
-            return True
-        elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}value':
+        if sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}value':
             if 'selector' in sub_el.attrib:
                 logger.debug('Selector value of ' + self.id + ' ' + sub_el.attrib['selector'] + ' = ' + str(sub_el.text))
                 if sub_el.text is None:

@@ -24,12 +24,14 @@ class Check(Simple):
     def __init__(self):
         super(Check, self).__init__()
         self.check_content = None
+        self.ignore_attributes.extend(['selector'])
+        self.ignore_sub_elements.extend([
+            '{http://checklists.nist.gov/xccdf/1.2}check-import',
+            '{http://checklists.nist.gov/xccdf/1.2}check-export',
+        ])
 
     def parse_attrib(self, name, value):
-        ignore = ['selector']
-        if name in ignore:
-            return True
-        elif name == 'system':
+        if name == 'system':
             supported = [
                 'http://oval.mitre.org/XMLSchema/oval-definitions-5',
                 'http://scap.nist.gov/schema/ocil/2.0',
@@ -44,34 +46,28 @@ class Check(Simple):
         elif name == 'multi-check':
             self.multi_check = self.parse_boolean(value)
         else:
-            return super(Item, self).parse_attrib(name, value)
+            return super(Check, self).parse_attrib(name, value)
         return True
 
     def parse_sub_el(self, sub_el):
-        ignore = [
-            '{http://checklists.nist.gov/xccdf/1.2}check-import',
-            '{http://checklists.nist.gov/xccdf/1.2}check-export',
-        ]
-        if sub_el.tag in ignore:
-            return True
-        elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}check-content-ref':
-                content_el = self.resolve_reference(sub_el.attrib['href'])
-                if not content_el.tag.startswith('{' + self.system):
-                    raise RuntimeError('Check system does not match loaded reference')
-                if self.system == Engine.namespaces['oval_defs_5']:
-                    from scap.model.oval_defs_5.OVALDefinitions import OVALDefinitions
-                    self.check_content = OVALDefinitions()
-                    self.check_content.from_xml(self, content_el)
-                    # TODO need to specify def name
-                elif self.system == Engine.namespaces['ocil_2_0'] or self.system == Engine.namespaces['ocil_2']:
-                    from scap.model.ocil_2_0.OCIL import OCIL
-                    self.check_content = OCIL()
-                    self.check_content.from_xml(self, content_el)
-                    # TODO need to specify using name
-                else:
-                    raise RuntimeError('Unknown check content type: ' + self.system)
+        if sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}check-content-ref':
+            content_el = self.resolve_reference(sub_el.attrib['href'])
+            if not content_el.tag.startswith('{' + self.system):
+                raise RuntimeError('Check system does not match loaded reference')
+            if self.system == Engine.namespaces['oval_defs_5']:
+                from scap.model.oval_defs_5.OVALDefinitions import OVALDefinitions
+                self.check_content = OVALDefinitions()
+                self.check_content.from_xml(self, content_el)
+                # TODO need to specify def name
+            elif self.system == Engine.namespaces['ocil_2_0'] or self.system == Engine.namespaces['ocil_2']:
+                from scap.model.ocil_2_0.OCIL import OCIL
+                self.check_content = OCIL()
+                self.check_content.from_xml(self, content_el)
+                # TODO need to specify using name
+            else:
+                raise RuntimeError('Unknown check content type: ' + self.system)
         else:
-            return super(Item, self).parse_sub_el(sub_el)
+            return super(Check, self).parse_sub_el(sub_el)
         return True
 
     def from_xml(self, parent, el):
