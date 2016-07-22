@@ -37,11 +37,9 @@ class Model(object):
         self.element = None
         self.ref_mapping = {}
 
-    def from_xml(self, parent, el, ref_mapping=None):
+    def from_xml(self, parent, el):
         self.parent = parent
         self.element = el
-        if ref_mapping is not None:
-            self.ref_mapping.update(ref_mapping)
 
     def resolve_reference(self, ref):
         if ref in self.ref_mapping:
@@ -50,6 +48,7 @@ class Model(object):
 
         if not self.parent:
             raise RuntimeError("Got to null parent without resolving reference")
+
         return self.parent.resolve_reference(ref)
 
     def set_ref_mapping(self, mapping):

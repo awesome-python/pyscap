@@ -29,8 +29,8 @@ class Simple(Model):
         self.ignore_sub_elements = []
         self.tag_name = None
 
-    def from_xml(self, parent, el, ref_mapping=None):
-        super(Simple, self).from_xml(parent, el, ref_mapping)
+    def from_xml(self, parent, el):
+        super(Simple, self).from_xml(parent, el)
 
         for name, value in el.attrib.items():
             if not self.parse_attrib(name, value):

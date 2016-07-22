@@ -91,8 +91,8 @@ class Benchmark(Simple):
             return super(Benchmark, self).parse_sub_el(sub_el)
         return True
 
-    def from_xml(self, parent, el, ref_mapping=None):
-        super(Benchmark, self).from_xml(parent, el, ref_mapping)
+    def from_xml(self, parent, el):
+        super(Benchmark, self).from_xml(parent, el)
 
         for profile_id, p in self.profiles.items():
             p.from_xml(self, self.profile_elements[profile_id])

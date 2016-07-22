@@ -32,5 +32,5 @@ class OCIL(Simple):
             '{http://scap.nist.gov/schema/ocil/2.0}questions',
         ])
 
-    def from_xml(self, parent, el, ref_mapping=None):
-        super(OCIL, self).from_xml(parent, el, ref_mapping)
+    def from_xml(self, parent, el):
+        super(OCIL, self).from_xml(parent, el)

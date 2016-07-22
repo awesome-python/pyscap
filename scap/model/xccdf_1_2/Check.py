@@ -23,8 +23,11 @@ logger = logging.getLogger(__name__)
 class Check(Simple):
     def __init__(self):
         super(Check, self).__init__()
-        self.check_content = None
-        self.ignore_attributes.extend(['selector'])
+        self.check_content_ref = None
+        self.check_content_name = None
+        self.ignore_attributes.extend([
+            'selector',
+        ])
         self.ignore_sub_elements.extend([
             '{http://checklists.nist.gov/xccdf/1.2}check-import',
             '{http://checklists.nist.gov/xccdf/1.2}check-export',
@@ -51,28 +54,12 @@ class Check(Simple):
 
     def parse_sub_el(self, sub_el):
         if sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}check-content-ref':
-            content_el = self.resolve_reference(sub_el.attrib['href'])
-            if not content_el.tag.startswith('{' + self.system):
-                raise RuntimeError('Check system does not match loaded reference')
-            if self.system == Engine.namespaces['oval_defs_5']:
-                from scap.model.oval_defs_5.OVALDefinitions import OVALDefinitions
-                self.check_content = OVALDefinitions()
-                self.check_content.from_xml(self, content_el)
-                # TODO need to specify def name
-            elif self.system == Engine.namespaces['ocil_2_0'] or self.system == Engine.namespaces['ocil_2']:
-                from scap.model.ocil_2_0.OCIL import OCIL
-                self.check_content = OCIL()
-                self.check_content.from_xml(self, content_el)
-                # TODO need to specify using name
+            self.check_content_ref = sub_el.attrib['href']
+            if 'name' not in sub_el.attrib:
+                logger.debug('Rule ' + self.parent.id + ' will load ' + self.check_content_ref + ' and use all items')
             else:
-                raise RuntimeError('Unknown check content type: ' + self.system)
+                self.check_content_name = sub_el.attrib['name']
+                logger.debug('Rule ' + self.parent.id + ' will load ' + self.check_content_ref + ' and use item ' + self.check_content_name)
         else:
             return super(Check, self).parse_sub_el(sub_el)
         return True
-
-    def from_xml(self, parent, el):
-        super(Check, self).from_xml(parent, el)
-        if self.check_content is None:
-            logger.critical('Check for rule ' + parent.id + ' could not be loaded')
-            import sys
-            sys.exit()

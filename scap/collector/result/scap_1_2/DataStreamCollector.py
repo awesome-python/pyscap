@@ -24,7 +24,7 @@ class DataStreamCollector(ResultCollector):
     def __init__(self, host, content, args):
         super(DataStreamCollector, self).__init__(host, content)
         self.args = args
-        
+
     def collect_results(self):
         if self.args.checklist:
             checklist_id = self.args.checklist[0]
@@ -33,10 +33,10 @@ class DataStreamCollector(ResultCollector):
                 import sys
                 sys.exit()
             else:
-                checklist = self.content.checklists[checklist_id]
+                checklist = self.content.checklists[checklist_id].resolve()
         else:
             if len(self.content.checklists) == 1:
-                checklist = self.content.checklists.values()[0]
+                checklist = self.content.checklists.values()[0].resolve()
             else:
                 logger.critical('No --checklist specified and unable to implicitly choose one. Available checklists: ' + str(self.content.checklists.keys()))
                 import sys
