@@ -25,7 +25,6 @@ class DataStreamCollection(Simple):
 
         self.components = {}
         self.data_streams = {}
-        self.extended_components = {}
 
         self.required_attributes.extend([
             'id',
@@ -37,6 +36,7 @@ class DataStreamCollection(Simple):
         ])
         self.ignore_sub_elements.extend([
             '{http://www.w3.org/2000/09/xmldsig#}Signature',
+            '{http://scap.nist.gov/schema/scap/source/1.2}extended-component',
         ])
 
     def parse_sub_el(self, sub_el):
@@ -47,8 +47,6 @@ class DataStreamCollection(Simple):
             self.data_streams[sub_el.attrib['id']] = ds
         elif sub_el.tag == '{http://scap.nist.gov/schema/scap/source/1.2}component':
             self.components[sub_el.attrib['id']] = sub_el
-        elif sub_el.tag == '{http://scap.nist.gov/schema/scap/source/1.2}extended-component':
-            self.extended_components[sub_el.attrib['id']] = sub_el
         elif sub_el.tag == '{http://www.w3.org/2000/09/xmldsig#}extended-component':
             self.extended_componenets[sub_el.attrib['id']] = sub_el
         else:
