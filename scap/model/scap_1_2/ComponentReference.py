@@ -46,15 +46,6 @@ class ComponentReference(Simple):
 
     def resolve(self):
         component = self.resolve_reference(self.href)
-        if component.content.tag == '{http://checklists.nist.gov/xccdf/1.2}Benchmark':
-            from scap.model.xccdf_1_2.Benchmark import Benchmark
-            comp = Benchmark()
-        elif component.content.tag == '{http://scap.nist.gov/schema/ocil/2.0}ocil':
-            from scap.model.ocil_2_0.OCIL import OCIL
-            comp = OCIL()
-        elif component.content.tag == '{http://oval.mitre.org/XMLSchema/oval-definitions-5}oval_definitions':
-            from scap.model.oval_defs_5.OVALDefinitions import OVALDefinitions
-            comp = OVALDefinitions()
-        comp.from_xml(self, component.content)
+        comp = component.model
         comp.set_ref_mapping(self.ref_mapping)
         return comp
