@@ -22,15 +22,13 @@ import xml.etree.ElementTree as ET
 logger = logging.getLogger(__name__)
 class Connection(AI):
     def __init__(self):
-        super(Connection, self).__init__()
+        super(Connection, self).__init__('{http://scap.nist.gov/schema/asset-identification/1.1}connection')
 
         self.ip_address = None
         self.mac_address = None
         self.urls = []
         self.subnet_mask = None
         self.default_route = None
-
-        self.tag_name = '{http://scap.nist.gov/schema/asset-identification/1.1}connection'
 
     def get_sub_elements(self):
         sub_els = super(Connection, self).get_sub_elements()

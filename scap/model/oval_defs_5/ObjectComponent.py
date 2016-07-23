@@ -22,13 +22,11 @@ from scap.Engine import Engine
 logger = logging.getLogger(__name__)
 class ObjectComponent(Model):
     def __init__(self):
-        super(ObjectComponent, self).__init__()
+        super(ObjectComponent, self).__init__('{http://oval.mitre.org/XMLSchema/oval-definitions-5}object_component')
 
         self.object_ref = None
         self.item_field = None
         self.record_field = None
-
-        self.tag_name = '{http://oval.mitre.org/XMLSchema/oval-definitions-5}object_component'
 
     def parse_attribute(self, name, value):
         if name == 'object_ref':

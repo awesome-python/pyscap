@@ -22,11 +22,9 @@ from scap.Engine import Engine
 logger = logging.getLogger(__name__)
 class LocalVariable(Variable):
     def __init__(self):
-        super(LocalVariable, self).__init__()
+        super(LocalVariable, self).__init__('{http://oval.mitre.org/XMLSchema/oval-definitions-5}local_variable')
 
         self.components = []
-
-        self.tag_name = '{http://oval.mitre.org/XMLSchema/oval-definitions-5}local_variable'
 
     def parse_sub_el(self, sub_el):
         if sub_el.tag == '{http://oval.mitre.org/XMLSchema/oval-definitions-5}object_component':

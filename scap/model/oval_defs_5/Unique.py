@@ -21,6 +21,4 @@ import logging
 logger = logging.getLogger(__name__)
 class Unique(Function):
     def __init__(self):
-        super(RegexCapture, self).__init__()
-
-        self.tag_name = '{http://oval.mitre.org/XMLSchema/oval-definitions-5}unique'
+        super(RegexCapture, self).__init__('{http://oval.mitre.org/XMLSchema/oval-definitions-5}unique')

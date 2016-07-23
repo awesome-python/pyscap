@@ -22,6 +22,4 @@ import xml.etree.ElementTree as ET
 logger = logging.getLogger(__name__)
 class Circuit(ITAsset):
     def __init__(self):
-        super(Circuit, self).__init__()
-
-        self.tag_name = '{http://scap.nist.gov/schema/asset-identification/1.1}circuit'
+        super(Circuit, self).__init__('{http://scap.nist.gov/schema/asset-identification/1.1}circuit')

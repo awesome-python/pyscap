@@ -38,8 +38,8 @@ class Test(Model):
         return test
 
     # abstract
-    def __init__(self):
-        super(Test, self).__init__()
+    def __init__(self, tag_name=None):
+        super(Test, self).__init__(tag_name)
 
         self.check_existence = 'at_least_one_exists'
         self.check = None

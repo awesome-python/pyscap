@@ -21,11 +21,10 @@ import logging
 logger = logging.getLogger(__name__)
 class Definition(Model):
     def __init__(self):
-        super(Definition, self).__init__()
+        super(Definition, self).__init__('{http://oval.mitre.org/XMLSchema/oval-definitions-5}definition')
 
         self.criteria = None
 
-        self.tag_name = '{http://oval.mitre.org/XMLSchema/oval-definitions-5}definition'
         self.ignore_attributes.extend([
             'version',
             'class',

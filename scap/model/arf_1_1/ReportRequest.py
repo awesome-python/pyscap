@@ -22,13 +22,12 @@ import xml.etree.ElementTree as ET
 logger = logging.getLogger(__name__)
 class ReportRequest(Model):
     def __init__(self):
-        super(ReportRequest, self).__init__()
+        super(ReportRequest, self).__init__('{http://scap.nist.gov/schema/asset-reporting-format/1.1}report-request')
 
         self.content = None
         self.remote_resource = None
-        
+
         self.required_attributes.append('id')
-        self.tag_name = '{http://scap.nist.gov/schema/asset-reporting-format/1.1}report-request'
 
     def get_sub_elements(self):
         sub_els = []

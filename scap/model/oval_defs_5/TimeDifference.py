@@ -21,12 +21,10 @@ import logging
 logger = logging.getLogger(__name__)
 class TimeDifference(Function):
     def __init__(self):
-        super(TimeDifference, self).__init__()
+        super(TimeDifference, self).__init__('{http://oval.mitre.org/XMLSchema/oval-definitions-5}time_difference')
 
         self.format_1 = None
         self.format_2 = None
-
-        self.tag_name = '{http://oval.mitre.org/XMLSchema/oval-definitions-5}time_difference'
 
     def parse_attribute(self, name, value):
         if name == 'format_1':

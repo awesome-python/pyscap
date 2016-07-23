@@ -21,11 +21,9 @@ import logging
 logger = logging.getLogger(__name__)
 class Filter(Model):
     def __init__(self):
-        super(Filter, self).__init__()
+        super(Filter, self).__init__('{http://oval.mitre.org/XMLSchema/oval-definitions-5}filter')
 
         self.action = 'exclude'
-
-        self.tag_name = '{http://oval.mitre.org/XMLSchema/oval-definitions-5}filter'
 
     def parse_attribute(self, name, value):
         if name == 'action':

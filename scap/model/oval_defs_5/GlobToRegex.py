@@ -21,6 +21,4 @@ import logging
 logger = logging.getLogger(__name__)
 class GlobToRegex(Function):
     def __init__(self):
-        super(GlobToRegex, self).__init__()
-
-        self.tag_name = '{http://oval.mitre.org/XMLSchema/oval-definitions-5}glob_to_regex'
+        super(GlobToRegex, self).__init__('{http://oval.mitre.org/XMLSchema/oval-definitions-5}glob_to_regex')

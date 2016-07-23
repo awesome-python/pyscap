@@ -21,7 +21,7 @@ import logging
 logger = logging.getLogger(__name__)
 class OVALDefinitions(Model):
     def __init__(self):
-        super(OVALDefinitions, self).__init__()
+        super(OVALDefinitions, self).__init__('{http://oval.mitre.org/XMLSchema/oval-definitions-5}oval_definitions')
 
         self.definitions = {}
         self.tests = {}
@@ -33,7 +33,6 @@ class OVALDefinitions(Model):
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5}generator',
             '{http://www.w3.org/2000/09/xmldsig#}Signature',
         ])
-        self.tag_name = '{http://oval.mitre.org/XMLSchema/oval-definitions-5}oval_definitions'
 
     def parse_sub_el(self, sub_el):
         if sub_el.tag == '{http://oval.mitre.org/XMLSchema/oval-definitions-5}definitions':
@@ -57,9 +56,7 @@ class OVALDefinitions(Model):
         elif sub_el.tag == '{http://oval.mitre.org/XMLSchema/oval-definitions-5}variables':
             from scap.model.oval_defs_5.Variable import Variable
             for var_el in sub_el:
-                v = Variable()
-                v.from_xml(self, var_el)
-                self.variables[var_el.attrib['id']] = v
+                self.variables[var_el.attrib['id']] = Variable.load(self, var_el)
         else:
             return super(OVALDefinitions, self).parse_sub_el(sub_el)
         return True

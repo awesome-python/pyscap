@@ -37,8 +37,8 @@ class Object(Model):
         return obj
 
     # abstract
-    def __init__(self):
-        super(Object, self).__init__()
+    def __init__(self, tag_name=None):
+        super(Object, self).__init__(tag_name)
 
         self.ignore_attributes.extend([
             'version',

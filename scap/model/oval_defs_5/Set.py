@@ -21,12 +21,10 @@ import logging
 logger = logging.getLogger(__name__)
 class Set(Model):
     def __init__(self):
-        super(Set, self).__init__()
+        super(Set, self).__init__('{http://oval.mitre.org/XMLSchema/oval-definitions-5}set')
 
         self.set_operator = 'UNION'
         self.children = []
-
-        self.tag_name = '{http://oval.mitre.org/XMLSchema/oval-definitions-5}set'
 
     def parse_attribute(self, name, value):
         if name == 'set_operator':

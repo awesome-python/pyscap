@@ -37,8 +37,8 @@ class State(Model):
         return state
 
     # abstract
-    def __init__(self):
-        super(State, self).__init__()
+    def __init__(self, tag_name=None):
+        super(State, self).__init__(tag_name)
 
         self.operator = 'AND'
 

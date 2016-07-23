@@ -21,11 +21,9 @@ import logging
 logger = logging.getLogger(__name__)
 class ConstantVariable(Variable):
     def __init__(self):
-        super(ConstantVariable, self).__init__()
+        super(ConstantVariable, self).__init__('{http://oval.mitre.org/XMLSchema/oval-definitions-5}constant_variable')
 
         self.children = []
-
-        self.tag_name = '{http://oval.mitre.org/XMLSchema/oval-definitions-5}constant_variable'
 
     def parse_sub_el(self, sub_el):
         if sub_el.tag == '{http://oval.mitre.org/XMLSchema/oval-definitions-5}value':

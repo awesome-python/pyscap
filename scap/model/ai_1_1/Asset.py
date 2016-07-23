@@ -21,8 +21,8 @@ import xml.etree.ElementTree as ET
 
 logger = logging.getLogger(__name__)
 class Asset(AI):
-    def __init__(self):
-        super(Asset, self).__init__()
+    def __init__(self, tag_name=None):
+        super(Asset, self).__init__(tag_name)
 
         self.synthetic_ids = []
         self.locations = []

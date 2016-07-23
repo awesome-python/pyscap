@@ -22,13 +22,8 @@ logger = logging.getLogger(__name__)
 
 class RegistryObject(Object):
     def __init__(self):
-        super(RegistryObject, self).__init__()
+        super(RegistryObject, self).__init__('{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}registry_object')
 
-        self.tag_name = '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}registry_object'
-        self.ignore_attributes.extend([
-            # 'comment',
-            # 'version',
-        ])
         self.ignore_sub_elements.extend([
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}hive',
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}key',

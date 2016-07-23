@@ -21,16 +21,12 @@ import logging
 logger = logging.getLogger(__name__)
 class Criteria(Model):
     def __init__(self):
-        super(Criteria, self).__init__()
+        super(Criteria, self).__init__('{http://oval.mitre.org/XMLSchema/oval-definitions-5}criteria')
 
         self.operator = 'AND'
         self.negate = False
         self.applicability_check = False
         self.criteria = []
-
-        self.tag_name = '{http://oval.mitre.org/XMLSchema/oval-definitions-5}criteria'
-        # self.ignore_attributes.extend([
-        # ])
 
     def parse_attribute(self, name, value):
         if name == 'operator':

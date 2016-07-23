@@ -21,11 +21,9 @@ import logging
 logger = logging.getLogger(__name__)
 class RegexCapture(Function):
     def __init__(self):
-        super(RegexCapture, self).__init__()
+        super(RegexCapture, self).__init__('{http://oval.mitre.org/XMLSchema/oval-definitions-5}regex_capture')
 
         self.pattern = None
-
-        self.tag_name = '{http://oval.mitre.org/XMLSchema/oval-definitions-5}regex_capture'
 
     def parse_attribute(self, name, value):
         if name == 'pattern':

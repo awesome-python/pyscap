@@ -22,13 +22,8 @@ logger = logging.getLogger(__name__)
 
 class WUAUpdateSearcherObject(Object):
     def __init__(self):
-        super(WUAUpdateSearcherObject, self).__init__()
+        super(WUAUpdateSearcherObject, self).__init__('{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}wuaupdatesearcher_object')
 
-        self.tag_name = '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}wuaupdatesearcher_object'
-        self.ignore_attributes.extend([
-            # 'comment',
-            # 'version',
-        ])
         self.ignore_sub_elements.extend([
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}search_criteria'
         ])

@@ -21,6 +21,4 @@ import logging
 logger = logging.getLogger(__name__)
 class Concat(Function):
     def __init__(self):
-        super(Concat, self).__init__()
-
-        self.tag_name = '{http://oval.mitre.org/XMLSchema/oval-definitions-5}concat'
+        super(Concat, self).__init__('{http://oval.mitre.org/XMLSchema/oval-definitions-5}concat')

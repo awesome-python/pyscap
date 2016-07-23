@@ -22,12 +22,11 @@ from scap.Engine import Engine
 logger = logging.getLogger(__name__)
 class Criterion(Model):
     def __init__(self):
-        super(Criterion, self).__init__()
+        super(Criterion, self).__init__('{http://oval.mitre.org/XMLSchema/oval-definitions-5}criterion')
 
         self.negate = False
         self.applicability_check = False
 
-        self.tag_name = '{http://oval.mitre.org/XMLSchema/oval-definitions-5}criterion'
         self.ignore_attributes.extend([
             'comment',
         ])

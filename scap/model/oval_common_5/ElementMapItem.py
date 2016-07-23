@@ -20,5 +20,5 @@ import logging
 
 logger = logging.getLogger(__name__)
 class ElementMapItem(Model):
-    def __init__(self):
-        super(ElementMapItem, self).__init__()
+    def __init__(self, tag_name=None):
+        super(ElementMapItem, self).__init__(tag_name)

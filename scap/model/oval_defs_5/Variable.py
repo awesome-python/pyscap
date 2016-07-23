@@ -35,8 +35,8 @@ class Variable(Model):
         return var
 
     # abstract
-    def __init__(self):
-        super(Variable, self).__init__()
+    def __init__(self, tag_name=None):
+        super(Variable, self).__init__(tag_name)
 
         self.datatype = None
 

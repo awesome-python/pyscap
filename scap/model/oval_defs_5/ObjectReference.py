@@ -21,6 +21,4 @@ import logging
 logger = logging.getLogger(__name__)
 class ObjectReference(Model):
     def __init__(self):
-        super(ObjectReference, self).__init__()
-
-        self.tag_name = '{http://oval.mitre.org/XMLSchema/oval-definitions-5}object_reference'
+        super(ObjectReference, self).__init__('{http://oval.mitre.org/XMLSchema/oval-definitions-5}object_reference')

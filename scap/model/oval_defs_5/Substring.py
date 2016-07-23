@@ -21,12 +21,10 @@ import logging
 logger = logging.getLogger(__name__)
 class Substring(Function):
     def __init__(self):
-        super(Substring, self).__init__()
+        super(Substring, self).__init__('{http://oval.mitre.org/XMLSchema/oval-definitions-5}substring')
 
         self.substring_start = None
         self.substring_length = None
-
-        self.tag_name = '{http://oval.mitre.org/XMLSchema/oval-definitions-5}substring'
 
     def parse_attribute(self, name, value):
         if name == 'substring_start':

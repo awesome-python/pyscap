@@ -22,11 +22,8 @@ logger = logging.getLogger(__name__)
 
 class WUAUpdateSearcherState(State):
     def __init__(self):
-        super(WUAUpdateSearcherState, self).__init__()
+        super(WUAUpdateSearcherState, self).__init__('{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}wuaupdatesearcher_state')
 
-        self.tag_name = '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}wuaupdatesearcher_state'
-        self.ignore_attributes.extend([
-        ])
         self.ignore_sub_elements.extend([
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}update_id',
         ])

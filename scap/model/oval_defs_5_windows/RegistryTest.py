@@ -22,9 +22,8 @@ logger = logging.getLogger(__name__)
 
 class RegistryTest(Test):
     def __init__(self):
-        super(RegistryTest, self).__init__()
+        super(RegistryTest, self).__init__('{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}registry_test')
 
-        self.tag_name = '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}registry_test'
         self.ignore_attributes.extend([
             'comment',
             'version',

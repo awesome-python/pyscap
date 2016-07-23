@@ -21,11 +21,9 @@ import logging
 logger = logging.getLogger(__name__)
 class Arithmetic(Function):
     def __init__(self):
-        super(Arithmetic, self).__init__()
+        super(Arithmetic, self).__init__('{http://oval.mitre.org/XMLSchema/oval-definitions-5}arithmetic')
 
         self.arithmetic_operation = None
-
-        self.tag_name = '{http://oval.mitre.org/XMLSchema/oval-definitions-5}arithmetic'
 
     def parse_attribute(self, name, value):
         if name == 'arithmetic_operation':

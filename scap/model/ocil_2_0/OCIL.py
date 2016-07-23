@@ -22,9 +22,8 @@ from scap.Engine import Engine
 logger = logging.getLogger(__name__)
 class OCIL(Model):
     def __init__(self):
-        super(OCIL, self).__init__()
+        super(OCIL, self).__init__('{http://scap.nist.gov/schema/ocil/2.0}ocil')
 
-        self.tag_name = '{http://scap.nist.gov/schema/ocil/2.0}ocil'
         self.ignore_sub_elements.extend([
             '{http://scap.nist.gov/schema/ocil/2.0}generator',
             '{http://scap.nist.gov/schema/ocil/2.0}document',

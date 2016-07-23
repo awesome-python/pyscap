@@ -21,13 +21,11 @@ import logging
 logger = logging.getLogger(__name__)
 class PossibleRestriction(Model):
     def __init__(self):
-        super(PossibleRestriction, self).__init__()
+        super(PossibleRestriction, self).__init__('{http://oval.mitre.org/XMLSchema/oval-definitions-5}possible_restriction')
 
         self.hint = None
         self.operator = 'AND'
         self.children = []
-
-        self.tag_name = '{http://oval.mitre.org/XMLSchema/oval-definitions-5}possible_restriction'
 
     def parse_attribute(self, name, value):
         if name == 'hint':

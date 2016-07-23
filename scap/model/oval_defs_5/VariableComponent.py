@@ -21,11 +21,9 @@ import logging
 logger = logging.getLogger(__name__)
 class VariableComponent(Model):
     def __init__(self):
-        super(VariableComponent, self).__init__()
+        super(VariableComponent, self).__init__('{http://oval.mitre.org/XMLSchema/oval-definitions-5}variable_component')
 
         self.var_ref = None
-
-        self.tag_name = '{http://oval.mitre.org/XMLSchema/oval-definitions-5}variable_component'
 
     def parse_attribute(self, name, value):
         if name == 'var_ref':

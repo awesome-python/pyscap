@@ -21,14 +21,13 @@ import logging
 logger = logging.getLogger(__name__)
 class Relationship(Model):
     def __init__(self):
-        super(Relationship, self).__init__()
+        super(Relationship, self).__init__('{http://scap.nist.gov/schema/reporting-core/1.1}relationship')
 
         self.refs = []
 
         self.type = None
         self.scope = 'inclusive'
         self.subject = None
-        self.tag_name = '{http://scap.nist.gov/schema/reporting-core/1.1}relationship'
 
     def get_attributes(self):
         attribs = super(Relationship, self).get_attributes()

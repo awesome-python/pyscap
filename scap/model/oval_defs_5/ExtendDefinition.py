@@ -22,13 +22,12 @@ from scap.Engine import Engine
 logger = logging.getLogger(__name__)
 class ExtendDefinition(Model):
     def __init__(self):
-        super(ExtendDefinition, self).__init__()
+        super(ExtendDefinition, self).__init__('{http://oval.mitre.org/XMLSchema/oval-definitions-5}extend_definition')
 
         self.applicability_check = False
         self.definition_ref = None
         self.negate = False
 
-        self.tag_name = '{http://oval.mitre.org/XMLSchema/oval-definitions-5}extend_definition'
         self.ignore_attributes.extend([
             'comment',
         ])

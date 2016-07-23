@@ -21,7 +21,7 @@ import logging
 logger = logging.getLogger(__name__)
 class Component(Model):
     def __init__(self):
-        super(Component, self).__init__()
+        super(Component, self).__init__('{http://checklists.nist.gov/xccdf/1.2}component')
 
         self.content = None
 

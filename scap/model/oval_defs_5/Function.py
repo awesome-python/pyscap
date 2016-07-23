@@ -21,8 +21,8 @@ from scap.Engine import Engine
 
 logger = logging.getLogger(__name__)
 class Function(Model):
-    def __init__(self):
-        super(Function, self).__init__()
+    def __init__(self, tag_name=None):
+        super(Function, self).__init__(tag_name)
 
         self.components = []
 

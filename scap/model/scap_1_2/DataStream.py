@@ -21,7 +21,7 @@ import logging
 logger = logging.getLogger(__name__)
 class DataStream(Model):
     def __init__(self):
-        super(DataStream, self).__init__()
+        super(DataStream, self).__init__('{http://checklists.nist.gov/xccdf/1.2}data-stream')
 
         self.checklists = {}
         self.checks = []
@@ -43,14 +43,14 @@ class DataStream(Model):
         ])
 
     def parse_sub_el(self, sub_el):
-        from scap.model.scap_1_2.ComponentReference import ComponentReference
+        from scap.model.scap_1_2.ComponentRef import ComponentRef
         if sub_el.tag == '{http://scap.nist.gov/schema/scap/source/1.2}checklists':
             for comp_ref_el in sub_el:
                 if comp_ref_el.tag != '{http://scap.nist.gov/schema/scap/source/1.2}component-ref':
                     logger.critical(sub_el.tag + ' element can only contain component-ref elements')
                     import sys
                     sys.exit()
-                comp_ref = ComponentReference()
+                comp_ref = ComponentRef()
                 comp_ref.from_xml(self, comp_ref_el)
                 self.checklists[comp_ref.id] = comp_ref
         elif sub_el.tag == '{http://scap.nist.gov/schema/scap/source/1.2}checks':
@@ -59,7 +59,7 @@ class DataStream(Model):
                     logger.critical(sub_el.tag + ' element can only contain component-ref elements')
                     import sys
                     sys.exit()
-                comp_ref = ComponentReference()
+                comp_ref = ComponentRef()
                 comp_ref.from_xml(self, comp_ref_el)
                 self.checks.append(comp_ref)
         else:

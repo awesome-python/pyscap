@@ -21,11 +21,9 @@ import logging
 logger = logging.getLogger(__name__)
 class Begin(Function):
     def __init__(self):
-        super(Begin, self).__init__()
+        super(Begin, self).__init__('{http://oval.mitre.org/XMLSchema/oval-definitions-5}begin')
 
         self.character = None
-
-        self.tag_name = '{http://oval.mitre.org/XMLSchema/oval-definitions-5}begin'
 
     def parse_attribute(self, name, value):
         if name == 'character':
