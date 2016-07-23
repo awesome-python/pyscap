@@ -59,7 +59,6 @@ class Component(Model):
 
     @staticmethod
     def load(parent, comp_el):
-
         if not comp_el.tag.startswith('{' + Engine.namespaces['oval_defs_5'] + '}'):
             logger.critical('Unknown component tag namespace: ' + comp_el.tag)
             import sys

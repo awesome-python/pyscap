@@ -15,38 +15,54 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.Model import Model
+from scap.model.Simple import Simple
 import logging
-from scap.Engine import Engine
 
 logger = logging.getLogger(__name__)
-class Test(Model):
+
+class Test(Simple):
+    @staticmethod
+    def load(parent, test_el):
+        from scap.model.oval_defs_5_windows.RegistryTest import RegistryTest
+        from scap.model.oval_defs_5_windows.WUAUpdateSearcherTest import WUAUpdateSearcherTest
+        test_map = {
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}registry_test': RegistryTest,
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}wuaupdatesearcher_test': WUAUpdateSearcherTest,
+        }
+        if test_el.tag not in test_map:
+            logger.critical('Unknown Test tag: ' + test_el.tag)
+            import sys
+            sys.exit()
+        test = test_map[test_el.tag]()
+        test.from_xml(parent, test_el)
+        return test
+
+    # abstract
     def __init__(self):
         super(Test, self).__init__()
 
-        self.tag_name = '{http://oval.mitre.org/XMLSchema/oval-definitions-5}test'
+        self.check_existence = 'at_least_one_exists'
+        self.check = None
+        self.state_operator = 'AND'
 
-    def from_xml(self, parent, el):
-        super(Test, self).from_xml(parent, el)
+        self.ignore_attributes.extend([
+            'version',
+            'comment',
+        ])
+        self.ignore_sub_elements.extend([
+            '{http://www.w3.org/2000/09/xmldsig#}Signature',
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}notes',
+        ])
 
-        self.id = el.attrib['id']
-
-        if 'check_existence' in el.attrib :
-            self.check_existence = el.attrib['check_existence']
+    def parse_attribute(self, name, value):
+        if name == 'deprecated':
+            logger.warning('Using deprecated test ' + self.id)
+        elif name == 'check_existence':
+            self.check_existence = value
+        elif name == 'check':
+            self.check = value
+        elif name == 'state_operator':
+            self.state_operator = value
         else:
-            self.check_existence = 'at_least_one_exists'
-
-        if 'check' in el.attrib :
-            self.check = el.attrib['check']
-        else:
-            logger.critical('check not defined in test')
-            import sys
-            sys.exit()
-
-        if 'state_operator' in el.attrib :
-            self.state_operator = el.attrib['state_operator']
-        else:
-            self.state_operator = 'AND'
-
-        if 'deprecated' in el.attrib and el.attrib['deprecated']:
-            logger.warning('Using deprecated test: ' + self.id)
+            return super(Test, self).parse_attribute(name, value)
+        return True
