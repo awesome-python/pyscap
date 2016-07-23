@@ -15,52 +15,49 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.Model import Model
+from scap.model.Simple import Simple
 import logging
-from scap.Engine import Engine
 
 logger = logging.getLogger(__name__)
-class Criteria(Model):
+class Criteria(Simple):
     def __init__(self):
         super(Criteria, self).__init__()
 
+        self.operator = 'AND'
+        self.negate = False
+        self.applicability_check = False
+        self.criteria = []
+
         self.tag_name = '{http://oval.mitre.org/XMLSchema/oval-definitions-5}criteria'
+        self.ignore_attributes.extend([
+        ])
 
-    def from_xml(self, parent, el):
-        super(Criteria, self).from_xml(parent, el)
-
-        if 'operator' in el.attrib:
+    def parse_attribute(self, name, value):
+        if name == 'operator':
             self.operator = el.attrib['operator']
+        elif name == 'negate':
+            self.negate = self.parse_boolean(value)
+        elif name == 'applicability_check':
+            self.applicability_check = self.parse_boolean(value)
         else:
-            self.operator = 'AND'
+            return super(Definition, self).parse_attribute(name, value)
+        return True
 
-        if 'negate' in el.attrib and (el.attrib['negate'] == 'true' or el.attrib['negate'] == '1'):
-            self.negate = True
-        else:
-            self.negate = False
-
-        if 'applicability_check' in el.attrib and (el.attrib['applicability_check'] == 'true' or el.attrib['applicability_check'] == '1'):
-            self.applicability_check = True
-        else:
-            self.applicability_check = False
-
+    def parse_sub_el(self, sub_el):
         from scap.model.oval_defs_5.Criterion import Criterion
         from scap.model.oval_defs_5.ExtendDefinition import ExtendDefinition
-        self.criteria = []
-        for crit_el in el:
-            if crit_el.tag.endswith('criteria'):
-                c = Criteria()
-                c.from_xml(self, crit_el)
-                self.criteria.append(c)
-            elif crit_el.tag.endswith('criterion'):
-                c = Criterion()
-                c.from_xml(self, crit_el)
-                self.criteria.append(c)
-            elif crit_el.tag.endswith('extend_definition'):
-                ed = ExtendDefinition()
-                ed.from_xml(self, crit_el)
-                self.criteria.append(ed)
-            else:
-                logger.critical('Unknown tag in criteria: ' + crit_el.tag)
-                import sys
-                sys.exit()
+        if sub_el.tag == '{http://oval.mitre.org/XMLSchema/oval-definitions-5}criteria':
+            c = Criteria()
+            c.from_xml(self, sub_el)
+            self.criteria.append(c)
+        if sub_el.tag == '{http://oval.mitre.org/XMLSchema/oval-definitions-5}criterion':
+            c = Criterion()
+            c.from_xml(self, sub_el)
+            self.criteria.append(c)
+        if sub_el.tag == '{http://oval.mitre.org/XMLSchema/oval-definitions-5}extend_definition':
+            ed = ExtendDefinition()
+            ed.from_xml(self, sub_el)
+            self.criteria.append(ed)
+        else:
+            return super(Criteria, self).parse_sub_el(sub_el)
+        return True
