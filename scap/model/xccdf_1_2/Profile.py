@@ -40,13 +40,13 @@ class Profile(Simple):
             '{http://checklists.nist.gov/xccdf/1.2}signature',
         ])
 
-    def parse_attrib(self, name, value):
+    def parse_attribute(self, name, value):
         if name == 'extends':
             logger.critical('Profiles with @extends are not supported')
             import sys
             sys.exit()
         else:
-            return super(Profile, self).parse_attrib(name, value)
+            return super(Profile, self).parse_attribute(name, value)
         return True
 
     def parse_sub_el(self, sub_el):

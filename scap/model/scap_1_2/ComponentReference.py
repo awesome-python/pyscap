@@ -26,11 +26,11 @@ class ComponentReference(Simple):
         self.href = None
         self.ref_mapping = {}
 
-    def parse_attrib(self, name, value):
+    def parse_attribute(self, name, value):
         if name == '{http://www.w3.org/1999/xlink}href':
             self.href = value
         else:
-            return super(ComponentReference, self).parse_attrib(name, value)
+            return super(ComponentReference, self).parse_attribute(name, value)
         return True
 
     def parse_sub_el(self, sub_el):

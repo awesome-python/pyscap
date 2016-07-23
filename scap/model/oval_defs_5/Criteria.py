@@ -29,18 +29,18 @@ class Criteria(Simple):
         self.criteria = []
 
         self.tag_name = '{http://oval.mitre.org/XMLSchema/oval-definitions-5}criteria'
-        self.ignore_attributes.extend([
-        ])
+        # self.ignore_attributes.extend([
+        # ])
 
     def parse_attribute(self, name, value):
         if name == 'operator':
-            self.operator = el.attrib['operator']
+            self.operator = value
         elif name == 'negate':
             self.negate = self.parse_boolean(value)
         elif name == 'applicability_check':
             self.applicability_check = self.parse_boolean(value)
         else:
-            return super(Definition, self).parse_attribute(name, value)
+            return super(Criteria, self).parse_attribute(name, value)
         return True
 
     def parse_sub_el(self, sub_el):
@@ -50,11 +50,11 @@ class Criteria(Simple):
             c = Criteria()
             c.from_xml(self, sub_el)
             self.criteria.append(c)
-        if sub_el.tag == '{http://oval.mitre.org/XMLSchema/oval-definitions-5}criterion':
+        elif sub_el.tag == '{http://oval.mitre.org/XMLSchema/oval-definitions-5}criterion':
             c = Criterion()
             c.from_xml(self, sub_el)
             self.criteria.append(c)
-        if sub_el.tag == '{http://oval.mitre.org/XMLSchema/oval-definitions-5}extend_definition':
+        elif sub_el.tag == '{http://oval.mitre.org/XMLSchema/oval-definitions-5}extend_definition':
             ed = ExtendDefinition()
             ed.from_xml(self, sub_el)
             self.criteria.append(ed)

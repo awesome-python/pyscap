@@ -33,7 +33,7 @@ class Simple(Model):
         super(Simple, self).from_xml(parent, el)
 
         for name, value in el.attrib.items():
-            if not self.parse_attrib(name, value):
+            if not self.parse_attribute(name, value):
                 logger.critical('Unknown attrib in ' + el.tag + ': ' + name + ' = ' + value)
                 import sys
                 sys.exit()
@@ -44,7 +44,7 @@ class Simple(Model):
                 import sys
                 sys.exit()
 
-    def parse_attrib(self, name, value):
+    def parse_attribute(self, name, value):
         if name == '{http://www.w3.org/2001/XMLSchema-instance}schemaLocation':
             pass
         elif name == '{http://www.w3.org/XML/1998/namespace}lang':

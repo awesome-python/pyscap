@@ -27,13 +27,13 @@ class ComplexCheck(Simple):
         self.negate = False
         self.operator = 'AND'
 
-    def parse_attrib(self, name, value):
+    def parse_attribute(self, name, value):
         if name == 'negate':
             self.negate = self.parse_boolean(value)
         elif name == 'operator':
             self.negate = value
         else:
-            return super(Rule, self).parse_attrib(name, value)
+            return super(Rule, self).parse_attribute(name, value)
         return True
 
     def parse_sub_el(self, sub_el):

@@ -27,13 +27,13 @@ class Value(Item):
         self.type = 'string'
         self.operator = 'equals'
 
-    def parse_attrib(self, name, value):
+    def parse_attribute(self, name, value):
         if name == 'type':
             self.type = value
         elif name == 'operator':
             self.operator = value
         else:
-            return super(Value, self).parse_attrib(name, value)
+            return super(Value, self).parse_attribute(name, value)
         return True
 
     def parse_sub_el(self, sub_el):

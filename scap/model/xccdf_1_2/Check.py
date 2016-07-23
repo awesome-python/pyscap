@@ -33,7 +33,7 @@ class Check(Simple):
             '{http://checklists.nist.gov/xccdf/1.2}check-export',
         ])
 
-    def parse_attrib(self, name, value):
+    def parse_attribute(self, name, value):
         if name == 'system':
             supported = [
                 'http://oval.mitre.org/XMLSchema/oval-definitions-5',
@@ -49,7 +49,7 @@ class Check(Simple):
         elif name == 'multi-check':
             self.multi_check = self.parse_boolean(value)
         else:
-            return super(Check, self).parse_attrib(name, value)
+            return super(Check, self).parse_attribute(name, value)
         return True
 
     def parse_sub_el(self, sub_el):
