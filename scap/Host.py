@@ -98,7 +98,8 @@ class Host(object):
             try:
                 self.fact_collectors[i].collect_facts()
             except Exception, e:
-                logger.warning('Fact collector ' + self.fact_collectors[i].__class__.__name__ + ' failed: ' + e.__class__.__name__ + ' ' + str(e))
+                import traceback
+                logger.warning('Fact collector ' + self.fact_collectors[i].__class__.__name__ + ' failed: ' + e.__class__.__name__ + ' ' + str(e) + ':\n' + traceback.format_exc())
             i += 1
 
     def collect_results(self):
@@ -110,5 +111,6 @@ class Host(object):
             try:
                 self.result_collectors[i].collect_results()
             except Exception, e:
-                logger.warning('Rule collector ' + self.result_collectors[i].__class__.__name__ + ' failed: ' + e.__class__.__name__ + ' ' + str(e))
+                import traceback
+                logger.warning('Rule collector ' + self.result_collectors[i].__class__.__name__ + ' failed: ' + e.__class__.__name__ + ' ' + str(e) + ':\n' + traceback.format_exc())
             i += 1
