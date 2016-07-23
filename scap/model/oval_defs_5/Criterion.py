@@ -28,6 +28,9 @@ class Criterion(Simple):
         self.applicability_check = False
 
         self.tag_name = '{http://oval.mitre.org/XMLSchema/oval-definitions-5}criterion'
+        self.ignore_attributes.append([
+            'comment',
+        ])
 
     def parse_attribute(self, name, value):
         if name == 'negate':
