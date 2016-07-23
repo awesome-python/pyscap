@@ -72,6 +72,9 @@ class LocalVariable(Variable):
         elif sub_el.tag == '{http://oval.mitre.org/XMLSchema/oval-definitions-5}regex_capture':
             from scap.model.oval_defs_5.RegexCapture import RegexCapture
             comp = RegexCapture()
+        elif sub_el.tag == '{http://oval.mitre.org/XMLSchema/oval-definitions-5}glob_to_regex':
+            from scap.model.oval_defs_5.GlobToRegex import GlobToRegex
+            comp = GlobToRegex()
         else:
             return super(LocalVariable, self).parse_sub_el(sub_el)
         comp.from_xml(self, sub_el)

@@ -19,8 +19,8 @@ from scap.model.oval_defs_5.Function import Function
 import logging
 
 logger = logging.getLogger(__name__)
-class Concat(Function):
+class GlobToRegex(Function):
     def __init__(self):
-        super(Concat, self).__init__()
+        super(GlobToRegex, self).__init__()
 
-        self.tag_name = '{http://oval.mitre.org/XMLSchema/oval-definitions-5}concat'
+        self.tag_name = '{http://oval.mitre.org/XMLSchema/oval-definitions-5}glob_to_regex'

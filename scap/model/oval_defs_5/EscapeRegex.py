@@ -15,19 +15,12 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.model.oval_defs_5.component.function import Function
+from scap.model.oval_defs_5.Function import Function
 import logging
-from scap.Engine import Engine
 
 logger = logging.getLogger(__name__)
 class EscapeRegex(Function):
-    def from_xml(self, parent, el):
-        super(EscapeRegex, self).from_xml(parent, el)
+    def __init__(self):
+        super(EscapeRegex, self).__init__()
 
-        self.values = []
-        for comp_el in el:
-            self.values.append(Component.load(self, comp_el))
-        if len(self.values) != 1:
-            logger.critical('EscapeRegexFunction with != len(values)')
-            import sys
-            sys.exit()
+        self.tag_name = '{http://oval.mitre.org/XMLSchema/oval-definitions-5}escape_regex'

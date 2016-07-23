@@ -15,31 +15,24 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.model.oval_defs_5.component.function import Function
+from scap.model.oval_defs_5.Function import Function
 import logging
-from scap.Engine import Engine
 
 logger = logging.getLogger(__name__)
 class Substring(Function):
-    def from_xml(self, parent, el):
-        super(Substring, self).from_xml(parent, el)
+    def __init__(self):
+        super(Substring, self).__init__()
 
-        if 'substring_start' not in el.attrib:
-            logger.critical('SubstringFunction does not define substring_start')
-            import sys
-            sys.exit()
-        self.substring_start = el.attrib['substring_start']
+        self.substring_start = None
+        self.substring_length = None
 
-        if 'substring_length' not in el.attrib:
-            logger.critical('SubstringFunction does not define substring_length')
-            import sys
-            sys.exit()
-        self.substring_length = el.attrib['substring_length']
+        self.tag_name = '{http://oval.mitre.org/XMLSchema/oval-definitions-5}substring'
 
-        self.values = []
-        for comp_el in el:
-            self.values.append(Component.load(self, comp_el))
-        if len(self.values) != 1:
-            logger.critical('SubstringFunction with != len(values)')
-            import sys
-            sys.exit()
+    def parse_attribute(self, name, value):
+        if name == 'substring_start':
+            self.substring_start = value
+        elif name == 'substring_length':
+            self.substring_length = value
+        else:
+            return super(Substring, self).parse_attribute(name, value)
+        return True

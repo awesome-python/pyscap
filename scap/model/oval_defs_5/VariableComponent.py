@@ -31,5 +31,5 @@ class VariableComponent(Model):
         if name == 'var_ref':
             self.var_ref = value
         else:
-            return super(ObjectComponent, self).parse_attribute(name, value)
+            return super(VariableComponent, self).parse_attribute(name, value)
         return True
