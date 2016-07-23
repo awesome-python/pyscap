@@ -25,3 +25,5 @@ class System(ITAsset):
         super(Person, self).__init__()
 
         self.system_names = []
+
+        self.tag_name = '{http://scap.nist.gov/schema/asset-identification/1.1}system'

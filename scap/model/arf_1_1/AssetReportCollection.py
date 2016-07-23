@@ -27,9 +27,8 @@ class AssetReportCollection(RelationshipsContainer):
         self.assets = []
         self.reports = []
         self.extended_infos = []
-
-    def get_tag(self):
-        return '{http://scap.nist.gov/schema/asset-reporting-format/1.1}asset-report-collection'
+        
+        self.tag_name = '{http://scap.nist.gov/schema/asset-reporting-format/1.1}asset-report-collection'
 
     def get_sub_elements(self):
         sub_els = []

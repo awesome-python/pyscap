@@ -26,10 +26,9 @@ class ReportRequest(Simple):
 
         self.content = None
         self.remote_resource = None
+        
         self.required_attributes.append('id')
-
-    def get_tag(self):
-        return '{http://scap.nist.gov/schema/asset-reporting-format/1.1}report-request'
+        self.tag_name = '{http://scap.nist.gov/schema/asset-reporting-format/1.1}report-request'
 
     def get_sub_elements(self):
         sub_els = []

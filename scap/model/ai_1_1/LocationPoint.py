@@ -21,4 +21,7 @@ import xml.etree.ElementTree as ET
 
 logger = logging.getLogger(__name__)
 class LocationPoint(AI):
-    pass
+    def __init__(self):
+        super(LocationPoint, self).__init__()
+
+        self.tag_name = '{http://scap.nist.gov/schema/asset-identification/1.1}location-point'

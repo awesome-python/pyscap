@@ -25,3 +25,5 @@ class Software(ITAsset):
         super(Person, self).__init__()
 
         self.licenses = []
+
+        self.tag_name = '{http://scap.nist.gov/schema/asset-identification/1.1}software'

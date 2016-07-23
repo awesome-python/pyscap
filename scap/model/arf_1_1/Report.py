@@ -22,7 +22,6 @@ logger = logging.getLogger(__name__)
 class Report(Simple):
     def __init__(self):
         super(Report, self).__init__()
-        self.required_attributes.append('id')
 
-    def get_tag(self):
-        return '{http://scap.nist.gov/schema/asset-reporting-format/1.1}report'
+        self.required_attributes.append('id')
+        self.tag_name = '{http://scap.nist.gov/schema/asset-reporting-format/1.1}report'

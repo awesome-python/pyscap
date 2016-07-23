@@ -26,3 +26,5 @@ class Person(Asset):
 
         self.email_addresses = []
         self.telephone_numbers = []
+
+        self.tag_name = '{http://scap.nist.gov/schema/asset-identification/1.1}person'

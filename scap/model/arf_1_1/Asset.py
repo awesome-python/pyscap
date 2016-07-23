@@ -23,12 +23,11 @@ logger = logging.getLogger(__name__)
 class Asset(Simple):
     def __init__(self):
         super(Asset, self).__init__()
+
         self.asset = None
 
+        self.tag_name = '{http://scap.nist.gov/schema/asset-reporting-format/1.1}asset'
         self.required_attributes.append('id')
-
-    def get_tag(self):
-        return '{http://scap.nist.gov/schema/asset-reporting-format/1.1}asset'
 
     def get_sub_elements(self):
         sub_els = super(Asset, self).get_sub_elements()

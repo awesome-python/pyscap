@@ -28,9 +28,7 @@ class Relationship(Simple):
         self.type = None
         self.scope = 'inclusive'
         self.subject = None
-
-    def get_tag(self):
-        return '{http://scap.nist.gov/schema/reporting-core/1.1}relationship'
+        self.tag_name = '{http://scap.nist.gov/schema/reporting-core/1.1}relationship'
 
     def get_attributes(self):
         attribs = super(Relationship, self).get_attributes()

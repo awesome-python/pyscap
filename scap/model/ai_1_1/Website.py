@@ -20,5 +20,8 @@ import logging
 import xml.etree.ElementTree as ET
 
 logger = logging.getLogger(__name__)
-class System(ITAsset):
-    pass
+class Website(ITAsset):
+    def __init__(self):
+        super(Website, self).__init__()
+
+        self.tag_name = '{http://scap.nist.gov/schema/asset-identification/1.1}website'

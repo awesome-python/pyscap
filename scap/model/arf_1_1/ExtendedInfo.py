@@ -21,4 +21,7 @@ import xml.etree.ElementTree as ET
 
 logger = logging.getLogger(__name__)
 class ExtendedInfo(Simple):
-    pass
+    def __init__(self):
+        super(ExtendedInfo, self).__init__()
+
+        self.tag_name = '{http://scap.nist.gov/schema/asset-reporting-format/1.1}extended-info'

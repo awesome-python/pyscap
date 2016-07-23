@@ -31,8 +31,7 @@ class ComputingDevice(ITAsset):
         self.hostname = None
         self.motherboard_guid = None
 
-    def get_tag(self):
-        return '{http://scap.nist.gov/schema/asset-identification/1.1}computing-device'
+        self.tag_name = '{http://scap.nist.gov/schema/asset-identification/1.1}computing-device'
 
     def get_sub_elements(self):
         sub_els = super(ComputingDevice, self).get_sub_elements()

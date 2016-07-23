@@ -29,8 +29,7 @@ class Service(ITAsset):
         self.port_ranges = []
         self.protocol = None
 
-    def get_tag(self):
-        return '{http://scap.nist.gov/schema/asset-identification/1.1}service'
+        self.tag_name = '{http://scap.nist.gov/schema/asset-identification/1.1}service'
 
     def get_sub_elements(self):
         sub_els = super(Service, self).get_sub_elements()

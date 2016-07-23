@@ -30,8 +30,7 @@ class Connection(AI):
         self.subnet_mask = None
         self.default_route = None
 
-    def get_tag(self):
-        return '{http://scap.nist.gov/schema/asset-identification/1.1}connection'
+        self.tag_name = '{http://scap.nist.gov/schema/asset-identification/1.1}connection'
 
     def get_sub_elements(self):
         sub_els = super(Connection, self).get_sub_elements()

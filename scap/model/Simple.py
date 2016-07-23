@@ -114,7 +114,9 @@ class Simple(Model):
 
     def to_xml(self):
         if self.element is None:
-            self.element = ET.Element(self.get_tag())
+            if self.tag_name is None:
+                raise NotImplementedError('Subclass ' + self.__class__.__name__ + ' does not define tag_name')
+            self.element = ET.Element(self.tag_name)
 
             for name, value in self.get_attributes().items():
                 self.element.attrib[name] = value

@@ -29,3 +29,5 @@ class Organization(Asset):
         self.website_urls = []
 
         self.name_details = []
+
+        self.tag_name = '{http://scap.nist.gov/schema/asset-identification/1.1}organization'

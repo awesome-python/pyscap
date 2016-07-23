@@ -21,4 +21,7 @@ import xml.etree.ElementTree as ET
 
 logger = logging.getLogger(__name__)
 class ObjectRef(Simple):
-    pass
+    def __init__(self):
+        super(ObjectRef, self).__init__()
+
+        self.tag_name = '{http://scap.nist.gov/schema/asset-reporting-format/1.1}object-ref'
