@@ -53,9 +53,7 @@ class OVALDefinitions(Simple):
         elif sub_el.tag == '{http://oval.mitre.org/XMLSchema/oval-definitions-5}states':
             from scap.model.oval_defs_5.State import State
             for state_el in sub_el:
-                s = State()
-                s.from_xml(self, state_el)
-                self.states[state_el.attrib['id']] = s
+                self.states[state_el.attrib['id']] = State.load(self, state_el)
         elif sub_el.tag == '{http://oval.mitre.org/XMLSchema/oval-definitions-5}variables':
             from scap.model.oval_defs_5.Variable import Variable
             for var_el in sub_el:

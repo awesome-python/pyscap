@@ -15,26 +15,47 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.Model import Model
+from scap.model.Simple import Simple
 import logging
-from scap.Engine import Engine
 
 logger = logging.getLogger(__name__)
-class State(Model):
+class State(Simple):
+    @staticmethod
+    def load(parent, state_el):
+        from scap.model.oval_defs_5_windows.RegistryState import RegistryState
+        from scap.model.oval_defs_5_windows.WUAUpdateSearcherState import WUAUpdateSearcherState
+        state_map = {
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}registry_state': RegistryState,
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}wuaupdatesearcher_state': WUAUpdateSearcherState,
+        }
+        if state_el.tag not in state_map:
+            logger.critical('Unknown state tag: ' + state_el.tag)
+            import sys
+            sys.exit()
+        state = state_map[state_el.tag]()
+        state.from_xml(parent, state_el)
+        return state
+
+    # abstract
     def __init__(self):
         super(State, self).__init__()
 
-        self.tag_name = '{http://oval.mitre.org/XMLSchema/oval-definitions-5}state'
+        self.operator = 'AND'
 
-    def from_xml(self, parent, el):
-        super(State, self).from_xml(parent, el)
+        self.ignore_attributes.extend([
+            'version',
+            'comment',
+        ])
+        self.ignore_sub_elements.extend([
+            '{http://www.w3.org/2000/09/xmldsig#}Signature',
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}notes',
+        ])
 
-        self.id = el.attrib['id']
-
-        if 'operator' in el.attrib :
-            self.operator = el.attrib['operator']
+    def parse_attribute(self, name, value):
+        if name == 'deprecated':
+            logger.warning('Using deprecated state ' + self.id)
+        elif name == 'operator':
+            self.operator = value
         else:
-            self.operator = 'AND'
-
-        if 'deprecated' in el.attrib and el.attrib['deprecated']:
-            logger.warning('Using deprecated test: ' + self.id)
+            return super(State, self).parse_attribute(name, value)
+        return True
