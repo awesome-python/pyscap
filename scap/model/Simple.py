@@ -21,4 +21,14 @@ import logging
 
 logger = logging.getLogger(__name__)
 class Simple(Model):
-    pass
+    def __init__(self, tag_name):
+        super(Simple, self).__init__()
+
+        self.value = None
+
+        self.tag_name = tag_name
+
+    def from_xml(self, paren, sub_el):
+        super(Simple, self).from_xml(parent, sub_el)
+
+        self.value = sub_el.text

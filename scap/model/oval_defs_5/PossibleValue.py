@@ -15,17 +15,15 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.Model import Model
+from scap.model.Simple import Simple
 import logging
 
 logger = logging.getLogger(__name__)
-class PossibleValue(Model):
+class PossibleValue(Simple):
     def __init__(self):
-        super(PossibleValue, self).__init__()
+        super(PossibleValue, self).__init__('{http://oval.mitre.org/XMLSchema/oval-definitions-5}possible_value')
 
         self.hint = None
-
-        self.tag_name = '{http://oval.mitre.org/XMLSchema/oval-definitions-5}possible_value'
 
     def parse_attribute(self, name, value):
         if name == 'hint':

@@ -15,28 +15,28 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.model.oval_defs_5.component import Component
+from scap.Model import Model
 import logging
 from scap.Engine import Engine
 
 logger = logging.getLogger(__name__)
-class ObjectComponent(Component):
-    def from_xml(self, parent, el):
-        super(ObjectComponent, self).from_xml(parent, el)
+class ObjectComponent(Model):
+    def __init__(self):
+        super(LiteralComponent, self).__init__()
 
-        if 'object_ref' not in el.attrib:
-            logger.critical('object component missing object_ref attribute')
-            import sys
-            sys.exit()
-        self.object_ref = el.attrib['object_ref']
+        self.object_ref = None
+        self.item_field = None
+        self.record_field = None
 
-        if 'item_field' not in el.attrib:
-            logger.critical('object component missing item_field attribute')
-            import sys
-            sys.exit()
-        self.object_ref = el.attrib['item_field']
+        self.tag_name = '{http://oval.mitre.org/XMLSchema/oval-definitions-5}literal_component'
 
-        if 'record_field' in el.attrib:
-            self.record_field = el.attrib['record_field']
+    def parse_attribute(self, name, value):
+        if name == 'object_ref':
+            self.object_ref = value
+        elif name == 'item_field':
+            self.item_field = value
+        elif name == 'record_field':
+            self.record_field = value
         else:
-            self.record_field = None
+            return super(ObjectComponent, self).parse_attribute(name, value)
+        return True

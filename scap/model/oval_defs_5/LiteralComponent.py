@@ -15,21 +15,20 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.Model import Model
+from scap.model.Simple import Simple
 import logging
 from scap.Engine import Engine
 
 logger = logging.getLogger(__name__)
-class LiteralComponent(Model):
-    def from_xml(self, parent, el):
-        super(LiteralComponent, self).from_xml(parent, el)
+class LiteralComponent(Simple):
+    def __init__(self):
+        super(LiteralComponent, self).__init__('{http://oval.mitre.org/XMLSchema/oval-definitions-5}literal_component')
 
-        if 'value' in el.attrib:
-            self.value = el.attrib['value']
-        else:
-            self.value = ''
+        self.datatype = 'string'
 
-        if 'datatype' in el.attrib:
-            self.datatype = el.attrib['datatype']
+    def parse_attribute(self, name, value):
+        if name == 'datatype':
+            self.datatype = value
         else:
-            self.datatype = 'string'
+            return super(LiteralComponent, self).parse_attribute(name, value)
+        return True

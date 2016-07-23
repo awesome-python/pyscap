@@ -15,19 +15,10 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.Model import Model
+from scap.model.Simple import Simple
 import logging
 
 logger = logging.getLogger(__name__)
-class Value(Model):
+class Value(Simple):
     def __init__(self):
-        super(Value, self).__init__()
-
-        self.value = None
-
-        self.tag_name = '{http://oval.mitre.org/XMLSchema/oval-definitions-5}value'
-
-    def from_xml(self, paren, sub_el):
-        super(Value, self).from_xml(parent, sub_el)
-
-        self.value = sub_el.text
+        super(Value, self).__init__('{http://oval.mitre.org/XMLSchema/oval-definitions-5}value')
