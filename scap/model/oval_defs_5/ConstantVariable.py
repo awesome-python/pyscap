@@ -17,22 +17,21 @@
 
 from scap.model.oval_defs_5.variable import Variable
 import logging
-from scap.Engine import Engine
 
 logger = logging.getLogger(__name__)
 class ConstantVariable(Variable):
     def __init__(self):
         super(ConstantVariable, self).__init__()
 
+        self.children = []
+
         self.tag_name = '{http://oval.mitre.org/XMLSchema/oval-definitions-5}constant_variable'
 
-    def from_xml(self, parent, el):
-        super(ConstantVariable, self).from_xml(parent, el)
-
-        self.values = []
-        for v_el in el.findall('./oval_defs_5:value'):
-            if 'value' not in v_el.attrib:
-                logger.critical('value element missing value attribute')
-                import sys
-                sys.exit()
-            self.values.append(v_el.attrib['value'])
+    def parse_sub_el(self, sub_el):
+        if sub_el.tag == '{http://oval.mitre.org/XMLSchema/oval-definitions-5}value':
+            v = Value()
+            v.from_xml(self, sub_el)
+            self.children.append(v)
+        else:
+            return super(ConstantVariable, self).parse_sub_el(sub_el)
+        return True

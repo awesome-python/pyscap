@@ -15,21 +15,19 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.model.oval_defs_5.variable import Variable
+from scap.model.Simple import Simple
 import logging
-from scap.Engine import Engine
 
 logger = logging.getLogger(__name__)
-class LocalVariable(Variable):
+class Value(Simple):
     def __init__(self):
-        super(LocalVariable, self).__init__()
+        super(Value, self).__init__()
 
-        self.components = []
+        self.value = None
 
-        self.tag_name = '{http://oval.mitre.org/XMLSchema/oval-definitions-5}local_variable'
+        self.tag_name = '{http://oval.mitre.org/XMLSchema/oval-definitions-5}value'
 
-    def from_xml(self, parent, el):
-        super(LocalVariable, self).from_xml(parent, el)
+    def from_xml(self, paren, sub_el):
+        super(Value, self).from_xml(parent, sub_el)
 
-        for comp_el in el:
-            self.components.append(Component.load(self, comp_el))
+        self.value = sub_el.text

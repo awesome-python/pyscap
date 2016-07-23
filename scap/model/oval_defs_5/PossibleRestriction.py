@@ -15,27 +15,34 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.model.oval_defs_5.variable import Variable
+from scap.model.Simple import Simple
 import logging
 
 logger = logging.getLogger(__name__)
-class ExternalVariable(Variable):
+class PossibleRestriction(Simple):
     def __init__(self):
-        super(ExternalVariable, self).__init__()
+        super(PossibleRestriction, self).__init__()
 
+        self.hint = None
+        self.operator = 'AND'
         self.children = []
 
-        self.tag_name = '{http://oval.mitre.org/XMLSchema/oval-definitions-5}external_variable'
+        self.tag_name = '{http://oval.mitre.org/XMLSchema/oval-definitions-5}possible_restriction'
+
+    def parse_attribute(self, name, value):
+        if name == 'hint':
+            self.hint = value
+        elif name == 'operator':
+            self.operator = value
+        else:
+            return super(PossibleRestriction, self).parse_attribute(name, value)
+        return True
 
     def parse_sub_el(self, sub_el):
-        if sub_el.tag == '{http://oval.mitre.org/XMLSchema/oval-definitions-5}possible_value':
-            pv = PossibleValue()
-            pv.from_xml(self, sub_el)
-            self.children.append(pv)
-        elif sub_el.tag == '{http://oval.mitre.org/XMLSchema/oval-definitions-5}possible_restriction':
-            pr = PossibleRestriction()
-            pr.from_xml(self, sub_el)
-            self.children.append(pr)
+        if sub_el.tag == '{http://oval.mitre.org/XMLSchema/oval-definitions-5}restriction':
+            r = Restriction()
+            r.from_xml(self, sub_el)
+            self.children.append(r)
         else:
-            return super(ExternalVariable, self).parse_sub_el(sub_el)
+            return super(PossibleRestriction, self).parse_sub_el(sub_el)
         return True

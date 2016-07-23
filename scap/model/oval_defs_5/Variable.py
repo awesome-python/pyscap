@@ -15,28 +15,45 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.Model import Model
+from scap.model.Simple import Simple
 import logging
-from scap.Engine import Engine
 
 logger = logging.getLogger(__name__)
-class Variable(Model):
+class Variable(Simple):
+    @staticmethod
+    def load(parent, var_el):
+        # from scap.model.oval_defs_5_windows.RegistryState import RegistryState
+        # from scap.model.oval_defs_5_windows.WUAUpdateSearcherState import WUAUpdateSearcherState
+        var_map = {
+        }
+        if var_el.tag not in var_map:
+            logger.critical('Unknown var tag: ' + var_el.tag)
+            import sys
+            sys.exit()
+        var = var_map[var_el.tag]()
+        var.from_xml(parent, var_el)
+        return var
+
+    # abstract
     def __init__(self):
         super(Variable, self).__init__()
 
-        self.tag_name = '{http://oval.mitre.org/XMLSchema/oval-definitions-5}variable'
+        self.datatype = None
 
-    def from_xml(self, parent, el):
-        super(Variable, self).from_xml(parent, el)
+        self.ignore_attributes.extend([
+            'version',
+            'comment',
+        ])
+        self.ignore_sub_elements.extend([
+            '{http://www.w3.org/2000/09/xmldsig#}Signature',
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}notes',
+        ])
 
-        self.id = el.attrib['id']
-
-        if 'datatype' in el.attrib :
-            self.datatype = el.attrib['datatype']
+    def parse_attribute(self, name, value):
+        if name == 'deprecated':
+            logger.warning('Using deprecated variable ' + self.id)
+        elif name == 'datatype':
+            self.datatype = value
         else:
-            logger.critical('datatype not defined in Variable')
-            import sys
-            sys.exit()
-
-        if 'deprecated' in el.attrib and el.attrib['deprecated']:
-            logger.warning('Using deprecated test: ' + self.id)
+            return super(Variable, self).parse_attribute(name, value)
+        return True
