@@ -34,8 +34,18 @@ class Component(Simple):
         ])
 
     def parse_sub_el(self, sub_el):
-        if sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}Benchmark' or sub_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}ocil' or sub_el.tag == '{http://oval.mitre.org/XMLSchema/oval-definitions-5}oval_definitions':
-            self.content = sub_el
+        if sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}Benchmark':
+            from scap.model.xccdf_1_2.Benchmark import Benchmark
+            self.model = Benchmark()
+            self.model.from_xml(self, sub_el)
+        elif sub_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}ocil':
+            from scap.model.ocil_2_0.OCIL import OCIL
+            self.model = OCIL()
+            self.model.from_xml(self, sub_el)
+        elif sub_el.tag == '{http://oval.mitre.org/XMLSchema/oval-definitions-5}oval_definitions':
+            from scap.model.oval_defs_5.OVALDefinitions import OVALDefinitions
+            self.model = OVALDefinitions()
+            self.model.from_xml(self, sub_el)
         else:
             return super(Component, self).parse_sub_el(sub_el)
         return True
