@@ -15,18 +15,16 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.model.oval_defs_5.variable import Variable
+from scap.model.Simple import Simple
 import logging
 from scap.Engine import Engine
 
 logger = logging.getLogger(__name__)
-class LocalVariable(Variable):
+class Function(Simple):
     def __init__(self):
-        super(LocalVariable, self).__init__()
+        super(Function, self).__init__()
 
         self.components = []
-
-        self.tag_name = '{http://oval.mitre.org/XMLSchema/oval-definitions-5}local_variable'
 
     def parse_sub_el(self, sub_el):
         if sub_el.tag == '{http://oval.mitre.org/XMLSchema/oval-definitions-5}object_component':
@@ -73,7 +71,7 @@ class LocalVariable(Variable):
             from scap.model.oval_defs_5.RegexCapture import RegexCapture
             comp = RegexCapture()
         else:
-            return super(LocalVariable, self).parse_sub_el(sub_el)
+            return super(Function, self).parse_sub_el(sub_el)
         comp.from_xml(self, sub_el)
         self.components.append(comp)
         return True
