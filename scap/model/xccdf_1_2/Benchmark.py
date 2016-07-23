@@ -15,12 +15,12 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.model.Simple import Simple
+from scap.Model import Model
 import logging
 from scap.Engine import Engine
 
 logger = logging.getLogger(__name__)
-class Benchmark(Simple):
+class Benchmark(Model):
     def __init__(self):
         super(Benchmark, self).__init__()
 

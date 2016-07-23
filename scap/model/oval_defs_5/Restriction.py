@@ -15,11 +15,11 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.model.Simple import Simple
+from scap.Model import Model
 import logging
 
 logger = logging.getLogger(__name__)
-class Restriction(Simple):
+class Restriction(Model):
     def __init__(self):
         super(Restriction, self).__init__()
 

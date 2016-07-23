@@ -15,12 +15,12 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.model.Simple import Simple
+from scap.Model import Model
 import logging
 
 logger = logging.getLogger(__name__)
 
-class Test(Simple):
+class Test(Model):
     @staticmethod
     def load(parent, test_el):
         from scap.model.oval_defs_5_windows.RegistryTest import RegistryTest

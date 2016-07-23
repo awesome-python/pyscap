@@ -17,16 +17,20 @@
 
 from scap.Model import Model
 import logging
-from scap.Engine import Engine
 
 logger = logging.getLogger(__name__)
 class Catalog(Model):
-    def from_xml(self, parent, el):
-        super(Catalog, self).from_xml(parent, el)
+    def __init__(self):
+        super(Catalog, self).__init__()
 
         self.entries = {}
-        for entry in el.findall('./xml_cat:uri', Engine.namespaces):
-            self.entries[entry.attrib['name']] = entry.attrib['uri']
+
+    def parse_sub_el(self, sub_el):
+        if sub_el.tag == '{urn:oasis:names:tc:entity:xmlns:xml:catalog}uri':
+            self.entries[sub_el.attrib['name']] = sub_el.attrib['uri']
+        else:
+            return super(SubClass, self).parse_sub_el(sub_el)
+        return True
 
     def to_dict(self):
         logger.debug('Catalog entries: ' + str(self.entries))

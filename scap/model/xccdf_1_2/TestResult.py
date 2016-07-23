@@ -15,12 +15,12 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.model.Simple import Simple
+from scap.Model import Model
 import logging
 from scap.Engine import Engine
 
 logger = logging.getLogger(__name__)
-class TestResult(Simple):
+class TestResult(Model):
     # urn:xccdf:fact:asset:identifier:mac Ethernet media access control address (SHOULD be sent as a pair with the IPv4 or IPv6 address to ensure uniqueness)
     # urn:xccdf:fact:asset:identifier:ipv4 IPv4 address
     # urn:xccdf:fact:asset:identifier:ipv6 IPv6 address
