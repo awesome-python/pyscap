@@ -24,6 +24,7 @@ class OCIL(Simple):
     def __init__(self):
         super(OCIL, self).__init__()
 
+        self.tag_name = '{http://scap.nist.gov/schema/ocil/2.0}ocil'
         self.ignore_sub_elements.extend([
             '{http://scap.nist.gov/schema/ocil/2.0}generator',
             '{http://scap.nist.gov/schema/ocil/2.0}document',

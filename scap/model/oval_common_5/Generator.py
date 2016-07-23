@@ -22,4 +22,5 @@ logger = logging.getLogger(__name__)
 class Generator(Simple):
     def __init__(self):
         super(Generator, self).__init__()
-        self.tag_name = 'generator'
+
+        self.tag_name = '{http://oval.mitre.org/XMLSchema/oval-common-5}generator'

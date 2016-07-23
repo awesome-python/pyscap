@@ -22,4 +22,5 @@ logger = logging.getLogger(__name__)
 class DeprecatedInfo(Simple):
     def __init__(self):
         super(DeprecatedInfo, self).__init__()
-        self.tag_name = 'deprecated_info'
+
+        self.tag_name = '{http://oval.mitre.org/XMLSchema/oval-common-5}deprecated_info'

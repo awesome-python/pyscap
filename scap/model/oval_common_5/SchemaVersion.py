@@ -19,7 +19,8 @@ from scap.model.Simple import Simple
 import logging
 
 logger = logging.getLogger(__name__)
-class Generator(Simple):
+class SchemaVersion(Simple):
     def __init__(self):
-        super(Generator, self).__init__()
-        self.tag_name = 'generator'
+        super(SchemaVersion, self).__init__()
+        
+        self.tag_name = '{http://oval.mitre.org/XMLSchema/oval-common-5}schema-version'
