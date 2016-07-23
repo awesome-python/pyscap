@@ -23,4 +23,15 @@ class Filter(Simple):
     def __init__(self):
         super(Filter, self).__init__()
 
+        self.action = 'exclude'
+
         self.tag_name = '{http://oval.mitre.org/XMLSchema/oval-definitions-5}filter'
+
+    def parse_attribute(self, name, value):
+        if name == 'action':
+            self.action = value
+        else:
+            return super(Set, self).parse_attribute(name, value)
+        return True
+
+    # TODO need to collect more for actual implementation
