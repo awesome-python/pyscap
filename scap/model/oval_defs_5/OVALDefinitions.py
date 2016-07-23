@@ -31,7 +31,6 @@ class OVALDefinitions(Simple):
 
         self.ignore_sub_elements.extend([
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5}generator',
-            '{http://oval.mitre.org/XMLSchema/oval-common-5}generator',
             '{http://www.w3.org/2000/09/xmldsig#}Signature',
         ])
         self.tag_name = '{http://oval.mitre.org/XMLSchema/oval-definitions-5}oval_definitions'

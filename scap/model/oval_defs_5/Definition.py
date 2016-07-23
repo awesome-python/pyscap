@@ -26,6 +26,22 @@ class Definition(Simple):
         self.criteria = None
 
         self.tag_name = '{http://oval.mitre.org/XMLSchema/oval-definitions-5}definition'
+        self.ignore_attributes.extend([
+            'version',
+            'class',
+        ])
+        self.ignore_sub_elements.extend([
+            '{http://www.w3.org/2000/09/xmldsig#}Signature',
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}metadata',
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}notes',
+        ])
+
+    def parse_attribute(self, name, value):
+        if name == 'deprecated':
+            logger.warning('Using deprecated definition ' + self.id)
+        else:
+            return super(Definition, self).parse_attribute(name, value)
+        return True
 
     def parse_sub_el(self, sub_el):
         if sub_el.tag == '{http://oval.mitre.org/XMLSchema/oval-definitions-5}criteria':
@@ -33,6 +49,9 @@ class Definition(Simple):
             c = Criteria()
             c.from_xml(self, sub_el)
             self.criteria = c
+        else:
+            return super(Definition, self).parse_sub_el(sub_el)
+        return True
 
     def from_xml(self, parent, el):
         super(Definition, self).from_xml(parent, el)
