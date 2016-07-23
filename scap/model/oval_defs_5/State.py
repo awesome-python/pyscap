@@ -21,6 +21,11 @@ from scap.Engine import Engine
 
 logger = logging.getLogger(__name__)
 class State(Model):
+    def __init__(self):
+        super(State, self).__init__()
+
+        self.tag_name = '{http://oval.mitre.org/XMLSchema/oval-definitions-5}state'
+
     def from_xml(self, parent, el):
         super(State, self).from_xml(parent, el)
 

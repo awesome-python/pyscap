@@ -21,6 +21,11 @@ from scap.Engine import Engine
 
 logger = logging.getLogger(__name__)
 class Criterion(Model):
+    def __init__(self):
+        super(Criterion, self).__init__()
+
+        self.tag_name = '{http://oval.mitre.org/XMLSchema/oval-definitions-5}criterion'
+
     def from_xml(self, parent, el):
         super(Criterion, self).from_xml(parent, el)
 

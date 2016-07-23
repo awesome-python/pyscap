@@ -21,6 +21,11 @@ from scap.Engine import Engine
 
 logger = logging.getLogger(__name__)
 class Object(Model):
+    def __init__(self):
+        super(Object, self).__init__()
+
+        self.tag_name = '{http://oval.mitre.org/XMLSchema/oval-definitions-5}object'
+
     def from_xml(self, parent, el):
         super(Object, self).from_xml(parent, el)
 
