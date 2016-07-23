@@ -15,33 +15,35 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.Model import Model
+from scap.model.Simple import Simple
 import logging
 from scap.Engine import Engine
 
 logger = logging.getLogger(__name__)
-class Criterion(Model):
+class Criterion(Simple):
     def __init__(self):
         super(Criterion, self).__init__()
 
+        self.negate = False
+        self.applicability_check = False
+
         self.tag_name = '{http://oval.mitre.org/XMLSchema/oval-definitions-5}criterion'
+
+    def parse_attribute(self, name, value):
+        if name == 'negate':
+            self.negate = self.parse_boolean(value)
+        elif name == 'applicability_check':
+            self.applicability_check = self.parse_boolean(value)
+        elif name == 'test_ref':
+            self.test_ref = value
+        else:
+            return super(Criterion, self).parse_attribute(name, value)
+        return True
 
     def from_xml(self, parent, el):
         super(Criterion, self).from_xml(parent, el)
 
-        if 'negate' in el.attrib and (el.attrib['negate'] == 'true' or el.attrib['negate'] == '1'):
-            self.negate = True
-        else:
-            self.negate = False
-
-        if 'applicability_check' in el.attrib and (el.attrib['applicability_check'] == 'true' or el.attrib['applicability_check'] == '1'):
-            self.applicability_check = True
-        else:
-            self.applicability_check = False
-
-        if 'test_ref' in el.attrib :
-            self.test_ref = el.attrib['test_ref']
-        else:
+        if 'test_ref' not in el.attrib :
             logger.critical('test_ref not defined in criterion')
             import sys
             sys.exit()
