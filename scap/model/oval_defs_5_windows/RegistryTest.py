@@ -24,10 +24,6 @@ class RegistryTest(Test):
     def __init__(self):
         super(RegistryTest, self).__init__('{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}registry_test')
 
-        self.ignore_attributes.extend([
-            'comment',
-            'version',
-        ])
         self.ignore_sub_elements.extend([
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}object',
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}state',
