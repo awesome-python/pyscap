@@ -22,17 +22,16 @@ logger = logging.getLogger(__name__)
 class State(Model):
     @staticmethod
     def load(parent, state_el):
-        from scap.model.oval_defs_5_windows.RegistryState import RegistryState
-        from scap.model.oval_defs_5_windows.WUAUpdateSearcherState import WUAUpdateSearcherState
-        state_map = {
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}registry_state': RegistryState,
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}wuaupdatesearcher_state': WUAUpdateSearcherState,
-        }
-        if state_el.tag not in state_map:
+        if state_el.tag == '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}registry_state':
+            from scap.model.oval_defs_5_windows.RegistryState import RegistryState
+            state = RegistryState()
+        elif state_el.tag == '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}wuaupdatesearcher_state':
+            from scap.model.oval_defs_5_windows.WUAUpdateSearcherState import WUAUpdateSearcherState
+            state = WUAUpdateSearcherState()
+        else:
             logger.critical('Unknown state tag: ' + state_el.tag)
             import sys
             sys.exit()
-        state = state_map[state_el.tag]()
         state.from_xml(parent, state_el)
         return state
 

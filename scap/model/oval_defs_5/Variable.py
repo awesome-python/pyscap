@@ -22,15 +22,19 @@ logger = logging.getLogger(__name__)
 class Variable(Model):
     @staticmethod
     def load(parent, var_el):
-        # from scap.model.oval_defs_5_windows.RegistryState import RegistryState
-        # from scap.model.oval_defs_5_windows.WUAUpdateSearcherState import WUAUpdateSearcherState
-        var_map = {
-        }
-        if var_el.tag not in var_map:
+        if var_el.tag == '{http://oval.mitre.org/XMLSchema/oval-definitions-5}external_variable':
+            from scap.model.oval_defs_5.ExternalVariable import ExternalVariable
+            var = ExternalVariable()
+        elif var_el.tag == '{http://oval.mitre.org/XMLSchema/oval-definitions-5}local_variable':
+            from scap.model.oval_defs_5.LocalVariable import LocalVariable
+            var = LocalVariable()
+        elif var_el.tag == '{http://oval.mitre.org/XMLSchema/oval-definitions-5}constant_variable':
+            from scap.model.oval_defs_5.ConstantVariable import ConstantVariable
+            var = ConstantVariable()
+        else:
             logger.critical('Unknown var tag: ' + var_el.tag)
             import sys
             sys.exit()
-        var = var_map[var_el.tag]()
         var.from_xml(parent, var_el)
         return var
 
