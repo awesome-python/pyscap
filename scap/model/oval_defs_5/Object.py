@@ -40,6 +40,9 @@ class Object(Model):
     def __init__(self, tag_name=None):
         super(Object, self).__init__(tag_name)
 
+        self.set = None
+        self.filter = None
+
         self.ignore_attributes.extend([
             'version',
             'comment',
@@ -54,4 +57,19 @@ class Object(Model):
             logger.warning('Using deprecated object ' + self.id)
         else:
             return super(Object, self).parse_attribute(name, value)
+        return True
+
+    def parse_sub_el(self, sub_el):
+        if sub_el.tag == '{http://oval.mitre.org/XMLSchema/oval-definitions-5}set':
+            from scap.model.oval_defs_5.Set import Set
+            s = Set()
+            s.from_xml(self, sub_el)
+            self.set = s
+        elif sub_el.tag == '{http://oval.mitre.org/XMLSchema/oval-definitions-5}filter':
+            from scap.model.oval_defs_5.Filter import Filter
+            f = Filter()
+            f.from_xml(self, sub_el)
+            self.filter = f
+        else:
+            return super(Object, self).parse_sub_el(sub_el)
         return True
