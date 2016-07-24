@@ -22,7 +22,8 @@ logger = logging.getLogger(__name__)
 
 class ActiveDirectoryObject(Object):
     def __init__(self):
-        super(ActiveDirectoryObject, self).__init__('{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}activedirectory_object')
+        super(ActiveDirectoryObject, self).__init__(
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}activedirectory_object')
 
         self.ignore_sub_elements.extend([
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}naming_context',

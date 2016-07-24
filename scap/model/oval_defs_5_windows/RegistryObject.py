@@ -22,7 +22,8 @@ logger = logging.getLogger(__name__)
 
 class RegistryObject(Object):
     def __init__(self):
-        super(RegistryObject, self).__init__('{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}registry_object')
+        super(RegistryObject, self).__init__(
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}registry_object')
 
         self.ignore_sub_elements.extend([
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}hive',

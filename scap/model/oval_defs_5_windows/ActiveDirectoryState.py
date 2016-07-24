@@ -22,7 +22,8 @@ logger = logging.getLogger(__name__)
 
 class ActiveDirectoryState(State):
     def __init__(self):
-        super(ActiveDirectoryState, self).__init__('{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}activedirectory_state')
+        super(ActiveDirectoryState, self).__init__(
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}activedirectory_state')
 
         self.ignore_sub_elements.extend([
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}naming_context',

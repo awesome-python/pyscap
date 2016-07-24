@@ -22,7 +22,8 @@ logger = logging.getLogger(__name__)
 
 class RegistryState(State):
     def __init__(self):
-        super(RegistryState, self).__init__('{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}registry_state')
+        super(RegistryState, self).__init__(
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}registry_state')
 
         self.ignore_sub_elements.extend([
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}value',

@@ -20,10 +20,10 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-class ActiveDirectoryTest(Test):
+class ActiveDirectory57Test(Test):
     def __init__(self):
-        super(ActiveDirectoryTest, self).__init__(
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}activedirectory_test')
+        super(ActiveDirectory57Test, self).__init__(
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}activedirectory57_test')
 
         self.ignore_sub_elements.extend([
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}object',

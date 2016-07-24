@@ -22,7 +22,8 @@ logger = logging.getLogger(__name__)
 
 class AccessTokenTest(Test):
     def __init__(self):
-        super(AccessTokenTest, self).__init__('{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}accesstoken_test')
+        super(AccessTokenTest, self).__init__(
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}accesstoken_test')
 
         self.ignore_sub_elements.extend([
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}object',

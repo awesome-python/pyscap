@@ -22,7 +22,8 @@ logger = logging.getLogger(__name__)
 
 class AccessTokenState(State):
     def __init__(self):
-        super(AccessTokenState, self).__init__('{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}accesstoken_state')
+        super(AccessTokenState, self).__init__(
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}accesstoken_state')
 
         self.ignore_sub_elements.extend([
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}security_principle',
