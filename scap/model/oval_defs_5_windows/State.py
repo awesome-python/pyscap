@@ -15,19 +15,10 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.model.oval_defs_5_windows.State import State
+import scap.model.oval_defs_5.State
 import logging
 
 logger = logging.getLogger(__name__)
-class lockoutpolicy_state(State)
-    def __init__(self):
-        super(lockoutpolicy_state, self).__init__(
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}lockoutpolicy_state')
 
-        self.ignore_sub_elements.extend([
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}force_logoff',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}lockout_duration',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}lockout_observation_window',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}lockout_threshold',
-        ])
-
+class State(scap.model.oval_defs_5.State.State):
+    pass
