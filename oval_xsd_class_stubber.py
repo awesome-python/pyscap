@@ -41,7 +41,6 @@ xsd_path = 'ref/oval 5.11.1/Language/schemas/'
 # hpux-definitions-schema.xsd
 # hpux-system-characteristics-schema.xsd
 # independent-definitions-schema.xsd
-xsd_path += 'independent-definitions-schema.xsd'
 # independent-system-characteristics-schema.xsd
 # ios-definitions-schema.xsd
 # ios-system-characteristics-schema.xsd
@@ -50,6 +49,7 @@ xsd_path += 'independent-definitions-schema.xsd'
 # junos-definitions-schema.xsd
 # junos-system-characteristics-schema.xsd
 # linux-definitions-schema.xsd
+xsd_path += 'linux-definitions-schema.xsd'
 # linux-system-characteristics-schema.xsd
 # macos-definitions-schema.xsd
 # macos-system-characteristics-schema.xsd
@@ -72,10 +72,10 @@ xsd_path += 'independent-definitions-schema.xsd'
 # windows-definitions-schema.xsd
 # windows-system-characteristics-schema.xsd
 # xmldsig-core-schema.xsd
-xsd_namespace = 'http://oval.mitre.org/XMLSchema/oval-definitions-5#independent'
+xsd_namespace = 'http://oval.mitre.org/XMLSchema/oval-definitions-5#linux'
 
-module_path = 'scap/model/oval_defs_5_independent'
-module_namespace = 'oval_defs_5_independent'
+module_path = 'scap/model/oval_defs_5_linux'
+module_namespace = 'oval_defs_5_linux'
 
 prefix_map = {}
 for k,v in Model.namespaces.items():
