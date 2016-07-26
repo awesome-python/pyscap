@@ -19,9 +19,9 @@ from scap.Model import Model
 import logging
 
 logger = logging.getLogger(__name__)
-class ComplexCheck(Model):
+class complex_check(Model):
     def __init__(self):
-        super(ComplexCheck, self).__init__()
+        super(complex_check, self).__init__()
         self.checks = []
         self.negate = False
         self.operator = 'AND'
@@ -32,19 +32,13 @@ class ComplexCheck(Model):
         elif name == 'operator':
             self.negate = value
         else:
-            return super(Rule, self).parse_attribute(name, value)
+            return super(complex_check, self).parse_attribute(name, value)
         return True
 
     def parse_sub_el(self, sub_el):
-        if sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}complex-check':
-            check = ComplexCheck()
-            check.from_xml(self, sub_el)
-            self.checks.append(check)
-        elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}check':
-            from scap.model.xccdf_1_2.Check import Check
-            check = Check()
-            check.from_xml(self, sub_el)
-            self.checks.append(check)
+        if sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}complex-check' \
+            or sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}check':
+            self.checks.append(Model.load_child(self, sub_el))
         else:
-            return super(Rule, self).parse_sub_el(sub_el)
+            return super(complex_check, self).parse_sub_el(sub_el)
         return True

@@ -19,9 +19,9 @@ from scap.Model import Model
 import logging
 
 logger = logging.getLogger(__name__)
-class Check(Model):
+class check(Model):
     def __init__(self):
-        super(Check, self).__init__()
+        super(check, self).__init__()
         self.check_content_ref = None
         self.check_content_name = None
         self.ignore_attributes.extend([
@@ -48,7 +48,7 @@ class Check(Model):
         elif name == 'multi-check':
             self.multi_check = self.parse_boolean(value)
         else:
-            return super(Check, self).parse_attribute(name, value)
+            return super(check, self).parse_attribute(name, value)
         return True
 
     def parse_sub_el(self, sub_el):
@@ -60,5 +60,5 @@ class Check(Model):
                 self.check_content_name = sub_el.attrib['name']
                 logger.debug('Rule ' + self.parent.id + ' will load ' + self.check_content_ref + ' and use item ' + self.check_content_name)
         else:
-            return super(Check, self).parse_sub_el(sub_el)
+            return super(check, self).parse_sub_el(sub_el)
         return True

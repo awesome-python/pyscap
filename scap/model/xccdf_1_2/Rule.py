@@ -16,6 +16,7 @@
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
 from scap.model.xccdf_1_2.GroupRuleCommon import GroupRuleCommon
+from scap.Model import Model
 import logging
 
 logger = logging.getLogger(__name__)
@@ -65,14 +66,9 @@ class Rule(GroupRuleCommon):
 
     def parse_sub_el(self, sub_el):
         if sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}complex-check':
-            from scap.model.xccdf_1_2.ComplexCheck import ComplexCheck
-            check = ComplexCheck()
-            check.from_xml(self, sub_el)
-            self.checks[None] = check
+            self.checks[None] = Model.load_child(self, sub_el)
         elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}check':
-            from scap.model.xccdf_1_2.Check import Check
-            check = Check()
-            check.from_xml(self, sub_el)
+            check = Model.load_child(self, sub_el)
             if 'selector' in sub_el.attrib:
                 self.checks[sub_el.attrib['selector']] = check
             else:

@@ -16,6 +16,7 @@
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
 from scap.model.xccdf_1_2.GroupRuleCommon import GroupRuleCommon
+from scap.Model import Model
 import logging
 
 logger = logging.getLogger(__name__)
@@ -32,18 +33,13 @@ class Group(GroupRuleCommon):
 
     def parse_sub_el(self, sub_el):
         if sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}Value':
-            from scap.model.xccdf_1_2.Value import Value
-            v = Value()
-            v.from_xml(self, sub_el)
-            self.values[sub_el.attrib['id']] = v
+            self.values[sub_el.attrib['id']] = Model.load_child(self, sub_el)
         elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}Group':
-            g = Group()
-            g.from_xml(self, sub_el)
+            g = Model.load_child(self, sub_el)
             self.groups[sub_el.attrib['id']] = g
         elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}Rule':
             from scap.model.xccdf_1_2.Rule import Rule
-            r = Rule()
-            r.from_xml(self, sub_el)
+            r = Model.load_child(self, sub_el)
             self.rules[sub_el.attrib['id']] = r
         else:
             return super(Group, self).parse_sub_el(sub_el)

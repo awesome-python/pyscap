@@ -64,28 +64,18 @@ class Benchmark(Model):
             self.profile_elements[sub_el.attrib['id']] = sub_el
             self.profiles[sub_el.attrib['id']] = p
         elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}Value':
-            from scap.model.xccdf_1_2.Value import Value
-            v = Value()
-            v.from_xml(self, sub_el)
-            self.values[sub_el.attrib['id']] = v
+            self.values[sub_el.attrib['id']] = Model.load_child(self, sub_el)
         elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}Group':
-            from scap.model.xccdf_1_2.Group import Group
-            g = Group()
-            g.from_xml(self, sub_el)
+            g = Model.load_child(self, sub_el)
             self.rules.update(g.get_rules())
             self.values.update(g.get_values())
         elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}Rule':
-            from scap.model.xccdf_1_2.Rule import Rule
-            r = Rule()
-            r.from_xml(self, sub_el)
+            r = Model.load_child(self, sub_el)
             self.rules[sub_el.attrib['id']] = r
             if r.selected:
                 self.selected_rules.append(r.id)
         elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}TestResult':
-            from scap.model.xccdf_1_2.TestResult import TestResult
-            t = TestResult()
-            t.from_xml(self, sub_el)
-            self.test_results[sub_el.attrib['id']] = t
+            self.test_results[sub_el.attrib['id']] = Model.load_child(self, sub_el)
         else:
             return super(Benchmark, self).parse_sub_el(sub_el)
         return True
