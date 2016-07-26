@@ -21,8 +21,7 @@ import logging
 logger = logging.getLogger(__name__)
 class lockoutpolicy_state(State)
     def __init__(self):
-        super(lockoutpolicy_state, self).__init__(
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}lockoutpolicy_state')
+        super(lockoutpolicy_state, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}lockoutpolicy_state
 
         self.ignore_sub_elements.extend([
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}force_logoff',
@@ -30,4 +29,3 @@ class lockoutpolicy_state(State)
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}lockout_observation_window',
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}lockout_threshold',
         ])
-

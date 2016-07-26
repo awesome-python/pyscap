@@ -21,6 +21,4 @@ import logging
 logger = logging.getLogger(__name__)
 
 class activedirectory57_test(Test):
-    def __init__(self):
-        super(activedirectory57_test, self).__init__(
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}activedirectory57_test')
+    pass

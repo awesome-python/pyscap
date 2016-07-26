@@ -22,7 +22,7 @@ import xml.etree.ElementTree as ET
 logger = logging.getLogger(__name__)
 class ComputingDevice(ITAsset):
     def __init__(self):
-        super(ComputingDevice, self).__init__('{http://scap.nist.gov/schema/asset-identification/1.1}computing-device')
+        super(ComputingDevice, self).__init__()    # {http://scap.nist.gov/schema/asset-identification/1.1}computing-device
 
         self.distinguished_name = None
         self.cpes = []

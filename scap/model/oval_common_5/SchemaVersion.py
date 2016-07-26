@@ -21,4 +21,4 @@ import logging
 logger = logging.getLogger(__name__)
 class SchemaVersion(Model):
     def __init__(self):
-        super(SchemaVersion, self).__init__('{http://oval.mitre.org/XMLSchema/oval-common-5}schema-version')
+        super(SchemaVersion, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-common-5}schema-version

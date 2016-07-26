@@ -21,4 +21,4 @@ import logging
 logger = logging.getLogger(__name__)
 class DeprecatedInfo(Model):
     def __init__(self):
-        super(DeprecatedInfo, self).__init__('{http://oval.mitre.org/XMLSchema/oval-common-5}deprecated_info')
+        super(DeprecatedInfo, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-common-5}deprecated_info

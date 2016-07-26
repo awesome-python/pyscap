@@ -21,8 +21,7 @@ import logging
 logger = logging.getLogger(__name__)
 class xmlfilecontent_state(State)
     def __init__(self):
-        super(xmlfilecontent_state, self).__init__(
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#independent}xmlfilecontent_state')
+        super(xmlfilecontent_state, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5#independent}xmlfilecontent_state
 
         self.ignore_sub_elements.extend([
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#independent}filepath',
@@ -32,4 +31,3 @@ class xmlfilecontent_state(State)
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#independent}value_of',
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#independent}windows_view',
         ])
-

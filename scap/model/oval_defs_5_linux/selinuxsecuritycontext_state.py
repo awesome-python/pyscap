@@ -21,8 +21,7 @@ import logging
 logger = logging.getLogger(__name__)
 class selinuxsecuritycontext_state(State)
     def __init__(self):
-        super(selinuxsecuritycontext_state, self).__init__(
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}selinuxsecuritycontext_state')
+        super(selinuxsecuritycontext_state, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}selinuxsecuritycontext_state
 
         self.ignore_sub_elements.extend([
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}filepath',
@@ -41,4 +40,3 @@ class selinuxsecuritycontext_state(State)
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}rawhigh_sensitivity',
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}rawhigh_category',
         ])
-

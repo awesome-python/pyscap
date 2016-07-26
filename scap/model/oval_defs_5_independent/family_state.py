@@ -21,10 +21,8 @@ import logging
 logger = logging.getLogger(__name__)
 class family_state(State)
     def __init__(self):
-        super(family_state, self).__init__(
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#independent}family_state')
+        super(family_state, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5#independent}family_state
 
         self.ignore_sub_elements.extend([
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#independent}family',
         ])
-

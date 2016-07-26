@@ -21,8 +21,7 @@ import logging
 logger = logging.getLogger(__name__)
 class rpminfo_state(State)
     def __init__(self):
-        super(rpminfo_state, self).__init__(
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}rpminfo_state')
+        super(rpminfo_state, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}rpminfo_state
 
         self.ignore_sub_elements.extend([
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}name',

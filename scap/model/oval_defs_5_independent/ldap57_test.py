@@ -21,7 +21,4 @@ import logging
 logger = logging.getLogger(__name__)
 class ldap57_test(Test)
     def __init__(self):
-        super(ldap57_test, self).__init__(
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#independent}ldap57_test')
-
-
+        pass

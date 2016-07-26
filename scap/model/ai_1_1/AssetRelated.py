@@ -22,7 +22,7 @@ import xml.etree.ElementTree as ET
 logger = logging.getLogger(__name__)
 class AssetRelated(AI):
     def __init__(self):
-        super(AssetRelated, self).__init__('{http://scap.nist.gov/schema/asset-identification/1.1}asset-related')
+        super(AssetRelated, self).__init__()
 
         self.assets = []
         self.relationships = []

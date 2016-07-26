@@ -21,8 +21,7 @@ import logging
 logger = logging.getLogger(__name__)
 class sql_object(Object)
     def __init__(self):
-        super(sql_object, self).__init__(
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#independent}sql_object')
+        super(sql_object, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5#independent}sql_object
 
         self.ignore_sub_elements.extend([
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#independent}engine',
@@ -30,4 +29,3 @@ class sql_object(Object)
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#independent}connection_string',
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#independent}sql',
         ])
-

@@ -21,8 +21,7 @@ import logging
 logger = logging.getLogger(__name__)
 class iflisteners_state(State)
     def __init__(self):
-        super(iflisteners_state, self).__init__(
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}iflisteners_state')
+        super(iflisteners_state, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}iflisteners_state
 
         self.ignore_sub_elements.extend([
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}interface_name',
@@ -32,4 +31,3 @@ class iflisteners_state(State)
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}pid',
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}user_id',
         ])
-

@@ -21,8 +21,7 @@ import logging
 logger = logging.getLogger(__name__)
 class service_state(State)
     def __init__(self):
-        super(service_state, self).__init__(
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}service_state')
+        super(service_state, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}service_state
 
         self.ignore_sub_elements.extend([
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}service_name',
@@ -38,4 +37,3 @@ class service_state(State)
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}service_flag',
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}dependencies',
         ])
-

@@ -20,8 +20,4 @@ import logging
 
 logger = logging.getLogger(__name__)
 class slackwarepkginfo_test(Test)
-    def __init__(self):
-        super(slackwarepkginfo_test, self).__init__(
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}slackwarepkginfo_test')
-
-
+    pass

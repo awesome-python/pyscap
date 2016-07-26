@@ -20,27 +20,9 @@ import logging
 
 logger = logging.getLogger(__name__)
 class Variable(Model):
-    @staticmethod
-    def load(parent, var_el):
-        if var_el.tag == '{http://oval.mitre.org/XMLSchema/oval-definitions-5}external_variable':
-            from scap.model.oval_defs_5.ExternalVariable import ExternalVariable
-            var = ExternalVariable()
-        elif var_el.tag == '{http://oval.mitre.org/XMLSchema/oval-definitions-5}local_variable':
-            from scap.model.oval_defs_5.LocalVariable import LocalVariable
-            var = LocalVariable()
-        elif var_el.tag == '{http://oval.mitre.org/XMLSchema/oval-definitions-5}constant_variable':
-            from scap.model.oval_defs_5.ConstantVariable import ConstantVariable
-            var = ConstantVariable()
-        else:
-            logger.critical('Unknown var tag: ' + var_el.tag)
-            import sys
-            sys.exit()
-        var.from_xml(parent, var_el)
-        return var
-
     # abstract
-    def __init__(self, tag_name=None):
-        super(Variable, self).__init__(tag_name)
+    def __init__(self):
+        super(Variable, self).__init__()
 
         self.datatype = None
 

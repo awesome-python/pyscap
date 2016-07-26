@@ -22,7 +22,7 @@ import xml.etree.ElementTree as ET
 logger = logging.getLogger(__name__)
 class Person(Asset):
     def __init__(self):
-        super(Person, self).__init__('{http://scap.nist.gov/schema/asset-identification/1.1}person')
+        super(Person, self).__init__()    # {http://scap.nist.gov/schema/asset-identification/1.1}person
 
         self.email_addresses = []
         self.telephone_numbers = []

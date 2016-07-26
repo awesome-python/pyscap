@@ -21,8 +21,8 @@ import logging
 logger = logging.getLogger(__name__)
 
 class Test(scap.model.oval_defs_5.Test.Test):
-    def __init__(self, tag_name=None):
-        super(Test, self).__init__(tag_name)
+    def __init__(self):
+        super(Test, self).__init__()
 
         self.ignore_sub_elements.extend([
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#independent}object',

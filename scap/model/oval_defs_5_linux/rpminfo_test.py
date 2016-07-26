@@ -20,8 +20,4 @@ import logging
 
 logger = logging.getLogger(__name__)
 class rpminfo_test(Test)
-    def __init__(self):
-        super(rpminfo_test, self).__init__(
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}rpminfo_test')
-
-
+    pass

@@ -21,11 +21,9 @@ import logging
 logger = logging.getLogger(__name__)
 class variable_state(State)
     def __init__(self):
-        super(variable_state, self).__init__(
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#independent}variable_state')
+        super(variable_state, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5#independent}variable_state
 
         self.ignore_sub_elements.extend([
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#independent}var_ref',
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#independent}value',
         ])
-

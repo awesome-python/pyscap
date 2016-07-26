@@ -21,5 +21,4 @@ import logging
 logger = logging.getLogger(__name__)
 class peheader_test(Test)
     def __init__(self):
-        super(peheader_test, self).__init__(
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}peheader_test')
+        super(peheader_test, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}peheader_test

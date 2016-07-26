@@ -21,11 +21,9 @@ import logging
 logger = logging.getLogger(__name__)
 class environmentvariable_state(State)
     def __init__(self):
-        super(environmentvariable_state, self).__init__(
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#independent}environmentvariable_state')
+        super(environmentvariable_state, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5#independent}environmentvariable_state
 
         self.ignore_sub_elements.extend([
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#independent}name',
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#independent}value',
         ])
-

@@ -21,8 +21,7 @@ import logging
 logger = logging.getLogger(__name__)
 class filehash_state(State)
     def __init__(self):
-        super(filehash_state, self).__init__(
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#independent}filehash_state')
+        super(filehash_state, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5#independent}filehash_state
 
         self.ignore_sub_elements.extend([
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#independent}filepath',
@@ -32,4 +31,3 @@ class filehash_state(State)
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#independent}sha1',
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#independent}windows_view',
         ])
-

@@ -20,8 +20,4 @@ import logging
 
 logger = logging.getLogger(__name__)
 class partition_test(Test)
-    def __init__(self):
-        super(partition_test, self).__init__(
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}partition_test')
-
-
+    pass

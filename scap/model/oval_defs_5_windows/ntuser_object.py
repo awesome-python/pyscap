@@ -21,12 +21,10 @@ import logging
 logger = logging.getLogger(__name__)
 class ntuser_object(Object)
     def __init__(self):
-        super(ntuser_object, self).__init__(
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}ntuser_object')
+        super(ntuser_object, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}ntuser_object
 
         self.ignore_sub_elements.extend([
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}behaviors',
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}key',
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}name',
         ])
-

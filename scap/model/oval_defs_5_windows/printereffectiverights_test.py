@@ -20,6 +20,4 @@ import logging
 
 logger = logging.getLogger(__name__)
 class printereffectiverights_test(Test)
-    def __init__(self):
-        super(printereffectiverights_test, self).__init__(
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}printereffectiverights_test')
+    pass

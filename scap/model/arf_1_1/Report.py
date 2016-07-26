@@ -21,6 +21,6 @@ import logging
 logger = logging.getLogger(__name__)
 class Report(Model):
     def __init__(self):
-        super(Report, self).__init__('{http://scap.nist.gov/schema/asset-reporting-format/1.1}report')
+        super(Report, self).__init__()    # {http://scap.nist.gov/schema/asset-reporting-format/1.1}report
 
         self.required_attributes.append('id')

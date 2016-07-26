@@ -21,10 +21,8 @@ import logging
 logger = logging.getLogger(__name__)
 class systemdunitdependency_object(Object)
     def __init__(self):
-        super(systemdunitdependency_object, self).__init__(
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}systemdunitdependency_object')
+        super(systemdunitdependency_object, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}systemdunitdependency_object
 
         self.ignore_sub_elements.extend([
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}unit',
         ])
-

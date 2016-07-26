@@ -20,6 +20,4 @@ import logging
 
 logger = logging.getLogger(__name__)
 class dnscache_test(Test)
-    def __init__(self):
-        super(dnscache_test, self).__init__(
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}dnscache_test')
+    pass

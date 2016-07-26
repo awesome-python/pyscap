@@ -21,12 +21,10 @@ import logging
 logger = logging.getLogger(__name__)
 class dnscache_state(State)
     def __init__(self):
-        super(dnscache_state, self).__init__(
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}dnscache_state')
+        super(dnscache_state, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}dnscache_state
 
         self.ignore_sub_elements.extend([
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}domain_name',
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}ttl',
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}ip_address',
         ])
-

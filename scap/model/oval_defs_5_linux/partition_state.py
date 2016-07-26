@@ -21,8 +21,7 @@ import logging
 logger = logging.getLogger(__name__)
 class partition_state(State)
     def __init__(self):
-        super(partition_state, self).__init__(
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}partition_state')
+        super(partition_state, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}partition_state
 
         self.ignore_sub_elements.extend([
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}mount_point',
@@ -34,4 +33,3 @@ class partition_state(State)
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}space_used',
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}space_left',
         ])
-

@@ -21,10 +21,8 @@ import logging
 logger = logging.getLogger(__name__)
 class volume_object(Object)
     def __init__(self):
-        super(volume_object, self).__init__(
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}volume_object')
+        super(volume_object, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}volume_object
 
         self.ignore_sub_elements.extend([
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}rootpath',
         ])
-

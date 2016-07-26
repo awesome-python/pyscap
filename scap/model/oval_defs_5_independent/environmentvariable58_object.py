@@ -21,11 +21,9 @@ import logging
 logger = logging.getLogger(__name__)
 class environmentvariable58_object(Object)
     def __init__(self):
-        super(environmentvariable58_object, self).__init__(
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#independent}environmentvariable58_object')
+        super(environmentvariable58_object, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5#independent}environmentvariable58_object
 
         self.ignore_sub_elements.extend([
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#independent}pid',
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#independent}name',
         ])
-

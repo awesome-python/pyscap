@@ -20,8 +20,4 @@ import logging
 
 logger = logging.getLogger(__name__)
 class iflisteners_test(Test)
-    def __init__(self):
-        super(iflisteners_test, self).__init__(
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}iflisteners_test')
-
-
+    pass

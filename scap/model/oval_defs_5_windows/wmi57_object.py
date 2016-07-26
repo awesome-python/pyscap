@@ -21,11 +21,9 @@ import logging
 logger = logging.getLogger(__name__)
 class wmi57_object(Object)
     def __init__(self):
-        super(wmi57_object, self).__init__(
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}wmi57_object')
+        super(wmi57_object, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}wmi57_object
 
         self.ignore_sub_elements.extend([
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}namespace',
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}wql',
         ])
-

@@ -22,6 +22,6 @@ import xml.etree.ElementTree as ET
 logger = logging.getLogger(__name__)
 class Software(ITAsset):
     def __init__(self):
-        super(Person, self).__init__('{http://scap.nist.gov/schema/asset-identification/1.1}software')
+        super(Person, self).__init__()    # {http://scap.nist.gov/schema/asset-identification/1.1}software
 
         self.licenses = []

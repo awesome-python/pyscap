@@ -20,6 +20,4 @@ import logging
 
 logger = logging.getLogger(__name__)
 class wmi57_test(Test)
-    def __init__(self):
-        super(wmi57_test, self).__init__(
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}wmi57_test')
+    pass

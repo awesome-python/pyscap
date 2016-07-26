@@ -21,8 +21,7 @@ import logging
 logger = logging.getLogger(__name__)
 class sql57_state(State)
     def __init__(self):
-        super(sql57_state, self).__init__(
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#independent}sql57_state')
+        super(sql57_state, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5#independent}sql57_state
 
         self.ignore_sub_elements.extend([
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#independent}engine',
@@ -31,4 +30,3 @@ class sql57_state(State)
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#independent}sql',
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#independent}result',
         ])
-

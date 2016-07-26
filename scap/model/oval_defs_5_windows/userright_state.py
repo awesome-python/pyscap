@@ -21,11 +21,9 @@ import logging
 logger = logging.getLogger(__name__)
 class userright_state(State)
     def __init__(self):
-        super(userright_state, self).__init__(
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}userright_state')
+        super(userright_state, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}userright_state
 
         self.ignore_sub_elements.extend([
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}userright',
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}trustee_sid',
         ])
-

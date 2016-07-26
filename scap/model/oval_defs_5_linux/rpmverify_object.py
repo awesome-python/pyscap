@@ -21,12 +21,10 @@ import logging
 logger = logging.getLogger(__name__)
 class rpmverify_object(Object)
     def __init__(self):
-        super(rpmverify_object, self).__init__(
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}rpmverify_object')
+        super(rpmverify_object, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}rpmverify_object
 
         self.ignore_sub_elements.extend([
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}behaviors',
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}name',
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}filepath',
         ])
-

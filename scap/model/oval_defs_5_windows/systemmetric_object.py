@@ -21,10 +21,8 @@ import logging
 logger = logging.getLogger(__name__)
 class systemmetric_object(Object)
     def __init__(self):
-        super(systemmetric_object, self).__init__(
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}systemmetric_object')
+        super(systemmetric_object, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}systemmetric_object
 
         self.ignore_sub_elements.extend([
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}index',
         ])
-

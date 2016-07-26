@@ -22,8 +22,8 @@ logger = logging.getLogger(__name__)
 
 class Test(Model):
     # abstract
-    def __init__(self, tag_name=None):
-        super(Test, self).__init__(tag_name)
+    def __init__(self):
+        super(Test, self).__init__()
 
         self.check_existence = 'at_least_one_exists'
         self.check = None

@@ -20,8 +20,4 @@ import logging
 
 logger = logging.getLogger(__name__)
 class textfilecontent54_test(Test)
-    def __init__(self):
-        super(textfilecontent54_test, self).__init__(
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#independent}textfilecontent54_test')
-
-
+    pass

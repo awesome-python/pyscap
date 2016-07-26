@@ -21,8 +21,7 @@ import logging
 logger = logging.getLogger(__name__)
 class slackwarepkginfo_state(State)
     def __init__(self):
-        super(slackwarepkginfo_state, self).__init__(
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}slackwarepkginfo_state')
+        super(slackwarepkginfo_state, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}slackwarepkginfo_state
 
         self.ignore_sub_elements.extend([
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}name',
@@ -30,4 +29,3 @@ class slackwarepkginfo_state(State)
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}architecture',
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}revision',
         ])
-

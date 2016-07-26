@@ -21,12 +21,10 @@ import logging
 logger = logging.getLogger(__name__)
 class port_object(Object)
     def __init__(self):
-        super(port_object, self).__init__(
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}port_object')
+        super(port_object, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}port_object
 
         self.ignore_sub_elements.extend([
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}local_address',
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}local_port',
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}protocol',
         ])
-

@@ -21,8 +21,7 @@ import logging
 logger = logging.getLogger(__name__)
 class peheader_object(Object)
     def __init__(self):
-        super(peheader_object, self).__init__(
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}peheader_object')
+        super(peheader_object, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}peheader_object
 
         self.ignore_sub_elements.extend([
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}behaviors',
@@ -30,4 +29,3 @@ class peheader_object(Object)
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}path',
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}filename',
         ])
-

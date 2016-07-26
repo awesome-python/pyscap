@@ -21,8 +21,7 @@ import logging
 logger = logging.getLogger(__name__)
 class peheader_state(State)
     def __init__(self):
-        super(peheader_state, self).__init__(
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}peheader_state')
+        super(peheader_state, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}peheader_state
 
         self.ignore_sub_elements.extend([
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}filepath',
@@ -81,4 +80,3 @@ class peheader_state(State)
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}number_of_rva_and_sizes',
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}real_number_of_directory_entries',
         ])
-

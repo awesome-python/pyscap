@@ -21,7 +21,4 @@ import logging
 logger = logging.getLogger(__name__)
 class passwordpolicy_object(Object)
     def __init__(self):
-        super(passwordpolicy_object, self).__init__(
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}passwordpolicy_object')
-
-
+        super(passwordpolicy_object, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}passwordpolicy_object

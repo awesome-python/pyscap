@@ -21,8 +21,7 @@ import logging
 logger = logging.getLogger(__name__)
 class regkeyauditedpermissions_state(State)
     def __init__(self):
-        super(regkeyauditedpermissions_state, self).__init__(
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}regkeyauditedpermissions_state')
+        super(regkeyauditedpermissions_state, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}regkeyauditedpermissions_state
 
         self.ignore_sub_elements.extend([
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}hive',
@@ -49,4 +48,3 @@ class regkeyauditedpermissions_state(State)
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}key_wow64_res',
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}windows_view',
         ])
-

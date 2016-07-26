@@ -23,7 +23,7 @@ class Engine(object):
     def __init__(self, content, hosts):
         self.hosts = hosts
         from scap.Model import Model
-        self.content = Model.load(content)
+        self.content = Model.load_child(None, content.getroot())
 
     def collect(self, args):
         for host in self.hosts:

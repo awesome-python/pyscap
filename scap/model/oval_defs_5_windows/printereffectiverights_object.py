@@ -21,12 +21,10 @@ import logging
 logger = logging.getLogger(__name__)
 class printereffectiverights_object(Object)
     def __init__(self):
-        super(printereffectiverights_object, self).__init__(
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}printereffectiverights_object')
+        super(printereffectiverights_object, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}printereffectiverights_object
 
         self.ignore_sub_elements.extend([
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}behaviors',
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}printer_name',
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}trustee_sid',
         ])
-

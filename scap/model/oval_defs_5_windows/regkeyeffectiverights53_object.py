@@ -21,8 +21,7 @@ import logging
 logger = logging.getLogger(__name__)
 class regkeyeffectiverights53_object(Object)
     def __init__(self):
-        super(regkeyeffectiverights53_object, self).__init__(
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}regkeyeffectiverights53_object')
+        super(regkeyeffectiverights53_object, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}regkeyeffectiverights53_object
 
         self.ignore_sub_elements.extend([
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}behaviors',
@@ -30,4 +29,3 @@ class regkeyeffectiverights53_object(Object)
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}key',
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}trustee_sid',
         ])
-

@@ -21,6 +21,5 @@ import logging
 logger = logging.getLogger(__name__)
 class Notes(Model):
     def __init__(self):
-        super(Notes, self).__init__('{http://oval.mitre.org/XMLSchema/oval-common-5}notes')
-        self.tag_name = 'notes'
+        super(Notes, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-common-5}notes
         self.ignore_sub_elements.extend(['{http://oval.mitre.org/XMLSchema/oval-common-5}note'])

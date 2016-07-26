@@ -20,25 +20,9 @@ import logging
 
 logger = logging.getLogger(__name__)
 class Object(Model):
-    @staticmethod
-    def load(parent, obj_el):
-        from scap.model.oval_defs_5_windows.RegistryObject import RegistryObject
-        from scap.model.oval_defs_5_windows.WUAUpdateSearcherObject import WUAUpdateSearcherObject
-        obj_map = {
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}registry_object': RegistryObject,
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}wuaupdatesearcher_object': WUAUpdateSearcherObject,
-        }
-        if obj_el.tag not in obj_map:
-            logger.critical('Unknown obj tag: ' + obj_el.tag)
-            import sys
-            sys.exit()
-        obj = obj_map[obj_el.tag]()
-        obj.from_xml(parent, obj_el)
-        return obj
-
     # abstract
-    def __init__(self, tag_name=None):
-        super(Object, self).__init__(tag_name)
+    def __init__(self):
+        super(Object, self).__init__()
 
         self.set = None
         self.filter = None

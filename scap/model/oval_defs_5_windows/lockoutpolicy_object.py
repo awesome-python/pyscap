@@ -20,8 +20,4 @@ import logging
 
 logger = logging.getLogger(__name__)
 class lockoutpolicy_object(Object)
-    def __init__(self):
-        super(lockoutpolicy_object, self).__init__(
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}lockoutpolicy_object')
-
-
+    pass

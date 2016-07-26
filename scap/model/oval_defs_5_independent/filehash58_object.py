@@ -21,8 +21,7 @@ import logging
 logger = logging.getLogger(__name__)
 class filehash58_object(Object)
     def __init__(self):
-        super(filehash58_object, self).__init__(
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#independent}filehash58_object')
+        super(filehash58_object, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5#independent}filehash58_object
 
         self.ignore_sub_elements.extend([
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#independent}behaviors',
@@ -31,4 +30,3 @@ class filehash58_object(Object)
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#independent}filename',
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#independent}hash_type',
         ])
-

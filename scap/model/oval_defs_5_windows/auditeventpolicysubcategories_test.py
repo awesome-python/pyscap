@@ -21,6 +21,4 @@ import logging
 logger = logging.getLogger(__name__)
 
 class auditeventpolicysubcategories_test(Test):
-    def __init__(self):
-        super(auditeventpolicysubcategories_test, self).__init__(
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}auditeventpolicysubcategories_test')
+    pass

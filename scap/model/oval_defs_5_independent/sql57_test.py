@@ -20,8 +20,4 @@ import logging
 
 logger = logging.getLogger(__name__)
 class sql57_test(Test)
-    def __init__(self):
-        super(sql57_test, self).__init__(
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#independent}sql57_test')
-
-
+    pass

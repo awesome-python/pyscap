@@ -20,6 +20,4 @@ import logging
 
 logger = logging.getLogger(__name__)
 class sharedresource_test(Test)
-    def __init__(self):
-        super(sharedresource_test, self).__init__(
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}sharedresource_test')
+    pass

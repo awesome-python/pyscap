@@ -21,12 +21,10 @@ import logging
 logger = logging.getLogger(__name__)
 class license_state(State)
     def __init__(self):
-        super(license_state, self).__init__(
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}license_state')
+        super(license_state, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}license_state
 
         self.ignore_sub_elements.extend([
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}name',
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}type',
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}value',
         ])
-

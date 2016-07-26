@@ -21,12 +21,10 @@ import logging
 logger = logging.getLogger(__name__)
 class user_sid_state(State)
     def __init__(self):
-        super(user_sid_state, self).__init__(
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}user_sid_state')
+        super(user_sid_state, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}user_sid_state
 
         self.ignore_sub_elements.extend([
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}user',
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}enabled',
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}group',
         ])
-

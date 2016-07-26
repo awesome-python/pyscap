@@ -21,10 +21,8 @@ import logging
 logger = logging.getLogger(__name__)
 class group_object(Object)
     def __init__(self):
-        super(group_object, self).__init__(
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}group_object')
+        super(group_object, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}group_object
 
         self.ignore_sub_elements.extend([
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}group',
         ])
-

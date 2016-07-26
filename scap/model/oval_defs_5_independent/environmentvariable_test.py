@@ -20,8 +20,4 @@ import logging
 
 logger = logging.getLogger(__name__)
 class environmentvariable_test(Test)
-    def __init__(self):
-        super(environmentvariable_test, self).__init__(
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#independent}environmentvariable_test')
-
-
+    pass

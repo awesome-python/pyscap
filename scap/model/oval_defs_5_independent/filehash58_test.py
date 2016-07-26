@@ -20,8 +20,4 @@ import logging
 
 logger = logging.getLogger(__name__)
 class filehash58_test(Test)
-    def __init__(self):
-        super(filehash58_test, self).__init__(
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#independent}filehash58_test')
-
-
+    pass

@@ -21,8 +21,7 @@ import logging
 logger = logging.getLogger(__name__)
 class user_state(State)
     def __init__(self):
-        super(user_state, self).__init__(
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}user_state')
+        super(user_state, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}user_state
 
         self.ignore_sub_elements.extend([
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}user',
@@ -30,4 +29,3 @@ class user_state(State)
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}group',
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}last_logon',
         ])
-

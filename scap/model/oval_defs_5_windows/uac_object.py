@@ -20,8 +20,4 @@ import logging
 
 logger = logging.getLogger(__name__)
 class uac_object(Object)
-    def __init__(self):
-        super(uac_object, self).__init__(
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}uac_object')
-
-
+    pass

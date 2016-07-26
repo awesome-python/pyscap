@@ -21,8 +21,7 @@ import logging
 logger = logging.getLogger(__name__)
 class process58_state(State)
     def __init__(self):
-        super(process58_state, self).__init__(
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}process58_state')
+        super(process58_state, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}process58_state
 
         self.ignore_sub_elements.extend([
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}command_line',
@@ -36,4 +35,3 @@ class process58_state(State)
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}primary_window_text',
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}name',
         ])
-

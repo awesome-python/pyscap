@@ -21,8 +21,7 @@ import logging
 logger = logging.getLogger(__name__)
 class rpmverify_state(State)
     def __init__(self):
-        super(rpmverify_state, self).__init__(
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}rpmverify_state')
+        super(rpmverify_state, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}rpmverify_state
 
         self.ignore_sub_elements.extend([
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}name',
@@ -42,4 +41,3 @@ class rpmverify_state(State)
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}license_file',
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}readme_file',
         ])
-

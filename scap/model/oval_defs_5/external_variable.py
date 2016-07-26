@@ -21,7 +21,7 @@ import logging
 logger = logging.getLogger(__name__)
 class external_variable(Variable):
     def __init__(self):
-        super(external_variable, self).__init__('{http://oval.mitre.org/XMLSchema/oval-definitions-5}external_variable')
+        super(external_variable, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5}external_variable
 
         self.children = []
 

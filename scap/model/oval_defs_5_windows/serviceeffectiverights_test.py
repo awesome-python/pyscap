@@ -20,6 +20,4 @@ import logging
 
 logger = logging.getLogger(__name__)
 class serviceeffectiverights_test(Test)
-    def __init__(self):
-        super(serviceeffectiverights_test, self).__init__(
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}serviceeffectiverights_test')
+    pass

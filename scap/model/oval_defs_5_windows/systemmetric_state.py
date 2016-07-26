@@ -21,11 +21,9 @@ import logging
 logger = logging.getLogger(__name__)
 class systemmetric_state(State)
     def __init__(self):
-        super(systemmetric_state, self).__init__(
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}systemmetric_state')
+        super(systemmetric_state, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}systemmetric_state
 
         self.ignore_sub_elements.extend([
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}index',
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}value',
         ])
-

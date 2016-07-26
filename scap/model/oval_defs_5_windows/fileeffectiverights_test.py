@@ -21,5 +21,4 @@ import logging
 logger = logging.getLogger(__name__)
 class fileeffectiverights_test(Test)
     def __init__(self):
-        super(fileeffectiverights_test, self).__init__(
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}fileeffectiverights_test')
+        super(fileeffectiverights_test, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}fileeffectiverights_test

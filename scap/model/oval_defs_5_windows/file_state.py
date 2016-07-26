@@ -21,8 +21,7 @@ import logging
 logger = logging.getLogger(__name__)
 class file_state(State)
     def __init__(self):
-        super(file_state, self).__init__(
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}file_state')
+        super(file_state, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}file_state
 
         self.ignore_sub_elements.extend([
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}filepath',
@@ -45,4 +44,3 @@ class file_state(State)
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}product_version',
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}windows_view',
         ])
-

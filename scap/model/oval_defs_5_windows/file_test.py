@@ -21,5 +21,4 @@ import logging
 logger = logging.getLogger(__name__)
 class file_test(Test)
     def __init__(self):
-        super(file_test, self).__init__(
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}file_test')
+        super(file_test, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}file_test

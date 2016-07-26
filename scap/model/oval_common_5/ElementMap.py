@@ -21,4 +21,4 @@ import logging
 logger = logging.getLogger(__name__)
 class ElementMap(Model):
     def __init__(self):
-        super(ElementMap, self).__init__('{http://oval.mitre.org/XMLSchema/oval-common-5}element_mapping')
+        super(ElementMap, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-common-5}element_mapping

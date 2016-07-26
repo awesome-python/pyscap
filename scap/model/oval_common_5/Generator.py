@@ -21,4 +21,4 @@ import logging
 logger = logging.getLogger(__name__)
 class Generator(Model):
     def __init__(self):
-        super(Generator, self).__init__('{http://oval.mitre.org/XMLSchema/oval-common-5}generator')
+        super(Generator, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-common-5}generator

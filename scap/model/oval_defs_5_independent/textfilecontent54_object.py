@@ -21,8 +21,7 @@ import logging
 logger = logging.getLogger(__name__)
 class textfilecontent54_object(Object)
     def __init__(self):
-        super(textfilecontent54_object, self).__init__(
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#independent}textfilecontent54_object')
+        super(textfilecontent54_object, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5#independent}textfilecontent54_object
 
         self.ignore_sub_elements.extend([
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#independent}behaviors',
@@ -32,4 +31,3 @@ class textfilecontent54_object(Object)
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#independent}pattern',
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#independent}instance',
         ])
-

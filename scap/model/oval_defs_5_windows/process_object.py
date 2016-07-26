@@ -21,10 +21,8 @@ import logging
 logger = logging.getLogger(__name__)
 class process_object(Object)
     def __init__(self):
-        super(process_object, self).__init__(
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}process_object')
+        super(process_object, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}process_object
 
         self.ignore_sub_elements.extend([
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}command_line',
         ])
-

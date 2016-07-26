@@ -21,12 +21,10 @@ import logging
 logger = logging.getLogger(__name__)
 class wmi57_state(State)
     def __init__(self):
-        super(wmi57_state, self).__init__(
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}wmi57_state')
+        super(wmi57_state, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}wmi57_state
 
         self.ignore_sub_elements.extend([
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}namespace',
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}wql',
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}result',
         ])
-

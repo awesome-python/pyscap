@@ -21,8 +21,7 @@ import logging
 logger = logging.getLogger(__name__)
 class sharedresourceeffectiverights_state(State)
     def __init__(self):
-        super(sharedresourceeffectiverights_state, self).__init__(
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}sharedresourceeffectiverights_state')
+        super(sharedresourceeffectiverights_state, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}sharedresourceeffectiverights_state
 
         self.ignore_sub_elements.extend([
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}netname',
@@ -38,4 +37,3 @@ class sharedresourceeffectiverights_state(State)
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}generic_execute',
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}generic_all',
         ])
-

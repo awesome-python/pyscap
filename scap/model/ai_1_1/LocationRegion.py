@@ -22,4 +22,4 @@ import xml.etree.ElementTree as ET
 logger = logging.getLogger(__name__)
 class LocationRegion(AI):
     def __init__(self):
-        super(LocationRegion, self).__init__('{http://scap.nist.gov/schema/asset-identification/1.1}location-region')
+        super(LocationRegion, self).__init__()    # {http://scap.nist.gov/schema/asset-identification/1.1}location-region

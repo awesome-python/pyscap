@@ -21,12 +21,10 @@ import logging
 logger = logging.getLogger(__name__)
 class selinuxboolean_state(State)
     def __init__(self):
-        super(selinuxboolean_state, self).__init__(
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}selinuxboolean_state')
+        super(selinuxboolean_state, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}selinuxboolean_state
 
         self.ignore_sub_elements.extend([
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}name',
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}current_status',
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}pending_status',
         ])
-

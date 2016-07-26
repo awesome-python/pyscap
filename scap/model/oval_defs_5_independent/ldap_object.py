@@ -21,8 +21,7 @@ import logging
 logger = logging.getLogger(__name__)
 class ldap_object(Object)
     def __init__(self):
-        super(ldap_object, self).__init__(
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#independent}ldap_object')
+        super(ldap_object, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5#independent}ldap_object
 
         self.ignore_sub_elements.extend([
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#independent}behaviors',
@@ -30,4 +29,3 @@ class ldap_object(Object)
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#independent}relative_dn',
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#independent}attribute',
         ])
-

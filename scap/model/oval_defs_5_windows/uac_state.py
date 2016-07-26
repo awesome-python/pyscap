@@ -21,8 +21,7 @@ import logging
 logger = logging.getLogger(__name__)
 class uac_state(State)
     def __init__(self):
-        super(uac_state, self).__init__(
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}uac_state')
+        super(uac_state, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}uac_state
 
         self.ignore_sub_elements.extend([
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}admin_approval_mode',
@@ -35,4 +34,3 @@ class uac_state(State)
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}secure_desktop',
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}virtualize_write_failures',
         ])
-

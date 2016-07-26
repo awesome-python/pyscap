@@ -21,10 +21,8 @@ import logging
 logger = logging.getLogger(__name__)
 class partition_object(Object)
     def __init__(self):
-        super(partition_object, self).__init__(
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}partition_object')
+        super(partition_object, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}partition_object
 
         self.ignore_sub_elements.extend([
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}mount_point',
         ])
-

@@ -20,6 +20,4 @@ import logging
 
 logger = logging.getLogger(__name__)
 class regkeyauditedpermissions53_test(Test)
-    def __init__(self):
-        super(regkeyauditedpermissions53_test, self).__init__(
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}regkeyauditedpermissions53_test')
+    pass

@@ -21,8 +21,7 @@ import logging
 logger = logging.getLogger(__name__)
 class fileeffectiverights_object(Object)
     def __init__(self):
-        super(fileeffectiverights_object, self).__init__(
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}fileeffectiverights_object')
+        super(fileeffectiverights_object, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}fileeffectiverights_object
 
         self.ignore_sub_elements.extend([
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}behaviors',
@@ -30,4 +29,3 @@ class fileeffectiverights_object(Object)
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}filename',
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}trustee_name',
         ])
-

@@ -48,19 +48,6 @@ class Model(object):
     }
 
     @staticmethod
-    def load(content):
-        root = content.getroot()
-        if root.tag == '{http://scap.nist.gov/schema/scap/source/1.2}data-stream-collection':
-            from scap.model.scap_1_2.DataStreamCollection import DataStreamCollection
-            dsc = DataStreamCollection()
-            dsc.from_xml(None, root)
-            return dsc
-        else:
-            logger.critical('Unsupported content with root tag: ' + root.tag)
-            import sys
-            sys.exit()
-
-    @staticmethod
     def load_child(parent, child_el):
         # parse tag
         (namespace, tag_name) = child_el.tag[1:].split('}')
@@ -71,14 +58,27 @@ class Model(object):
 
         # try to load the tag's module
         tag_name = tag_name.replace('-', '_')
-        logger.debug('Trying to load module ' + 'scap.model.' + Model.namespaces[namespace] + '.' + tag_name)
-        mod = importlib.import_module('scap.model.' + Model.namespaces[namespace] + '.' + tag_name)
+        import keyword
+        if keyword.iskeyword(tag_name):
+            tag_name += '_'
+        module_name = 'scap.model.' + Model.namespaces[namespace] + '.' + tag_name
+        import sys
+        if module_name not in sys.modules:
+            logger.debug('Loading module ' + module_name)
+            mod = importlib.import_module(module_name)
+        else:
+            mod = sys.modules[module_name]
+
+        # instantiate an instance of the class & load it
         inst = eval('mod.' + tag_name + '()')
         inst.from_xml(parent, child_el)
+
         return inst
 
-    def __init__(self, tag_name=None):
-        self.tag_name = tag_name
+    def __init__(self):
+        self.xml_namespace = None
+        self.model_namespace = None
+        self.tag_name = None
         self.parent = None
         self.element = None
         self.ref_mapping = {}
@@ -88,9 +88,27 @@ class Model(object):
         self.ignore_attributes = []
         self.ignore_sub_elements = []
 
+    def get_tag(self):
+        if self.tag_name is None or self.xml_namespace is None:
+            raise NotImplementedError('Subclass ' + self.__class__.__name__ + ' does not define tag')
+        return '{' + self.xml_namespace + '}' + self.tag_name
+
+    def parse_tag(self, tag):
+        parts = tag[1:].split('}')
+        if len(parts) != 2:
+            raise ValueError('Could not parse Model tag in subclass ' + self.__class__.__name__)
+        self.xml_namespace = parts[0]
+        self.tag_name = parts[1]
+        if self.xml_namespace not in Model.namespaces:
+            raise NotImplementedError('Unknown namespace ' + self.xml_namespace)
+        self.model_namespace = Model.namespaces[self.xml_namespace]
+
     def from_xml(self, parent, el):
         self.parent = parent
         self.element = el
+
+        if self.xml_namespace is None:
+            self.parse_tag(el.tag)
 
         for name, value in el.attrib.items():
             if not self.parse_attribute(name, value):
@@ -185,11 +203,11 @@ class Model(object):
     def get_sub_elements(self):
         return []
 
-    def to_xml(self):
+    def to_xml(self, tag):
+        self.parse_tag(tag)
+
         if self.element is None:
-            if self.tag_name is None:
-                raise NotImplementedError('Subclass ' + self.__class__.__name__ + ' does not define tag_name')
-            self.element = ET.Element(self.tag_name)
+            self.element = ET.Element(self.get_tag())
 
             for name, value in self.get_attributes().items():
                 self.element.attrib[name] = value

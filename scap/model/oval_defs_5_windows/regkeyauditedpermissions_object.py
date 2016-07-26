@@ -21,8 +21,7 @@ import logging
 logger = logging.getLogger(__name__)
 class regkeyauditedpermissions_object(Object)
     def __init__(self):
-        super(regkeyauditedpermissions_object, self).__init__(
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}regkeyauditedpermissions_object')
+        super(regkeyauditedpermissions_object, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}regkeyauditedpermissions_object
 
         self.ignore_sub_elements.extend([
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}behaviors',
@@ -30,4 +29,3 @@ class regkeyauditedpermissions_object(Object)
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}key',
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}trustee_name',
         ])
-

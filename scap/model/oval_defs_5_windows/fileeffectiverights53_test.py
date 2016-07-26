@@ -20,6 +20,4 @@ import logging
 
 logger = logging.getLogger(__name__)
 class fileeffectiverights53_test(Test)
-    def __init__(self):
-        super(fileeffectiverights53_test, self).__init__(
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}fileeffectiverights53_test')
+    pass

@@ -21,8 +21,7 @@ import logging
 logger = logging.getLogger(__name__)
 class fileauditedpermissions_object(Object)
     def __init__(self):
-        super(fileauditedpermissions_object, self).__init__(
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}fileauditedpermissions_object')
+        super(fileauditedpermissions_object, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}fileauditedpermissions_object
 
         self.ignore_sub_elements.extend([
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}behaviors',
@@ -30,4 +29,3 @@ class fileauditedpermissions_object(Object)
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}filename',
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}trustee_name',
         ])
-

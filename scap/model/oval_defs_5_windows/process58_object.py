@@ -21,11 +21,9 @@ import logging
 logger = logging.getLogger(__name__)
 class process58_object(Object)
     def __init__(self):
-        super(process58_object, self).__init__(
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}process58_object')
+        super(process58_object, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}process58_object
 
         self.ignore_sub_elements.extend([
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}command_line',
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}pid',
         ])
-

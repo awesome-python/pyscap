@@ -20,6 +20,4 @@ import logging
 
 logger = logging.getLogger(__name__)
 class user_sid55_test(Test)
-    def __init__(self):
-        super(user_sid55_test, self).__init__(
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}user_sid55_test')
+    pass

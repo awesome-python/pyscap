@@ -22,8 +22,7 @@ logger = logging.getLogger(__name__)
 
 class auditeventpolicysubcategories_state(State):
     def __init__(self):
-        super(auditeventpolicysubcategories_state, self).__init__(
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}auditeventpolicysubcategories_state')
+        super(auditeventpolicysubcategories_state, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}auditeventpolicysubcategories_state
 
         self.ignore_sub_elements.extend([
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}credential_validation',

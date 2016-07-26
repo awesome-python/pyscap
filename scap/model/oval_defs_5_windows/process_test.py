@@ -20,6 +20,4 @@ import logging
 
 logger = logging.getLogger(__name__)
 class process_test(Test)
-    def __init__(self):
-        super(process_test, self).__init__(
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}process_test')
+    pass

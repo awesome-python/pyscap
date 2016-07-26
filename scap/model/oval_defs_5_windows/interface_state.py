@@ -21,8 +21,7 @@ import logging
 logger = logging.getLogger(__name__)
 class interface_state(State)
     def __init__(self):
-        super(interface_state, self).__init__(
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}interface_state')
+        super(interface_state, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}interface_state
 
         self.ignore_sub_elements.extend([
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}name',
@@ -34,4 +33,3 @@ class interface_state(State)
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}netmask',
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}addr_type',
         ])
-

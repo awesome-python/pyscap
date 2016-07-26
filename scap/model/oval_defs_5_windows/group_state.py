@@ -21,12 +21,10 @@ import logging
 logger = logging.getLogger(__name__)
 class group_state(State)
     def __init__(self):
-        super(group_state, self).__init__(
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}group_state')
+        super(group_state, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}group_state
 
         self.ignore_sub_elements.extend([
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}group',
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}user',
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}subgroup',
         ])
-

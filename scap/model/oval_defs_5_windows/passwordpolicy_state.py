@@ -21,8 +21,7 @@ import logging
 logger = logging.getLogger(__name__)
 class passwordpolicy_state(State)
     def __init__(self):
-        super(passwordpolicy_state, self).__init__(
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}passwordpolicy_state')
+        super(passwordpolicy_state, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}passwordpolicy_state
 
         self.ignore_sub_elements.extend([
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}max_passwd_age',
@@ -32,4 +31,3 @@ class passwordpolicy_state(State)
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}password_complexity',
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}reversible_encryption',
         ])
-

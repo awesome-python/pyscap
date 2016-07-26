@@ -21,8 +21,7 @@ import logging
 logger = logging.getLogger(__name__)
 class metabase_state(State)
     def __init__(self):
-        super(metabase_state, self).__init__(
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}metabase_state')
+        super(metabase_state, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}metabase_state
 
         self.ignore_sub_elements.extend([
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}key',
@@ -32,4 +31,3 @@ class metabase_state(State)
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}data_type',
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}data',
         ])
-

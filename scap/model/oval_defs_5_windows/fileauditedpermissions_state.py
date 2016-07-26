@@ -21,8 +21,7 @@ import logging
 logger = logging.getLogger(__name__)
 class fileauditedpermissions_state(State)
     def __init__(self):
-        super(fileauditedpermissions_state, self).__init__(
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}fileauditedpermissions_state')
+        super(fileauditedpermissions_state, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}fileauditedpermissions_state
 
         self.ignore_sub_elements.extend([
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}path',
@@ -49,4 +48,3 @@ class fileauditedpermissions_state(State)
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}file_write_attributes',
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}windows_view',
         ])
-

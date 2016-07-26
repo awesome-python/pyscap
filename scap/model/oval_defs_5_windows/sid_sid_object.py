@@ -21,11 +21,9 @@ import logging
 logger = logging.getLogger(__name__)
 class sid_sid_object(Object)
     def __init__(self):
-        super(sid_sid_object, self).__init__(
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}sid_sid_object')
+        super(sid_sid_object, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}sid_sid_object
 
         self.ignore_sub_elements.extend([
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}behaviors',
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}trustee_sid',
         ])
-

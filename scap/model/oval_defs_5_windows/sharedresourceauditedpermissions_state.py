@@ -21,8 +21,7 @@ import logging
 logger = logging.getLogger(__name__)
 class sharedresourceauditedpermissions_state(State)
     def __init__(self):
-        super(sharedresourceauditedpermissions_state, self).__init__(
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}sharedresourceauditedpermissions_state')
+        super(sharedresourceauditedpermissions_state, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}sharedresourceauditedpermissions_state
 
         self.ignore_sub_elements.extend([
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}netname',
@@ -38,4 +37,3 @@ class sharedresourceauditedpermissions_state(State)
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}generic_execute',
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}generic_all',
         ])
-

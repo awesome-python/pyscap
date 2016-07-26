@@ -22,8 +22,7 @@ logger = logging.getLogger(__name__)
 
 class cmdlet_state(State):
     def __init__(self):
-        super(cmdlet_state, self).__init__(
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}cmdlet_state')
+        super(cmdlet_state, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}cmdlet_state
 
         self.ignore_sub_elements.extend([
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}module_name',

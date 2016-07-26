@@ -20,8 +20,4 @@ import logging
 
 logger = logging.getLogger(__name__)
 class dpkginfo_test(Test)
-    def __init__(self):
-        super(dpkginfo_test, self).__init__(
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}dpkginfo_test')
-
-
+    pass

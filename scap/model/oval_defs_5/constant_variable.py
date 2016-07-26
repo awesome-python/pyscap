@@ -21,7 +21,7 @@ import logging
 logger = logging.getLogger(__name__)
 class constant_variable(Variable):
     def __init__(self):
-        super(constant_variable, self).__init__('{http://oval.mitre.org/XMLSchema/oval-definitions-5}constant_variable')
+        super(constant_variable, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5}constant_variable
 
         self.children = []
 
