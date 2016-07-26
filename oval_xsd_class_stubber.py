@@ -21,7 +21,7 @@ import xml.etree.ElementTree as ET
 import sys, os
 from scap.Model import Model
 
-xsd_path = 'ref/oval\ 5.11.1/Language/schemas/'
+xsd_path = 'ref/oval 5.11.1/Language/schemas/'
 # aix-definitions-schema.xsd
 # aix-system-characteristics-schema.xsd
 # android-definitions-schema.xsd
@@ -41,7 +41,7 @@ xsd_path = 'ref/oval\ 5.11.1/Language/schemas/'
 # hpux-definitions-schema.xsd
 # hpux-system-characteristics-schema.xsd
 # independent-definitions-schema.xsd
-xsd_path =+ 'independent-definitions-schema.xsd'
+xsd_path += 'independent-definitions-schema.xsd'
 # independent-system-characteristics-schema.xsd
 # ios-definitions-schema.xsd
 # ios-system-characteristics-schema.xsd
