@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.model.oval_defs_5.Object import Object
+from scap.model.oval_defs_5_windows.Object import Object
 import logging
 
 logger = logging.getLogger(__name__)
