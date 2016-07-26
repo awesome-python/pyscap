@@ -17,7 +17,6 @@
 
 from scap.model.Simple import Simple
 import logging
-from scap.Engine import Engine
 
 logger = logging.getLogger(__name__)
 class LiteralComponent(Simple):

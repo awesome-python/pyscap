@@ -17,7 +17,6 @@
 
 from scap.model.xccdf_1_2.GroupRuleCommon import GroupRuleCommon
 import logging
-from scap.Engine import Engine
 
 logger = logging.getLogger(__name__)
 class Rule(GroupRuleCommon):

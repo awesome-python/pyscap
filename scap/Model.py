@@ -23,8 +23,7 @@ class Model(object):
     @staticmethod
     def load(content):
         root = content.getroot()
-        from scap.Engine import Engine
-        if root.tag.startswith('{' + Engine.namespaces['scap_1_2']):
+        if root.tag == '{http://checklists.nist.gov/xccdf/1.2}data-stream-collection':
             from scap.model.scap_1_2.DataStreamCollection import DataStreamCollection
             dsc = DataStreamCollection()
             dsc.from_xml(None, root)

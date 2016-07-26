@@ -16,7 +16,6 @@
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
 from scap.collector.ResultCollector import ResultCollector
-from scap.Engine import Engine
 import logging
 
 logger = logging.getLogger(__name__)

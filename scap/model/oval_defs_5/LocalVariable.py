@@ -17,7 +17,6 @@
 
 from scap.model.oval_defs_5.Variable import Variable
 import logging
-from scap.Engine import Engine
 
 logger = logging.getLogger(__name__)
 class LocalVariable(Variable):

@@ -17,7 +17,6 @@
 
 from scap.Model import Model
 import logging
-from scap.Engine import Engine
 
 logger = logging.getLogger(__name__)
 class ObjectComponent(Model):
