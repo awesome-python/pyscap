@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.model.oval_defs_5.Test import Test
+from scap.model.oval_defs_5_windows.Test import Test
 import logging
 
 logger = logging.getLogger(__name__)
@@ -23,9 +23,3 @@ class uac_test(Test)
     def __init__(self):
         super(uac_test, self).__init__(
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}uac_test')
-
-        self.ignore_sub_elements.extend([
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}object',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}state',
-        ])
-
