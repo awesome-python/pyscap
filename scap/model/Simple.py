@@ -21,8 +21,8 @@ import logging
 
 logger = logging.getLogger(__name__)
 class Simple(Model):
-    def __init__(self, tag_name=None):
-        super(Simple, self).__init__(tag_name)
+    def __init__(self):
+        super(Simple, self).
 
         self.value = None
 

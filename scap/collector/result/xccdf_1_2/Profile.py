@@ -19,7 +19,7 @@ from scap.collector.ResultCollector import ResultCollector
 import logging
 
 logger = logging.getLogger(__name__)
-class ProfileCollector(ResultCollector):
+class Profile(ResultCollector):
     def collect_results(self):
         # expand values
         values = {}
@@ -42,6 +42,5 @@ class ProfileCollector(ResultCollector):
             logger.debug('Using value ' + values[value_id]['operator'] + ' ' + values[value_id]['value'] + ' for ' + values[value_id]['type'] + ' value ' + value_id)
 
         for rule_id in self.content.selected_rules:
-            from scap.collector.result.xccdf_1_2.RuleCollector import RuleCollector
             rule = self.content.parent.rules[rule_id]
-            self.host.add_result_collector(RuleCollector(self.host, rule, values, self.content.rule_check_selections[rule_id]))
+            self.host.add_result_collector(ResultCollector.load_collector(self.host, rule, {'values': values, 'check_selector': self.content.rule_check_selections[rule_id]}))

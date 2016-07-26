@@ -19,11 +19,7 @@ from scap.collector.ResultCollector import ResultCollector
 import logging
 
 logger = logging.getLogger(__name__)
-class DataStreamCollector(ResultCollector):
-    def __init__(self, host, content, args):
-        super(DataStreamCollector, self).__init__(host, content)
-        self.args = args
-
+class data_stream(ResultCollector):
     def collect_results(self):
         if self.args.checklist:
             checklist_id = self.args.checklist[0]
@@ -42,5 +38,4 @@ class DataStreamCollector(ResultCollector):
                 sys.exit()
         logger.info('Selecting checklist ' + checklist.id)
 
-        from scap.collector.result.xccdf_1_2.BenchmarkCollector import BenchmarkCollector
-        self.host.add_result_collector(BenchmarkCollector(self.host, checklist, self.args))
+        self.host.add_result_collector(ResultCollector.load_collector(self.host, checklist, self.args))

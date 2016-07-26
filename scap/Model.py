@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-import logging, importlib
+import logging
 import xml.etree.ElementTree as ET
 
 logger = logging.getLogger(__name__)
@@ -48,37 +48,53 @@ class Model(object):
     }
 
     @staticmethod
-    def load_child(parent, child_el):
+    def parse_tag(tag):
         # parse tag
-        (namespace, tag_name) = child_el.tag[1:].split('}')
-        if namespace not in Model.namespaces:
-            logger.critical('Unsupported ' + tag_name + ' tag with namespace: ' + namespace)
+        xml_namespace, tag_name = tag[1:].split('}')
+
+        if xml_namespace not in Model.namespaces:
+            logger.critical('Unsupported ' + tag_name + ' tag with namespace: ' + xml_namespace)
             import sys
             sys.exit()
+        model_namespace = Model.namespaces[xml_namespace]
+
+        module_name = tag_name.replace('-', '_')
+        import keyword
+        if keyword.iskeyword(module_name):
+            module_name += '_'
+
+        return xml_namespace, model_namespace, tag_name, module_name
+
+    @staticmethod
+    def load_child(parent, child_el):
+        xml_namespace, model_namespace, tag_name, module_name = Model.parse_tag(child_el.tag)
 
         # try to load the tag's module
-        tag_name = tag_name.replace('-', '_')
-        import keyword
-        if keyword.iskeyword(tag_name):
-            tag_name += '_'
-        module_name = 'scap.model.' + Model.namespaces[namespace] + '.' + tag_name
         import sys
         if module_name not in sys.modules:
-            logger.debug('Loading module ' + module_name)
-            mod = importlib.import_module(module_name)
+            logger.debug('Loading module ' + 'scap.model.' + model_namespace + '.' + module_name)
+            import importlib
+            mod = importlib.import_module('scap.model.' + model_namespace + '.' + module_name)
         else:
-            mod = sys.modules[module_name]
+            mod = sys.modules['scap.model.' + model_namespace + '.' + module_name]
 
         # instantiate an instance of the class & load it
-        inst = eval('mod.' + tag_name + '()')
+        inst = eval('mod.' + module_name + '()')
+        inst.xml_namespace = xml_namespace
+        inst.model_namespace = model_namespace
+        inst.tag_name = tag_name
         inst.from_xml(parent, child_el)
 
         return inst
 
-    def __init__(self):
-        self.xml_namespace = None
-        self.model_namespace = None
-        self.tag_name = None
+    def __init__(self, tag=None):
+        if tag is None:
+            self.xml_namespace = None
+            self.model_namespace = None
+            self.tag_name = None
+        else:
+            self.xml_namespace, self.model_namespace, self.tag_name, module_name = Model.parse_tag(tag)
+
         self.parent = None
         self.element = None
         self.ref_mapping = {}
@@ -93,22 +109,12 @@ class Model(object):
             raise NotImplementedError('Subclass ' + self.__class__.__name__ + ' does not define tag')
         return '{' + self.xml_namespace + '}' + self.tag_name
 
-    def parse_tag(self, tag):
-        parts = tag[1:].split('}')
-        if len(parts) != 2:
-            raise ValueError('Could not parse Model tag in subclass ' + self.__class__.__name__)
-        self.xml_namespace = parts[0]
-        self.tag_name = parts[1]
-        if self.xml_namespace not in Model.namespaces:
-            raise NotImplementedError('Unknown namespace ' + self.xml_namespace)
-        self.model_namespace = Model.namespaces[self.xml_namespace]
-
     def from_xml(self, parent, el):
         self.parent = parent
         self.element = el
 
-        if self.xml_namespace is None:
-            self.parse_tag(el.tag)
+        if self.xml_namespace is None or self.model_namespace is None or self.tag_name is None:
+            self.xml_namespace, self.model_namespace, self.tag_name, module_name = Model.parse_tag(el.tag)
 
         for name, value in el.attrib.items():
             if not self.parse_attribute(name, value):
@@ -203,8 +209,9 @@ class Model(object):
     def get_sub_elements(self):
         return []
 
-    def to_xml(self, tag):
-        self.parse_tag(tag)
+    def to_xml(self, tag=None):
+        if tag is not None:
+            self.xml_namespace, self.model_namespace, self.tag_name, module_name = Model.parse_tag(tag)
 
         if self.element is None:
             self.element = ET.Element(self.get_tag())

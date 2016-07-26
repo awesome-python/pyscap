@@ -21,8 +21,8 @@ import xml.etree.ElementTree as ET
 
 logger = logging.getLogger(__name__)
 class AI(Model):
-    def __init__(self, tag_name=None):
-        super(AI, self).__init__(tag_name)
+    def __init__(self, tag=None):
+        super(AI, self).__init__(tag)
 
         # attribs
         self.timestamp = None

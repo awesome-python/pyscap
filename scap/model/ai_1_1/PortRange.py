@@ -22,4 +22,4 @@ import xml.etree.ElementTree as ET
 logger = logging.getLogger(__name__)
 class PortRange(Model):
     def __init__(self):
-        super(PortRange, self).__init__()    # {http://scap.nist.gov/schema/asset-identification/1.1}port-range
+        super(PortRange, self).__init__('{http://scap.nist.gov/schema/asset-identification/1.1}port-range')    # 

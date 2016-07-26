@@ -33,7 +33,7 @@ class Engine(object):
             #TODO cache facts
 
             from scap.collector.ResultCollector import ResultCollector
-            host.add_result_collector(ResultCollector.learn(host, self.content, args))
+            host.add_result_collector(ResultCollector.load_collector(host, self.content, args))
             host.collect_results()
 
             host.disconnect()
@@ -93,8 +93,8 @@ class Engine(object):
             report.id = 'report_' + uuid.uuid4().hex
             arc.reports.append(report)
 
-            from scap.model.rep_core_1_1.Relationship import Relationship
-            rel = Relationship()
+            from scap.model.rep_core_1_1.relationship import relationship
+            rel = relationship()
             rel.subject = report.id
             rel.type = 'isAbout'
             rel.refs.append(asset.id)

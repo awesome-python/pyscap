@@ -19,12 +19,7 @@ from scap.collector.ResultCollector import ResultCollector
 import logging
 
 logger = logging.getLogger(__name__)
-class CheckCollector(ResultCollector):
-    def __init__(self, host, content, values):
-        super(CheckCollector, self).__init__(host, content)
-
-        self.values = values
-
+class check(ResultCollector):
     def collect_results(self):
         # TODO: multi-check
         from scap.model.xccdf_1_2.Rule import Rule

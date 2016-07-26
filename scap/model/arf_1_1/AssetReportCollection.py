@@ -22,7 +22,7 @@ import logging
 logger = logging.getLogger(__name__)
 class AssetReportCollection(RelationshipsContainer):
     def __init__(self):
-        super(AssetReportCollection, self).__init__()    # {http://scap.nist.gov/schema/asset-reporting-format/1.1}asset-report-collection
+        super(AssetReportCollection, self).__init__('{http://scap.nist.gov/schema/asset-reporting-format/1.1}asset-report-collection')
         self.report_requests = []
         self.assets = []
         self.reports = []

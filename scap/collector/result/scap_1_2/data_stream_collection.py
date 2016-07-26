@@ -19,11 +19,7 @@ from scap.collector.ResultCollector import ResultCollector
 import logging
 
 logger = logging.getLogger(__name__)
-class DataStreamCollectionCollector(ResultCollector):
-    def __init__(self, host, content, args):
-        super(DataStreamCollectionCollector, self).__init__(host, content)
-        self.args = args
-
+class data_stream_collection(ResultCollector):
     def collect_results(self):
         if self.args.data_stream:
             ds_name = self.args.data_stream[0]
@@ -42,5 +38,4 @@ class DataStreamCollectionCollector(ResultCollector):
                 sys.exit()
         logger.info('Selecting data stream ' + ds.id)
 
-        from scap.collector.result.scap_1_2.DataStreamCollector import DataStreamCollector
-        self.host.add_result_collector(DataStreamCollector(self.host, ds, self.args))
+        self.host.add_result_collector(ResultCollector.load_collector(self.host, ds, self.args))

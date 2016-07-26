@@ -21,7 +21,7 @@ import logging
 logger = logging.getLogger(__name__)
 class relationship(Model):
     def __init__(self):
-        super(relationship, self).__init__()    # {http://scap.nist.gov/schema/reporting-core/1.1}relationship
+        super(relationship, self).__init__('{http://scap.nist.gov/schema/reporting-core/1.1}relationship')
 
         self.refs = []
 

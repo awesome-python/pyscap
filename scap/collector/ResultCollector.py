@@ -21,20 +21,27 @@ import logging
 logger = logging.getLogger(__name__)
 class ResultCollector(Collector):
     @staticmethod
-    def learn(host, content, args):
-        from scap.model.scap_1_2.DataStreamCollection import DataStreamCollection
-        if isinstance(content, DataStreamCollection):
-            from scap.collector.result.scap_1_2.DataStreamCollectionCollector import DataStreamCollectionCollector
-            dsc = DataStreamCollectionCollector(host, content, args)
-            return dsc
+    def load_collector(host, content, args=None):
+        collector_module = 'scap.collector.result.' + content.model_namespace + '.' + content.__class__.__name__
+        # try to load the collector's module
+        import sys
+        if collector_module not in sys.modules:
+            logger.debug('Loading module ' + collector_module)
+            import importlib
+            mod = importlib.import_module(collector_module)
         else:
-            logger.critical('Collector not found for content: ' + content.__class__.__name__)
-            sys.exit()
+            mod = sys.modules[collector_module]
 
-    def __init__(self, host, content):
+        # instantiate an instance of the class & load it
+        inst = eval('mod.' + content.__class__.__name__ + '(host, content, args)')
+
+        return inst
+
+    def __init__(self, host, content, args=None):
         super(ResultCollector, self).__init__(host)
 
         self.content = content
+        self.args = args
 
     def collect_results(self):
         import inspect

@@ -19,11 +19,7 @@ from scap.collector.ResultCollector import ResultCollector
 import logging
 
 logger = logging.getLogger(__name__)
-class BenchmarkCollector(ResultCollector):
-    def __init__(self, host, content, args):
-        super(BenchmarkCollector, self).__init__(host, content)
-        self.args = args
-
+class Benchmark(ResultCollector):
     def collect_results(self):
         if self.args.profile:
             profile_id = self.args.profile[0]
@@ -42,5 +38,4 @@ class BenchmarkCollector(ResultCollector):
                 sys.exit()
         logger.info('Selecting profile ' + profile.id)
 
-        from scap.collector.result.xccdf_1_2.ProfileCollector import ProfileCollector
-        self.host.add_result_collector(ProfileCollector(self.host, profile))
+        self.host.add_result_collector(ResultCollector.load_collector(self.host, profile))

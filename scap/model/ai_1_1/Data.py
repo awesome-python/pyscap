@@ -22,4 +22,4 @@ import xml.etree.ElementTree as ET
 logger = logging.getLogger(__name__)
 class Data(Asset):
     def __init__(self):
-        super(Data, self).__init__()    # {http://scap.nist.gov/schema/asset-identification/1.1}data
+        super(Data, self).__init__('{http://scap.nist.gov/schema/asset-identification/1.1}data')    # 

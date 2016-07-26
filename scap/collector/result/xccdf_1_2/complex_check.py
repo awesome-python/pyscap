@@ -19,12 +19,7 @@ from scap.collector.ResultCollector import ResultCollector
 import logging
 
 logger = logging.getLogger(__name__)
-class ComplexCheckCollector(ResultCollector):
-    def __init__(self, host, content, values):
-        super(ComplexCheckCollector, self).__init__(host, content)
-
-        self.values = values
-
+class complex_check(ResultCollector):
     def collect_results(self):
         from scap.model.xccdf_1_2.Rule import Rule
         self.host.results[self.content.id] = Rule.Result.NOT_CHECKED
