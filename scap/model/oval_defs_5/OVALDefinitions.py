@@ -42,21 +42,17 @@ class OVALDefinitions(Model):
                 d.from_xml(self, def_el)
                 self.definitions[def_el.attrib['id']] = d
         elif sub_el.tag == '{http://oval.mitre.org/XMLSchema/oval-definitions-5}tests':
-            from scap.model.oval_defs_5.Test import Test
             for test_el in sub_el:
-                self.tests[test_el.attrib['id']] = Test.load(self, test_el)
+                self.tests[test_el.attrib['id']] = Model.load_child(self, test_el)
         elif sub_el.tag == '{http://oval.mitre.org/XMLSchema/oval-definitions-5}objects':
-            from scap.model.oval_defs_5.Object import Object
             for obj_el in sub_el:
-                self.objects[obj_el.attrib['id']] = Object.load(self, obj_el)
+                self.objects[obj_el.attrib['id']] = Model.load_child(self, obj_el)
         elif sub_el.tag == '{http://oval.mitre.org/XMLSchema/oval-definitions-5}states':
-            from scap.model.oval_defs_5.State import State
             for state_el in sub_el:
-                self.states[state_el.attrib['id']] = State.load(self, state_el)
+                self.states[state_el.attrib['id']] = Model.load_child(self, state_el)
         elif sub_el.tag == '{http://oval.mitre.org/XMLSchema/oval-definitions-5}variables':
-            from scap.model.oval_defs_5.Variable import Variable
             for var_el in sub_el:
-                self.variables[var_el.attrib['id']] = Variable.load(self, var_el)
+                self.variables[var_el.attrib['id']] = Model.load_child(self, var_el)
         else:
             return super(OVALDefinitions, self).parse_sub_el(sub_el)
         return True

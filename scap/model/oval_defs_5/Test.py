@@ -21,22 +21,6 @@ import logging
 logger = logging.getLogger(__name__)
 
 class Test(Model):
-    @staticmethod
-    def load(parent, test_el):
-        from scap.model.oval_defs_5_windows.RegistryTest import RegistryTest
-        from scap.model.oval_defs_5_windows.WUAUpdateSearcherTest import WUAUpdateSearcherTest
-        test_map = {
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}registry_test': RegistryTest,
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}wuaupdatesearcher_test': WUAUpdateSearcherTest,
-        }
-        if test_el.tag not in test_map:
-            logger.critical('Unknown Test tag: ' + test_el.tag)
-            import sys
-            sys.exit()
-        test = test_map[test_el.tag]()
-        test.from_xml(parent, test_el)
-        return test
-
     # abstract
     def __init__(self, tag_name=None):
         super(Test, self).__init__(tag_name)

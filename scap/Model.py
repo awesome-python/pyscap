@@ -15,22 +15,66 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-import logging
+import logging, importlib
 import xml.etree.ElementTree as ET
 
 logger = logging.getLogger(__name__)
 class Model(object):
+    namespaces = {
+        'http://scap.nist.gov/schema/asset-identification/1.1': 'ai_1_1',
+        'http://scap.nist.gov/schema/asset-reporting-format/1.1': 'arf_1_1',
+        'http://scap.nist.gov/specifications/arf/vocabulary/relationships/1.0': 'arf_rel_1_0',
+        'http://cpe.mitre.org/dictionary/2.0': 'cpe_dict_2_0',
+        'http://cpe.mitre.org/language/2.0': 'cpe_lang_2_0',
+        'http://purl.org/dc/elements/1.1/': 'dc_el_1_1',
+        'http://scap.nist.gov/schema/ocil/2.0': 'ocil_2_0',
+        'http://scap.nist.gov/schema/ocil/2': 'ocil_2',
+        'http://oval.mitre.org/XMLSchema/oval-common-5': 'oval_common_5',
+        'http://oval.mitre.org/XMLSchema/oval-definitions-5': 'oval_defs_5',
+        'http://oval.mitre.org/XMLSchema/oval-definitions-5#independent': 'oval_defs_5_independent',
+        'http://oval.mitre.org/XMLSchema/oval-definitions-5#windows': 'oval_defs_5_windows',
+        'http://scap.nist.gov/schema/scap/source/1.2': 'scap_1_2',
+        'http://scap.nist.gov/schema/reporting-core/1.1': 'rep_core_1_1',
+        'http://checklists.nist.gov/xccdf/1.1': 'xccdf_1_1',
+        'http://checklists.nist.gov/xccdf/1.2': 'xccdf_1_2',
+        'http://www.w3.org/1999/xhtml': 'xhtml',
+        'http://www.w3.org/1999/xlink': 'xlink',
+        'urn:oasis:names:tc:entity:xmlns:xml:catalog': 'xml_cat',
+        'http://scap.nist.gov/schema/xml-dsig/1.0': 'xml_dsig_1_0',
+        'http://www.w3.org/2001/XMLSchema-instance': 'xml_schema_instance',
+        'http://www.w3.org/2000/09/xmldsig#': 'xmldsig_2000_09',
+        'http://www.w3.org/2001/XMLSchema': 'xsd',
+    }
+
     @staticmethod
     def load(content):
         root = content.getroot()
-        if root.tag == '{http://checklists.nist.gov/xccdf/1.2}data-stream-collection':
+        if root.tag == '{http://scap.nist.gov/schema/scap/source/1.2}data-stream-collection':
             from scap.model.scap_1_2.DataStreamCollection import DataStreamCollection
             dsc = DataStreamCollection()
             dsc.from_xml(None, root)
             return dsc
         else:
-            logger.critical('Unsupported content with root namespace: ' + str(content.get_root_namespace()))
+            logger.critical('Unsupported content with root tag: ' + root.tag)
+            import sys
             sys.exit()
+
+    @staticmethod
+    def load_child(parent, child_el):
+        # parse tag
+        (namespace, tag_name) = child_el.tag[1:].split('}')
+        if namespace not in Model.namespaces:
+            logger.critical('Unsupported ' + tag_name + ' tag with namespace: ' + namespace)
+            import sys
+            sys.exit()
+
+        # try to load the tag's module
+        tag_name = tag_name.replace('-', '_')
+        logger.debug('Trying to load module ' + 'scap.model.' + Model.namespaces[namespace] + '.' + tag_name)
+        mod = importlib.import_module('scap.model.' + Model.namespaces[namespace] + '.' + tag_name)
+        inst = eval('mod.' + tag_name + '()')
+        inst.from_xml(parent, child_el)
+        return inst
 
     def __init__(self, tag_name=None):
         self.tag_name = tag_name

@@ -20,31 +20,6 @@ import xml.etree.ElementTree as ET
 
 logger = logging.getLogger(__name__)
 class Engine(object):
-    namespaces = {
-        'ai_1_1': 'http://scap.nist.gov/schema/asset-identification/1.1',
-        'arf_1_1': 'http://scap.nist.gov/schema/asset-reporting-format/1.1',
-        'arf_rel_1_0': 'http://scap.nist.gov/specifications/arf/vocabulary/relationships/1.0',
-        'cpe_dict_2_0': 'http://cpe.mitre.org/dictionary/2.0',
-        'cpe_lang_2_0': 'http://cpe.mitre.org/language/2.0',
-        'dc_el_1_1': 'http://purl.org/dc/elements/1.1/',
-        'ocil_2_0': 'http://scap.nist.gov/schema/ocil/2.0',
-        'ocil_2': 'http://scap.nist.gov/schema/ocil/2',
-        'oval_common_5': 'http://oval.mitre.org/XMLSchema/oval-common-5',
-        'oval_defs_5': 'http://oval.mitre.org/XMLSchema/oval-definitions-5',
-        'oval_defs_5_independent': 'http://oval.mitre.org/XMLSchema/oval-definitions-5#independent',
-        'oval_defs_5_windows': 'http://oval.mitre.org/XMLSchema/oval-definitions-5#windows',
-        'scap_1_2': 'http://scap.nist.gov/schema/scap/source/1.2',
-        'rep_core_1_1': 'http://scap.nist.gov/schema/reporting-core/1.1',
-        'xccdf_1_1': 'http://checklists.nist.gov/xccdf/1.1',
-        'xccdf_1_2': 'http://checklists.nist.gov/xccdf/1.2',
-        'xhtml': 'http://www.w3.org/1999/xhtml',
-        'xlink': 'http://www.w3.org/1999/xlink',
-        'xml_cat': 'urn:oasis:names:tc:entity:xmlns:xml:catalog',
-        'xml_dsig_1_0': 'http://scap.nist.gov/schema/xml-dsig/1.0',
-        'xml_schema_instance': 'http://www.w3.org/2001/XMLSchema-instance',
-        'xmldsig_2000_09': 'http://www.w3.org/2000/09/xmldsig#',
-    }
-
     def __init__(self, content, hosts):
         self.hosts = hosts
         from scap.Model import Model

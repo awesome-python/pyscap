@@ -21,7 +21,7 @@ import logging
 logger = logging.getLogger(__name__)
 class DataStreamCollection(Model):
     def __init__(self):
-        super(DataStreamCollection, self).__init__('{http://checklists.nist.gov/xccdf/1.2}data-stream-collection')
+        super(DataStreamCollection, self).__init__('{http://scap.nist.gov/schema/scap/source/1.2}data-stream-collection')
 
         self.components = {}
         self.data_streams = {}

@@ -22,6 +22,7 @@ from StringIO import StringIO
 import xml.etree.ElementTree as ET
 from scap.ColorFormatter import ColorFormatter
 from scap.Engine import Engine
+from scap.Model import Model
 from scap.Host import Host
 from scap.CredentialStore import CredentialStore
 
@@ -96,8 +97,8 @@ else:
 args = arg_parser.parse_args()
 
 # configure ElementTree
-for prefix in Engine.namespaces:
-    ET.register_namespace(prefix, Engine.namespaces[prefix])
+for k,v in Model.namespaces.items():
+    ET.register_namespace(v, k)
 
 # perform the operations
 if args.benchmark:
