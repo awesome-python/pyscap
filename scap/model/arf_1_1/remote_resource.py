@@ -17,10 +17,9 @@
 
 from scap.Model import Model
 import logging
+import xml.etree.ElementTree as ET
 
 logger = logging.getLogger(__name__)
-class Report(Model):
+class remote_resource(Model):
     def __init__(self):
-        super(Report, self).__init__('{http://scap.nist.gov/schema/asset-reporting-format/1.1}report')    # 
-
-        self.required_attributes.append('id')
+        super(remote_resource, self).__init__('{http://scap.nist.gov/schema/asset-reporting-format/1.1}remote-resource')    # 

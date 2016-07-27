@@ -20,16 +20,16 @@ import logging
 import xml.etree.ElementTree as ET
 
 logger = logging.getLogger(__name__)
-class Asset(Model):
+class asset(Model):
     def __init__(self):
-        super(Asset, self).__init__('{http://scap.nist.gov/schema/asset-reporting-format/1.1}asset')
+        super(asset, self).__init__('{http://scap.nist.gov/schema/asset-reporting-format/1.1}asset')
 
         self.asset = None
 
         self.required_attributes.append('id')
 
     def get_sub_elements(self):
-        sub_els = super(Asset, self).get_sub_elements()
+        sub_els = super(asset, self).get_sub_elements()
 
         import scap.model.ai_1_1.Asset
         from scap.model.arf_1_1.RemoteResource import RemoteResource

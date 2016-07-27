@@ -39,8 +39,8 @@ class Engine(object):
             host.disconnect()
 
     def report(self):
-        from scap.model.arf_1_1.AssetReportCollection import AssetReportCollection
-        arc = AssetReportCollection()
+        from scap.model.arf_1_1.asset_report_collection import asset_report_collection
+        arc = asset_report_collection()
 
         #TODO commented to reduce amoutn of output
         # from scap.model.arf_1_1.ReportRequest import ReportRequest
@@ -50,8 +50,8 @@ class Engine(object):
         # arc.report_requests.append(rr)
 
         for host in self.hosts:
-            from scap.model.arf_1_1.Asset import Asset
-            asset = Asset()
+            from scap.model.arf_1_1.asset import asset
+            asset = asset()
             asset.id = 'asset_' + host.facts['root_uuid']
             # TODO: fallback to mobo guid, eth0 mac address, eth0 ip address, hostname
             arc.assets.append(asset)
@@ -88,8 +88,8 @@ class Engine(object):
                 s.port = svc['port']
                 s.protocol = svc['protocol']
 
-            from scap.model.arf_1_1.Report import Report
-            report = Report()
+            from scap.model.arf_1_1.report import report
+            report = report()
             report.id = 'report_' + uuid.uuid4().hex
             arc.reports.append(report)
 

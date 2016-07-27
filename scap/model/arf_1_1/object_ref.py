@@ -20,6 +20,6 @@ import logging
 import xml.etree.ElementTree as ET
 
 logger = logging.getLogger(__name__)
-class ExtendedInfo(Model):
+class object_ref(Model):
     def __init__(self):
-        super(ExtendedInfo, self).__init__('{http://scap.nist.gov/schema/asset-reporting-format/1.1}extended-info')    # 
+        super(object_ref, self).__init__('{http://scap.nist.gov/schema/asset-reporting-format/1.1}object-ref')    #

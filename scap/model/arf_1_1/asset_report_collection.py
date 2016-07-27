@@ -20,9 +20,9 @@ import xml.etree.ElementTree as ET
 import logging
 
 logger = logging.getLogger(__name__)
-class AssetReportCollection(RelationshipsContainer):
+class asset_report_collection(RelationshipsContainer):
     def __init__(self):
-        super(AssetReportCollection, self).__init__('{http://scap.nist.gov/schema/asset-reporting-format/1.1}asset-report-collection')
+        super(asset_report_collection, self).__init__('{http://scap.nist.gov/schema/asset-reporting-format/1.1}asset-report-collection')
         self.report_requests = []
         self.assets = []
         self.reports = []
@@ -58,6 +58,6 @@ class AssetReportCollection(RelationshipsContainer):
             sub_els.append(extended_infos_el)
 
         # want the relationships from superclass to come at the end
-        sub_els.extend(super(AssetReportCollection, self).get_sub_elements())
+        sub_els.extend(super(asset_report_collection, self).get_sub_elements())
 
         return sub_els
