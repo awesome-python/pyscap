@@ -143,11 +143,6 @@ class Model(object):
             return False
         return True
 
-    def parse_sub_el(self, sub_el):
-        if sub_el.tag in self.ignore_sub_elements:
-            return True
-        return False
-
     # Template
     # def parse_attribute(self, name, value):
     #     if name == 'tag':
@@ -155,7 +150,13 @@ class Model(object):
     #     else:
     #         return super(SubClass, self).parse_attribute(name, value)
     #     return True
-    #
+
+    def parse_sub_el(self, sub_el):
+        if sub_el.tag in self.ignore_sub_elements:
+            return True
+        return False
+
+    # Template
     # def parse_sub_el(self, sub_el):
     #     if sub_el.tag == '{namespace}tag':
     #         self.tags.append(sub_el.tag)
@@ -195,11 +196,11 @@ class Model(object):
         return attribs
 
     # Template
-    # def get_attributes(self):
-    #     attribs = super(Model, self).get_attributes()
-    #
-    #     return attribs
-    #
+    def get_attributes(self):
+        attribs = super(Model, self).get_attributes()
+
+        return attribs
+
     # Template
     # def get_sub_elements(self):
     #     sub_els = super(Model, self).get_sub_elements()
