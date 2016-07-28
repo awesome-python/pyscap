@@ -56,8 +56,8 @@ class Engine(object):
             # TODO: fallback to mobo guid, eth0 mac address, eth0 ip address, hostname
             arc.assets.append(asset)
 
-            from scap.model.ai_1_1.ComputingDevice import ComputingDevice
-            comp = ComputingDevice()
+            from scap.model.ai_1_1.computing_device import computing_device
+            comp = computing_device()
             for cpe in host.facts['hw_cpe']:
                 comp.cpes.append(cpe)
             comp.fqdn = host.facts['fqdn']
@@ -68,11 +68,11 @@ class Engine(object):
                 logger.debug("Couldn't parse motherboard-guid")
             asset.asset = comp
 
-            from scap.model.ai_1_1.Connection import Connection
+            from scap.model.ai_1_1.connection import connection
             for dev, net_con in host.facts['network_connections'].items():
                 logger.debug('Producing Connection for device ' + dev)
                 for address in net_con['network_addresses']:
-                    conn = Connection()
+                    conn = connection()
                     conn.mac_address = host.facts['network_connections'][dev]['mac_address']
                     conn.ip_address = address['address']
                     conn.subnet_mask = address['subnet_mask']
@@ -81,9 +81,9 @@ class Engine(object):
                     comp.connections.append(conn)
 
             # network services
-            from scap.model.ai_1_1.Service import Service
+            from scap.model.ai_1_1.service import service
             for svc in host.facts['network_services']:
-                s = Service()
+                s = service()
                 s.host = svc['ip_address']
                 s.port = svc['port']
                 s.protocol = svc['protocol']

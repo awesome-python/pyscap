@@ -69,14 +69,16 @@ class Model(object):
     def load_child(parent, child_el):
         xml_namespace, model_namespace, tag_name, module_name = Model.parse_tag(child_el.tag)
 
+        model_module = 'scap.model.' + model_namespace + '.' + module_name
+
         # try to load the tag's module
         import sys
-        if module_name not in sys.modules:
-            logger.debug('Loading module ' + 'scap.model.' + model_namespace + '.' + module_name)
+        if model_module not in sys.modules:
+            logger.debug('Loading module ' + model_module)
             import importlib
-            mod = importlib.import_module('scap.model.' + model_namespace + '.' + module_name)
+            mod = importlib.import_module(model_module)
         else:
-            mod = sys.modules['scap.model.' + model_namespace + '.' + module_name]
+            mod = sys.modules[model_module]
 
         # instantiate an instance of the class & load it
         inst = eval('mod.' + module_name + '()')
