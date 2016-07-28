@@ -196,10 +196,10 @@ class Model(object):
         return attribs
 
     # Template
-    def get_attributes(self):
-        attribs = super(Model, self).get_attributes()
-
-        return attribs
+    # def get_attributes(self):
+    #     attribs = super(Model, self).get_attributes()
+    #
+    #     return attribs
 
     # Template
     # def get_sub_elements(self):

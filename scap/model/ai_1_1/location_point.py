@@ -20,6 +20,6 @@ import logging
 import xml.etree.ElementTree as ET
 
 logger = logging.getLogger(__name__)
-class IPAddress(AI):
+class location_point(AI):
     def __init__(self):
-        super(IPAddress, self).__init__('{http://scap.nist.gov/schema/asset-identification/1.1}ip-address')    # 
+        super(location_point, self).__init__('{http://scap.nist.gov/schema/asset-identification/1.1}location-point')    #

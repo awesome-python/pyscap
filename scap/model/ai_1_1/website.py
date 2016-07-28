@@ -15,11 +15,11 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.Model import Model
+from scap.model.ai_1_1.ITAsset import ITAsset
 import logging
 import xml.etree.ElementTree as ET
 
 logger = logging.getLogger(__name__)
-class PortRange(Model):
+class website(ITAsset):
     def __init__(self):
-        super(PortRange, self).__init__('{http://scap.nist.gov/schema/asset-identification/1.1}port-range')    # 
+        super(website, self).__init__('{http://scap.nist.gov/schema/asset-identification/1.1}website')    #

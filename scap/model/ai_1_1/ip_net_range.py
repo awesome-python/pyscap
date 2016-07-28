@@ -20,6 +20,6 @@ import logging
 import xml.etree.ElementTree as ET
 
 logger = logging.getLogger(__name__)
-class Host(AI):
+class ip_net_range(AI):
     def __init__(self):
-        super(Host, self).__init__('{http://scap.nist.gov/schema/asset-identification/1.1}host')    # 
+        super(ip_net_range, self).__init__('{http://scap.nist.gov/schema/asset-identification/1.1}ip-net-range')    #

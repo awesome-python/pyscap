@@ -20,9 +20,9 @@ import logging
 import xml.etree.ElementTree as ET
 
 logger = logging.getLogger(__name__)
-class Connection(AI):
+class connection(AI):
     def __init__(self):
-        super(Connection, self).__init__('{http://scap.nist.gov/schema/asset-identification/1.1}connection')    # 
+        super(connection, self).__init__('{http://scap.nist.gov/schema/asset-identification/1.1}connection')    #
 
         self.ip_address = None
         self.mac_address = None
@@ -31,7 +31,7 @@ class Connection(AI):
         self.default_route = None
 
     def get_sub_elements(self):
-        sub_els = super(Connection, self).get_sub_elements()
+        sub_els = super(connection, self).get_sub_elements()
 
         if self.ip_address is not None:
             sub_els.append(self.get_text_element('{http://scap.nist.gov/schema/asset-identification/1.1}ip-address', self.ip_address))

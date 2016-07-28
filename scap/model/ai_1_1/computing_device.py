@@ -20,9 +20,9 @@ import logging
 import xml.etree.ElementTree as ET
 
 logger = logging.getLogger(__name__)
-class ComputingDevice(ITAsset):
+class computing_device(ITAsset):
     def __init__(self):
-        super(ComputingDevice, self).__init__('{http://scap.nist.gov/schema/asset-identification/1.1}computing-device')    # 
+        super(computing_device, self).__init__('{http://scap.nist.gov/schema/asset-identification/1.1}computing-device')    #
 
         self.distinguished_name = None
         self.cpes = []
@@ -32,7 +32,7 @@ class ComputingDevice(ITAsset):
         self.motherboard_guid = None
 
     def get_sub_elements(self):
-        sub_els = super(ComputingDevice, self).get_sub_elements()
+        sub_els = super(computing_device, self).get_sub_elements()
 
         if self.distinguished_name is not None:
             sub_els.append(self.get_text_element('{http://scap.nist.gov/schema/asset-identification/1.1}distinguished-name', self.distinguished_name))

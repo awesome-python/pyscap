@@ -20,9 +20,9 @@ import logging
 import xml.etree.ElementTree as ET
 
 logger = logging.getLogger(__name__)
-class Service(ITAsset):
+class service(ITAsset):
     def __init__(self):
-        super(Service, self).__init__('{http://scap.nist.gov/schema/asset-identification/1.1}service')    # 
+        super(service, self).__init__('{http://scap.nist.gov/schema/asset-identification/1.1}service')    #
 
         self.host = None
         self.ports = []
