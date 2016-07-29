@@ -17,7 +17,6 @@
 
 from scap.model.xccdf_1_2.XCCDFModel import XCCDFModel
 import logging
-from scap.Engine import Engine
 
 logger = logging.getLogger(__name__)
 class Tailoring(XCCDFModel):

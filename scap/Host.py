@@ -96,6 +96,6 @@ class Host(object):
             i += 1
 
     def benchmark(self, content, args):
-        from scap.collector.ResultCollector import ResultCollector
-        col = ResultCollector.load(self, content, args)
+        from scap.Checker import Checker
+        col = Checker.load(self, content, args)
         self.results = col.collect()

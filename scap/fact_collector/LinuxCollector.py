@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.collector.FactCollector import FactCollector
+from scap.FactCollector import FactCollector
 from scap.model.cpe_2_3.CPE import CPE
 import re, logging
 
@@ -24,9 +24,9 @@ class LinuxCollector(FactCollector):
     def collect(self):
         # TODO lsb_release -a
 
-        from scap.collector.fact.RootFSUUIDCollector import RootFSUUIDCollector
+        from scap.fact_collector.RootFSUUIDCollector import RootFSUUIDCollector
         self.host.fact_collectors.append(RootFSUUIDCollector(self.host))
-        from scap.collector.fact.LSHWCollector import LSHWCollector
+        from scap.fact_collector.LSHWCollector import LSHWCollector
         self.host.fact_collectors.append(LSHWCollector(self.host))
 
         # TODO ai.circuit
@@ -44,19 +44,19 @@ class LinuxCollector(FactCollector):
             cpe.set_value('update', m.group(2))
         self.host.facts['o_cpe'] = cpe
 
-        from scap.collector.fact.HostnameAllFQDNsCollector import HostnameAllFQDNsCollector
+        from scap.fact_collector.HostnameAllFQDNsCollector import HostnameAllFQDNsCollector
         self.host.fact_collectors.append(HostnameAllFQDNsCollector(self.host))
 
-        from scap.collector.fact.HostnameCollector import HostnameCollector
+        from scap.fact_collector.HostnameCollector import HostnameCollector
         self.host.fact_collectors.append(HostnameCollector(self.host))
 
-        from scap.collector.fact.IPAddrCollector import IPAddrCollector
+        from scap.fact_collector.IPAddrCollector import IPAddrCollector
         self.host.fact_collectors.append(IPAddrCollector(self.host))
 
-        from scap.collector.fact.IPRouteCollector import IPRouteCollector
+        from scap.fact_collector.IPRouteCollector import IPRouteCollector
         self.host.fact_collectors.append(IPRouteCollector(self.host))
 
-        from scap.collector.fact.NetstatCollector import NetstatCollector
+        from scap.fact_collector.NetstatCollector import NetstatCollector
         self.host.fact_collectors.append(NetstatCollector(self.host))
 
         # TODO ai.database

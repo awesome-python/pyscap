@@ -15,12 +15,9 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.collector.FactCollector import FactCollector
-import re, logging
+from scap.FactCollector import FactCollector
 
-logger = logging.getLogger(__name__)
-class HostnameCollector(FactCollector):
-    def collect(self):
-        hostname = self.host.line_from_command('hostname').strip()
-        logger.debug('hostname: ' + str(hostname))
-        self.host.facts['hostname'] = hostname
+class AppleCollector(FactCollector):
+    pass
+#/usr/sbin/system_profiler SPHardwareDataType | fgrep 'Serial' | awk '{print $NF}'
+#ioreg -l | awk '/IOPlatformSerialNumber/ { print $4 }' | sed s/\"//g

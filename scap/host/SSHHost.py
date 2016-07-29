@@ -47,7 +47,7 @@ class SSHHost(Host):
     def __init__(self, hostname, port):
         super(SSHHost, self).__init__(hostname, port)
 
-        from scap.collector.fact.UNameCollector import UNameCollector
+        from scap.fact_collector.UNameCollector import UNameCollector
         self.fact_collectors.append(UNameCollector(self))
 
         creds = CredentialStore()

@@ -14,3 +14,12 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
+
+from scap.Checker import Checker
+import logging
+
+logger = logging.getLogger(__name__)
+class check(Checker):
+    def collect(self):
+        # TODO: multi-check
+        return 'notchecked'

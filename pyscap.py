@@ -128,7 +128,6 @@ if args.benchmark:
 
     content = Model.load_child(None, ET.parse(args.content[0]).getroot())
 
-    from scap.collector.ResultCollector import ResultCollector
     for host in hosts:
         host.connect()
 

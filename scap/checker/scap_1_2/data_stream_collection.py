@@ -15,27 +15,27 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.collector.ResultCollector import ResultCollector
+from scap.Checker import Checker
 import logging
 
 logger = logging.getLogger(__name__)
-class Benchmark(ResultCollector):
+class data_stream_collection(Checker):
     def collect(self):
-        if self.args.profile:
-            profile_id = self.args.profile[0]
-            if profile_id not in self.content.profiles:
-                logger.critical('Specified --profile, ' + profile_id + ', not found in content. Available profiles: ' + str(self.content.profiles.keys()))
+        if self.args.data_stream:
+            ds_name = self.args.data_stream[0]
+            if ds_name not in self.content.data_streams:
+                logger.critical('Specified --data_stream, ' + ds_name + ', not found in content. Available data streams: ' + str(self.content.data_streams.keys()))
                 import sys
                 sys.exit()
             else:
-                profile = self.content.profiles[profile_id]
+                ds = self.content.data_streams[ds_name]
         else:
-            if len(self.content.profiles) == 1:
-                profile = self.content.profiles.values()[0]
+            if len(self.content.data_streams) == 1:
+                ds = self.content.data_streams.values()[0]
             else:
-                logger.critical('No --profile specified and unable to implicitly choose one. Available profiles: ' + str(self.content.profiles.keys()))
+                logger.critical('No --data_stream specified and unable to implicitly choose one. Available data-streams: ' + str(self.content.data_streams.keys()))
                 import sys
                 sys.exit()
-        logger.info('Selecting profile ' + profile.id)
+        logger.info('Selecting data stream ' + ds.id)
 
-        return ResultCollector.load(self.host, profile).collect()
+        return Checker.load(self.host, ds, self.args).collect()

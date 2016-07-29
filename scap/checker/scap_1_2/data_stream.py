@@ -15,11 +15,11 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.collector.ResultCollector import ResultCollector
+from scap.Checker import Checker
 import logging
 
 logger = logging.getLogger(__name__)
-class data_stream(ResultCollector):
+class data_stream(Checker):
     def collect(self):
         if self.args.checklist:
             checklist_id = self.args.checklist[0]
@@ -38,4 +38,4 @@ class data_stream(ResultCollector):
                 sys.exit()
         logger.info('Selecting checklist ' + checklist.id)
 
-        return ResultCollector.load(self.host, checklist, self.args).collect()
+        return Checker.load(self.host, checklist, self.args).collect()

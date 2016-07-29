@@ -15,20 +15,20 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.collector.FactCollector import FactCollector
+from scap.FactCollector import FactCollector
 
 class UNameCollector(FactCollector):
     def collect(self):
         uname = self.host.line_from_command('uname -a')
         self.host.facts['uname'] = uname
         if uname.startswith('Linux'):
-            from scap.collector.fact.LinuxCollector import LinuxCollector
+            from scap.fact_collector.LinuxCollector import LinuxCollector
             self.host.fact_collectors.append(LinuxCollector(self.host))
         elif uname.startswith('Darwin'):
-            from scap.collector.fact.AppleCollector import AppleCollector
+            from scap.fact_collector.AppleCollector import AppleCollector
             self.host.fact_collectors.append(AppleCollector(self.host))
         elif uname.startswith('Windows NT'):
-            from scap.collector.fact.MicrosoftCollector import MicrosoftCollector
+            from scap.fact_collector.MicrosoftCollector import MicrosoftCollector
             self.host.fact_collectors.append(MicrosoftCollector(self.host))
         else:
             raise NotImplementedError('Host discovery has not been implemented for uname: ' + uname)

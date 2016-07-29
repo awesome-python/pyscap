@@ -15,11 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.collector.ResultCollector import ResultCollector
-import logging
+from scap.FactCollector import FactCollector
 
-logger = logging.getLogger(__name__)
-class check(ResultCollector):
-    def collect(self):
-        # TODO: multi-check
-        return 'notchecked'
+class VMWareCollector(FactCollector):
+    pass

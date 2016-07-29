@@ -15,11 +15,12 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.collector.FactCollector import FactCollector
-import logging
+from scap.FactCollector import FactCollector
+import re, logging
 
 logger = logging.getLogger(__name__)
-class RootFSUUIDCollector(FactCollector):
+class HostnameCollector(FactCollector):
     def collect(self):
-        self.host.facts['root_uuid'] = self.host.line_from_priv_command("blkid -o value `mount -l | grep 'on / ' | awk '{print $1}'` | head -n1").strip()
-        logger.debug('Root FS UUID: ' + self.host.facts['root_uuid'])
+        hostname = self.host.line_from_command('hostname').strip()
+        logger.debug('hostname: ' + str(hostname))
+        self.host.facts['hostname'] = hostname

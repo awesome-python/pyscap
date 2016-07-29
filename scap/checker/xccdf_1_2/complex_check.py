@@ -15,22 +15,10 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.collector.ResultCollector import ResultCollector
+from scap.Checker import Checker
 import logging
 
 logger = logging.getLogger(__name__)
-class Rule(ResultCollector):
+class complex_check(Checker):
     def collect(self):
-        if self.args['check_selector'] not in self.content.checks:
-            logger.critical('Check selector ' + self.args['check_selector'] + ' not found for rule ' + self.content.id)
-            import sys
-            sys.exit()
-        check = self.content.checks[self.args['check_selector']]
-
-        try:
-            args = {'values': self.args['values']}
-            col = ResultCollector.load(self.host, check, args)
-            return col.collect()
-        except ImportError:
-            logger.warning('Unknown check type ' + check.__class__.__name__ + ' for rule ' + self.content.id)
-            return 'error'
+        return 'notchecked'

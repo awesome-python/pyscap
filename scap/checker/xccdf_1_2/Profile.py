@@ -15,11 +15,11 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.collector.ResultCollector import ResultCollector
+from scap.Checker import Checker
 import logging
 
 logger = logging.getLogger(__name__)
-class Profile(ResultCollector):
+class Profile(Checker):
     def collect(self):
         # expand values
         values = {}
@@ -48,6 +48,6 @@ class Profile(ResultCollector):
                 'values': values,
                 'check_selector': self.content.rule_check_selections[rule_id]
             }
-            results['rule_results'][rule_id] = ResultCollector.load(self.host, rule, args).collect()
+            results['rule_results'][rule_id] = Checker.load(self.host, rule, args).collect()
 
             logger.debug('Result of rule ' + rule_id + ': ' + str(results['rule_results'][rule_id]))

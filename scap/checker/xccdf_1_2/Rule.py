@@ -15,13 +15,22 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.collector.FactCollector import FactCollector
-import re, logging
+from scap.Checker import Checker
+import logging
 
 logger = logging.getLogger(__name__)
-class HostnameAllFQDNsCollector(FactCollector):
+class Rule(Checker):
     def collect(self):
-        # TODO convert to --all-fqdns
-        fqdn = self.host.line_from_command('hostname --fqdn').strip()
-        logger.debug('fqdn: ' + str(fqdn))
-        self.host.facts['fqdn'] = fqdn
+        if self.args['check_selector'] not in self.content.checks:
+            logger.critical('Check selector ' + self.args['check_selector'] + ' not found for rule ' + self.content.id)
+            import sys
+            sys.exit()
+        check = self.content.checks[self.args['check_selector']]
+
+        try:
+            args = {'values': self.args['values']}
+            col = Checker.load(self.host, check, args)
+            return col.collect()
+        except ImportError:
+            logger.warning('Unknown check type ' + check.__class__.__name__ + ' for rule ' + self.content.id)
+            return 'error'
