@@ -20,7 +20,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 class Benchmark(ResultCollector):
-    def collect_results(self):
+    def collect(self):
         if self.args.profile:
             profile_id = self.args.profile[0]
             if profile_id not in self.content.profiles:
@@ -38,4 +38,4 @@ class Benchmark(ResultCollector):
                 sys.exit()
         logger.info('Selecting profile ' + profile.id)
 
-        return ResultCollector.load_collector(self.host, profile).collect_results()
+        return ResultCollector.load(self.host, profile).collect()

@@ -21,7 +21,7 @@ import re, logging, pprint
 
 logger = logging.getLogger(__name__)
 class LSHWCollector(FactCollector):
-    def collect_facts(self):
+    def collect(self):
         self.host.facts['hardware'] = {}
         self.host.facts['hw_cpe'] = []
         cpe_uris = []

@@ -20,6 +20,6 @@ import logging
 
 logger = logging.getLogger(__name__)
 class check(ResultCollector):
-    def collect_results(self):
+    def collect(self):
         # TODO: multi-check
         return 'notchecked'

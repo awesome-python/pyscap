@@ -20,5 +20,5 @@ import logging
 
 logger = logging.getLogger(__name__)
 class complex_check(ResultCollector):
-    def collect_results(self):
+    def collect(self):
         return 'notchecked'

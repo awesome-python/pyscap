@@ -18,17 +18,17 @@
 from scap.collector.FactCollector import FactCollector
 
 class UNameCollector(FactCollector):
-    def collect_facts(self):
+    def collect(self):
         uname = self.host.line_from_command('uname -a')
         self.host.facts['uname'] = uname
         if uname.startswith('Linux'):
             from scap.collector.fact.LinuxCollector import LinuxCollector
-            self.host.add_fact_collector(LinuxCollector(self.host))
+            self.host.fact_collectors.append(LinuxCollector(self.host))
         elif uname.startswith('Darwin'):
             from scap.collector.fact.AppleCollector import AppleCollector
-            self.host.add_fact_collector(AppleCollector(self.host))
+            self.host.fact_collectors.append(AppleCollector(self.host))
         elif uname.startswith('Windows NT'):
             from scap.collector.fact.MicrosoftCollector import MicrosoftCollector
-            self.host.add_fact_collector(MicrosoftCollector(self.host))
+            self.host.fact_collectors.append(MicrosoftCollector(self.host))
         else:
             raise NotImplementedError('Host discovery has not been implemented for uname: ' + uname)

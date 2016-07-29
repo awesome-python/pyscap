@@ -20,7 +20,7 @@ import re, logging
 
 logger = logging.getLogger(__name__)
 class NetstatCollector(FactCollector):
-    def collect_facts(self):
+    def collect(self):
         self.host.facts['network_services'] = []
         for line in self.host.lines_from_command('netstat -ln --ip'):
             m = re.match(r'^(tcp|udp)\s+\d+\s+\d+\s+([0-9.]+):([0-9]+)', line)

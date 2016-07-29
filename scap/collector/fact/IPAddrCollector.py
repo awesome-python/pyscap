@@ -20,7 +20,7 @@ import re, logging
 
 logger = logging.getLogger(__name__)
 class IPAddrCollector(FactCollector):
-    def collect_facts(self):
+    def collect(self):
         if 'network_connections' not in self.host.facts:
             self.host.facts['network_connections'] = {}
         for line in self.host.lines_from_command('ip addr'):

@@ -20,7 +20,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 class Rule(ResultCollector):
-    def collect_results(self):
+    def collect(self):
         if self.args['check_selector'] not in self.content.checks:
             logger.critical('Check selector ' + self.args['check_selector'] + ' not found for rule ' + self.content.id)
             import sys
@@ -29,8 +29,8 @@ class Rule(ResultCollector):
 
         try:
             args = {'values': self.args['values']}
-            col = ResultCollector.load_collector(self.host, check, args)
-            return col.collect_results()
+            col = ResultCollector.load(self.host, check, args)
+            return col.collect()
         except ImportError:
             logger.warning('Unknown check type ' + check.__class__.__name__ + ' for rule ' + self.content.id)
             return 'error'

@@ -20,7 +20,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 class data_stream_collection(ResultCollector):
-    def collect_results(self):
+    def collect(self):
         if self.args.data_stream:
             ds_name = self.args.data_stream[0]
             if ds_name not in self.content.data_streams:
@@ -38,4 +38,4 @@ class data_stream_collection(ResultCollector):
                 sys.exit()
         logger.info('Selecting data stream ' + ds.id)
 
-        return ResultCollector.load_collector(self.host, ds, self.args).collect_results()
+        return ResultCollector.load(self.host, ds, self.args).collect()

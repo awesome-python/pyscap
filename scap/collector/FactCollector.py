@@ -15,9 +15,10 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.Collector import Collector
+class FactCollector(object):
+    def __init__(self, host):
+        self.host = host
 
-class FactCollector(Collector):
-    def collect_facts(self):
+    def collect(self):
         import inspect
         raise NotImplementedError(inspect.stack()[0][3] + '() has not been implemented in subclass: ' + self.__class__.__name__)

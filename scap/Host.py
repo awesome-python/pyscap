@@ -21,12 +21,12 @@ from scap.CredentialStore import CredentialStore
 logger = logging.getLogger(__name__)
 class Host(object):
     # TODO should be in a config file
-    default_scheme = 'ssh'
+    DEFAULT_SCHEME = 'ssh'
 
     @staticmethod
     def parse(spec):
         if spec.find('://') == -1:
-            spec = Host.default_scheme + '://' + spec
+            spec = Host.DEFAULT_SCHEME + '://' + spec
         url = urlparse.urlparse(spec)
         if url.scheme == 'ssh':
             creds = CredentialStore()
@@ -82,9 +82,6 @@ class Host(object):
         import inspect
         raise NotImplementedError(inspect.stack()[0][3] + '() has not been implemented in subclass: ' + self.__class__.__name__)
 
-    def add_fact_collector(self, collector):
-        self.fact_collectors.append(collector)
-
     def collect_facts(self):
         self.facts = {}
 
@@ -92,7 +89,7 @@ class Host(object):
         i = 0
         while i < len(self.fact_collectors):
             try:
-                self.fact_collectors[i].collect_facts()
+                self.fact_collectors[i].collect()
             except Exception, e:
                 import traceback
                 logger.warning('Fact collector ' + self.fact_collectors[i].__class__.__name__ + ' failed: ' + e.__class__.__name__ + ' ' + str(e) + ':\n' + traceback.format_exc())
@@ -100,5 +97,5 @@ class Host(object):
 
     def benchmark(self, content, args):
         from scap.collector.ResultCollector import ResultCollector
-        col = ResultCollector.load_collector(self, content, args)
-        self.results = col.collect_results()
+        col = ResultCollector.load(self, content, args)
+        self.results = col.collect()

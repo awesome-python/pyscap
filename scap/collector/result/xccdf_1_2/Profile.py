@@ -20,7 +20,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 class Profile(ResultCollector):
-    def collect_results(self):
+    def collect(self):
         # expand values
         values = {}
         for value_id, value in self.content.parent.values.items():
@@ -48,6 +48,6 @@ class Profile(ResultCollector):
                 'values': values,
                 'check_selector': self.content.rule_check_selections[rule_id]
             }
-            results['rule_results'][rule_id] = ResultCollector.load_collector(self.host, rule, args).collect_results()
+            results['rule_results'][rule_id] = ResultCollector.load(self.host, rule, args).collect()
 
             logger.debug('Result of rule ' + rule_id + ': ' + str(results['rule_results'][rule_id]))

@@ -21,13 +21,13 @@ import re, logging
 
 logger = logging.getLogger(__name__)
 class LinuxCollector(FactCollector):
-    def collect_facts(self):
+    def collect(self):
         # TODO lsb_release -a
 
         from scap.collector.fact.RootFSUUIDCollector import RootFSUUIDCollector
-        self.host.add_fact_collector(RootFSUUIDCollector(self.host))
+        self.host.fact_collectors.append(RootFSUUIDCollector(self.host))
         from scap.collector.fact.LSHWCollector import LSHWCollector
-        self.host.add_fact_collector(LSHWCollector(self.host))
+        self.host.fact_collectors.append(LSHWCollector(self.host))
 
         # TODO ai.circuit
         # TODO ai.network?; this would likely be  used on routers, switches & other net devices
@@ -45,19 +45,19 @@ class LinuxCollector(FactCollector):
         self.host.facts['o_cpe'] = cpe
 
         from scap.collector.fact.HostnameAllFQDNsCollector import HostnameAllFQDNsCollector
-        self.host.add_fact_collector(HostnameAllFQDNsCollector(self.host))
+        self.host.fact_collectors.append(HostnameAllFQDNsCollector(self.host))
 
         from scap.collector.fact.HostnameCollector import HostnameCollector
-        self.host.add_fact_collector(HostnameCollector(self.host))
+        self.host.fact_collectors.append(HostnameCollector(self.host))
 
         from scap.collector.fact.IPAddrCollector import IPAddrCollector
-        self.host.add_fact_collector(IPAddrCollector(self.host))
+        self.host.fact_collectors.append(IPAddrCollector(self.host))
 
         from scap.collector.fact.IPRouteCollector import IPRouteCollector
-        self.host.add_fact_collector(IPRouteCollector(self.host))
+        self.host.fact_collectors.append(IPRouteCollector(self.host))
 
         from scap.collector.fact.NetstatCollector import NetstatCollector
-        self.host.add_fact_collector(NetstatCollector(self.host))
+        self.host.fact_collectors.append(NetstatCollector(self.host))
 
         # TODO ai.database
         # TODO ai.software

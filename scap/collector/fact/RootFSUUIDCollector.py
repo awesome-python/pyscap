@@ -20,6 +20,6 @@ import logging
 
 logger = logging.getLogger(__name__)
 class RootFSUUIDCollector(FactCollector):
-    def collect_facts(self):
+    def collect(self):
         self.host.facts['root_uuid'] = self.host.line_from_priv_command("blkid -o value `mount -l | grep 'on / ' | awk '{print $1}'` | head -n1").strip()
         logger.debug('Root FS UUID: ' + self.host.facts['root_uuid'])

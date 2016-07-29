@@ -20,7 +20,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 class data_stream(ResultCollector):
-    def collect_results(self):
+    def collect(self):
         if self.args.checklist:
             checklist_id = self.args.checklist[0]
             if checklist_id not in self.content.checklists:
@@ -38,4 +38,4 @@ class data_stream(ResultCollector):
                 sys.exit()
         logger.info('Selecting checklist ' + checklist.id)
 
-        return ResultCollector.load_collector(self.host, checklist, self.args).collect_results()
+        return ResultCollector.load(self.host, checklist, self.args).collect()

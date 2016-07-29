@@ -20,7 +20,7 @@ import re, logging
 
 logger = logging.getLogger(__name__)
 class HostnameCollector(FactCollector):
-    def collect_facts(self):
+    def collect(self):
         hostname = self.host.line_from_command('hostname').strip()
         logger.debug('hostname: ' + str(hostname))
         self.host.facts['hostname'] = hostname

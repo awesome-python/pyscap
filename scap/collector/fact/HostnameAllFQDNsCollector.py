@@ -20,7 +20,7 @@ import re, logging
 
 logger = logging.getLogger(__name__)
 class HostnameAllFQDNsCollector(FactCollector):
-    def collect_facts(self):
+    def collect(self):
         # TODO convert to --all-fqdns
         fqdn = self.host.line_from_command('hostname --fqdn').strip()
         logger.debug('fqdn: ' + str(fqdn))

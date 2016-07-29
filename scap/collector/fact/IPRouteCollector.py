@@ -20,7 +20,7 @@ import re, logging
 
 logger = logging.getLogger(__name__)
 class IPRouteCollector(FactCollector):
-    def collect_facts(self):
+    def collect(self):
         ip_route = self.host.lines_from_command('ip route')
         logger.debug('ip_route: ' + str(ip_route))
         for line in ip_route:

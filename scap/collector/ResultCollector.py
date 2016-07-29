@@ -15,13 +15,12 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.Collector import Collector
 import logging
 
 logger = logging.getLogger(__name__)
-class ResultCollector(Collector):
+class ResultCollector(object):
     @staticmethod
-    def load_collector(host, content, args=None):
+    def load(host, content, args=None):
         collector_module = 'scap.collector.result.' + content.model_namespace + '.' + content.__class__.__name__
         # try to load the collector's module
         import sys
@@ -38,11 +37,10 @@ class ResultCollector(Collector):
         return inst
 
     def __init__(self, host, content, args=None):
-        super(ResultCollector, self).__init__(host)
-
+        self.host = host
         self.content = content
         self.args = args
 
-    def collect_results(self):
+    def collect(self):
         import inspect
         raise NotImplementedError(inspect.stack()[0][3] + '() has not been implemented in subclass: ' + self.__class__.__name__)
