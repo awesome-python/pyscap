@@ -50,7 +50,6 @@ class Host(object):
         self.hostname = hostname
         self.port = port
         self.fact_collectors = []
-        self.result_collectors = []
 
     def get_hostname(self):
         return self.hostname
@@ -86,9 +85,6 @@ class Host(object):
     def add_fact_collector(self, collector):
         self.fact_collectors.append(collector)
 
-    def add_result_collector(self, collector):
-        self.result_collectors.append(collector)
-
     def collect_facts(self):
         self.facts = {}
 
@@ -102,15 +98,7 @@ class Host(object):
                 logger.warning('Fact collector ' + self.fact_collectors[i].__class__.__name__ + ' failed: ' + e.__class__.__name__ + ' ' + str(e) + ':\n' + traceback.format_exc())
             i += 1
 
-    def collect_results(self):
-        self.results = {}
-
-        # have to use while vs. for loop so collectors can add other collectors
-        i = 0
-        while i < len(self.result_collectors):
-            try:
-                self.result_collectors[i].collect_results()
-            except Exception, e:
-                import traceback
-                logger.warning('Rule collector ' + self.result_collectors[i].__class__.__name__ + ' failed: ' + e.__class__.__name__ + ' ' + str(e) + ':\n' + traceback.format_exc())
-            i += 1
+    def benchmark(self, content, args):
+        from scap.collector.ResultCollector import ResultCollector
+        col = ResultCollector.load_collector(self, content, args)
+        self.results = col.collect_results()

@@ -38,4 +38,4 @@ class Benchmark(ResultCollector):
                 sys.exit()
         logger.info('Selecting profile ' + profile.id)
 
-        self.host.add_result_collector(ResultCollector.load_collector(self.host, profile))
+        return ResultCollector.load_collector(self.host, profile).collect_results()

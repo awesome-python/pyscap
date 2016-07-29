@@ -38,4 +38,4 @@ class data_stream_collection(ResultCollector):
                 sys.exit()
         logger.info('Selecting data stream ' + ds.id)
 
-        self.host.add_result_collector(ResultCollector.load_collector(self.host, ds, self.args))
+        return ResultCollector.load_collector(self.host, ds, self.args).collect_results()

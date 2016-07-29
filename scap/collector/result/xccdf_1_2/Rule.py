@@ -28,11 +28,9 @@ class Rule(ResultCollector):
         check = self.content.checks[self.args['check_selector']]
 
         try:
-            col = ResultCollector.load_collector(self.host, check, {'values': self.args['values']})
-            self.host.results[self.content.id] = col.collect_results()
+            args = {'values': self.args['values']}
+            col = ResultCollector.load_collector(self.host, check, args)
+            return col.collect_results()
         except ImportError:
             logger.warning('Unknown check type ' + check.__class__.__name__ + ' for rule ' + self.content.id)
-            from scap.model.xccdf_1_2.Rule import Rule
-            self.host.results[self.content.id] = Rule.Result.ERROR
-
-        logger.debug('Result of rule ' + self.content.id + ': ' + self.host.results[self.content.id])
+            return 'error'

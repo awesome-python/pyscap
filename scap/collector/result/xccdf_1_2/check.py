@@ -22,5 +22,4 @@ logger = logging.getLogger(__name__)
 class check(ResultCollector):
     def collect_results(self):
         # TODO: multi-check
-        from scap.model.xccdf_1_2.Rule import Rule
-        return Rule.Result.NOT_CHECKED
+        return 'notchecked'

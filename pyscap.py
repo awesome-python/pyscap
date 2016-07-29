@@ -17,16 +17,9 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-import logging, argparse, sys, time, atexit
-from StringIO import StringIO
-import xml.etree.ElementTree as ET
-from scap.ColorFormatter import ColorFormatter
-from scap.Engine import Engine
-from scap.Model import Model
-from scap.Host import Host
-from scap.CredentialStore import CredentialStore
-
 # set up logging
+import logging
+from scap.ColorFormatter import ColorFormatter
 rootLogger = logging.getLogger()
 rootLogger.setLevel(logging.DEBUG)
 ch = logging.StreamHandler()
@@ -38,6 +31,8 @@ ch.setFormatter(ch_formatter)
 rootLogger.addHandler(ch)
 rootLogger.addHandler(fh)
 
+# report start time & end time
+import time, atexit
 logger = logging.getLogger(__name__)
 logger.debug('Start: ' + time.asctime(time.localtime()))
 def end_func():
@@ -45,6 +40,7 @@ def end_func():
 atexit.register(end_func)
 
 # set up argument parsing
+import argparse
 arg_parser = argparse.ArgumentParser()
 arg_parser.add_argument('--version', action='version', version='%(prog)s 1.0')
 arg_parser.add_argument('--verbose', '-v', action='count')
@@ -91,16 +87,22 @@ elif args[0].list_hosts:
 #     arg_parser.add_argument('--object', required=True, nargs='+')
 #     arg_parser.add_argument('--state', required=True, nargs='+')
 else:
+    import sys
     sys.exit('No valid operation was given')
 
 # final argument parsing
 args = arg_parser.parse_args()
 
 # configure ElementTree
+from scap.Model import Model
+import xml.etree.ElementTree as ET
 for k,v in Model.namespaces.items():
     ET.register_namespace(v, k)
 
 # perform the operations
+from scap.Host import Host
+from scap.CredentialStore import CredentialStore
+
 if args.benchmark:
     if args.credentials:
         for filename in args.credentials:
@@ -112,6 +114,7 @@ if args.benchmark:
                 logger.error('Could not read from file ' + filename)
     if not args.host and not args.hosts:
         logger.critical('Either --host <host> or --hosts <file> must be supplied')
+        import sys
         sys.exit()
     hosts = []
     if args.host:
@@ -123,10 +126,22 @@ if args.benchmark:
                 for line in f:
                     hosts.append(Host.parse(line))
 
-    content = ET.parse(args.content[0])
-    engine = Engine(content, hosts)
-    engine.collect(args)
-    report = engine.report()
+    content = Model.load_child(None, ET.parse(args.content[0]).getroot())
+
+    from scap.collector.ResultCollector import ResultCollector
+    for host in hosts:
+        host.connect()
+
+        host.collect_facts()
+        #TODO cache facts
+
+        host.benchmark(content, args)
+
+        host.disconnect()
+
+    from scap.Reporter import Reporter
+    report = Reporter(content, hosts).report()
+
     if args.pretty:
         import xml.dom.minidom
         pretty_xml = xml.dom.minidom.parseString(report).toprettyxml(indent='  ')
@@ -138,6 +153,8 @@ elif args.list_hosts:
     for t in Target.parse(args):
         t.pretty()
 elif args.test:
+    import sys
     sys.exit('Unimplemented')
 else:
+    import sys
     sys.exit('No valid operation was given')

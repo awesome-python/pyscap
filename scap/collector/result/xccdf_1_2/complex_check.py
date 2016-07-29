@@ -21,5 +21,4 @@ import logging
 logger = logging.getLogger(__name__)
 class complex_check(ResultCollector):
     def collect_results(self):
-        from scap.model.xccdf_1_2.Rule import Rule
-        self.host.results[self.content.id] = Rule.Result.NOT_CHECKED
+        return 'notchecked'

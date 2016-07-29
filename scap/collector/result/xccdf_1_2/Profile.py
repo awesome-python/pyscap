@@ -41,6 +41,13 @@ class Profile(ResultCollector):
 
             logger.debug('Using value ' + values[value_id]['operator'] + ' ' + values[value_id]['value'] + ' for ' + values[value_id]['type'] + ' value ' + value_id)
 
+        results = {'rule_results': {}}
         for rule_id in self.content.selected_rules:
             rule = self.content.parent.rules[rule_id]
-            self.host.add_result_collector(ResultCollector.load_collector(self.host, rule, {'values': values, 'check_selector': self.content.rule_check_selections[rule_id]}))
+            args = {
+                'values': values,
+                'check_selector': self.content.rule_check_selections[rule_id]
+            }
+            results['rule_results'][rule_id] = ResultCollector.load_collector(self.host, rule, args).collect_results()
+
+            logger.debug('Result of rule ' + rule_id + ': ' + str(results['rule_results'][rule_id]))

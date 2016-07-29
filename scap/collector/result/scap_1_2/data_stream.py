@@ -38,4 +38,4 @@ class data_stream(ResultCollector):
                 sys.exit()
         logger.info('Selecting checklist ' + checklist.id)
 
-        self.host.add_result_collector(ResultCollector.load_collector(self.host, checklist, self.args))
+        return ResultCollector.load_collector(self.host, checklist, self.args).collect_results()

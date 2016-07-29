@@ -15,34 +15,21 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-import logging, inspect, uuid
+import logging
 import xml.etree.ElementTree as ET
 
 logger = logging.getLogger(__name__)
-class Engine(object):
+class Reporter(object):
     def __init__(self, content, hosts):
         self.hosts = hosts
-        from scap.Model import Model
-        self.content = Model.load_child(None, content.getroot())
-
-    def collect(self, args):
-        for host in self.hosts:
-            host.connect()
-
-            host.collect_facts()
-            #TODO cache facts
-
-            from scap.collector.ResultCollector import ResultCollector
-            host.add_result_collector(ResultCollector.load_collector(host, self.content, args))
-            host.collect_results()
-
-            host.disconnect()
+        self.content = content
 
     def report(self):
         from scap.model.arf_1_1.asset_report_collection import asset_report_collection
         arc = asset_report_collection()
 
         from scap.model.arf_1_1.report_request import report_request
+        import uuid
         rr = report_request()
         rr.id = 'report-request_' + uuid.uuid4().hex
         #rr.content = self.content.to_xml()
@@ -92,8 +79,6 @@ class Engine(object):
             report = report()
             report.id = 'report_' + uuid.uuid4().hex
             arc.reports.append(report)
-
-            from scap.model.xccdf_1_2.TestResult import TestResult
 
             from scap.model.arf_1_1.relationship import relationship
             rel = relationship()
