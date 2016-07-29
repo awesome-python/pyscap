@@ -15,23 +15,10 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.Model import Model
+from scap.model.rep_core_1_1.Relationship import Relationship
 import logging
-import xml.etree.ElementTree as ET
 
 logger = logging.getLogger(__name__)
-class RelationshipsContainer(Model):
-    def __init__(self, tag=None):
-        super(RelationshipsContainer, self).__init__(tag)
-        self.relationships = []
-
-    def get_sub_elements(self):
-        sub_els = super(RelationshipsContainer, self).get_sub_elements()
-
-        if len(self.relationships) > 0:
-            relationships_el = ET.Element('{' + self.get_xml_namespace() + '}relationships')
-            for relationship in self.relationships:
-                relationships_el.append(relationship.to_xml())
-            sub_els.append(relationships_el)
-
-        return sub_els
+class relationship(Relationship):
+    def __init__(self):
+        super(relationship, self).__init__('{http://scap.nist.gov/schema/asset-reporting-format/1.1}relationship')

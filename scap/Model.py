@@ -111,6 +111,11 @@ class Model(object):
             raise NotImplementedError('Subclass ' + self.__class__.__name__ + ' does not define tag')
         return '{' + self.xml_namespace + '}' + self.tag_name
 
+    def get_xml_namespace(self):
+        if self.xml_namespace is None:
+            raise NotImplementedError('Subclass ' + self.__class__.__name__ + ' does not define tag')
+        return self.xml_namespace
+
     def from_xml(self, parent, el):
         self.parent = parent
         self.element = el

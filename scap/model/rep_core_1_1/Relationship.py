@@ -20,8 +20,8 @@ import logging
 
 logger = logging.getLogger(__name__)
 class relationship(Model):
-    def __init__(self):
-        super(relationship, self).__init__('{http://scap.nist.gov/schema/reporting-core/1.1}relationship')
+    def __init__(self, tag=None):
+        super(relationship, self).__init__(tag)
 
         self.refs = []
 
@@ -57,6 +57,6 @@ class relationship(Model):
             sys.exit()
 
         for ref in self.refs:
-            sub_els.append(self.get_text_element('{http://scap.nist.gov/schema/reporting-core/1.1}ref', ref))
+            sub_els.append(self.get_text_element('{' + self.get_xml_namespace() + '}ref', ref))
 
         return sub_els
