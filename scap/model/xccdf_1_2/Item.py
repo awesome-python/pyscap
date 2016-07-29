@@ -32,11 +32,22 @@ class Item(XCCDFModel):
             'Id',
         ])
         self.ignore_sub_elements.extend([
+            '{http://checklists.nist.gov/xccdf/1.2}status',
+            '{http://purl.org/dc/elements/1.1/}dc-status',
             '{http://checklists.nist.gov/xccdf/1.2}version',
             '{http://checklists.nist.gov/xccdf/1.2}title',
             '{http://checklists.nist.gov/xccdf/1.2}description',
-            '{http://checklists.nist.gov/xccdf/1.2}warning',
             '{http://checklists.nist.gov/xccdf/1.2}question',
             '{http://checklists.nist.gov/xccdf/1.2}reference',
             '{http://checklists.nist.gov/xccdf/1.2}metadata',
         ])
+
+    def parse_sub_el(self, sub_el):
+        if sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}warning':
+            if 'category' in sub_el.attrib:
+                logger.warning('Item ' + sub_el.attrib['category'] + ' warning: ' + sub_el.text)
+            else:
+                logger.warning(sub_el.text)
+        else:
+            return super(Item, self).parse_sub_el(sub_el)
+        return True

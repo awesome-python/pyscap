@@ -24,11 +24,4 @@ class XCCDFModel(Model):
         super(XCCDFModel, self).__init__()
 
         self.ignore_sub_elements.extend([
-            '{http://checklists.nist.gov/xccdf/1.2}status',
-            '{http://checklists.nist.gov/xccdf/1.2}dc-status',
-            '{http://checklists.nist.gov/xccdf/1.2}model',
-            '{http://checklists.nist.gov/xccdf/1.2}platform',
-            '{http://checklists.nist.gov/xccdf/1.2}version',
-            '{http://checklists.nist.gov/xccdf/1.2}metadata',
-            '{http://checklists.nist.gov/xccdf/1.2}signature',
         ])

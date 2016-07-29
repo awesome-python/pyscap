@@ -1774,10 +1774,10 @@
           Pass (P) || P | F | U | E | P | P | P | P ||
           Fail (F) || F | F | F | F | F | F | F | F ||
        Unknown (U) || U | F | U | U | U | U | U | U ||
-         Error (E) || E | F | U | E | E | E | E | E || 
+         Error (E) || E | F | U | E | E | E | E | E ||
  Notapplicable (N) || P | F | U | E | N | N | N | N ||
     Notchecked (K) || P | F | U | E | N | K | K | K ||
-   Notselected (S) || P | F | U | E | N | K | S | S || 
+   Notselected (S) || P | F | U | E | N | K | S | S ||
  Informational (I) || P | F | U | E | N | K | S | I ||
 ------------------------------------------------------ </evaluation_chart>
                 <evaluation_chart xml:space="preserve">
@@ -1786,10 +1786,10 @@
           Pass (P) || P | P | P | P | P | P | P | P ||
           Fail (F) || P | F | U | E | F | F | F | F ||
        Unknown (U) || P | U | U | U | U | U | U | U ||
-         Error (E) || P | E | U | E | E | E | E | E || 
+         Error (E) || P | E | U | E | E | E | E | E ||
  Notapplicable (N) || P | F | U | E | N | N | N | N ||
     Notchecked (K) || P | F | U | E | N | K | K | K ||
-   Notselected (S) || P | F | U | E | N | K | S | S || 
+   Notselected (S) || P | F | U | E | N | K | S | S ||
  Informational (I) || P | F | U | E | N | K | S | I ||
 ------------------------------------------------------ </evaluation_chart>
                 <evaluation_chart xml:space="preserve">
@@ -1871,10 +1871,10 @@ NOT || P | F | U | E | N | K | S | I ||
           Pass (P) || P | F | U | E | P | P | P | P ||
           Fail (F) || F | F | F | F | F | F | F | F ||
        Unknown (U) || U | F | U | U | U | U | U | U ||
-         Error (E) || E | F | U | E | E | E | E | E || 
+         Error (E) || E | F | U | E | E | E | E | E ||
  Notapplicable (N) || P | F | U | E | N | N | N | N ||
     Notchecked (K) || P | F | U | E | N | K | K | K ||
-   Notselected (S) || P | F | U | E | N | K | S | S || 
+   Notselected (S) || P | F | U | E | N | K | S | S ||
  Informational (I) || P | F | U | E | N | K | S | I ||
 ------------------------------------------------------</evaluation_chart>
                 <evaluation_chart xml:space="preserve">
@@ -3924,7 +3924,7 @@ NOT || P | F | U | E | N | K | S | I ||
 7/7/05          added target-facts      DISA suggestion
 
 7/13/05         added complex-checks    workshop suggestion, allow
-                                        boolean combinations of 
+                                        boolean combinations of
                                         checks.
 
 7/29/05         added more rule         some suggested by CIS
@@ -3967,7 +3967,7 @@ NOT || P | F | U | E | N | K | S | I ||
                 order glitch in Profile
 
 4/16/06         beginning work toward     reports from Ian C
-                1.1bis; fixed several 
+                1.1bis; fixed several
                 small mistakes/glitches.
 
 4/23/06         tweaked formatting        various e-mails
@@ -3994,7 +3994,7 @@ NOT || P | F | U | E | N | K | S | I ||
 12/13/06        Changed requires element  request from NIST
                 to a token list
 
-12/28/06        Changed check element to   backfit to NIST 
+12/28/06        Changed check element to   backfit to NIST
                 allow multiple            change by Linda Devlin
                 check-content-ref
 
@@ -4026,7 +4026,7 @@ NOT || P | F | U | E | N | K | S | I ||
 
 6/1/10          Made platform element       Fix to match spec
                 Profile overridable
-               
+
 6/1/10          Added metadata fields       Community request for
                 to TestResults, Profiles    more flexible metadata
                 and Items. Also opened
@@ -4036,7 +4036,7 @@ NOT || P | F | U | E | N | K | S | I ||
 6/1/10          Updated to use CPE 2.3      Bring into line with SCAP
                 Also changed CPE fields
                 from URIs to strings.
-                
+
 6/1/10          Added negate field to       Support inverting of SCAP
                 check element.              result mappings
 
@@ -4045,10 +4045,10 @@ NOT || P | F | U | E | N | K | S | I ||
 6/1/10          Added multi-check to        Allows creation of rule-results
                 Rules                       for each check used
 
-6/1/10          Expanded selector           Enforce requirements from spec 
-                uniqueness constraints 
+6/1/10          Expanded selector           Enforce requirements from spec
+                uniqueness constraints
                 within Values
-                
+
 6/1/10          Expanded Value to           Bring XCCDF more in line with
                 allow lists and externally  capabilities of checking languages
                 defined types. Updated
@@ -4060,17 +4060,17 @@ NOT || P | F | U | E | N | K | S | I ||
                 check-import. Also updated
                 check-import to allow
                 XML-structured findings
-                
+
 6/1/10          Fixed path of Benchmark's   Bug fix.
                 profileIdKeyRef restriction
-                
-6/1/10          Added an id field to        Better reference to the XCCDF source 
+
+6/1/10          Added an id field to        Better reference to the XCCDF source
                 TestResult/benchmark
-                
-5/27/11         Added reference to Asset    More standards based target identification 
+
+5/27/11         Added reference to Asset    More standards based target identification
                 Identification structures
                 in TestResults.
-                
-5/27/11         Added ComplexChecks in      Better tracking of result structures during complex checks 
+
+5/27/11         Added ComplexChecks in      Better tracking of result structures during complex checks
                 rule-results
 -->

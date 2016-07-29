@@ -49,7 +49,10 @@ class Rule(SelectableItem):
     def __init__(self):
         super(Rule, self).__init__()
         self.checks = {}
+        self.fixes = []
+        self.fixtexts = []
 
+        self.required_attributes.append('id')
         self.ignore_attributes.extend([
             'role',
             'severity',
@@ -59,8 +62,6 @@ class Rule(SelectableItem):
             '{http://checklists.nist.gov/xccdf/1.2}ident',
             '{http://checklists.nist.gov/xccdf/1.2}impact-metric',
             '{http://checklists.nist.gov/xccdf/1.2}profile-note',
-            '{http://checklists.nist.gov/xccdf/1.2}fixtext',
-            '{http://checklists.nist.gov/xccdf/1.2}fix',
             '{http://checklists.nist.gov/xccdf/1.2}signature',
         ])
 
@@ -73,6 +74,10 @@ class Rule(SelectableItem):
                 self.checks[sub_el.attrib['selector']] = check
             else:
                 self.checks[None] = check
+        elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}fix':
+            self.fixes.append(Model.load_child(self, sub_el))
+        elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}fixtext':
+            self.fixtexts.append(Model.load_child(self, sub_el))
         else:
             return super(Rule, self).parse_sub_el(sub_el)
         return True

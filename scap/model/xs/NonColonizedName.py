@@ -15,10 +15,9 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.model.xs.Simple import Simple
+from scap.model.xs.Name import Name
 import logging
 
 logger = logging.getLogger(__name__)
-class value(Simple):
-    def __init__(self):
-        super(value, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5}value
+class NonColonizedName(Name):
+    pass

@@ -19,6 +19,5 @@ from scap.model.xs.Simple import Simple
 import logging
 
 logger = logging.getLogger(__name__)
-class value(Simple):
-    def __init__(self):
-        super(value, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5}value
+class GregorianMonth(Simple):
+    pass

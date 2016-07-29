@@ -15,18 +15,9 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.Model import Model
-import xml.etree.ElementTree as ET
+from scap.model.xs.Simple import Simple
 import logging
 
 logger = logging.getLogger(__name__)
-class Simple(Model):
-    def __init__(self):
-        super(Simple, self).
-
-        self.value = None
-
-    def from_xml(self, paren, sub_el):
-        super(Simple, self).from_xml(parent, sub_el)
-
-        self.value = sub_el.text
+class AnyURI(Simple):
+    pass

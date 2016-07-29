@@ -26,10 +26,6 @@ class SelectableItem(Item):
         self.selected = True
         self.weight = 1.0
 
-        self.ignore_attributes.extend([
-            'selected',
-            'weight',
-        ])
         self.ignore_sub_elements.extend([
             '{http://checklists.nist.gov/xccdf/1.2}rationale',
             '{http://checklists.nist.gov/xccdf/1.2}platform',

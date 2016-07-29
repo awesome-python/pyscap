@@ -42,9 +42,10 @@ class Model(object):
         'http://www.w3.org/1999/xlink': 'xlink',
         'urn:oasis:names:tc:entity:xmlns:xml:catalog': 'xml_cat',
         'http://scap.nist.gov/schema/xml-dsig/1.0': 'xml_dsig_1_0',
-        'http://www.w3.org/2001/XMLSchema-instance': 'xml_schema_instance',
+        'http://www.w3.org/2001/XMLSchema-instance': 'xsi',
         'http://www.w3.org/2000/09/xmldsig#': 'xmldsig_2000_09',
-        'http://www.w3.org/2001/XMLSchema': 'xsd',
+        'http://www.w3.org/2001/XMLSchema': 'xs',
+        'http://www.w3.org/XML/1998/namespace': 'xml'
     }
 
     @staticmethod
@@ -104,7 +105,11 @@ class Model(object):
 
         self.id = None
         self.required_attributes = []
-        self.ignore_attributes = []
+        self.ignore_attributes = [
+            '{http://www.w3.org/XML/1998/namespace}lang',
+            '{http://www.w3.org/XML/1998/namespace}base',
+            '{http://www.w3.org/2001/XMLSchema-instance}schemaLocation',
+        ]
         self.required_sub_elements = []
         self.ignore_sub_elements = []
 
@@ -152,13 +157,7 @@ class Model(object):
                 sys.exit()
 
     def parse_attribute(self, name, value):
-        if name == '{http://www.w3.org/2001/XMLSchema-instance}schemaLocation':
-            pass
-        elif name == '{http://www.w3.org/XML/1998/namespace}lang':
-            pass
-        elif name == '{http://www.w3.org/XML/1998/namespace}base':
-            pass
-        elif name == 'id':
+        if name == 'id':
             self.id = value
         elif name in self.ignore_attributes:
             pass

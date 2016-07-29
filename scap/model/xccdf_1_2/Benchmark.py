@@ -31,6 +31,7 @@ class Benchmark(XCCDFModel):
         self.test_results = {}
         self.selected_rules = []
 
+        self.required_attributes.append('id')
         self.ignore_attributes.extend([
             'Id',
             'resolved',
@@ -38,6 +39,8 @@ class Benchmark(XCCDFModel):
             'style-href',
         ])
         self.ignore_sub_elements.extend([
+            '{http://checklists.nist.gov/xccdf/1.2}status',
+            '{http://purl.org/dc/elements/1.1/}dc-status',
             '{http://checklists.nist.gov/xccdf/1.2}title',
             '{http://checklists.nist.gov/xccdf/1.2}description',
             '{http://checklists.nist.gov/xccdf/1.2}front-matter',
@@ -45,6 +48,11 @@ class Benchmark(XCCDFModel):
             '{http://checklists.nist.gov/xccdf/1.2}reference',
             '{http://checklists.nist.gov/xccdf/1.2}plain-text',
             '{http://cpe.mitre.org/language/2.0}platform-specification',
+            '{http://checklists.nist.gov/xccdf/1.2}platform',
+            '{http://checklists.nist.gov/xccdf/1.2}version',
+            '{http://checklists.nist.gov/xccdf/1.2}metadata',
+            '{http://checklists.nist.gov/xccdf/1.2}model',
+            '{http://checklists.nist.gov/xccdf/1.2}signature',
         ])
 
     def parse_sub_el(self, sub_el):

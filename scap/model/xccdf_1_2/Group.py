@@ -27,6 +27,7 @@ class Group(SelectableItem):
         self.rules = {}
         self.groups = {}
 
+        self.required_attributes.append('id')
         self.ignore_sub_elements.extend([
             '{http://checklists.nist.gov/xccdf/1.2}signature',
         ])
