@@ -19,18 +19,22 @@ from scap.Model import Model
 import logging
 
 logger = logging.getLogger(__name__)
-class relationship(Model):
+class Relationship(Model):
+    class Scope(object):
+        INCLUSIVE = 'inclusive'
+        EXCLUSIVE = 'exclusive'
+
     def __init__(self, tag=None):
-        super(relationship, self).__init__(tag)
+        super(Relationship, self).__init__(tag)
 
         self.refs = []
 
         self.type = None
-        self.scope = 'inclusive'
+        self.scope = Relationship.Scope.INCLUSIVE
         self.subject = None
 
     def get_attributes(self):
-        attribs = super(relationship, self).get_attributes()
+        attribs = super(Relationship, self).get_attributes()
 
         if self.type is None:
             logger.critical('A Relationship must define the type attribute')
@@ -49,7 +53,7 @@ class relationship(Model):
         return attribs
 
     def get_sub_elements(self):
-        sub_els = super(relationship, self).get_sub_elements()
+        sub_els = super(Relationship, self).get_sub_elements()
 
         if len(self.refs) <= 0:
             logger.critical('A Relationship must define a ref element')

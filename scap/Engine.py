@@ -42,12 +42,12 @@ class Engine(object):
         from scap.model.arf_1_1.asset_report_collection import asset_report_collection
         arc = asset_report_collection()
 
-        #TODO commented to reduce amoutn of output
-        # from scap.model.arf_1_1.ReportRequest import ReportRequest
-        # rr = ReportRequest()
-        # rr.id = 'report-request_' + uuid.uuid4().hex
-        # rr.content = self.content.to_xml()
-        # arc.report_requests.append(rr)
+        from scap.model.arf_1_1.report_request import report_request
+        rr = report_request()
+        rr.id = 'report-request_' + uuid.uuid4().hex
+        #rr.content = self.content.to_xml()
+        rr.content = ET.Element('stuff')
+        arc.report_requests.append(rr)
 
         for host in self.hosts:
             from scap.model.arf_1_1.asset import asset
@@ -93,14 +93,19 @@ class Engine(object):
             report.id = 'report_' + uuid.uuid4().hex
             arc.reports.append(report)
 
-            from scap.model.rep_core_1_1.relationship import relationship
+            from scap.model.arf_1_1.relationship import relationship
             rel = relationship()
             rel.subject = report.id
-            rel.type = 'isAbout'
+            rel.type = relationship.Types.IS_ABOUT
             rel.refs.append(asset.id)
             arc.relationships.append(rel)
 
-            # TODO createdFor relationship
+            # createdFor relationship
+            rel = relationship()
+            rel.subject = report.id
+            rel.type = relationship.Types.CREATED_FOR
+            rel.refs.append(rr.id)
+            arc.relationships.append(rel)
 
         arc_et = ET.ElementTree(element=arc.to_xml())
         from StringIO import StringIO

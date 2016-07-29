@@ -25,16 +25,17 @@ class asset(Model):
         super(asset, self).__init__('{http://scap.nist.gov/schema/asset-reporting-format/1.1}asset')
 
         self.asset = None
+        self.remote_resource = None
 
         self.required_attributes.append('id')
 
     def get_sub_elements(self):
         sub_els = super(asset, self).get_sub_elements()
 
-        import scap.model.ai_1_1.Asset
-        from scap.model.arf_1_1.RemoteResource import RemoteResource
-        if isinstance(self.asset, scap.model.ai_1_1.Asset.Asset) or isinstance(self.asset, RemoteResource):
+        if self.asset is not None:
             sub_els.append(self.asset.to_xml())
+        elif self.remote_resource is not None:
+            sub_els.append(self.remote_resource.to_xml())
         else:
             logger.critical('Asset must define an asset or remote-resource')
             import sys
