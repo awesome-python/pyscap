@@ -41,6 +41,6 @@ class Checker(object):
         self.content = content
         self.args = args
 
-    def collect(self):
+    def check(self):
         import inspect
         raise NotImplementedError(inspect.stack()[0][3] + '() has not been implemented in subclass: ' + self.__class__.__name__)

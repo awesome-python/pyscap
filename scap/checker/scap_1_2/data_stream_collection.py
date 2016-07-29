@@ -20,7 +20,9 @@ import logging
 
 logger = logging.getLogger(__name__)
 class data_stream_collection(Checker):
-    def collect(self):
+    def __init__(self, host, content, args=None):
+        super(data_stream_collection, self).__init__(host, content, args)
+
         if self.args.data_stream:
             ds_name = self.args.data_stream[0]
             if ds_name not in self.content.data_streams:
@@ -38,4 +40,7 @@ class data_stream_collection(Checker):
                 sys.exit()
         logger.info('Selecting data stream ' + ds.id)
 
-        return Checker.load(self.host, ds, self.args).collect()
+        self.ds_checker = Checker.load(self.host, ds, self.args)
+
+    def check(self):
+        return self.ds_checker.check()

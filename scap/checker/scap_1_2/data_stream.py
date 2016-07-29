@@ -20,9 +20,11 @@ import logging
 
 logger = logging.getLogger(__name__)
 class data_stream(Checker):
-    def collect(self):
-        if self.args.checklist:
-            checklist_id = self.args.checklist[0]
+    def __init__(self, host, content, args=None):
+        super(data_stream, self).__init__(host, content, args)
+
+        if args.checklist:
+            checklist_id = args.checklist[0]
             if checklist_id not in self.content.checklists:
                 logger.critical('Specified --checklist, ' + checklist_id + ', not found in content. Available checklists: ' + str(self.content.checklists.keys()))
                 import sys
@@ -38,4 +40,7 @@ class data_stream(Checker):
                 sys.exit()
         logger.info('Selecting checklist ' + checklist.id)
 
-        return Checker.load(self.host, checklist, self.args).collect()
+        self.checklist_checker = Checker.load(self.host, checklist, args)
+
+    def check(self):
+        return self.checklist_checker.check()

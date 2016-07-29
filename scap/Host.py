@@ -98,4 +98,4 @@ class Host(object):
     def benchmark(self, content, args):
         from scap.Checker import Checker
         col = Checker.load(self, content, args)
-        self.results = col.collect()
+        self.results = col.check()

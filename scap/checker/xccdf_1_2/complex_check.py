@@ -20,5 +20,8 @@ import logging
 
 logger = logging.getLogger(__name__)
 class complex_check(Checker):
-    def collect(self):
+    def __init__(self, host, content, args=None):
+        super(complex_check, self).__init__(host, content, args)
+
+    def check(self):
         return 'notchecked'

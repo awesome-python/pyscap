@@ -20,7 +20,9 @@ import logging
 
 logger = logging.getLogger(__name__)
 class Profile(Checker):
-    def collect(self):
+    def __init__(self, host, content, args=None):
+        super(Profile, self).__init__(host, content, args)
+
         # expand values
         values = {}
         for value_id, value in self.content.parent.values.items():
@@ -41,13 +43,19 @@ class Profile(Checker):
 
             logger.debug('Using value ' + values[value_id]['operator'] + ' ' + values[value_id]['value'] + ' for ' + values[value_id]['type'] + ' value ' + value_id)
 
-        results = {'rule_results': {}}
+        self.rule_checkers = {}
         for rule_id in self.content.selected_rules:
             rule = self.content.parent.rules[rule_id]
             args = {
                 'values': values,
                 'check_selector': self.content.rule_check_selections[rule_id]
             }
-            results['rule_results'][rule_id] = Checker.load(self.host, rule, args).collect()
+            self.rule_checkers[rule_id] = Checker.load(self.host, rule, args)
+
+    def check(self):
+        results = {'rule_results': {}}
+        for rule_id, rule_checker in self.rule_checkers.items():
+            results['rule_results'][rule_id] = rule_checker.check()
 
             logger.debug('Result of rule ' + rule_id + ': ' + str(results['rule_results'][rule_id]))
+        return results

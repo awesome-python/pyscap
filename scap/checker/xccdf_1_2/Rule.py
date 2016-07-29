@@ -20,17 +20,24 @@ import logging
 
 logger = logging.getLogger(__name__)
 class Rule(Checker):
-    def collect(self):
+    def __init__(self, host, content, args=None):
+        super(Rule, self).__init__(host, content, args)
+
         if self.args['check_selector'] not in self.content.checks:
             logger.critical('Check selector ' + self.args['check_selector'] + ' not found for rule ' + self.content.id)
             import sys
             sys.exit()
         check = self.content.checks[self.args['check_selector']]
 
+        self.checker = None
         try:
             args = {'values': self.args['values']}
-            col = Checker.load(self.host, check, args)
-            return col.collect()
+            self.checker = Checker.load(self.host, check, args)
         except ImportError:
             logger.warning('Unknown check type ' + check.__class__.__name__ + ' for rule ' + self.content.id)
+
+    def check(self):
+        if self.checker is None:
             return 'error'
+        else:
+            return self.checker.check()

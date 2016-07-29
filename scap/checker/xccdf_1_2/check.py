@@ -20,6 +20,9 @@ import logging
 
 logger = logging.getLogger(__name__)
 class check(Checker):
-    def collect(self):
+    def __init__(self, host, content, args=None):
+        super(check, self).__init__(host, content, args)
+
+    def check(self):
         # TODO: multi-check
         return 'notchecked'

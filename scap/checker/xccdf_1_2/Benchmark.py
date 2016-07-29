@@ -20,9 +20,11 @@ import logging
 
 logger = logging.getLogger(__name__)
 class Benchmark(Checker):
-    def collect(self):
-        if self.args.profile:
-            profile_id = self.args.profile[0]
+    def __init__(self, host, content, args=None):
+        super(Benchmark, self).__init__(host, content, args)
+
+        if args.profile:
+            profile_id = args.profile[0]
             if profile_id not in self.content.profiles:
                 logger.critical('Specified --profile, ' + profile_id + ', not found in content. Available profiles: ' + str(self.content.profiles.keys()))
                 import sys
@@ -38,4 +40,7 @@ class Benchmark(Checker):
                 sys.exit()
         logger.info('Selecting profile ' + profile.id)
 
-        return Checker.load(self.host, profile).collect()
+        self.profile_checker = Checker.load(self.host, profile)
+
+    def check(self):
+        return self.profile_checker.check()

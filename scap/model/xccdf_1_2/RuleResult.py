@@ -15,9 +15,9 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.model.xccdf_1_2.XCCDFModel import XCCDFModel
+from scap.Model import Model
 import logging
 
 logger = logging.getLogger(__name__)
-class RuleResult(XCCDFModel):
+class RuleResult(Model):
     pass
