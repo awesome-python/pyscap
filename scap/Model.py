@@ -89,6 +89,7 @@ class Model(object):
 
         return inst
 
+    # tag must be defined for models using to_xml; the tag information is automatically parsed by from_xml
     def __init__(self, tag=None):
         if tag is None:
             self.xml_namespace = None
@@ -104,6 +105,7 @@ class Model(object):
         self.id = None
         self.required_attributes = []
         self.ignore_attributes = []
+        self.required_sub_elements = []
         self.ignore_sub_elements = []
 
     def get_tag(self):
@@ -123,15 +125,29 @@ class Model(object):
         if self.xml_namespace is None or self.model_namespace is None or self.tag_name is None:
             self.xml_namespace, self.model_namespace, self.tag_name, module_name = Model.parse_tag(el.tag)
 
+        for attrib in self.required_attributes:
+            if attrib not in self.element.attrib:
+                logger.critical(el.tag + ' must define ' + attrib + ' attribute')
+                import sys
+                sys.exit()
+
         for name, value in el.attrib.items():
             if not self.parse_attribute(name, value):
                 logger.critical('Unknown attrib in ' + el.tag + ': ' + name + ' = ' + value)
                 import sys
                 sys.exit()
 
+        parsed_sub_elements = []
         for sub_el in el:
             if not self.parse_sub_el(sub_el):
                 logger.critical('Unknown element in ' + el.tag + ': ' + sub_el.tag)
+                import sys
+                sys.exit()
+            parsed_sub_elements.append(sub_el.tag)
+
+        for sub_el_tag in self.required_sub_elements:
+            if sub_el_tag not in parsed_sub_elements:
+                logger.critical(el.tag + ' does not contain a required sub element: ' + sub_el_tag)
                 import sys
                 sys.exit()
 
@@ -220,6 +236,10 @@ class Model(object):
     def to_xml(self, tag=None):
         if tag is not None:
             self.xml_namespace, self.model_namespace, self.tag_name, module_name = Model.parse_tag(tag)
+        elif self.tag_name is None or self.xml_namespace is None:
+            logger.critical(self.__class__.__name__ + ' has not defined a tag before production of xml')
+            import sys
+            sys.exit()
 
         if self.element is None:
             self.element = ET.Element(self.get_tag())
@@ -233,7 +253,14 @@ class Model(object):
                     import sys
                     sys.exit()
 
+            produced_sub_elements = []
             for sub_el in self.get_sub_elements():
                 self.element.append(sub_el)
+                produced_sub_elements.append(sub_el.tag)
 
+            for sub_el_tag in self.required_sub_elements:
+                if sub_el_tag not in produced_sub_elements:
+                    logger.critical(self.element.tag + ' does not contain a required sub element: ' + sub_el_tag)
+                    import sys
+                    sys.exit()
         return self.element

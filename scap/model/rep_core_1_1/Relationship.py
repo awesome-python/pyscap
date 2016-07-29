@@ -33,32 +33,25 @@ class Relationship(Model):
         self.scope = Relationship.Scope.INCLUSIVE
         self.subject = None
 
+        self.required_attributes.extend([
+            'type',
+            'subject',
+        ])
+        self.required_sub_elements.extend([
+            '{' + self.get_xml_namespace() + '}ref',
+        ])
+
     def get_attributes(self):
         attribs = super(Relationship, self).get_attributes()
 
-        if self.type is None:
-            logger.critical('A Relationship must define the type attribute')
-            import sys
-            sys.exit()
         attribs['type'] = self.type
-
         attribs['scope'] = self.scope
-
-        if self.subject is None:
-            logger.critical('A Relationship must define the subject attribute')
-            import sys
-            sys.exit()
         attribs['subject'] = self.subject
 
         return attribs
 
     def get_sub_elements(self):
         sub_els = super(Relationship, self).get_sub_elements()
-
-        if len(self.refs) <= 0:
-            logger.critical('A Relationship must define a ref element')
-            import sys
-            sys.exit()
 
         for ref in self.refs:
             sub_els.append(self.get_text_element('{' + self.get_xml_namespace() + '}ref', ref))

@@ -15,29 +15,33 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.Model import Model
+from scap.model.xccdf_1_2.Item import Item
 import logging
 
 logger = logging.getLogger(__name__)
-class criterion(Model):
+class SelectableItem(Item):
     def __init__(self):
-        super(criterion, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5}criterion
+        super(SelectableItem, self).__init__()
 
-        self.negate = False
-        self.applicability_check = False
+        self.selected = True
+        self.weight = 1.0
 
         self.ignore_attributes.extend([
-            'comment',
+            'selected',
+            'weight',
         ])
-        self.required_attributes.append('test_ref')
+        self.ignore_sub_elements.extend([
+            '{http://checklists.nist.gov/xccdf/1.2}rationale',
+            '{http://checklists.nist.gov/xccdf/1.2}platform',
+            '{http://checklists.nist.gov/xccdf/1.2}requires',
+            '{http://checklists.nist.gov/xccdf/1.2}conflicts',
+        ])
 
     def parse_attribute(self, name, value):
-        if name == 'negate':
-            self.negate = self.parse_boolean(value)
-        elif name == 'applicability_check':
-            self.applicability_check = self.parse_boolean(value)
-        elif name == 'test_ref':
-            self.test_ref = value
+        if name == 'selected':
+            self.selected = self.parse_boolean(value)
+        elif name == 'weight':
+            self.weight = value
         else:
-            return super(criterion, self).parse_attribute(name, value)
+            return super(SelectableItem, self).parse_attribute(name, value)
         return True

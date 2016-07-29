@@ -15,12 +15,12 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.model.xccdf_1_2.GroupRuleCommon import GroupRuleCommon
+from scap.model.xccdf_1_2.SelectableItem import SelectableItem
 from scap.Model import Model
 import logging
 
 logger = logging.getLogger(__name__)
-class Group(GroupRuleCommon):
+class Group(SelectableItem):
     def __init__(self):
         super(Group, self).__init__()
         self.values = {}
@@ -38,7 +38,6 @@ class Group(GroupRuleCommon):
             g = Model.load_child(self, sub_el)
             self.groups[sub_el.attrib['id']] = g
         elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}Rule':
-            from scap.model.xccdf_1_2.Rule import Rule
             r = Model.load_child(self, sub_el)
             self.rules[sub_el.attrib['id']] = r
         else:

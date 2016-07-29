@@ -15,12 +15,12 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.model.xccdf_1_2.GroupRuleCommon import GroupRuleCommon
+from scap.model.xccdf_1_2.SelectableItem import SelectableItem
 from scap.Model import Model
 import logging
 
 logger = logging.getLogger(__name__)
-class Rule(GroupRuleCommon):
+class Rule(SelectableItem):
     class Result(object):
         PASS = 'pass' # [P] The target system or system component satisfied all the conditions of the <xccdf:Rule>.
         FAIL = 'fail' # [F] The target system or system component did not satisfy all the conditions of the

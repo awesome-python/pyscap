@@ -30,6 +30,7 @@ class extend_definition(Model):
         self.ignore_attributes.extend([
             'comment',
         ])
+        self.required_attributes.append('definition_ref')
 
     def parse_attribute(self, name, value):
         if name == 'applicability_check':
@@ -41,11 +42,3 @@ class extend_definition(Model):
         else:
             return super(extend_definition, self).parse_attribute(name, value)
         return True
-
-    def from_xml(self, parent, el):
-        super(extend_definition, self).from_xml(parent, el)
-
-        if self.definition_ref is None:
-            logger.critical('definition_ref not defined in extend_definition')
-            import sys
-            sys.exit()

@@ -15,18 +15,23 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.Model import Model
+from scap.model.xccdf_1_2.XCCDFModel import XCCDFModel
 import logging
 
 logger = logging.getLogger(__name__)
-class Item(Model):
+class Item(XCCDFModel):
     def __init__(self):
         super(Item, self).__init__()
 
-        self.ignore_attributes.extend(['abstract', 'cluster-id', 'extends', 'hidden', 'prohibitChanges', 'Id' ])
+        self.ignore_attributes.extend([
+            'abstract',
+            'cluster-id',
+            'extends',
+            'hidden',
+            'prohibitChanges',
+            'Id',
+        ])
         self.ignore_sub_elements.extend([
-            '{http://checklists.nist.gov/xccdf/1.2}status',
-            '{http://checklists.nist.gov/xccdf/1.2}dc-status',
             '{http://checklists.nist.gov/xccdf/1.2}version',
             '{http://checklists.nist.gov/xccdf/1.2}title',
             '{http://checklists.nist.gov/xccdf/1.2}description',

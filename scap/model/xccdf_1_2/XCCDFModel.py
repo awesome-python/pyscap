@@ -15,18 +15,20 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.model.xccdf_1_2.Item import Item
+from scap.Model import Model
 import logging
 
 logger = logging.getLogger(__name__)
-class GroupRuleCommon(Item):
+class XCCDFModel(Model):
     def __init__(self):
-        super(GroupRuleCommon, self).__init__()
+        super(XCCDFModel, self).__init__()
 
-        self.ignore_attributes.extend(['selected', 'weight'])
         self.ignore_sub_elements.extend([
-            '{http://checklists.nist.gov/xccdf/1.2}rationale',
+            '{http://checklists.nist.gov/xccdf/1.2}status',
+            '{http://checklists.nist.gov/xccdf/1.2}dc-status',
+            '{http://checklists.nist.gov/xccdf/1.2}model',
             '{http://checklists.nist.gov/xccdf/1.2}platform',
-            '{http://checklists.nist.gov/xccdf/1.2}requires',
-            '{http://checklists.nist.gov/xccdf/1.2}conflicts',
+            '{http://checklists.nist.gov/xccdf/1.2}version',
+            '{http://checklists.nist.gov/xccdf/1.2}metadata',
+            '{http://checklists.nist.gov/xccdf/1.2}signature',
         ])

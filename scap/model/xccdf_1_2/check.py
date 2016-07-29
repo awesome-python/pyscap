@@ -15,11 +15,11 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.Model import Model
+from scap.model.xccdf_1_2.XCCDFModel import XCCDFModel
 import logging
 
 logger = logging.getLogger(__name__)
-class check(Model):
+class check(XCCDFModel):
     def __init__(self):
         super(check, self).__init__()
         self.check_content_ref = None

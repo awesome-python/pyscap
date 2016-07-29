@@ -15,11 +15,11 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.Model import Model
+from scap.model.xccdf_1_2.XCCDFModel import XCCDFModel
 import logging
 
 logger = logging.getLogger(__name__)
-class Profile(Model):
+class Profile(XCCDFModel):
     def __init__(self):
         super(Profile, self).__init__()
         self.selected_rules = []
@@ -28,8 +28,6 @@ class Profile(Model):
 
         self.ignore_attributes.extend(['selected', 'weight'])
         self.ignore_sub_elements.extend([
-            '{http://checklists.nist.gov/xccdf/1.2}status',
-            '{http://checklists.nist.gov/xccdf/1.2}dc-status',
             '{http://checklists.nist.gov/xccdf/1.2}version',
             '{http://checklists.nist.gov/xccdf/1.2}title',
             '{http://checklists.nist.gov/xccdf/1.2}description',

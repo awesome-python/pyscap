@@ -15,11 +15,12 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
+from scap.model.xccdf_1_2.XCCDFModel import XCCDFModel
 from scap.Model import Model
 import logging
 
 logger = logging.getLogger(__name__)
-class Benchmark(Model):
+class Benchmark(XCCDFModel):
     def __init__(self):
         super(Benchmark, self).__init__()
 
@@ -37,8 +38,6 @@ class Benchmark(Model):
             'style-href',
         ])
         self.ignore_sub_elements.extend([
-            '{http://checklists.nist.gov/xccdf/1.2}status',
-            '{http://checklists.nist.gov/xccdf/1.2}dc-status',
             '{http://checklists.nist.gov/xccdf/1.2}title',
             '{http://checklists.nist.gov/xccdf/1.2}description',
             '{http://checklists.nist.gov/xccdf/1.2}front-matter',
@@ -46,11 +45,6 @@ class Benchmark(Model):
             '{http://checklists.nist.gov/xccdf/1.2}reference',
             '{http://checklists.nist.gov/xccdf/1.2}plain-text',
             '{http://cpe.mitre.org/language/2.0}platform-specification',
-            '{http://checklists.nist.gov/xccdf/1.2}platform',
-            '{http://checklists.nist.gov/xccdf/1.2}version',
-            '{http://checklists.nist.gov/xccdf/1.2}metadata',
-            '{http://checklists.nist.gov/xccdf/1.2}model',
-            '{http://checklists.nist.gov/xccdf/1.2}signature',
         ])
 
     def parse_sub_el(self, sub_el):

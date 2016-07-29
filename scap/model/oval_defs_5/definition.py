@@ -34,6 +34,7 @@ class definition(Model):
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5}metadata',
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5}notes',
         ])
+        self.required_sub_elements.append('{http://oval.mitre.org/XMLSchema/oval-definitions-5}criteria')
 
     def parse_attribute(self, name, value):
         if name == 'deprecated':
@@ -48,11 +49,3 @@ class definition(Model):
         else:
             return super(definition, self).parse_sub_el(sub_el)
         return True
-
-    def from_xml(self, parent, el):
-        super(definition, self).from_xml(parent, el)
-
-        if self.criteria is None:
-            logger.critical('No criteria found for definition ' + self.id)
-            import sys
-            sys.exit()

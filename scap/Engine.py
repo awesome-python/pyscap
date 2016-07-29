@@ -93,6 +93,8 @@ class Engine(object):
             report.id = 'report_' + uuid.uuid4().hex
             arc.reports.append(report)
 
+            from scap.model.xccdf_1_2.TestResult import TestResult
+
             from scap.model.arf_1_1.relationship import relationship
             rel = relationship()
             rel.subject = report.id
