@@ -23,24 +23,24 @@ class data_stream(Checker):
     def __init__(self, host, content, args=None):
         super(data_stream, self).__init__(host, content, args)
 
-        if args.checklist:
-            checklist_id = args.checklist[0]
-            if checklist_id not in self.content.checklists:
-                logger.critical('Specified --checklist, ' + checklist_id + ', not found in content. Available checklists: ' + str(self.content.checklists.keys()))
+        if 'checklist' in args:
+            checklist_id = args[checklist]
+            if checklist_id not in content.checklists:
+                logger.critical('Specified --checklist, ' + checklist_id + ', not found in content. Available checklists: ' + str(content.checklists.keys()))
                 import sys
                 sys.exit()
             else:
-                checklist = self.content.checklists[checklist_id].resolve()
+                checklist = content.checklists[checklist_id].resolve()
         else:
-            if len(self.content.checklists) == 1:
-                checklist = self.content.checklists.values()[0].resolve()
+            if len(content.checklists) == 1:
+                checklist = content.checklists.values()[0].resolve()
             else:
-                logger.critical('No --checklist specified and unable to implicitly choose one. Available checklists: ' + str(self.content.checklists.keys()))
+                logger.critical('No --checklist specified and unable to implicitly choose one. Available checklists: ' + str(content.checklists.keys()))
                 import sys
                 sys.exit()
         logger.info('Selecting checklist ' + checklist.id)
 
-        self.checklist_checker = Checker.load(self.host, checklist, args)
+        self.checklist_checker = Checker.load(host, checklist, args)
 
     def check(self):
         return self.checklist_checker.check()

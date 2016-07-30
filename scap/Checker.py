@@ -27,7 +27,11 @@ class Checker(object):
         if collector_module not in sys.modules:
             logger.debug('Loading module ' + collector_module)
             import importlib
-            mod = importlib.import_module(collector_module)
+            try:
+                mod = importlib.import_module(collector_module)
+            except:
+                logger.warning('Could not load module for ' + collector_module)
+                raise
         else:
             mod = sys.modules[collector_module]
 

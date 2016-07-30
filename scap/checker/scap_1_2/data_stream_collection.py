@@ -23,24 +23,27 @@ class data_stream_collection(Checker):
     def __init__(self, host, content, args=None):
         super(data_stream_collection, self).__init__(host, content, args)
 
-        if self.args.data_stream:
-            ds_name = self.args.data_stream[0]
-            if ds_name not in self.content.data_streams:
-                logger.critical('Specified --data_stream, ' + ds_name + ', not found in content. Available data streams: ' + str(self.content.data_streams.keys()))
+        if 'data_stream' in args:
+            ds_name = args['data_stream']
+            if ds_name not in content.data_streams:
+                logger.critical('Specified --data_stream, ' + ds_name + ', not found in content. Available data streams: ' + str(content.data_streams.keys()))
                 import sys
                 sys.exit()
             else:
-                ds = self.content.data_streams[ds_name]
+                ds = content.data_streams[ds_name]
         else:
-            if len(self.content.data_streams) == 1:
-                ds = self.content.data_streams.values()[0]
+            if len(content.data_streams) == 1:
+                ds = content.data_streams.values()[0]
             else:
-                logger.critical('No --data_stream specified and unable to implicitly choose one. Available data-streams: ' + str(self.content.data_streams.keys()))
+                logger.critical('No --data_stream specified and unable to implicitly choose one. Available data-streams: ' + str(content.data_streams.keys()))
                 import sys
                 sys.exit()
         logger.info('Selecting data stream ' + ds.id)
 
-        self.ds_checker = Checker.load(self.host, ds, self.args)
+        # have to set the selected data stream so references resolve properly
+        content.selected_data_stream = ds.id
+
+        self.ds_checker = Checker.load(host, ds, args)
 
     def check(self):
         return self.ds_checker.check()

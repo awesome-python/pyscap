@@ -19,14 +19,11 @@ from scap.Checker import Checker
 import logging
 
 logger = logging.getLogger(__name__)
-class check(Checker):
+class definition(Checker):
     def __init__(self, host, content, args=None):
-        super(check, self).__init__(host, content, args)
+        super(definition, self).__init__(host, content, args)
 
-        content = self.content.resolve()
-        self.checker = Checker.load(host, content, args)
+        self.checker = Checker.load(host, content.criteria, args)
 
     def check(self):
-        # TODO: multi-check, negate
-
         return self.checker.check()

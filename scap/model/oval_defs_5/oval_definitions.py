@@ -37,7 +37,7 @@ class oval_definitions(Model):
     def parse_sub_el(self, sub_el):
         if sub_el.tag == '{http://oval.mitre.org/XMLSchema/oval-definitions-5}definitions':
             for def_el in sub_el:
-                self.tests[def_el.attrib['id']] = Model.load_child(self, def_el)
+                self.definitions[def_el.attrib['id']] = Model.load_child(self, def_el)
         elif sub_el.tag == '{http://oval.mitre.org/XMLSchema/oval-definitions-5}tests':
             for test_el in sub_el:
                 self.tests[test_el.attrib['id']] = Model.load_child(self, test_el)
@@ -53,3 +53,31 @@ class oval_definitions(Model):
         else:
             return super(oval_definitions, self).parse_sub_el(sub_el)
         return True
+
+    def resolve_reference(self, ref):
+        if ref in self.ref_mapping:
+            logger.debug('Mapping reference ' + ref + ' to ' + self.ref_mapping[ref])
+            ref = self.ref_mapping[ref]
+
+        if ref.startswith('oval:'):
+            ref_type = ref.split(':')[2]
+            if ref_type == 'def' and ref in self.definitions:
+                logger.debug('Found OVAL definition ' + ref)
+                return self.definitions[ref]
+            elif ref_type == 'obj' and ref in self.objects:
+                logger.debug('Found OVAL object ' + ref)
+                return self.objects[ref]
+            elif ref_type == 'ste' and ref in self.states:
+                logger.debug('Found OVAL state ' + ref)
+                return self.states[ref]
+            elif ref_type == 'tst' and ref in self.tests:
+                logger.debug('Found OVAL test ' + ref)
+                return self.tests[ref]
+            elif ref_type == 'var' and ref in self.variables:
+                logger.debug('Found OVAL variable ' + ref)
+                return self.variables[ref]
+            else:
+                logger.debug('Reference ' + ref + ' not in ' + self.__class__.__name__ + ' continuing to parent ' + self.parent.__class__.__name__)
+                return self.parent.resolve_reference('#' + ref)
+        else:
+            return self.parent.resolve_reference(ref)

@@ -43,13 +43,12 @@ class Profile(Checker):
 
             logger.debug('Using value ' + values[value_id]['operator'] + ' ' + values[value_id]['value'] + ' for ' + values[value_id]['type'] + ' value ' + value_id)
 
+        args['values'] = values
+
         self.rule_checkers = {}
         for rule_id in self.content.selected_rules:
             rule = self.content.parent.rules[rule_id]
-            args = {
-                'values': values,
-                'check_selector': self.content.rule_check_selections[rule_id]
-            }
+            args['check_selector'] = self.content.rule_check_selections[rule_id]
             self.rule_checkers[rule_id] = Checker.load(self.host, rule, args)
 
     def check(self):

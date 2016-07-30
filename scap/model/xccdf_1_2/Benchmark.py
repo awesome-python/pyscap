@@ -29,6 +29,7 @@ class Benchmark(Model):
         self.profile_elements = {}
         self.test_results = {}
         self.selected_rules = []
+        self.selected_profile = None
 
         self.required_attributes.append('id')
         self.ignore_attributes.extend([

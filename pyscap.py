@@ -128,13 +128,21 @@ if args.benchmark:
 
     content = Model.load_child(None, ET.parse(args.content[0]).getroot())
 
+    # convert args to hash for use by checkers
+    checker_args = {}
+    if args.data_stream:
+        checker_args['data_stream'] = args.data_stream[0]
+    if args.checklist:
+        checker_args['checklist'] = args.checklist[0]
+    if args.profile:
+        checker_args['profile'] = args.profile[0]
     for host in hosts:
         host.connect()
 
         host.collect_facts()
         #TODO cache facts
 
-        host.benchmark(content, args)
+        host.benchmark(content, checker_args)
 
         host.disconnect()
 

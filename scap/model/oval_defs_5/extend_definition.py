@@ -42,3 +42,6 @@ class extend_definition(Model):
         else:
             return super(extend_definition, self).parse_attribute(name, value)
         return True
+
+    def resolve(self):
+        return self.resolve_reference(self.definition_ref)

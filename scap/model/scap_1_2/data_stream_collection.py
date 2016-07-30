@@ -25,6 +25,7 @@ class data_stream_collection(Model):
 
         self.components = {}
         self.data_streams = {}
+        self.selected_data_stream = None
 
         self.required_attributes.extend([
             'id',
@@ -51,11 +52,16 @@ class data_stream_collection(Model):
     def resolve_reference(self, ref):
         if ref[0] == '#':
             ref = ref[1:]
-            if ref not in self.components:
+            if ref in self.components:
+                return self.components[ref]
+            elif self.selected_data_stream:
+                logger.debug('Reference ' + ref + ' not in components; checking selected data stream')
+                return self.data_streams[self.selected_data_stream].resolve_reference('#' + ref)
+            else:
+                # we're the top level parent
                 logger.critical('Reference ' + ref + ' not in ' + str(self.components.keys()))
                 import sys
                 sys.exit()
-            return self.components[ref]
         else:
             logger.critical('only local references are supported: ' + ref)
             import sys

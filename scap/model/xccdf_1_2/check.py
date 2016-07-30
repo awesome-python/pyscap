@@ -62,3 +62,13 @@ class check(Model):
         else:
             return super(check, self).parse_sub_el(sub_el)
         return True
+
+    def resolve(self):
+        content = self.resolve_reference(self.check_content_ref)
+        if self.system == 'http://oval.mitre.org/XMLSchema/oval-definitions-5':
+            # looking for a definition
+            return content.definitions[self.check_content_name]
+        #elif self.system == 'http://scap.nist.gov/schema/ocil/2' or self.system == 'http://scap.nist.gov/schema/ocil/2.0':
+
+        print str(content)
+        raise NotImplementedError('Check system not implemented ' + self.system)

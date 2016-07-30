@@ -23,24 +23,24 @@ class Benchmark(Checker):
     def __init__(self, host, content, args=None):
         super(Benchmark, self).__init__(host, content, args)
 
-        if args.profile:
-            profile_id = args.profile[0]
-            if profile_id not in self.content.profiles:
-                logger.critical('Specified --profile, ' + profile_id + ', not found in content. Available profiles: ' + str(self.content.profiles.keys()))
+        if 'profile' in args:
+            profile_id = args['profile']
+            if profile_id not in content.profiles:
+                logger.critical('Specified --profile, ' + profile_id + ', not found in content. Available profiles: ' + str(content.profiles.keys()))
                 import sys
                 sys.exit()
             else:
-                profile = self.content.profiles[profile_id]
+                profile = content.profiles[profile_id]
         else:
-            if len(self.content.profiles) == 1:
-                profile = self.content.profiles.values()[0]
+            if len(content.profiles) == 1:
+                profile = content.profiles.values()[0]
             else:
-                logger.critical('No --profile specified and unable to implicitly choose one. Available profiles: ' + str(self.content.profiles.keys()))
+                logger.critical('No --profile specified and unable to implicitly choose one. Available profiles: ' + str(content.profiles.keys()))
                 import sys
                 sys.exit()
         logger.info('Selecting profile ' + profile.id)
 
-        self.profile_checker = Checker.load(self.host, profile)
+        self.profile_checker = Checker.load(host, profile, args)
 
     def check(self):
         return self.profile_checker.check()

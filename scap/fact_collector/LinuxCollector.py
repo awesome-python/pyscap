@@ -26,8 +26,8 @@ class LinuxCollector(FactCollector):
 
         from scap.fact_collector.RootFSUUIDCollector import RootFSUUIDCollector
         self.host.fact_collectors.append(RootFSUUIDCollector(self.host))
-        from scap.fact_collector.LSHWCollector import LSHWCollector
-        self.host.fact_collectors.append(LSHWCollector(self.host))
+        #from scap.fact_collector.LSHWCollector import LSHWCollector
+        #self.host.fact_collectors.append(LSHWCollector(self.host))
 
         # TODO ai.circuit
         # TODO ai.network?; this would likely be  used on routers, switches & other net devices

@@ -23,18 +23,17 @@ class Rule(Checker):
     def __init__(self, host, content, args=None):
         super(Rule, self).__init__(host, content, args)
 
-        if self.args['check_selector'] not in self.content.checks:
-            logger.critical('Check selector ' + self.args['check_selector'] + ' not found for rule ' + self.content.id)
+        if args['check_selector'] not in content.checks:
+            logger.critical('Check selector ' + args['check_selector'] + ' not found for rule ' + content.id)
             import sys
             sys.exit()
-        check = self.content.checks[self.args['check_selector']]
+        check = content.checks[args['check_selector']]
 
         self.checker = None
         try:
-            args = {'values': self.args['values']}
-            self.checker = Checker.load(self.host, check, args)
+            self.checker = Checker.load(host, check, args)
         except ImportError:
-            logger.warning('Unknown check type ' + check.__class__.__name__ + ' for rule ' + self.content.id)
+            logger.warning('Unknown check type ' + check.__class__.__name__ + ' for rule ' + content.id)
 
     def check(self):
         if self.checker is None:
