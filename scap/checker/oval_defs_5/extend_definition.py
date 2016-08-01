@@ -29,7 +29,8 @@ class extend_definition(Checker):
         # TODO applicability_check?
 
         result = self.checker.check()
+        from scap.model.oval_defs_5.Operators import Operators
         if self.content.negate:
-            return OVAL.negate(result)
+            return Operators.negate(result)
         else:
             return result
