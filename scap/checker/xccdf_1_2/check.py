@@ -23,10 +23,23 @@ class check(Checker):
     def __init__(self, host, content, args=None):
         super(check, self).__init__(host, content, args)
 
+        self.checkers = []
         content = self.content.resolve()
-        self.checker = Checker.load(host, content, args)
+        if isinstance(content, list):
+            for defn in content:
+                self.checkers.append(Checker.load(host, defn, args))
+        else:
+            self.checkers.append(Checker.load(host, content, args))
 
     def check(self):
-        # TODO: multi-check, negate
+        # TODO: multi-check
 
-        return self.checker.check()
+        from scap.model.xccdf_1_2.Operators import Operators
+        result = self.checkers[0].check()
+        for i in range(1, len(self.checkers)):
+            result = Operators.AND(result, self.checkers[i].check())
+
+        if self.content.negate:
+            return Operators.negate(result)
+        else:
+            return result

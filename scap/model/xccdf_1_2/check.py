@@ -22,8 +22,14 @@ logger = logging.getLogger(__name__)
 class check(Model):
     def __init__(self):
         super(check, self).__init__()
+
+        self.negate = False
+        self.multi_check = False
+        self.system = None
+
         self.check_content_ref = None
         self.check_content_name = None
+
         self.ignore_attributes.extend([
             'selector',
         ])
@@ -34,15 +40,13 @@ class check(Model):
 
     def parse_attribute(self, name, value):
         if name == 'system':
-            supported = [
+            if value not in [
                 'http://oval.mitre.org/XMLSchema/oval-definitions-5',
                 'http://scap.nist.gov/schema/ocil/2.0',
                 'http://scap.nist.gov/schema/ocil/2',
-            ]
-            if value not in supported:
+            ]:
                 raise NotImplementedError('Check system ' + value + ' is not implemented')
-            else:
-                self.system = value
+            self.system = value
         elif name == 'negate':
             self.negate = self.parse_boolean(value)
         elif name == 'multi-check':
@@ -66,8 +70,11 @@ class check(Model):
     def resolve(self):
         content = self.resolve_reference(self.check_content_ref)
         if self.system == 'http://oval.mitre.org/XMLSchema/oval-definitions-5':
-            # looking for a definition
-            return content.definitions[self.check_content_name]
+            if self.check_content_name is None:
+                return content.definitions.values()
+            else:
+                # looking for a definition
+                return content.definitions[self.check_content_name]
         elif self.system == 'http://scap.nist.gov/schema/ocil/2' or self.system == 'http://scap.nist.gov/schema/ocil/2.0':
             return content
         else:

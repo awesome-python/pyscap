@@ -21,33 +21,11 @@ import logging
 
 logger = logging.getLogger(__name__)
 class Rule(SelectableItem):
-    class Result(object):
-        PASS = 'pass' # [P] The target system or system component satisfied all the conditions of the <xccdf:Rule>.
-        FAIL = 'fail' # [F] The target system or system component did not satisfy all the conditions of the
-        # <xccdf:Rule>.
-        ERROR = 'error' # [E] The checking engine could not complete the evaluation, therefore the status of the target's
-        # compliance with the <xccdf:Rule> is not certain. This could happen, for example, if a testing
-        # tool was run with insufficient privileges and could not gather all of the necessary information.
-        UNKNOWN = 'unknown' # [U] The testing tool encountered some problem and the result is unknown. For example, a result of
-        # 'unknown' might be given if the testing tool was unable to interpret the output of the checking
-        # engine (the output has no meaning to the testing tool).
-        NOT_APPLICABLE = 'notapplicable' # [N] The <xccdf:Rule> was not applicable to the target of the test. For example, the
-        # <xccdf:Rule> might have been specific to a different version of the target OS, or it might
-        # have been a test against a platform feature that was not installed.
-        NOT_CHECKED = 'notchecked' # [K] The <xccdf:Rule> was not evaluated by the checking engine. This status is designed for
-        # <xccdf:Rule> elements that have no <xccdf:check> elements or that correspond to an
-        # unsupported checking system. It may also correspond to a status returned by a checking
-        # engine if the checking engine does not support the indicated check code.
-        NOT_SELECTED = 'notselected' # [S] The <xccdf:Rule> was not selected in the benchmark.
-        INFORMATIONAL = 'informational' # [I] The <xccdf:Rule> was checked, but the output from the checking engine is simply
-        # information for auditors or administrators; it is not a compliance category. This status value is
-        # designed for <xccdf:Rule> elements whose main purpose is to extract information from the
-        # target rather than test the target.
-        FIXED = 'fixed' # [X] The <xccdf:Rule> had failed, but was then fixed (possibly by a tool that can automatically
-        # apply remediation, or possibly by the human auditor).
-
     def __init__(self):
         super(Rule, self).__init__()
+
+        self.multiple = False
+
         self.checks = {}
         self.fixes = []
         self.fixtexts = []
@@ -56,7 +34,6 @@ class Rule(SelectableItem):
         self.ignore_attributes.extend([
             'role',
             'severity',
-            'multiple',
         ])
         self.ignore_sub_elements.extend([
             '{http://checklists.nist.gov/xccdf/1.2}ident',
@@ -64,6 +41,13 @@ class Rule(SelectableItem):
             '{http://checklists.nist.gov/xccdf/1.2}profile-note',
             '{http://checklists.nist.gov/xccdf/1.2}signature',
         ])
+
+    def parse_attribute(self, name, value):
+        if name == 'multiple':
+            self.multiple = self.parse_boolean(value)
+        else:
+            return super(Rule, self).parse_attribute(name, value)
+        return True
 
     def parse_sub_el(self, sub_el):
         if sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}complex-check':

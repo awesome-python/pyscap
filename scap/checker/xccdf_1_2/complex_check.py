@@ -23,5 +23,22 @@ class complex_check(Checker):
     def __init__(self, host, content, args=None):
         super(complex_check, self).__init__(host, content, args)
 
+        self.checkers = []
+        for check in content.checks:
+            self.checkers.append(Checker.load(host, check, args))
+
     def check(self):
-        return 'notchecked'
+        from scap.model.xccdf_1_2.Operators import Operators
+        result = self.checkers[0].check()
+        for i in range(1, len(self.checkers)):
+            if self.content.operator == 'AND':
+                result = Operators.AND(result, self.checkers[i].check())
+            elif self.content.operator == 'OR':
+                result = Operators.OR(result, self.checkers[i].check())
+            else:
+                raise NotImplementedError('Unknown complex_check operator: ' + self.content.operator)
+
+        if self.content.negate:
+            return Operators.negate(result)
+        else:
+            return result
