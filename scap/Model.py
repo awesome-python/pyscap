@@ -34,6 +34,7 @@ class Model(object):
         'http://oval.mitre.org/XMLSchema/oval-definitions-5#independent': 'oval_defs_5_independent',
         'http://oval.mitre.org/XMLSchema/oval-definitions-5#linux': 'oval_defs_5_linux',
         'http://oval.mitre.org/XMLSchema/oval-definitions-5#windows': 'oval_defs_5_windows',
+        'http://oval.mitre.org/XMLSchema/oval-results-5': 'oval_results_5',
         'http://scap.nist.gov/schema/scap/source/1.2': 'scap_1_2',
         'http://scap.nist.gov/schema/reporting-core/1.1': 'rep_core_1_1',
         'http://checklists.nist.gov/xccdf/1.1': 'xccdf_1_1',

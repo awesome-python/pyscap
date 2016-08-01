@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-ARITHMETIC_ENUMERATION = [
+SET_OPERATOR_ENUMERATION = [
     'COMPLEMENT',
     'INTERSECTION',
     'UNION',
