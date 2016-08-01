@@ -50,3 +50,11 @@ class Test(Model):
         else:
             return super(Test, self).parse_attribute(name, value)
         return True
+
+    def resolve_object(self):
+        import inspect
+        raise NotImplementedError(inspect.stack()[0][3] + '() has not been implemented in subclass: ' + self.__class__.__name__)
+
+    def resolve_states(self):
+        import inspect
+        raise NotImplementedError(inspect.stack()[0][3] + '() has not been implemented in subclass: ' + self.__class__.__name__)
