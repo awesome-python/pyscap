@@ -29,6 +29,11 @@ class definition(Model):
             'version',
             'class',
         ])
+        self.required_attributes.extend([
+            'id',
+            'version',
+            'class',
+        ])
         self.ignore_sub_elements.extend([
             '{http://www.w3.org/2000/09/xmldsig#}Signature',
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5}metadata',

@@ -19,16 +19,17 @@ from scap.Checker import Checker
 import logging
 
 logger = logging.getLogger(__name__)
-class extend_definition(Checker):
+class criterion(Checker):
     def __init__(self, host, content, args=None):
-        super(extend_definition, self).__init__(host, content, args)
+        super(criterion, self).__init__(host, content, args)
 
         self.checker = Checker.load(host, content.resolve(), args)
 
     def check(self):
         # TODO applicability_check?
-
         result = self.checker.check()
+
+        from scap.model.OVAL import OVAL
         if self.content.negate:
             return OVAL.negate(result)
         else:

@@ -25,6 +25,7 @@ class criterion(Model):
 
         self.negate = False
         self.applicability_check = False
+        self.test_ref = None
 
         self.ignore_attributes.extend([
             'comment',
@@ -41,3 +42,6 @@ class criterion(Model):
         else:
             return super(criterion, self).parse_attribute(name, value)
         return True
+
+    def resolve(self):
+        return self.resolve_reference(self.test_ref)

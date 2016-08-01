@@ -68,7 +68,8 @@ class check(Model):
         if self.system == 'http://oval.mitre.org/XMLSchema/oval-definitions-5':
             # looking for a definition
             return content.definitions[self.check_content_name]
-        #elif self.system == 'http://scap.nist.gov/schema/ocil/2' or self.system == 'http://scap.nist.gov/schema/ocil/2.0':
-
-        print str(content)
-        raise NotImplementedError('Check system not implemented ' + self.system)
+        elif self.system == 'http://scap.nist.gov/schema/ocil/2' or self.system == 'http://scap.nist.gov/schema/ocil/2.0':
+            return content
+        else:
+            print str(content)
+            raise NotImplementedError('Check system not implemented ' + self.system)

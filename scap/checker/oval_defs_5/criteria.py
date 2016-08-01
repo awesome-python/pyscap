@@ -28,7 +28,25 @@ class criteria(Checker):
             self.checkers.append(Checker.load(host, crit, args))
 
     def check(self):
-        # TODO operator, negate
+        result = None
+
         # TODO applicability_check?
+
+        results = []
         for checker in self.checkers:
-            return checker.check()
+            results.append(checker.check())
+
+        from scap.model.OVAL import OVAL
+        if self.content.operator == 'AND':
+            result = OVAL.AND(results)
+        elif self.content.operator == 'ONE':
+            result = OVAL.ONE(results)
+        elif self.content.operator == 'OR':
+            result = OVAL.OR(results)
+        elif self.content.operator == 'XOR':
+            result = OVAL.XOR(results)
+
+        if self.content.negate:
+            return OVAL.negate(result)
+        else:
+            return result
