@@ -36,17 +36,17 @@ class criteria(Checker):
         for checker in self.checkers:
             results.append(checker.check())
 
-        from scap.model.oval_defs_5.Operators import Operators
+        from scap.model.oval_defs_5 import OperatorsEnumeration
         if self.content.operator == 'AND':
-            result = Operators.AND(results)
+            result = OperatorsEnumeration.AND(results)
         elif self.content.operator == 'ONE':
-            result = Operators.ONE(results)
+            result = OperatorsEnumeration.ONE(results)
         elif self.content.operator == 'OR':
-            result = Operators.OR(results)
+            result = OperatorsEnumeration.OR(results)
         elif self.content.operator == 'XOR':
-            result = Operators.XOR(results)
+            result = OperatorsEnumeration.XOR(results)
 
         if self.content.negate:
-            return Operators.negate(result)
+            return OperatorsEnumeration.negate(result)
         else:
             return result

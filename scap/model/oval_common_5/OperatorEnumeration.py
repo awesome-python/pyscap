@@ -15,6 +15,14 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
+OPERATOR_ENUMERATION = [
+    'AND',
+    'ONE',
+    'OR',
+    'XOR',
+]
+
+# NOTE: we include negate here as a convenient place to store the function
 def negate(value):
     if value == 'true':
         return 'false'

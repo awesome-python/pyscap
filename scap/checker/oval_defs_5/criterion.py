@@ -34,8 +34,8 @@ class criterion(Checker):
         # TODO applicability_check?
         result = self.checker.check()
 
-        from scap.model.oval_defs_5.Operators import Operators
+        from scap.model.oval_defs_5 import OperatorsEnumeration
         if self.content.negate:
-            return Operators.negate(result)
+            return OperatorsEnumeration.negate(result)
         else:
             return result

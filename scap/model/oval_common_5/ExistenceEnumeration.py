@@ -14,15 +14,22 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
+
+EXISTENCE_ENUMERATION = [
+    'exists',
+    'does not exist',
+    'error',
+    'not collected',
+]
+
 def count_item_status_values(item_status_values):
-    counts = {
-        'exists': 0,
-        'does not exist': 0,
-        'error': 0,
-        'not collected': 0,
-    }
+    counts = {}
+    for i in EXISTENCE_ENUMERATION:
+        counts[i] = 0
+
     for v in item_status_values:
         counts[v] ++
+
     return counts['exists'], counts['does not exist'], counts['error'], counts['not collected']
 
 def all_exist(item_status_values):

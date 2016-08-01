@@ -14,6 +14,16 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
+
+CHECK_ENUMERATION = [
+    'true',
+    'false',
+    'error',
+    'unknown',
+    'not evaluated',
+    'not applicable',
+]
+
 def count_results(results):
     counts = {
         'true': 0,

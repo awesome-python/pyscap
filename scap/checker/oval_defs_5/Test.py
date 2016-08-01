@@ -31,17 +31,17 @@ class Test(Checker):
         items, existence_results = self.collect_object_items()
 
         # existence check
-        from scap.model.oval_defs_5.Existence import Existence
+        from scap.model.oval_defs_5 import ExistenceEnumeration
         if self.content.check_existence == 'all_exist':
-            existence_result = Existence.all_exist(existence_results)
+            existence_result = ExistenceEnumeration.all_exist(existence_results)
         elif self.content.check_existence == 'any_exist':
-            existence_result = Existence.any_exist(existence_results)
+            existence_result = ExistenceEnumeration.any_exist(existence_results)
         elif self.content.check_existence == 'at_least_one_exists':
-            existence_result = Existence.at_least_one_exists(existence_results)
+            existence_result = ExistenceEnumeration.at_least_one_exists(existence_results)
         elif self.content.check_existence == 'none_exist':
-            existence_result = Existence.none_exist(existence_results)
+            existence_result = ExistenceEnumeration.none_exist(existence_results)
         elif self.content.check_existence == 'only_one_exists':
-            existence_result = Existence.only_one_exists(existence_results)
+            existence_result = ExistenceEnumeration.only_one_exists(existence_results)
         else:
             raise ValueError('Test ' + self.content.id + ' check_existence value is unknown: ' + self.content.check_existence)
 
@@ -50,7 +50,7 @@ class Test(Checker):
             return 'true'
 
         # for each item
-        from scap.model.oval_defs_5.Operators import Operators
+        from scap.model.oval_defs_5 import OperatorsEnumeration
         item_results = []
         for item in items:
             # for each state, compare item with state
@@ -60,26 +60,26 @@ class Test(Checker):
 
             # combine results with state_operator
             if self.content.state_operator == 'AND':
-                item_results.append(Operators.AND(item_state_results))
+                item_results.append(OperatorsEnumeration.AND(item_state_results))
             elif self.content.state_operator == 'ONE':
-                item_results.append(Operators.ONE(item_state_results))
+                item_results.append(OperatorsEnumeration.ONE(item_state_results))
             elif self.content.state_operator == 'OR':
-                item_results.append(Operators.OR(item_state_results))
+                item_results.append(OperatorsEnumeration.OR(item_state_results))
             elif self.content.state_operator == 'XOR':
-                item_results.append(Operators.XOR(item_state_results))
+                item_results.append(OperatorsEnumeration.XOR(item_state_results))
             else:
                 raise ValueError('Test ' + self.content.id + ' state_operator value is unknown: ' + self.content.state_operator)
 
         # see if check is satisfied
-        from scap.model.oval_defs_5.Check import Check
+        from scap.model.oval_defs_5 import CheckEnumeration
         if self.content.check == 'all':
-            result = Check.all(item_results)
+            result = CheckEnumeration.all(item_results)
         elif self.content.check == 'at least one':
-            result = Check.at_least_one(item_results)
+            result = CheckEnumeration.at_least_one(item_results)
         elif self.content.check == 'none satisfy':
-            result = Check.none_satisfy(item_results)
+            result = CheckEnumeration.none_satisfy(item_results)
         elif self.content.check == 'only one':
-            result = Check.only_one(item_results)
+            result = CheckEnumeration.only_one(item_results)
         else:
             raise ValueError('Test ' + self.content.id + ' check value is unknown: ' + self.content.check)
 

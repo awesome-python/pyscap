@@ -15,22 +15,10 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.Checker import Checker
+import scap.checker.oval_defs_5.Test
 import logging
 
 logger = logging.getLogger(__name__)
-class extend_definition(Checker):
-    def __init__(self, host, content, args=None):
-        super(extend_definition, self).__init__(host, content, args)
-
-        self.checker = Checker.load(host, content.resolve(), args)
-
+class Test(scap.checker.oval_defs_5.Test):
     def check(self):
-        # TODO applicability_check?
-
-        result = self.checker.check()
-        from scap.model.oval_defs_5 import OperatorsEnumeration
-        if self.content.negate:
-            return OperatorsEnumeration.negate(result)
-        else:
-            return result
+        
