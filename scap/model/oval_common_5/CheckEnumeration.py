@@ -34,7 +34,7 @@ def count_results(results):
         'not applicable': 0,
     }
     for r in results:
-        counts[r] ++
+        counts[r] += 1
     return counts['true'], counts['false'], counts['error'], counts['unknown'], counts['not evaluated'], counts['not applicable']
 
 def all(results):

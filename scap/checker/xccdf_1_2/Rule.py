@@ -36,7 +36,12 @@ class Rule(Checker):
             logger.warning('Unknown check type ' + check.__class__.__name__ + ' for rule ' + content.id)
 
     def check(self):
-        if self.checker is None:
-            return 'error'
-        else:
-            return self.checker.check()
+        try:
+            result = self.checker.check()
+        except Exception, e:
+            import traceback
+            logger.warning('Unable to perform check for rule ' + self.content.id + ': ' + str(e) + ':\n' + traceback.format_exc())
+            result = 'error'
+
+        logger.debug('Rule ' + self.content.id + ' result: ' + result)
+        return result

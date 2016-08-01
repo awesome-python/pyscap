@@ -200,7 +200,7 @@ class Model(object):
         if not self.parent:
             raise RuntimeError("Got to null parent without resolving reference")
 
-        logger.debug('Reference ' + ref + ' not in ' + self.__class__.__name__ + ' continuing to parent ' + self.parent.__class__.__name__)
+        #logger.debug('Reference ' + ref + ' not in ' + self.__class__.__name__ + ' continuing to parent ' + self.parent.__class__.__name__)
         return self.parent.resolve_reference(ref)
 
     def set_ref_mapping(self, mapping):

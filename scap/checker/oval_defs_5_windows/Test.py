@@ -19,6 +19,8 @@ import scap.checker.oval_defs_5.Test
 import logging
 
 logger = logging.getLogger(__name__)
-class Test(scap.checker.oval_defs_5.Test):
+class Test(scap.checker.oval_defs_5.Test.Test):
     def check(self):
-        
+        if self.host.facts['oval_family'] != 'windows':
+            return 'not applicable'
+        return super(Test, self).check()

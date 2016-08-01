@@ -28,7 +28,7 @@ def count_item_status_values(item_status_values):
         counts[i] = 0
 
     for v in item_status_values:
-        counts[v] ++
+        counts[v] += 1
 
     return counts['exists'], counts['does not exist'], counts['error'], counts['not collected']
 

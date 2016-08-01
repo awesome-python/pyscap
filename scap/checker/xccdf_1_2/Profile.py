@@ -55,6 +55,4 @@ class Profile(Checker):
         results = {'rule_results': {}}
         for rule_id, rule_checker in self.rule_checkers.items():
             results['rule_results'][rule_id] = rule_checker.check()
-
-            logger.debug('Result of rule ' + rule_id + ': ' + str(results['rule_results'][rule_id]))
         return results

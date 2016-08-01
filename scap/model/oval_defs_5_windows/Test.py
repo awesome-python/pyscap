@@ -25,13 +25,13 @@ class Test(scap.model.oval_defs_5.Test.Test):
         super(Test, self).__init__()
 
         self.object_ref = None
-        self.state_ref = None
+        self.state_refs = []
 
     def parse_sub_el(self, sub_el):
         if sub_el.tag == '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}object':
             self.object_ref = sub_el.attrib['object_ref']
         elif sub_el.tag == '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}state':
-            self.state_ref = sub_el.attrib['state_ref']
+            self.state_refs.append(sub_el.attrib['state_ref'])
         else:
             return super(Test, self).parse_sub_el(sub_el)
         return True
@@ -41,7 +41,8 @@ class Test(scap.model.oval_defs_5.Test.Test):
             return None
         return self.resolve_reference(self.object_ref)
 
-    def resolve_state(self):
-        if self.state_ref is None:
-            return None
-        return self.resolve_reference(self.state_ref)
+    def resolve_states(self):
+        states = []
+        for ref in self.state_refs:
+            states.append(self.resolve_reference(ref))
+        return states

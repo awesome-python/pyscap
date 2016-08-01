@@ -24,11 +24,14 @@ class UNameCollector(FactCollector):
         if uname.startswith('Linux'):
             from scap.fact_collector.LinuxCollector import LinuxCollector
             self.host.fact_collectors.append(LinuxCollector(self.host))
+            self.host.facts['oval_family'] = 'unix'
         elif uname.startswith('Darwin'):
             from scap.fact_collector.AppleCollector import AppleCollector
             self.host.fact_collectors.append(AppleCollector(self.host))
+            self.host.facts['oval_family'] = 'macos'
         elif uname.startswith('Windows NT'):
             from scap.fact_collector.MicrosoftCollector import MicrosoftCollector
             self.host.fact_collectors.append(MicrosoftCollector(self.host))
+            self.host.facts['oval_family'] = 'windows'
         else:
             raise NotImplementedError('Host discovery has not been implemented for uname: ' + uname)
