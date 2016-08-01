@@ -23,7 +23,12 @@ class criterion(Checker):
     def __init__(self, host, content, args=None):
         super(criterion, self).__init__(host, content, args)
 
-        self.checker = Checker.load(host, content.resolve(), args)
+        test = content.resolve()
+        try:
+            self.checker = Checker.load(host, test, args)
+        except ImportError:
+            raise NotImplementedError('Test type ' + test.model_namespace + '.' \
+                + test.__class__.__name__ + ' has not been implemented')
 
     def check(self):
         # TODO applicability_check?

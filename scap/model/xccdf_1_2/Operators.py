@@ -108,8 +108,11 @@ AND_TABLE['informational'] = {
     'informational': 'informational',
 }
 # ------------------------------------------------------
-def AND(left, right):
-    return AND_TABLE[left][right]
+def AND(values):
+    value = values[0]
+    for i in range(1, len(values)):
+        value = AND_TABLE[value][values[i]]
+    return value
 
 OR_TABLE = {}
 # ------------------------------------------------------
@@ -204,8 +207,11 @@ OR_TABLE['informational'] = {
     'informational': 'informational',
 }
 # ------------------------------------------------------
-def OR(left, right):
-    return OR_TABLE[left][right]
+def OR(values):
+    value = values[0]
+    for i in range(1, len(values)):
+        value = OR_TABLE[value][values[i]]
+    return value
 
 # ---------------------------------------
 # NOT || P | F | U | E | N | K | S | I ||
@@ -219,3 +225,14 @@ def negate(value):
         return 'pass'
     else:
         return value
+
+OVAL_XLATE = {
+    'true': 'pass',
+    'false': 'fail',
+    'error': 'error',
+    'unknown': 'unknown',
+    'not evaluated': 'notchecked',
+    'not applicable': 'notapplicable',
+}
+def oval_translate(value):
+    return OVAL_XLATE[value]

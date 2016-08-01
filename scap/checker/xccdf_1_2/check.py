@@ -35,9 +35,14 @@ class check(Checker):
         # TODO: multi-check
 
         from scap.model.xccdf_1_2.Operators import Operators
-        result = self.checkers[0].check()
-        for i in range(1, len(self.checkers)):
-            result = Operators.AND(result, self.checkers[i].check())
+        results = []
+        for checker in self.checkers:
+            if checker.content.model_namespace.startswith('oval'):
+                results.append(Operators.oval_translate(checker.check()))
+            else:
+                raise NotImplementedError('Unknown model namespace: ' + checker.content.model_namespace)
+
+        result = Operators.AND(results)
 
         if self.content.negate:
             return Operators.negate(result)
