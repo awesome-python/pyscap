@@ -32,7 +32,7 @@ class choice_group(Model):
 
     def parse_sub_el(self, sub_el):
         if sub_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}choice':
-            self.choices.append(Model.load_child(self, sub_el))
+            self.choices.append(Model.load(self, sub_el))
         else:
             return super(numeric_question, self).parse_sub_el(sub_el)
         return True

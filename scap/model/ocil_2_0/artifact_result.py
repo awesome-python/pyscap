@@ -45,7 +45,7 @@ class artifact_result(Model):
         elif sub_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}provider':
             self.provider = sub_el.text
         elif sub_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}submitter':
-            self.submitter = Model.load_child(self, sub_el)
+            self.submitter = Model.load(self, sub_el)
         else:
             return super(boolean_question_result, self).parse_sub_el(sub_el)
         return True

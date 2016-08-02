@@ -47,19 +47,19 @@ class results(Model):
             self.title = sub_el.text
         elif sub_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}questionnaire_results':
             for sub_sub_el in sub_el:
-                self.questionnaire_results[sub_sub_el.attrib['id']] = Model.load_child(self, sub_sub_el)
+                self.questionnaire_results[sub_sub_el.attrib['id']] = Model.load(self, sub_sub_el)
         elif sub_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}test_action_results':
             for sub_sub_el in sub_el:
-                self.test_action_results[sub_sub_el.attrib['id']] = Model.load_child(self, sub_sub_el)
+                self.test_action_results[sub_sub_el.attrib['id']] = Model.load(self, sub_sub_el)
         elif sub_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}question_results':
             for sub_sub_el in sub_el:
-                self.question_results[sub_sub_el.attrib['id']] = Model.load_child(self, sub_sub_el)
+                self.question_results[sub_sub_el.attrib['id']] = Model.load(self, sub_sub_el)
         elif sub_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}artifact_results':
             for sub_sub_el in sub_el:
-                self.artifact_results[sub_sub_el.attrib['id']] = Model.load_child(self, sub_sub_el)
+                self.artifact_results[sub_sub_el.attrib['id']] = Model.load(self, sub_sub_el)
         elif sub_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}targets':
             for sub_sub_el in sub_el:
-                self.targets[sub_sub_el.attrib['id']] = Model.load_child(self, sub_sub_el)
+                self.targets[sub_sub_el.attrib['id']] = Model.load(self, sub_sub_el)
         else:
             return super(results, self).parse_sub_el(sub_el)
         return True

@@ -43,7 +43,7 @@ class criteria(Model):
         if sub_el.tag == '{http://oval.mitre.org/XMLSchema/oval-definitions-5}criteria' \
             or sub_el.tag == '{http://oval.mitre.org/XMLSchema/oval-definitions-5}criterion' \
             or sub_el.tag == '{http://oval.mitre.org/XMLSchema/oval-definitions-5}extend_definition':
-            self.criteria.append(Model.load_child(self, sub_el))
+            self.criteria.append(Model.load(self, sub_el))
         else:
             return super(criteria, self).parse_sub_el(sub_el)
         return True

@@ -47,7 +47,7 @@ class ComponentGroup(Model):
         }
 
         if sub_el.tag in sub_el_tags:
-            self.components.append(Model.load_child(self, sub_el))
+            self.components.append(Model.load(self, sub_el))
         else:
             return super(ComponentGroup, self).parse_sub_el(sub_el)
         return True

@@ -33,7 +33,7 @@ class when_pattern(TestActionCondition):
 
     def parse_sub_el(self, sub_el):
         if '{http://scap.nist.gov/schema/ocil/2.0}pattern':
-            self.patterns.append(Model.load_child(self, sub_el))
+            self.patterns.append(Model.load(self, sub_el))
         else:
             return super(when_pattern, self).parse_sub_el(sub_el)
         return True

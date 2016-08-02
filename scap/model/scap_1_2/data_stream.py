@@ -50,7 +50,7 @@ class data_stream(Model):
                     logger.critical(sub_el.tag + ' element can only contain component-ref elements')
                     import sys
                     sys.exit()
-                comp_ref = Model.load_child(self, comp_ref_el)
+                comp_ref = Model.load(self, comp_ref_el)
                 self.dictionaries[comp_ref.id] = comp_ref
         elif sub_el.tag == '{http://scap.nist.gov/schema/scap/source/1.2}checklists':
             for comp_ref_el in sub_el:
@@ -58,7 +58,7 @@ class data_stream(Model):
                     logger.critical(sub_el.tag + ' element can only contain component-ref elements')
                     import sys
                     sys.exit()
-                comp_ref = Model.load_child(self, comp_ref_el)
+                comp_ref = Model.load(self, comp_ref_el)
                 self.checklists[comp_ref.id] = comp_ref
         elif sub_el.tag == '{http://scap.nist.gov/schema/scap/source/1.2}checks':
             for comp_ref_el in sub_el:
@@ -66,7 +66,7 @@ class data_stream(Model):
                     logger.critical(sub_el.tag + ' element can only contain component-ref elements')
                     import sys
                     sys.exit()
-                comp_ref = Model.load_child(self, comp_ref_el)
+                comp_ref = Model.load(self, comp_ref_el)
                 self.checks[comp_ref.id] = comp_ref
         else:
             return super(data_stream, self).parse_sub_el(sub_el)

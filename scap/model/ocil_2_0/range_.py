@@ -33,9 +33,9 @@ class range_(Model):
 
     def parse_sub_el(self, sub_el):
         if sub_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}min':
-            self.min = Model.load_child(self, sub_el)
+            self.min = Model.load(self, sub_el)
         elif sub_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}max':
-            self.min = Model.load_child(self, sub_el)
+            self.min = Model.load(self, sub_el)
         else:
             return super(range_, self).parse_sub_el(sub_el)
         return True

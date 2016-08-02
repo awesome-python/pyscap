@@ -36,10 +36,10 @@ class CompoundTestAction(ItemBase):
             self.description = sub_el.text
         elif sub_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}references':
             for sub_sub_el in sub_el:
-                self.references.append(Model.load_child(self, sub_sub_el))
+                self.references.append(Model.load(self, sub_sub_el))
         elif sub_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}actions':
             for sub_sub_el in sub_el:
-                self.actions.append(Model.load_child(self, sub_sub_el))
+                self.actions.append(Model.load(self, sub_sub_el))
         else:
             return super(CompoundTestAction, self).parse_sub_el(sub_el)
         return True

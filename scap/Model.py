@@ -68,7 +68,7 @@ class Model(object):
         return xml_namespace, model_namespace, tag_name, module_name
 
     @staticmethod
-    def load_child(parent, child_el):
+    def load(parent, child_el):
         xml_namespace, model_namespace, tag_name, module_name = Model.parse_tag(child_el.tag)
 
         model_module = 'scap.model.' + model_namespace + '.' + module_name

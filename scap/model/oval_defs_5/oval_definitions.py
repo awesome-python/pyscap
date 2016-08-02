@@ -37,19 +37,19 @@ class oval_definitions(Model):
     def parse_sub_el(self, sub_el):
         if sub_el.tag == '{http://oval.mitre.org/XMLSchema/oval-definitions-5}definitions':
             for def_el in sub_el:
-                self.definitions[def_el.attrib['id']] = Model.load_child(self, def_el)
+                self.definitions[def_el.attrib['id']] = Model.load(self, def_el)
         elif sub_el.tag == '{http://oval.mitre.org/XMLSchema/oval-definitions-5}tests':
             for test_el in sub_el:
-                self.tests[test_el.attrib['id']] = Model.load_child(self, test_el)
+                self.tests[test_el.attrib['id']] = Model.load(self, test_el)
         elif sub_el.tag == '{http://oval.mitre.org/XMLSchema/oval-definitions-5}objects':
             for obj_el in sub_el:
-                self.objects[obj_el.attrib['id']] = Model.load_child(self, obj_el)
+                self.objects[obj_el.attrib['id']] = Model.load(self, obj_el)
         elif sub_el.tag == '{http://oval.mitre.org/XMLSchema/oval-definitions-5}states':
             for state_el in sub_el:
-                self.states[state_el.attrib['id']] = Model.load_child(self, state_el)
+                self.states[state_el.attrib['id']] = Model.load(self, state_el)
         elif sub_el.tag == '{http://oval.mitre.org/XMLSchema/oval-definitions-5}variables':
             for var_el in sub_el:
-                self.variables[var_el.attrib['id']] = Model.load_child(self, var_el)
+                self.variables[var_el.attrib['id']] = Model.load(self, var_el)
         else:
             return super(oval_definitions, self).parse_sub_el(sub_el)
         return True

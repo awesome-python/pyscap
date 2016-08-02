@@ -34,9 +34,9 @@ class Question(ItemBase):
 
     def parse_sub_el(self, sub_el):
         if sub_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}instructions':
-            self.instructions.append(Model.load_child(self, sub_el))
+            self.instructions.append(Model.load(self, sub_el))
         if sub_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}question_text':
-            self.question_texts.append(Model.load_child(self, sub_el))
+            self.question_texts.append(Model.load(self, sub_el))
         else:
             return super(Question, self).parse_sub_el(sub_el)
         return True

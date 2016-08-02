@@ -52,9 +52,9 @@ class step(object):
         if sub_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}description':
             self.description = sub_el.text
         elif sub_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}reference':
-            self.references.append(Model.load_child(self, sub_el))
+            self.references.append(Model.load(self, sub_el))
         elif sub_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}step':
-            self.steps.append(Model.load_child(self, sub_el))
+            self.steps.append(Model.load(self, sub_el))
         else:
             return super(step, self).parse_sub_el(sub_el)
         return True

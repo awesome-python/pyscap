@@ -33,7 +33,7 @@ class when_range(TestActionCondition):
 
     def parse_sub_el(self, sub_el):
         if sub_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}range':
-            self.ranges.append(Model.load_child(self, sub_el))
+            self.ranges.append(Model.load(self, sub_el))
         else:
             return super(when_range, self).parse_sub_el(sub_el)
         return True

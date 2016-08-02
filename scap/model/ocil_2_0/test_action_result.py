@@ -40,7 +40,7 @@ class test_action_result(Model):
     def parse_sub_el(self, sub_el):
         if sub_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}artifact_results':
             for sub_sub_el in sub_el:
-                self.artifact_results[sub_sub_el.attrib['id']] = Model.load_child(self, sub_sub_el)
+                self.artifact_results[sub_sub_el.attrib['id']] = Model.load(self, sub_sub_el)
         else:
             return super(test_action_result, self).parse_sub_el(sub_el)
         return True

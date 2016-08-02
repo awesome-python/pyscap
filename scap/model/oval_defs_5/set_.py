@@ -37,7 +37,7 @@ class set_(Model):
         if sub_el.tag == '{http://oval.mitre.org/XMLSchema/oval-definitions-5}set' \
             or sub_el.tag == '{http://oval.mitre.org/XMLSchema/oval-definitions-5}object_reference' \
             or sub_el.tag == '{http://oval.mitre.org/XMLSchema/oval-definitions-5}filter':
-            self.children.append(Model.load_child(self, sub_el))
+            self.children.append(Model.load(self, sub_el))
         else:
             return super(set_, self).parse_sub_el(sub_el)
         return True

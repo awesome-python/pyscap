@@ -50,7 +50,7 @@ class definition(Model):
 
     def parse_sub_el(self, sub_el):
         if sub_el.tag == '{http://oval.mitre.org/XMLSchema/oval-definitions-5}criteria':
-            self.criteria = Model.load_child(self, sub_el)
+            self.criteria = Model.load(self, sub_el)
         else:
             return super(definition, self).parse_sub_el(sub_el)
         return True

@@ -34,12 +34,12 @@ class Group(SelectableItem):
 
     def parse_sub_el(self, sub_el):
         if sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}Value':
-            self.values[sub_el.attrib['id']] = Model.load_child(self, sub_el)
+            self.values[sub_el.attrib['id']] = Model.load(self, sub_el)
         elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}Group':
-            g = Model.load_child(self, sub_el)
+            g = Model.load(self, sub_el)
             self.groups[sub_el.attrib['id']] = g
         elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}Rule':
-            r = Model.load_child(self, sub_el)
+            r = Model.load(self, sub_el)
             self.rules[sub_el.attrib['id']] = r
         else:
             return super(Group, self).parse_sub_el(sub_el)

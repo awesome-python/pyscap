@@ -46,7 +46,7 @@ class instruction(object):
         if sub_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}title':
             self.title = sub_el.text
         elif sub_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}step':
-            self.steps.append(Model.load_child(self, sub_el))
+            self.steps.append(Model.load(self, sub_el))
         else:
             return super(instruction, self).parse_sub_el(sub_el)
         return True

@@ -35,17 +35,17 @@ class fix(Model):
 
     def parse_sub_el(self, sub_el):
         if sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}complex-check':
-            self.checks[None] = Model.load_child(self, sub_el)
+            self.checks[None] = Model.load(self, sub_el)
         elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}check':
-            check = Model.load_child(self, sub_el)
+            check = Model.load(self, sub_el)
             if 'selector' in sub_el.attrib:
                 self.checks[sub_el.attrib['selector']] = check
             else:
                 self.checks[None] = check
         elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}fix':
-            self.fixes.append(Model.load_child(self, sub_el))
+            self.fixes.append(Model.load(self, sub_el))
         elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}fixtext':
-            self.fixtexts.append(Model.load_child(self, sub_el))
+            self.fixtexts.append(Model.load(self, sub_el))
         else:
             return super(fix, self).parse_sub_el(sub_el)
         return True

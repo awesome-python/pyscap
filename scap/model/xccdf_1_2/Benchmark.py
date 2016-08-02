@@ -66,18 +66,18 @@ class Benchmark(Model):
             self.profile_elements[sub_el.attrib['id']] = sub_el
             self.profiles[sub_el.attrib['id']] = p
         elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}Value':
-            self.values[sub_el.attrib['id']] = Model.load_child(self, sub_el)
+            self.values[sub_el.attrib['id']] = Model.load(self, sub_el)
         elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}Group':
-            g = Model.load_child(self, sub_el)
+            g = Model.load(self, sub_el)
             self.rules.update(g.get_rules())
             self.values.update(g.get_values())
         elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}Rule':
-            r = Model.load_child(self, sub_el)
+            r = Model.load(self, sub_el)
             self.rules[sub_el.attrib['id']] = r
             if r.selected:
                 self.selected_rules.append(r.id)
         elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}TestResult':
-            self.test_results[sub_el.attrib['id']] = Model.load_child(self, sub_el)
+            self.test_results[sub_el.attrib['id']] = Model.load(self, sub_el)
         else:
             return super(Benchmark, self).parse_sub_el(sub_el)
         return True
