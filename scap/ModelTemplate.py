@@ -19,7 +19,7 @@ from scap.Model import Model
 import logging
 
 logger = logging.getLogger(__name__)
-class ModelTemplate(object):
+class ModelTemplate(Model):
     def __init__(self):
         super(ModelTemplate, self).__init__()
 
