@@ -19,9 +19,9 @@ from scap.Model import Model
 import logging
 
 logger = logging.getLogger(__name__)
-class component(Model):
+class ComponentType(Model):
     def __init__(self):
-        super(component, self).__init__()    # {http://checklists.nist.gov/xccdf/1.2}component
+        super(ComponentType, self).__init__()    # {http://checklists.nist.gov/xccdf/1.2}component
 
         self.model = None
 
@@ -39,5 +39,5 @@ class component(Model):
             or sub_el.tag == '{http://oval.mitre.org/XMLSchema/oval-definitions-5}oval_definitions':
             self.model = Model.load(self, sub_el)
         else:
-            return super(component, self).parse_sub_el(sub_el)
+            return super(ComponentType, self).parse_sub_el(sub_el)
         return True

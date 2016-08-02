@@ -19,12 +19,14 @@ from scap.Model import Model
 import logging
 
 logger = logging.getLogger(__name__)
-class data_stream_collection(Model):
+class DataStreamCollectionType(Model):
     def __init__(self):
-        super(data_stream_collection, self).__init__()    # {http://scap.nist.gov/schema/scap/source/1.2}data-stream-collection
+        super(DataStreamCollectionType, self).__init__()    # {http://scap.nist.gov/schema/scap/source/1.2}data-stream-collection
 
         self.components = {}
         self.data_streams = {}
+        self.extended_components = {}
+
         self.selected_data_stream = None
 
         self.required_attributes.extend([
@@ -37,7 +39,6 @@ class data_stream_collection(Model):
         ])
         self.ignore_sub_elements.extend([
             '{http://www.w3.org/2000/09/xmldsig#}Signature',
-            '{http://scap.nist.gov/schema/scap/source/1.2}extended-component',
         ])
 
     def parse_sub_el(self, sub_el):
@@ -45,8 +46,10 @@ class data_stream_collection(Model):
             self.data_streams[sub_el.attrib['id']] = Model.load(self, sub_el)
         elif sub_el.tag == '{http://scap.nist.gov/schema/scap/source/1.2}component':
             self.components[sub_el.attrib['id']] = Model.load(self, sub_el)
+        elif sub_el.tag == '{http://scap.nist.gov/schema/scap/source/1.2}extended-component':
+            self.extended_components[sub_el.attrib['id']] = Model.load(self, sub_el)
         else:
-            return super(data_stream_collection, self).parse_sub_el(sub_el)
+            return super(DataStreamCollectionType, self).parse_sub_el(sub_el)
         return True
 
     def resolve_reference(self, ref):

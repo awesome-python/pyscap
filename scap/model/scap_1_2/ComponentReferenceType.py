@@ -19,9 +19,9 @@ from scap.Model import Model
 import logging
 
 logger = logging.getLogger(__name__)
-class component_ref(Model):
+class ComponentReferenceType(Model):
     def __init__(self):
-        super(component_ref, self).__init__()    # {http://checklists.nist.gov/xccdf/1.2}component-ref
+        super(ComponentReferenceType, self).__init__()    # {http://checklists.nist.gov/xccdf/1.2}component-ref
 
         self.href = None
         self.ref_mapping = {}
@@ -30,7 +30,7 @@ class component_ref(Model):
         if name == '{http://www.w3.org/1999/xlink}href':
             self.href = value
         else:
-            return super(component_ref, self).parse_attribute(name, value)
+            return super(ComponentReferenceType, self).parse_attribute(name, value)
         return True
 
     def parse_sub_el(self, sub_el):
@@ -41,7 +41,7 @@ class component_ref(Model):
             cat.from_xml(self, sub_el)
             self.ref_mapping = cat.to_dict()
         else:
-            return super(component_ref, self).parse_sub_el(sub_el)
+            return super(ComponentReferenceType, self).parse_sub_el(sub_el)
         return True
 
     def resolve(self):

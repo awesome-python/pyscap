@@ -19,9 +19,9 @@ from scap.Model import Model
 import logging
 
 logger = logging.getLogger(__name__)
-class data_stream(Model):
+class DataStreamType(Model):
     def __init__(self):
-        super(data_stream, self).__init__()    # {http://checklists.nist.gov/xccdf/1.2}data-stream
+        super(DataStreamType, self).__init__()    # {http://checklists.nist.gov/xccdf/1.2}data-stream
 
         self.dictionaries = {}
         self.checklists = {}
@@ -69,7 +69,7 @@ class data_stream(Model):
                 comp_ref = Model.load(self, comp_ref_el)
                 self.checks[comp_ref.id] = comp_ref
         else:
-            return super(data_stream, self).parse_sub_el(sub_el)
+            return super(DataStreamType, self).parse_sub_el(sub_el)
         return True
 
     def resolve_reference(self, ref):

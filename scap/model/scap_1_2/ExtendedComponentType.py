@@ -14,10 +14,10 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
-TAG_MAP = {
-    'component_ref': 'ComponentReferenceType',
-    'component': 'ComponentType',
-    'data_stream_collection': 'DataStreamCollectionType',
-    'data_stream': 'DataStreamType',
-    'extended-component': 'ExtendedComponentType',
-}
+
+from scap.Model import Model
+import logging
+
+logger = logging.getLogger(__name__)
+class ExtendedComponentType(Model):
+    pass
