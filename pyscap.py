@@ -126,7 +126,7 @@ if args.benchmark:
                 for line in f:
                     hosts.append(Host.parse(line))
 
-    content = Model.load_child(None, ET.parse(args.content[0]).getroot())
+    content = Model.load(None, ET.parse(args.content[0]).getroot())
 
     # convert args to hash for use by checkers
     checker_args = {}
