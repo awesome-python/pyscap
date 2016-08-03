@@ -67,9 +67,9 @@ class BenchmarkType(Model):
         if sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}notice':
             logger.info('Notice: \n' + sub_el.text)
         elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}Profile':
-            from scap.model.xccdf_1_2.Profile import Profile
+            from scap.model.xccdf_1_2.ProfileType import ProfileType
             logger.debug('found profile ' + sub_el.attrib['id'])
-            p = Profile()
+            p = ProfileType()
             # save the sub_el for later so that profiles parse after rules, values
             self.profile_elements[sub_el.attrib['id']] = sub_el
             self.profiles[sub_el.attrib['id']] = p
