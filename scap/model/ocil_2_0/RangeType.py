@@ -20,6 +20,10 @@ import logging
 
 logger = logging.getLogger(__name__)
 class RangeType(Model):
+    TAG_MAP = {
+        '{http://scap.nist.gov/schema/ocil/2.0}min': {'class': 'RangeValueType'},
+        '{http://scap.nist.gov/schema/ocil/2.0}max': {'class': 'RangeValueType'},
+    }
     def __init__(self):
         super(RangeType, self).__init__()
 

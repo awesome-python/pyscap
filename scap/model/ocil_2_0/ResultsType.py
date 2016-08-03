@@ -20,6 +20,21 @@ import logging
 
 logger = logging.getLogger(__name__)
 class ResultsType(Model):
+    TAG_MAP = {
+        '{http://scap.nist.gov/schema/ocil/2.0}questionnaire_result': {'class': 'QuestionnaireResultType'},
+        '{http://scap.nist.gov/schema/ocil/2.0}test_action_result': {'class': 'TestActionResultType'},
+
+        '{http://scap.nist.gov/schema/ocil/2.0}boolean_question_result': {'class': 'BooleanQuestionResultType'},
+        '{http://scap.nist.gov/schema/ocil/2.0}choice_question_result': {'class': 'ChoiceQuestionResultType'},
+        '{http://scap.nist.gov/schema/ocil/2.0}numeric_question_result': {'class': 'NumericQuestionResultType'},
+        '{http://scap.nist.gov/schema/ocil/2.0}string_question_result': {'class': 'StringQuestionResultType'},
+
+        '{http://scap.nist.gov/schema/ocil/2.0}artifact_result': {'class': 'ArtifactResultType'},
+
+        '{http://scap.nist.gov/schema/ocil/2.0}user': {'class': 'UserType'},
+        '{http://scap.nist.gov/schema/ocil/2.0}system': {'class': 'SystemTargetType'},
+        '{http://scap.nist.gov/schema/ocil/2.0}system': {'class': 'SystemTargetType'},
+    }
     def __init__(self):
         super(ResultsType, self).__init__()
 

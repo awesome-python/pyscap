@@ -21,6 +21,9 @@ import logging
 
 logger = logging.getLogger(__name__)
 class RangeTestActionConditionType(TestActionConditionType):
+    TAG_MAP = {
+        '{http://scap.nist.gov/schema/ocil/2.0}range': {'class': 'RangeType'},
+    }
     def __init__(self):
         super(RangeTestActionConditionType, self).__init__()
 

@@ -21,6 +21,10 @@ import logging
 
 logger = logging.getLogger(__name__)
 class QuestionType(ItemBaseType):
+    TAG_MAP = {
+        '{http://scap.nist.gov/schema/ocil/2.0}instructions': {'class': 'InstructionsType'},
+        '{http://scap.nist.gov/schema/ocil/2.0}question_text': {'class': 'QuestionTextType'},
+    }
     def __init__(self):
         super(QuestionType, self).__init__()
 

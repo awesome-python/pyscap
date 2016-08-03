@@ -20,6 +20,28 @@ import logging
 
 logger = logging.getLogger(__name__)
 class OCILType(Model):
+    TAG_MAP = {
+        '{http://scap.nist.gov/schema/ocil/2.0}document': {'class': 'DocumentType'},
+        '{http://scap.nist.gov/schema/ocil/2.0}questionnaire': {'class': 'QuestionnaireType'},
+
+        '{http://scap.nist.gov/schema/ocil/2.0}boolean_question_test_action': {'class': 'BooleanQuestionTestActionType'},
+        '{http://scap.nist.gov/schema/ocil/2.0}choice_question_test_action': {'class': 'ChoiceQuestionTestActionType'},
+        '{http://scap.nist.gov/schema/ocil/2.0}numeric_question_test_action': {'class': 'NumericQuestionTestActionType'},
+        '{http://scap.nist.gov/schema/ocil/2.0}string_question_test_action': {'class': 'StringQuestionTestActionType'},
+
+        '{http://scap.nist.gov/schema/ocil/2.0}boolean_question': {'class': 'BooleanQuestionType'},
+        '{http://scap.nist.gov/schema/ocil/2.0}choice_question': {'class': 'ChoiceQuestionType'},
+        '{http://scap.nist.gov/schema/ocil/2.0}numeric_question': {'class': 'NumericQuestionType'},
+        '{http://scap.nist.gov/schema/ocil/2.0}string_question': {'class': 'StringQuestionType'},
+
+        '{http://scap.nist.gov/schema/ocil/2.0}artifact': {'class': 'ArtifactType'},
+
+        '{http://scap.nist.gov/schema/ocil/2.0}constant_variable': {'class': 'ConstantVariableType'},
+        '{http://scap.nist.gov/schema/ocil/2.0}local_variable': {'class': 'LocalVariableType'},
+        '{http://scap.nist.gov/schema/ocil/2.0}external_variable': {'class': 'ExternalVariableType'},
+
+        '{http://scap.nist.gov/schema/ocil/2.0}results': {'class': 'ResultsType'},
+    }
     def __init__(self):
         super(OCILType, self).__init__()    # {http://scap.nist.gov/schema/ocil/2.0}ocil
 

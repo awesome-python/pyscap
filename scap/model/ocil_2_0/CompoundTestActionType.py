@@ -21,13 +21,17 @@ import logging
 
 logger = logging.getLogger(__name__)
 class CompoundTestActionType(TestActionType):
+    TAG_MAP = {
+        '{http://scap.nist.gov/schema/ocil/2.0}reference': {'class': 'ReferenceType'},
+        '{http://scap.nist.gov/schema/ocil/2.0}actions': {'class': 'OperationType'},
+    }
     def __init__(self):
         super(CompoundTestActionType, self).__init__()
 
         self.title = None
         self.description = None
         self.references = []
-        self.actions = []
+        self.actions = None
 
     def parse_sub_el(self, sub_el):
         if sub_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}title':
@@ -38,8 +42,7 @@ class CompoundTestActionType(TestActionType):
             for sub_sub_el in sub_el:
                 self.references.append(Model.load(self, sub_sub_el))
         elif sub_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}actions':
-            for sub_sub_el in sub_el:
-                self.actions.append(Model.load(self, sub_sub_el))
+            self.actions = Model.load(self, sub_el)
         else:
             return super(CompoundTestActionType, self).parse_sub_el(sub_el)
         return True

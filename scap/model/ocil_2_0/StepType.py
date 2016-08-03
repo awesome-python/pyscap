@@ -20,6 +20,10 @@ import logging
 
 logger = logging.getLogger(__name__)
 class StepType(object):
+    TAG_MAP = {
+        '{http://scap.nist.gov/schema/ocil/2.0}reference': {'class': 'ReferenceType'},
+        '{http://scap.nist.gov/schema/ocil/2.0}step': {'class': 'StepType'},
+    }
     def __init__(self):
         super(StepType, self).__init__()
 

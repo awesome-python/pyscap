@@ -19,9 +19,9 @@ from scap.Model import Model
 import logging
 
 logger = logging.getLogger(__name__)
-class document(Model):
+class DocumentType(Model):
     def __init__(self):
-        super(document, self).__init__()
+        super(DocumentType, self).__init__()
 
         self.title = None
         self.descriptions = []
@@ -35,5 +35,5 @@ class document(Model):
         elif sub_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}notice':
             self.notices = sub_el.text
         else:
-            return super(document, self).parse_sub_el(sub_el)
+            return super(DocumentType, self).parse_sub_el(sub_el)
         return True

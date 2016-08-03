@@ -20,6 +20,9 @@ import logging
 
 logger = logging.getLogger(__name__)
 class ChoiceGroupType(Model):
+    TAG_MAP = {
+        '{http://scap.nist.gov/schema/ocil/2.0}choice': {'class': 'ChoiceType'},
+    }
     def __init__(self):
         super(ChoiceGroupType, self).__init__()
 

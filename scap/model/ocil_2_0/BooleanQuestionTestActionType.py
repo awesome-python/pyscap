@@ -20,6 +20,10 @@ import logging
 
 logger = logging.getLogger(__name__)
 class BooleanQuestionTestActionType(QuestionTestActionType):
+    TAG_MAP = QuestionTestActionType.TAG_MAP.copy()
+    TAG_MAP['{http://scap.nist.gov/schema/ocil/2.0}when_true'] = {'class': 'TestActionConditionType'}
+    TAG_MAP['{http://scap.nist.gov/schema/ocil/2.0}when_false'] = {'class': 'TestActionConditionType'}
+
     def __init__(self):
         super(BooleanQuestionTestActionType, self).__init__()    # {http://scap.nist.gov/schema/ocil/2.0}ocil
 
