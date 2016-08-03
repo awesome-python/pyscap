@@ -15,10 +15,10 @@
 
   <xsd:annotation>
     <xsd:documentation>The Open Checklist Interactive Language (OCIL) is a language
-         to express a set of questions to be presented and procedures to interpret 
-         responses to these questions for the purpose of developing security checklists. 
-         Although its intended domain of use is IT security, its generic nature 
-         allows for other applications. For instance, it could be used for authoring 
+         to express a set of questions to be presented and procedures to interpret
+         responses to these questions for the purpose of developing security checklists.
+         Although its intended domain of use is IT security, its generic nature
+         allows for other applications. For instance, it could be used for authoring
          research surveys, academic course exams, and instructional walkthroughs.
          It can also be used to harvest information from previous data collection
          efforts.
@@ -31,7 +31,7 @@
          <sch:ns uri="http://purl.oclc.org/dsdl/schematron" prefix="sch"/>
          <sch:ns uri="http://scap.nist.gov/schema/ocil/2" prefix="ocil"/>
          <sch:ns uri="http://www.w3.org/2001/XMLSchema-instance" prefix="xsi"/>
-         
+
          <sch:pattern>
             <sch:rule context="ocil:choice_question[exists(@default_answer_ref)]">
                <sch:assert test="exists(ocil:choice[@id eq current()/@default_answer_ref]) or (some $m in ocil:choice_group_ref satisfies exists(ancestor::ocil:questions/ocil:choice_group[@id eq $m]/ocil:choice[@id eq current()/@default_answer_ref]))">The @default_answer_ref on &lt;choice_question @id='<sch:value-of select="@id"/>'&gt; must specify an answer applicable for the question</sch:assert>
@@ -88,7 +88,7 @@
       </xsd:element>
       <xsd:element name="document" type="inter:DocumentType" minOccurs="0" maxOccurs="1">
         <xsd:annotation>
-          <xsd:documentation>This element contains document-level information, 
+          <xsd:documentation>This element contains document-level information,
                   including title, descriptions, and notices.</xsd:documentation>
         </xsd:annotation>
       </xsd:element>
@@ -294,9 +294,9 @@
             a single question along with a set of handlers that indicate how
             processing should proceed based on the answer provided. This
             element is abstract and is implemented in a document as a
-            boolean_question_test_action, choice_question_test_action, 
-            numeric_question_test_action, or string_question_test_action. The type of 
-            question_test_action must match the type of question referenced (e.g. a 
+            boolean_question_test_action, choice_question_test_action,
+            numeric_question_test_action, or string_question_test_action. The type of
+            question_test_action must match the type of question referenced (e.g. a
             boolean_question_test_action MUST reference a boolean_question.)</xsd:documentation>
     </xsd:annotation>
   </xsd:element>
@@ -515,7 +515,7 @@
           <xsd:documentation>A questionnaire contains a set of questions that
                   determines compliance with a check. Each questionnaire returns a
                   value based on the responses to the various questions that it
-                  references. Each questionnaire acting as top-level should represent 
+                  references. Each questionnaire acting as top-level should represent
                   a single compliance check, such as might be referenced by an XCCDF
                   Rule.</xsd:documentation>
         </xsd:annotation>
@@ -546,14 +546,14 @@
                      questionnaire should only appear as a child of another
                      questionnaire. All questionnaires must be defined within the
                      body of the ocil element and, by default, interpreters might
-                     simply grab all questionnaires and evaluate them. However, 
-                     questionnaires can reference other questionnaires through a 
-                     test_action_ref. If an author references a questionnaire in 
-                     this way, they may not wish that the questionnaire be 
-                     evaluated except as a child of another questionnaire. By 
-                     setting the child_only attribute to true, the author is 
-                     indicating that the given questionnaire should not be a 
-                     "top-level" questionnaire but should instead only be 
+                     simply grab all questionnaires and evaluate them. However,
+                     questionnaires can reference other questionnaires through a
+                     test_action_ref. If an author references a questionnaire in
+                     this way, they may not wish that the questionnaire be
+                     evaluated except as a child of another questionnaire. By
+                     setting the child_only attribute to true, the author is
+                     indicating that the given questionnaire should not be a
+                     "top-level" questionnaire but should instead only be
                      evaluated as the child of another questionnaire. </xsd:documentation>
           </xsd:annotation>
         </xsd:attribute>
@@ -586,7 +586,7 @@
       </xsd:element>
       <xsd:element name="author" type="inter:UserType" minOccurs="0" maxOccurs="unbounded">
         <xsd:annotation>
-          <xsd:documentation>The author element identifies one of the authors 
+          <xsd:documentation>The author element identifies one of the authors
                   of this document.</xsd:documentation>
         </xsd:annotation>
       </xsd:element>
@@ -1096,7 +1096,7 @@
           <xsd:element name="question_text" type="inter:QuestionTextType" minOccurs="1"
             maxOccurs="unbounded">
             <xsd:annotation>
-              <xsd:documentation>The question_text element provides the text of 
+              <xsd:documentation>The question_text element provides the text of
                         the question to pose.</xsd:documentation>
             </xsd:annotation>
           </xsd:element>
@@ -1138,8 +1138,8 @@
           <xsd:annotation>
             <xsd:documentation>The model attribute specifies whether the
                      response should be from the set {True, False} or the set
-                     {YES, NO}. If the value of this attribute is not set, then 
-                     it defaults to MODEL_YES_NO (i.e. response can either be 
+                     {YES, NO}. If the value of this attribute is not set, then
+                     it defaults to MODEL_YES_NO (i.e. response can either be
                      YES or NO).</xsd:documentation>
           </xsd:annotation>
         </xsd:attribute>
@@ -1150,8 +1150,8 @@
     <xsd:annotation>
       <xsd:documentation>The ChoiceQuestionType type defines a question with one
             or more acceptable answers specified by the author. The response will
-            be one of these specified answers. Acceptable answers are specified 
-            either explicitly using the choice element or implicitly using the 
+            be one of these specified answers. Acceptable answers are specified
+            either explicitly using the choice element or implicitly using the
             choice_group_ref element to reference a choice_group element. Choices
             are presented in the order in which they are provided. All the choices in
             a choice_group are inserted in the order in which they appear within the
@@ -1218,8 +1218,8 @@
   </xsd:complexType>
   <xsd:simpleType name="BooleanQuestionModelType">
     <xsd:annotation>
-      <xsd:documentation>The BooleanQuestionModelType type provides the acceptable 
-            models (i.e. set of acceptable responses) for a 
+      <xsd:documentation>The BooleanQuestionModelType type provides the acceptable
+            models (i.e. set of acceptable responses) for a
             boolean_question.</xsd:documentation>
     </xsd:annotation>
     <xsd:restriction base="xsd:token">
@@ -1490,9 +1490,9 @@
     <xsd:attribute name="response" type="inter:UserResponseType" use="optional" default="ANSWERED">
       <xsd:annotation>
         <xsd:documentation>The response attribute classifies the response.
-               If the answer to the question is standard, the response is set to 
-               ANSWERED (the default). If, however, the answer is exceptional 
-               (UNKNOWN, NOT_APPLICABLE, etc.) then this attribute will be set to 
+               If the answer to the question is standard, the response is set to
+               ANSWERED (the default). If, however, the answer is exceptional
+               (UNKNOWN, NOT_APPLICABLE, etc.) then this attribute will be set to
                the corresponding exceptional result.</xsd:documentation>
       </xsd:annotation>
     </xsd:attribute>
@@ -1540,7 +1540,7 @@
   <xsd:complexType name="NumericQuestionResultType">
     <xsd:annotation>
       <xsd:documentation>The NumericQuestionResultType type defines structures
-            containing a reference to a numeric_question, the provided response, 
+            containing a reference to a numeric_question, the provided response,
             and whether the question was successfully posed.</xsd:documentation>
     </xsd:annotation>
     <xsd:complexContent>
@@ -1559,8 +1559,8 @@
   <xsd:complexType name="StringQuestionResultType">
     <xsd:annotation>
       <xsd:documentation>The StringQuestionResultType type defines structures
-            containing a reference to a string_question, the string provided in 
-            response, and whether the question was successfully 
+            containing a reference to a string_question, the string provided in
+            response, and whether the question was successfully
             posed.</xsd:documentation>
     </xsd:annotation>
     <xsd:complexContent>
@@ -1580,23 +1580,23 @@
     <xsd:annotation>
       <xsd:documentation>The ResultType simple type defines acceptable result
             values for questionnaires and test_actions.</xsd:documentation>
-      <xsd:documentation> 
+      <xsd:documentation>
 || P   | F | E | U | NT | NA ||
 ---------------||-----------------------------||------------------||------------------------------------------
-|| 1+ | 0   | 0   | 0   | 0   | 0+ || Pass 
+|| 1+ | 0   | 0   | 0   | 0   | 0+ || Pass
 || 0+ | 1+ | 0+ | 0+ | 0+ | 0+ || Fail
-AND 	|| 0+ | 0   | 1+ | 0+ | 0+ | 0+ || Error 
-|| 0+ | 0   | 0   | 1+ | 0+ | 0+ || Unknown 
-|| 0+ | 0   | 0   | 0   | 1+ | 0+ || Not Tested 
-|| 0   | 0   | 0   | 0   | 0   | 1+ || Not Applicable 
+AND 	|| 0+ | 0   | 1+ | 0+ | 0+ | 0+ || Error
+|| 0+ | 0   | 0   | 1+ | 0+ | 0+ || Unknown
+|| 0+ | 0   | 0   | 0   | 1+ | 0+ || Not Tested
+|| 0   | 0   | 0   | 0   | 0   | 1+ || Not Applicable
 || 0   | 0   | 0   | 0   | 0   | 0   || Not Tested
 ---------------||-----------------------------||------------------||------------------------------------------
-|| 1+ | 0+ | 0+ | 0+ | 0+ | 0+ || Pass 
+|| 1+ | 0+ | 0+ | 0+ | 0+ | 0+ || Pass
 || 0   | 1+ | 0   | 0   | 0   | 0+ || Fail
-OR 	|| 0   | 0+ | 1+ | 0+ | 0+ | 0+ || Error 
-|| 0   | 0+ | 0   | 1+ | 0+ | 0+ || Unknown 
-|| 0   | 0+ | 0   | 0   | 1+ | 0+ || Not Tested 
-|| 0   | 0   | 0   | 0   | 0   | 1+ || Not Applicable 
+OR 	|| 0   | 0+ | 1+ | 0+ | 0+ | 0+ || Error
+|| 0   | 0+ | 0   | 1+ | 0+ | 0+ || Unknown
+|| 0   | 0+ | 0   | 0   | 1+ | 0+ || Not Tested
+|| 0   | 0   | 0   | 0   | 0   | 1+ || Not Applicable
 || 0   | 0   | 0   | 0   | 0   | 0   || Not Tested
          </xsd:documentation>
     </xsd:annotation>
@@ -1680,7 +1680,7 @@ OR 	|| 0   | 0+ | 1+ | 0+ | 0+ | 0+ || Error
     </xsd:annotation>
     <xsd:attribute name="choice_ref" type="inter:ChoiceIDPattern">
       <xsd:annotation>
-        <xsd:documentation>The choice_ref attribute specifies the id of the 
+        <xsd:documentation>The choice_ref attribute specifies the id of the
                selected choice.</xsd:documentation>
       </xsd:annotation>
     </xsd:attribute>
@@ -1697,8 +1697,8 @@ OR 	|| 0   | 0+ | 1+ | 0+ | 0+ | 0+ || Error
     <xsd:sequence>
       <xsd:element name="artifact" type="inter:ArtifactType" minOccurs="1" maxOccurs="unbounded">
         <xsd:annotation>
-          <xsd:documentation>An artifact element holds information about an 
-                  artifact, which is evidence supporting an answer. Examples include 
+          <xsd:documentation>An artifact element holds information about an
+                  artifact, which is evidence supporting an answer. Examples include
                   a file or submitted text.</xsd:documentation>
         </xsd:annotation>
       </xsd:element>
@@ -1799,13 +1799,13 @@ OR 	|| 0   | 0+ | 1+ | 0+ | 0+ | 0+ || Error
   <!-- Artifact value-related global types -->
   <xsd:complexType name="ArtifactValueType">
     <xsd:annotation>
-      <xsd:documentation>The ArtifactValueType type defines structures containing 
+      <xsd:documentation>The ArtifactValueType type defines structures containing
             either the artifact data itself or a pointer to it.</xsd:documentation>
     </xsd:annotation>
   </xsd:complexType>
   <xsd:element name="artifact_value" type="inter:ArtifactValueType" abstract="true">
     <xsd:annotation>
-      <xsd:documentation>The artifact_value element contains either a piece of 
+      <xsd:documentation>The artifact_value element contains either a piece of
             artifact data itself or a pointer to it.</xsd:documentation>
     </xsd:annotation>
   </xsd:element>
@@ -1837,8 +1837,8 @@ OR 	|| 0   | 0+ | 1+ | 0+ | 0+ | 0+ || Error
         <xsd:sequence>
           <xsd:element name="data" type="xsd:string">
             <xsd:annotation>
-              <xsd:documentation>The data element contains the text of an 
-                        artifact that was provided as a text file or a block of 
+              <xsd:documentation>The data element contains the text of an
+                        artifact that was provided as a text file or a block of
                         text.</xsd:documentation>
             </xsd:annotation>
           </xsd:element>
@@ -1849,7 +1849,7 @@ OR 	|| 0   | 0+ | 1+ | 0+ | 0+ | 0+ || Error
   <xsd:element name="text_artifact_value" type="inter:TextArtifactValueType"
     substitutionGroup="inter:artifact_value">
     <xsd:annotation>
-      <xsd:documentation>The text_artifact_value element contains an artifact 
+      <xsd:documentation>The text_artifact_value element contains an artifact
             that was provided as a text file or a block of text.</xsd:documentation>
     </xsd:annotation>
   </xsd:element>
@@ -1863,7 +1863,7 @@ OR 	|| 0   | 0+ | 1+ | 0+ | 0+ | 0+ || Error
         <xsd:sequence>
           <xsd:element name="data" type="xsd:base64Binary">
             <xsd:annotation>
-              <xsd:documentation>The data element contains a binary file, 
+              <xsd:documentation>The data element contains a binary file,
                         which was provided as an artifact.</xsd:documentation>
             </xsd:annotation>
           </xsd:element>
@@ -1874,7 +1874,7 @@ OR 	|| 0   | 0+ | 1+ | 0+ | 0+ | 0+ || Error
   <xsd:element name="binary_artifact_value" type="inter:BinaryArtifactValueType"
     substitutionGroup="inter:artifact_value">
     <xsd:annotation>
-      <xsd:documentation>The binary_artifact_value element contains an artifact 
+      <xsd:documentation>The binary_artifact_value element contains an artifact
             that was provided as a binary file.</xsd:documentation>
     </xsd:annotation>
   </xsd:element>
@@ -1888,13 +1888,13 @@ OR 	|| 0   | 0+ | 1+ | 0+ | 0+ | 0+ || Error
         <xsd:sequence>
           <xsd:element name="reference">
             <xsd:annotation>
-              <xsd:documentation>The reference element contains a URI, which 
+              <xsd:documentation>The reference element contains a URI, which
                         is a pointer to the location of an artifact.</xsd:documentation>
             </xsd:annotation>
             <xsd:complexType>
               <xsd:attribute name="href" type="xsd:anyURI">
                 <xsd:annotation>
-                  <xsd:documentation>The href attribute specifies a URI 
+                  <xsd:documentation>The href attribute specifies a URI
                               provided by the user.</xsd:documentation>
                 </xsd:annotation>
               </xsd:attribute>
@@ -1907,7 +1907,7 @@ OR 	|| 0   | 0+ | 1+ | 0+ | 0+ | 0+ || Error
   <xsd:element name="reference_artifact_value" type="inter:ReferenceArtifactValueType"
     substitutionGroup="inter:artifact_value">
     <xsd:annotation>
-      <xsd:documentation>The reference_artifact_value element contains a reference 
+      <xsd:documentation>The reference_artifact_value element contains a reference
             to the location of an artifact.</xsd:documentation>
     </xsd:annotation>
   </xsd:element>
@@ -2123,8 +2123,8 @@ OR 	|| 0   | 0+ | 1+ | 0+ | 0+ | 0+ || Error
             value is computed based on those set elements.  The value stored in the first
             set element that produces a match pattern is used. If none of the set elements
             have a pattern that matches the response, then an error result is generated.
-            
-            If no set element is provided, the value used will be the same as the 
+
+            If no set element is provided, the value used will be the same as the
             answer, with a few exceptions. The mappings are listed below.
             1) If the question is a boolean question and the variable data type is
             NUMERIC, then the value based on the answer must be 1 for true and 0 for
@@ -2180,7 +2180,7 @@ OR 	|| 0   | 0+ | 1+ | 0+ | 0+ | 0+ || Error
   <xsd:complexType name="SetExpressionBaseType" abstract="true">
     <xsd:annotation>
       <xsd:documentation>The SetExpressionBaseType type is the base type of all set
-            expressions.  It defines the value to use if the expression evaluates to 
+            expressions.  It defines the value to use if the expression evaluates to
             TRUE.</xsd:documentation>
     </xsd:annotation>
     <xsd:sequence>
@@ -2220,7 +2220,7 @@ OR 	|| 0   | 0+ | 1+ | 0+ | 0+ | 0+ || Error
     substitutionGroup="inter:expression">
     <xsd:annotation>
       <xsd:documentation>The when_pattern element type defines criteria for
-            evaluating the result of a numeric or string question result based on 
+            evaluating the result of a numeric or string question result based on
             a pattern.  If the pattern matches, the expression must evaluate
             to TRUE.</xsd:documentation>
     </xsd:annotation>
@@ -2456,7 +2456,7 @@ OR 	|| 0   | 0+ | 1+ | 0+ | 0+ | 0+ || Error
   </xsd:complexType>
   <xsd:complexType name="NamedItemBaseType">
     <xsd:annotation>
-      <xsd:documentation>The NamedItemBaseType complex type defines structures  
+      <xsd:documentation>The NamedItemBaseType complex type defines structures
             allowing a set of notes and the name of a target (system or user) to be
             included.</xsd:documentation>
     </xsd:annotation>
@@ -2498,7 +2498,7 @@ OR 	|| 0   | 0+ | 1+ | 0+ | 0+ | 0+ || Error
             <xsd:annotation>
               <xsd:documentation>The references element holds one or more
                         reference elements. Examples could include references to
-                        other standards, including but not limited to CVE, CCE, 
+                        other standards, including but not limited to CVE, CCE,
                         or CPE.</xsd:documentation>
             </xsd:annotation>
           </xsd:element>
