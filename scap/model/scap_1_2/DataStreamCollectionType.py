@@ -20,6 +20,11 @@ import logging
 
 logger = logging.getLogger(__name__)
 class DataStreamCollectionType(Model):
+    TAG_MAP = {
+        '{http://scap.nist.gov/schema/scap/source/1.2}component': {'class': 'ComponentType'},
+        '{http://scap.nist.gov/schema/scap/source/1.2}data-stream': {'class': 'DataStreamType'},
+        '{http://scap.nist.gov/schema/scap/source/1.2}extended-component': {'class': 'ExtendedComponentType'},
+    }
     def __init__(self):
         super(DataStreamCollectionType, self).__init__()    # {http://scap.nist.gov/schema/scap/source/1.2}data-stream-collection
 

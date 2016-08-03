@@ -60,24 +60,30 @@ class Model(object):
             sys.exit()
         model_namespace = Model.namespaces[xml_namespace]
 
-        module_name = tag_name.replace('-', '_')
-        import keyword
-        if keyword.iskeyword(module_name):
-            module_name += '_'
-
-        return xml_namespace, model_namespace, tag_name, module_name
+        return xml_namespace, model_namespace, tag_name
 
     @staticmethod
     def load(parent, child_el):
-        xml_namespace, model_namespace, tag_name, module_name = Model.parse_tag(child_el.tag)
+        xml_namespace, model_namespace, tag_name = Model.parse_tag(child_el.tag)
 
         # try to load the tag's module
         import sys, importlib
-        pkg_mod = importlib.import_module('scap.model.' + model_namespace)
-        try:
-            module_name = pkg_mod.TAG_MAP[module_name]
-        except AttributeError:
-            sys.exit(pkg_mod.__name__)
+        if parent is None:
+            # look up from __init__ file
+            pkg_mod = importlib.import_module('scap.model.' + model_namespace)
+            try:
+                module_name = pkg_mod.TAG_MAP[child_el.tag]['class']
+            except AttributeError:
+                sys.exit(pkg_mod.__name__ + ' does not define TAG_MAP')
+            except KeyError:
+                sys.exit(pkg_mod.__name__ + ' does not define mapping for ' + child_el.tag + ' tag')
+        else:
+            try:
+                module_name = parent.__class__.TAG_MAP[child_el.tag]['class']
+            except AttributeError:
+                sys.exit(parent.__class__.__name__ + ' does not define TAG_MAP')
+            except KeyError:
+                sys.exit(parent.__class__.__name__ + ' does not define mapping for ' + child_el.tag + ' tag')
         model_module = 'scap.model.' + model_namespace + '.' + module_name
         if model_module not in sys.modules:
             logger.debug('Loading module ' + model_module)
@@ -103,7 +109,7 @@ class Model(object):
             self.model_namespace = None
             self.tag_name = None
         else:
-            self.xml_namespace, self.model_namespace, self.tag_name, module_name = Model.parse_tag(tag)
+            self.xml_namespace, self.model_namespace, self.tag_name = Model.parse_tag(tag)
 
         self.parent = None
         self.element = None
@@ -134,7 +140,7 @@ class Model(object):
         self.element = el
 
         if self.xml_namespace is None or self.model_namespace is None or self.tag_name is None:
-            self.xml_namespace, self.model_namespace, self.tag_name, module_name = Model.parse_tag(el.tag)
+            self.xml_namespace, self.model_namespace, self.tag_name = Model.parse_tag(el.tag)
 
         for attrib in self.required_attributes:
             if attrib not in self.element.attrib:
@@ -241,7 +247,7 @@ class Model(object):
 
     def to_xml(self, tag=None):
         if tag is not None:
-            self.xml_namespace, self.model_namespace, self.tag_name, module_name = Model.parse_tag(tag)
+            self.xml_namespace, self.model_namespace, self.tag_name = Model.parse_tag(tag)
         elif self.tag_name is None or self.xml_namespace is None:
             logger.critical(self.__class__.__name__ + ' has not defined a tag before production of xml')
             import sys

@@ -20,6 +20,11 @@ import logging
 
 logger = logging.getLogger(__name__)
 class ComponentType(Model):
+    TAG_MAP = {
+        '{http://checklists.nist.gov/xccdf/1.2}Benchmark': { 'class': 'BenchmarkType' },
+        '{http://scap.nist.gov/schema/ocil/2.0}ocil': {'class': 'OCILType'},
+        '{http://oval.mitre.org/XMLSchema/oval-definitions-5}oval_definitions': {'class': 'oval_definitions'},
+    }
     def __init__(self):
         super(ComponentType, self).__init__()    # {http://checklists.nist.gov/xccdf/1.2}component
 
