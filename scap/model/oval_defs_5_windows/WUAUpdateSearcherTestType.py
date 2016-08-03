@@ -20,5 +20,5 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-class wuaupdatesearcher_test(Test):
+class WUAUpdateSearcherTestType(Test):
     pass

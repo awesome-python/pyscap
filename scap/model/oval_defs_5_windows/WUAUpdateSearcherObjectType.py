@@ -15,10 +15,15 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.model.oval_defs_5_windows.Test import Test
+from scap.model.oval_defs_5_windows.Object import Object
 import logging
 
 logger = logging.getLogger(__name__)
 
-class registry_test(Test):
-    pass
+class WUAUpdateSearcherObjectType(Object):
+    def __init__(self):
+        super(WUAUpdateSearcherObjectType, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}wuaupdatesearcher_object
+
+        self.ignore_sub_elements.extend([
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}search_criteria'
+        ])

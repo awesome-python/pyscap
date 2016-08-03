@@ -20,10 +20,12 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-class wuaupdatesearcher_object(Object):
+class RegistryObjectType(Object):
     def __init__(self):
-        super(wuaupdatesearcher_object, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}wuaupdatesearcher_object
+        super(RegistryObjectType, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}registry_object
 
         self.ignore_sub_elements.extend([
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}search_criteria'
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}hive',
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}key',
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}name',
         ])

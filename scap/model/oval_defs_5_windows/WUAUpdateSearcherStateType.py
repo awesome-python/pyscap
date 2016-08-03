@@ -20,11 +20,10 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-class registry_state(State):
+class WUAUpdateSearcherStateType(State):
     def __init__(self):
-        super(registry_state, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}registry_state
+        super(WUAUpdateSearcherStateType, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}wuaupdatesearcher_state
 
         self.ignore_sub_elements.extend([
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}value',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}type',
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}update_id',
         ])

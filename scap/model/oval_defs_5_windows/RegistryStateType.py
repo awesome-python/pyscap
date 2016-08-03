@@ -15,17 +15,16 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.model.oval_defs_5_windows.Object import Object
+from scap.model.oval_defs_5_windows.State import State
 import logging
 
 logger = logging.getLogger(__name__)
 
-class registry_object(Object):
+class RegistryStateType(State):
     def __init__(self):
-        super(registry_object, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}registry_object
+        super(RegistryStateType, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}registry_state
 
         self.ignore_sub_elements.extend([
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}hive',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}key',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}name',
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}value',
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}type',
         ])
