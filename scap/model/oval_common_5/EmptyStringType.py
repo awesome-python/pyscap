@@ -15,10 +15,10 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.Model import Model
+from scap.model.xs.String import String
 import logging
 
 logger = logging.getLogger(__name__)
-class DeprecatedInfo(Model):
+class EmptyStringType(String):
     def __init__(self):
-        super(DeprecatedInfo, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-common-5}deprecated_info
+        super(EmptyStringType, self).__init__()

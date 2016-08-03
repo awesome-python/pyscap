@@ -15,10 +15,10 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.Model import Model
+from scap.model.xs.String import String
 import logging
 
 logger = logging.getLogger(__name__)
-class Generator(Model):
+class NonEmptyStringType(String):
     def __init__(self):
-        super(Generator, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-common-5}generator
+        super(NonEmptyStringType, self).__init__()

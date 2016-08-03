@@ -19,6 +19,6 @@ from scap.Model import Model
 import logging
 
 logger = logging.getLogger(__name__)
-class ElementMapItem(Model):
+class ElementMapItemType(Model):
     def __init__(self):
-        super(ElementMapItem, self).
+        super(ElementMapItemType, self).

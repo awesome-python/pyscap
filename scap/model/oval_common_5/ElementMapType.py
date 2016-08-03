@@ -19,6 +19,6 @@ from scap.Model import Model
 import logging
 
 logger = logging.getLogger(__name__)
-class SchemaVersion(Model):
+class ElementMapType(Model):
     def __init__(self):
-        super(SchemaVersion, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-common-5}schema-version
+        super(ElementMapType, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-common-5}element_mapping

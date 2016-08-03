@@ -19,6 +19,10 @@ from scap.Model import Model
 import logging
 
 logger = logging.getLogger(__name__)
-class ElementMap(Model):
+class NotesType(Model):
     def __init__(self):
-        super(ElementMap, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-common-5}element_mapping
+        super(NotesType, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-common-5}notes
+
+        self.ignore_sub_elements.extend([
+            '{http://oval.mitre.org/XMLSchema/oval-common-5}note',
+        ])
