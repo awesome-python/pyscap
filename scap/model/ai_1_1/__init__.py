@@ -14,3 +14,26 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
+
+TAG-MAP = {
+    'asset-related': 'asset_related',
+    'circuit': 'circuit',
+    'computing-device': 'computing_device',
+    'connection': 'connection',
+    'database': 'database',
+    'data': 'data',
+    'host': 'host',
+    'ip-address': 'ip_address',
+    'ip-net-range': 'ip_net_range',
+    'location-point': 'location_point',
+    'location-region': 'location_region',
+    'network': 'network',
+    'organization': 'organization',
+    'person': 'person',
+    'port-range': 'port_range',
+    'service': 'service',
+    'software': 'software',
+    'synthetic-id': 'synthetic_id',
+    'system': 'system',
+    'website': 'website',
+}

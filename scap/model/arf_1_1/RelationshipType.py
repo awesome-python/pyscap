@@ -19,9 +19,9 @@ from scap.model.rep_core_1_1.Relationship import Relationship
 import logging
 
 logger = logging.getLogger(__name__)
-class relationship(Relationship):
+class RelationshipType(Relationship):
     def __init__(self):
-        super(relationship, self).__init__('{http://scap.nist.gov/schema/asset-reporting-format/1.1}relationship')
+        super(RelationshipType, self).__init__('{http://scap.nist.gov/schema/asset-reporting-format/1.1}relationship')
 
     class Types(object):
         URI = 'http://scap.nist.gov/specifications/arf/vocabulary/relationships/1.0'

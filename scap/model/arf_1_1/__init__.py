@@ -14,3 +14,14 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
+
+TAG_MAP = {
+    'asset-report-collection': 'AssetReportCollectionType',
+    'asset': 'AssetType',
+    'extended-info': 'ExtendedInfoType',
+    'object-ref': 'ObjectRefType',
+    'relationship': 'RelationshipType',
+    'remote-resource': 'RemoteResourceType',
+    'report-request': 'ReportRequestType',
+    'report': 'ReportType',
+}
