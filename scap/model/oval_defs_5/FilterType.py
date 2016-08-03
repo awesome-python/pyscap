@@ -15,6 +15,21 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-TAG_MAP = {
-    '{http://oval.mitre.org/XMLSchema/oval-definitions-5}oval_definitions': {'class': 'OVALDefintionsType'},
-}
+from scap.Model import Model
+import logging
+
+logger = logging.getLogger(__name__)
+class FilterType(Model):
+    def __init__(self):
+        super(FilterType, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5}filter
+
+        self.action = 'exclude'
+
+    def parse_attribute(self, name, value):
+        if name == 'action':
+            self.action = value
+        else:
+            return super(FilterType, self).parse_attribute(name, value)
+        return True
+
+    # TODO need to collect more for actual implementation

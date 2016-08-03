@@ -15,6 +15,19 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-TAG_MAP = {
-    '{http://oval.mitre.org/XMLSchema/oval-definitions-5}oval_definitions': {'class': 'OVALDefintionsType'},
-}
+from scap.model.oval_defs_5.Function import Function
+import logging
+
+logger = logging.getLogger(__name__)
+class SplitFunctionType(Function):
+    def __init__(self):
+        super(SplitFunctionType, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5}split
+
+        self.character = None
+
+    def parse_attribute(self, name, value):
+        if name == 'delimiter':
+            self.character = value
+        else:
+            return super(SplitFunctionType, self).parse_attribute(name, value)
+        return True

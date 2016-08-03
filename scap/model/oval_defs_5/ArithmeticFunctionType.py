@@ -15,6 +15,19 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-TAG_MAP = {
-    '{http://oval.mitre.org/XMLSchema/oval-definitions-5}oval_definitions': {'class': 'OVALDefintionsType'},
-}
+from scap.model.oval_defs_5.Function import Function
+import logging
+
+logger = logging.getLogger(__name__)
+class ArithmeticFunctionType(Function):
+    def __init__(self):
+        super(ArithmeticFunctionType, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5}arithmetic
+
+        self.arithmetic_operation = None
+
+    def parse_attribute(self, name, value):
+        if name == 'arithmetic_operation':
+            self.arithmetic_operation = value
+        else:
+            return super(ArithmeticFunctionType, self).parse_attribute(name, value)
+        return True

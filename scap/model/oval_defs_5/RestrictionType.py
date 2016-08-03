@@ -15,6 +15,19 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-TAG_MAP = {
-    '{http://oval.mitre.org/XMLSchema/oval-definitions-5}oval_definitions': {'class': 'OVALDefintionsType'},
-}
+from scap.model.xs.Simple import Simple
+import logging
+
+logger = logging.getLogger(__name__)
+class RestrictionType(Simple):
+    def __init__(self):
+        super(RestrictionType, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5}restriction
+
+        self.operation = None
+
+    def parse_attribute(self, name, value):
+        if name == 'operation':
+            self.operation = value
+        else:
+            return super(RestrictionType, self).parse_attribute(name, value)
+        return True
