@@ -19,11 +19,13 @@ from scap.Model import Model
 import logging
 
 logger = logging.getLogger(__name__)
-class IDRef(Model):
+class HTMLTextWithSubType(Model):
     def __init__(self):
-        super(IDRef, self).__init__()
+        super(HTMLTextWithSubType, self).__init__()
 
-        self.required_attributes.append('idref')
         self.ignore_attributes.extend([
-            'idref',
+            'override',
+        ])
+        self.ignore_sub_elements.extend([
+            '{http://checklists.nist.gov/xccdf/1.2}sub',
         ])

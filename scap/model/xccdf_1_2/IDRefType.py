@@ -19,17 +19,11 @@ from scap.Model import Model
 import logging
 
 logger = logging.getLogger(__name__)
-class IDRefList(Model):
+class IDRefType(Model):
     def __init__(self):
-        super(IDRefList, self).__init__()
-
-        self.idrefs = []
+        super(IDRefType, self).__init__()
 
         self.required_attributes.append('idref')
-
-    def parse_attribute(self, name, value):
-        if name == 'idref':
-            self.idrefs = value.split(' ')
-        else:
-            return super(IDRefList, self).parse_attribute(name, value)
-        return True
+        self.ignore_attributes.extend([
+            'idref',
+        ])

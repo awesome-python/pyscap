@@ -19,9 +19,10 @@ from scap.Model import Model
 import logging
 
 logger = logging.getLogger(__name__)
-class Item(Model):
+class ItemType(Model):
+    # abstract
     def __init__(self):
-        super(Item, self).__init__()
+        super(ItemType, self).__init__()
 
         self.ignore_attributes.extend([
             'abstract',
@@ -49,5 +50,5 @@ class Item(Model):
             else:
                 logger.warning(sub_el.text)
         else:
-            return super(Item, self).parse_sub_el(sub_el)
+            return super(ItemType, self).parse_sub_el(sub_el)
         return True

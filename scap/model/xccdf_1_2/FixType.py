@@ -15,6 +15,23 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-TAG_MAP = {
-    '{http://checklists.nist.gov/xccdf/1.2}Benchmark': {'class': 'BenchmarkType'},
-}
+from scap.Model import Model
+import logging
+
+logger = logging.getLogger(__name__)
+class FixType(Model):
+    def __init__(self):
+        super(FixType, self).__init__()
+
+        self.ignore_attributes.extend([
+            'reboot',
+            'strategy',
+            'disruption',
+            'complexity',
+            'system',
+            'platform',
+        ])
+        self.ignore_sub_elements.extend([
+            '{http://checklists.nist.gov/xccdf/1.2}sub',
+            '{http://checklists.nist.gov/xccdf/1.2}instance',
+        ])

@@ -15,16 +15,33 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.model.xccdf_1_2.Item import Item
+from scap.model.xccdf_1_2.ItemType import ItemType
 import logging
 
 logger = logging.getLogger(__name__)
-class Value(Item):
+class ValueType(ItemType):
     def __init__(self):
-        super(Value, self).__init__()
+        super(ValueType, self).__init__()
         self.selectors = {}
         self.type = 'string'
         self.operator = 'equals'
+
+        self.ignore_attributes.extend([
+            'interactive',
+            'interfaceHint',
+        ])
+
+        self.ignore_sub_elements.extend([
+            '{http://checklists.nist.gov/xccdf/1.2}complex-value',
+            '{http://checklists.nist.gov/xccdf/1.2}default',
+            '{http://checklists.nist.gov/xccdf/1.2}complex-default',
+            '{http://checklists.nist.gov/xccdf/1.2}match',
+            '{http://checklists.nist.gov/xccdf/1.2}lower-bound',
+            '{http://checklists.nist.gov/xccdf/1.2}upper-bound',
+            '{http://checklists.nist.gov/xccdf/1.2}choices',
+            '{http://checklists.nist.gov/xccdf/1.2}source',
+            '{http://checklists.nist.gov/xccdf/1.2}signature',
+        ])
 
     def parse_attribute(self, name, value):
         if name == 'type':
@@ -32,7 +49,7 @@ class Value(Item):
         elif name == 'operator':
             self.operator = value
         else:
-            return super(Value, self).parse_attribute(name, value)
+            return super(ValueType, self).parse_attribute(name, value)
         return True
 
     def parse_sub_el(self, sub_el):
@@ -50,5 +67,5 @@ class Value(Item):
                 else:
                     self.selectors[None] = sub_el.text
         else:
-            return super(Value, self).parse_sub_el(sub_el)
+            return super(ValueType, self).parse_sub_el(sub_el)
         return True

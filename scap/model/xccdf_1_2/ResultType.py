@@ -15,16 +15,9 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.model.xs.String import String
+from scap.Model import Model
 import logging
 
 logger = logging.getLogger(__name__)
-class Text(String):
-    def __init__(self):
-        super(Text, self).__init__()
-
-        self.ignore_attributes.extend([
-            'override',
-        ])
-        self.ignore_sub_elements.extend([
-        ])
+class ResultType(Model):
+    pass

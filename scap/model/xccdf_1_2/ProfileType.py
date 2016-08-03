@@ -19,9 +19,9 @@ from scap.Model import Model
 import logging
 
 logger = logging.getLogger(__name__)
-class Profile(Model):
+class ProfileType(Model):
     def __init__(self):
-        super(Profile, self).__init__()
+        super(ProfileType, self).__init__()
         self.selected_rules = []
         self.rule_check_selections = {}
         self.value_selections = {}
@@ -43,7 +43,7 @@ class Profile(Model):
             import sys
             sys.exit()
         else:
-            return super(Profile, self).parse_attribute(name, value)
+            return super(ProfileType, self).parse_attribute(name, value)
         return True
 
     def parse_sub_el(self, sub_el):
@@ -93,7 +93,7 @@ class Profile(Model):
             logger.info('Using check selector ' + sub_el.attrib['selector'] + ' for rule ' + sub_el.attrib['idref'] + ' in profile ' + self.id)
             self.rule_check_selections[sub_el.attrib['idref']] = sub_el.attrib['selector']
         else:
-            return super(Profile, self).parse_sub_el(sub_el)
+            return super(ProfileType, self).parse_sub_el(sub_el)
         return True
 
     def from_xml(self, parent, el):
@@ -101,4 +101,4 @@ class Profile(Model):
         for rule_id in parent.selected_rules:
             self.selected_rules[rule_id] = parent.rules[rule_id]
 
-        super(Profile, self).from_xml(parent, el)
+        super(ProfileType, self).from_xml(parent, el)

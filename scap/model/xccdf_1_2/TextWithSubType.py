@@ -15,29 +15,17 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.model.xccdf_1_2.Item import Item
+from scap.Model import Model
 import logging
 
 logger = logging.getLogger(__name__)
-class SelectableItem(Item):
+class TextWithSubType(Model):
     def __init__(self):
-        super(SelectableItem, self).__init__()
+        super(TextWithSubType, self).__init__()
 
-        self.selected = True
-        self.weight = 1.0
-
-        self.ignore_sub_elements.extend([
-            '{http://checklists.nist.gov/xccdf/1.2}rationale',
-            '{http://checklists.nist.gov/xccdf/1.2}platform',
-            '{http://checklists.nist.gov/xccdf/1.2}requires',
-            '{http://checklists.nist.gov/xccdf/1.2}conflicts',
+        self.ignore_attributes.extend([
+            'override',
         ])
-
-    def parse_attribute(self, name, value):
-        if name == 'selected':
-            self.selected = self.parse_boolean(value)
-        elif name == 'weight':
-            self.weight = value
-        else:
-            return super(SelectableItem, self).parse_attribute(name, value)
-        return True
+        self.ignore_sub_elements.extend([
+            '{http://checklists.nist.gov/xccdf/1.2}sub',
+        ])

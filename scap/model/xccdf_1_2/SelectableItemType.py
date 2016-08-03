@@ -15,30 +15,29 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.Model import Model
+from scap.model.xccdf_1_2.ItemType import ItemType
 import logging
 
 logger = logging.getLogger(__name__)
-class complex_check(Model):
+class SelectableItemType(ItemType):
     def __init__(self):
-        super(complex_check, self).__init__()
-        self.checks = []
-        self.negate = False
-        self.operator = 'AND'
+        super(SelectableItemType, self).__init__()
+
+        self.selected = True
+        self.weight = 1.0
+
+        self.ignore_sub_elements.extend([
+            '{http://checklists.nist.gov/xccdf/1.2}rationale',
+            '{http://checklists.nist.gov/xccdf/1.2}platform',
+            '{http://checklists.nist.gov/xccdf/1.2}requires',
+            '{http://checklists.nist.gov/xccdf/1.2}conflicts',
+        ])
 
     def parse_attribute(self, name, value):
-        if name == 'negate':
-            self.negate = self.parse_boolean(value)
-        elif name == 'operator':
-            self.negate = value
+        if name == 'selected':
+            self.selected = self.parse_boolean(value)
+        elif name == 'weight':
+            self.weight = value
         else:
-            return super(complex_check, self).parse_attribute(name, value)
-        return True
-
-    def parse_sub_el(self, sub_el):
-        if sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}complex-check' \
-            or sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}check':
-            self.checks.append(Model.load(self, sub_el))
-        else:
-            return super(complex_check, self).parse_sub_el(sub_el)
+            return super(SelectableItemType, self).parse_attribute(name, value)
         return True

@@ -15,17 +15,10 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.Model import Model
-import logging
-
-logger = logging.getLogger(__name__)
-class TextWithSub(Model):
-    def __init__(self):
-        super(TextWithSub, self).__init__()
-
-        self.ignore_attributes.extend([
-            'override',
-        ])
-        self.ignore_sub_elements.extend([
-            '{http://checklists.nist.gov/xccdf/1.2}sub',
-        ])
+INTERFACE_HINT_ENUMERATION = [
+    'choice',
+    'textline',
+    'text',
+    'date',
+    'datetime',
+]

@@ -19,7 +19,7 @@ from scap.Model import Model
 import logging
 
 logger = logging.getLogger(__name__)
-class TestResult(Model):
+class TestResultType(Model):
     # urn:xccdf:fact:asset:identifier:mac Ethernet media access control address (SHOULD be sent as a pair with the IPv4 or IPv6 address to ensure uniqueness)
     # urn:xccdf:fact:asset:identifier:ipv4 IPv4 address
     # urn:xccdf:fact:asset:identifier:ipv6 IPv6 address

@@ -19,9 +19,17 @@ from scap.Model import Model
 import logging
 
 logger = logging.getLogger(__name__)
-class Benchmark(Model):
+class BenchmarkType(Model):
+    TAG_MAP = {
+        '{http://checklists.nist.gov/xccdf/1.2}Profile': {'class': 'ProfileType'},
+        '{http://checklists.nist.gov/xccdf/1.2}Value': {'class': 'ValueType'},
+        '{http://checklists.nist.gov/xccdf/1.2}Group': {'class': 'GroupType'},
+        '{http://checklists.nist.gov/xccdf/1.2}Rule': {'class': 'RuleType'},
+        '{http://checklists.nist.gov/xccdf/1.2}TestResult': { 'class': 'TestResultType' },
+    }
+
     def __init__(self):
-        super(Benchmark, self).__init__()
+        super(BenchmarkType, self).__init__()
 
         self.rules = {}
         self.values = {}
@@ -79,11 +87,11 @@ class Benchmark(Model):
         elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}TestResult':
             self.test_results[sub_el.attrib['id']] = Model.load(self, sub_el)
         else:
-            return super(Benchmark, self).parse_sub_el(sub_el)
+            return super(BenchmarkType, self).parse_sub_el(sub_el)
         return True
 
     def from_xml(self, parent, el):
-        super(Benchmark, self).from_xml(parent, el)
+        super(BenchmarkType, self).from_xml(parent, el)
 
         for profile_id, p in self.profiles.items():
             p.from_xml(self, self.profile_elements[profile_id])

@@ -15,14 +15,20 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.model.xccdf_1_2.SelectableItem import SelectableItem
+from scap.model.xccdf_1_2.SelectableItemType import SelectableItemType
 from scap.Model import Model
 import logging
 
 logger = logging.getLogger(__name__)
-class Group(SelectableItem):
+class GroupType(SelectableItemType):
+    TAG_MAP = {
+        '{http://checklists.nist.gov/xccdf/1.2}Value': {'class': 'ValueType'},
+        '{http://checklists.nist.gov/xccdf/1.2}Group': {'class': 'GroupType'},
+        '{http://checklists.nist.gov/xccdf/1.2}Rule': {'class': 'RuleType'},
+    }
+
     def __init__(self):
-        super(Group, self).__init__()
+        super(GroupType, self).__init__()
         self.values = {}
         self.rules = {}
         self.groups = {}
@@ -42,7 +48,7 @@ class Group(SelectableItem):
             r = Model.load(self, sub_el)
             self.rules[sub_el.attrib['id']] = r
         else:
-            return super(Group, self).parse_sub_el(sub_el)
+            return super(GroupType, self).parse_sub_el(sub_el)
         return True
 
     def get_values(self):

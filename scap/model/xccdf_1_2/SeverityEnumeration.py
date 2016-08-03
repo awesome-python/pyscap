@@ -15,18 +15,10 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.model.xccdf_1_2.HTMLTextWithSub import HTMLTextWithSub
-import logging
-
-logger = logging.getLogger(__name__)
-class fixtext(HTMLTextWithSub):
-    def __init__(self):
-        super(fixtext, self).__init__()
-
-        self.ignore_attributes.extend([
-            'fixref',
-            'reboot',
-            'strategy',
-            'disruption',
-            'complexity',
-        ])
+SEVERITY_ENUMERATION = [
+    'unknown',
+    'info',
+    'low',
+    'medium',
+    'high',
+]

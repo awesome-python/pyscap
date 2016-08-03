@@ -19,5 +19,5 @@ from scap.Model import Model
 import logging
 
 logger = logging.getLogger(__name__)
-class Tailoring(Model):
+class HTMLTextType(Model):
     pass
