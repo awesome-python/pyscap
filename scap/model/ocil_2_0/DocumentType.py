@@ -27,7 +27,7 @@ class DocumentType(Model):
         self.descriptions = []
         self.notices = []
 
-    def parse_sub_el(self, sub_el):
+    def parse_element(self, sub_el):
         if sub_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}title':
             self.title = sub_el.text
         elif sub_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}description':
@@ -35,5 +35,5 @@ class DocumentType(Model):
         elif sub_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}notice':
             self.notices = sub_el.text
         else:
-            return super(DocumentType, self).parse_sub_el(sub_el)
+            return super(DocumentType, self).parse_element(sub_el)
         return True

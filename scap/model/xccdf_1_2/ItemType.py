@@ -43,12 +43,12 @@ class ItemType(Model):
             '{http://checklists.nist.gov/xccdf/1.2}metadata',
         ])
 
-    def parse_sub_el(self, sub_el):
+    def parse_element(self, sub_el):
         if sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}warning':
             if 'category' in sub_el.attrib:
                 logger.warning('Item ' + sub_el.attrib['category'] + ' warning: ' + sub_el.text)
             else:
                 logger.warning(sub_el.text)
         else:
-            return super(ItemType, self).parse_sub_el(sub_el)
+            return super(ItemType, self).parse_element(sub_el)
         return True

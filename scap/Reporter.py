@@ -25,20 +25,20 @@ class Reporter(object):
         self.content = content
 
     def report(self):
-        from scap.model.arf_1_1.asset_report_collection import asset_report_collection
-        arc = asset_report_collection()
+        from scap.model.arf_1_1.AssetReportCollectionType import AssetReportCollectionType
+        arc = AssetReportCollectionType()
 
-        from scap.model.arf_1_1.report_request import report_request
+        from scap.model.arf_1_1.ReportRequestType import ReportRequestType
         import uuid
-        rr = report_request()
+        rr = ReportRequestType()
         rr.id = 'report-request_' + uuid.uuid4().hex
         #rr.content = self.content.to_xml()
         rr.content = ET.Element('stuff')
         arc.report_requests.append(rr)
 
         for host in self.hosts:
-            from scap.model.arf_1_1.asset import asset
-            asset = asset()
+            from scap.model.arf_1_1.AssetType import AssetType
+            asset = AssetType()
             asset.id = 'asset_' + host.facts['root_uuid']
             # TODO: fallback to mobo guid, eth0 mac address, eth0 ip address, hostname
             arc.assets.append(asset)

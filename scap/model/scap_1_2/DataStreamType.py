@@ -46,7 +46,7 @@ class DataStreamType(Model):
             '{http://scap.nist.gov/schema/scap/source/1.2}extended-components',
         ])
 
-    def parse_sub_el(self, sub_el):
+    def parse_element(self, sub_el):
         if sub_el.tag == '{http://scap.nist.gov/schema/scap/source/1.2}dictionaries':
             for comp_ref_el in sub_el:
                 if comp_ref_el.tag != '{http://scap.nist.gov/schema/scap/source/1.2}component-ref':
@@ -72,7 +72,7 @@ class DataStreamType(Model):
                 comp_ref = Model.load(self, comp_ref_el)
                 self.checks[comp_ref.id] = comp_ref
         else:
-            return super(DataStreamType, self).parse_sub_el(sub_el)
+            return super(DataStreamType, self).parse_element(sub_el)
         return True
 
     def resolve_reference(self, ref):

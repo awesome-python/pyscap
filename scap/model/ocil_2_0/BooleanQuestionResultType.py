@@ -30,9 +30,9 @@ class BooleanQuestionResultType(QuestionResultType):
         # self.ignore_sub_elements.extend([
         # ])
 
-    def parse_sub_el(self, sub_el):
+    def parse_element(self, sub_el):
         if sub_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}answer':
             self.answer = self.parse_boolean(sub_el.text)
         else:
-            return super(BooleanQuestionResultType, self).parse_sub_el(sub_el)
+            return super(BooleanQuestionResultType, self).parse_element(sub_el)
         return True

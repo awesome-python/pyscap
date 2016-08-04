@@ -33,7 +33,7 @@ class ComponentReferenceType(Model):
             return super(ComponentReferenceType, self).parse_attribute(name, value)
         return True
 
-    def parse_sub_el(self, sub_el):
+    def parse_element(self, sub_el):
         if sub_el.tag == '{urn:oasis:names:tc:entity:xmlns:xml:catalog}catalog':
             logger.debug('Loading catalog for ' + self.href)
             from scap.model.xml_cat.Catalog import Catalog
@@ -41,7 +41,7 @@ class ComponentReferenceType(Model):
             cat.from_xml(self, sub_el)
             self.ref_mapping = cat.to_dict()
         else:
-            return super(ComponentReferenceType, self).parse_sub_el(sub_el)
+            return super(ComponentReferenceType, self).parse_element(sub_el)
         return True
 
     def resolve(self):

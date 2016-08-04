@@ -41,10 +41,10 @@ class OperationType(Model):
             return super(OperationType, self).parse_attribute(name, value)
         return True
 
-    def parse_sub_el(self, sub_el):
+    def parse_element(self, sub_el):
         if sub_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}test_action_ref':
             for sub_sub_el in sub_el:
                 self.test_action_refs.append(Model.load(self, sub_sub_el))
         else:
-            return super(OperationType, self).parse_sub_el(sub_el)
+            return super(OperationType, self).parse_element(sub_el)
         return True

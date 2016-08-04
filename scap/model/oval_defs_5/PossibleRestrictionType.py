@@ -39,9 +39,9 @@ class PossibleRestrictionType(Model):
             return super(PossibleRestrictionType, self).parse_attribute(name, value)
         return True
 
-    def parse_sub_el(self, sub_el):
+    def parse_element(self, sub_el):
         if sub_el.tag == '{http://oval.mitre.org/XMLSchema/oval-definitions-5}restriction':
             self.children.append(Model.load(self, sub_el))
         else:
-            return super(PossibleRestrictionType, self).parse_sub_el(sub_el)
+            return super(PossibleRestrictionType, self).parse_element(sub_el)
         return True

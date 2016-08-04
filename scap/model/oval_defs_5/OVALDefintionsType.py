@@ -51,7 +51,7 @@ class OVALDefintionsType(Model):
             '{http://www.w3.org/2000/09/xmldsig#}Signature',
         ])
 
-    def parse_sub_el(self, sub_el):
+    def parse_element(self, sub_el):
         if sub_el.tag == '{http://oval.mitre.org/XMLSchema/oval-definitions-5}definitions':
             for def_el in sub_el:
                 self.definitions[def_el.attrib['id']] = Model.load(self, def_el)
@@ -68,7 +68,7 @@ class OVALDefintionsType(Model):
             for var_el in sub_el:
                 self.variables[var_el.attrib['id']] = Model.load(self, var_el)
         else:
-            return super(OVALDefintionsType, self).parse_sub_el(sub_el)
+            return super(OVALDefintionsType, self).parse_element(sub_el)
         return True
 
     def resolve_reference(self, ref):

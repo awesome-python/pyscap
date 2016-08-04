@@ -21,7 +21,10 @@ import logging
 logger = logging.getLogger(__name__)
 class DefinitionType(Model):
     TAG_MAP = {
-        '{http://oval.mitre.org/XMLSchema/oval-definitions-5}criteria': {'class': 'CriteriaType'},
+        '{http://oval.mitre.org/XMLSchema/oval-definitions-5}criteria': {
+            'class': 'CriteriaType',
+            'minCount': 1,
+        },
     }
 
     def __init__(self):
@@ -52,9 +55,9 @@ class DefinitionType(Model):
             return super(DefinitionType, self).parse_attribute(name, value)
         return True
 
-    def parse_sub_el(self, sub_el):
+    def parse_element(self, sub_el):
         if sub_el.tag == '{http://oval.mitre.org/XMLSchema/oval-definitions-5}criteria':
             self.criteria = Model.load(self, sub_el)
         else:
-            return super(DefinitionType, self).parse_sub_el(sub_el)
+            return super(DefinitionType, self).parse_element(sub_el)
         return True

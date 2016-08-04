@@ -25,7 +25,7 @@ class ExternalVariableType(Variable):
 
         self.children = []
 
-    def parse_sub_el(self, sub_el):
+    def parse_element(self, sub_el):
         if sub_el.tag == '{http://oval.mitre.org/XMLSchema/oval-definitions-5}possible_value':
             pv = PossibleValue()
             pv.from_xml(self, sub_el)
@@ -35,5 +35,5 @@ class ExternalVariableType(Variable):
             pr.from_xml(self, sub_el)
             self.children.append(pr)
         else:
-            return super(ExternalVariableType, self).parse_sub_el(sub_el)
+            return super(ExternalVariableType, self).parse_element(sub_el)
         return True

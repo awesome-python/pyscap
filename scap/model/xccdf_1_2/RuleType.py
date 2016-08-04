@@ -56,7 +56,7 @@ class RuleType(SelectableItemType):
             return super(RuleType, self).parse_attribute(name, value)
         return True
 
-    def parse_sub_el(self, sub_el):
+    def parse_element(self, sub_el):
         if sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}complex-check':
             self.checks[None] = Model.load(self, sub_el)
         elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}check':
@@ -70,5 +70,5 @@ class RuleType(SelectableItemType):
         elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}fixtext':
             self.fixtexts.append(Model.load(self, sub_el))
         else:
-            return super(RuleType, self).parse_sub_el(sub_el)
+            return super(RuleType, self).parse_element(sub_el)
         return True

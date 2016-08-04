@@ -25,9 +25,9 @@ class ChoiceQuestionResultType(QuestionResultType):
 
         self.answer = None
 
-    def parse_sub_el(self, sub_el):
+    def parse_element(self, sub_el):
         if sub_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}answer':
             self.answer = sub_el.attrib['choice_ref']
         else:
-            return super(ChoiceQuestionResultType, self).parse_sub_el(sub_el)
+            return super(ChoiceQuestionResultType, self).parse_element(sub_el)
         return True

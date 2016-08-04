@@ -25,11 +25,11 @@ class ConstantVariableType(Variable):
 
         self.children = []
 
-    def parse_sub_el(self, sub_el):
+    def parse_element(self, sub_el):
         if sub_el.tag == '{http://oval.mitre.org/XMLSchema/oval-definitions-5}value':
             v = Value()
             v.from_xml(self, sub_el)
             self.children.append(v)
         else:
-            return super(ConstantVariableType, self).parse_sub_el(sub_el)
+            return super(ConstantVariableType, self).parse_element(sub_el)
         return True

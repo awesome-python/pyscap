@@ -52,7 +52,7 @@ class StepType(object):
             return super(StepType, self).parse_attribute(name, value)
         return True
 
-    def parse_sub_el(self, sub_el):
+    def parse_element(self, sub_el):
         if sub_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}description':
             self.description = sub_el.text
         elif sub_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}reference':
@@ -60,7 +60,7 @@ class StepType(object):
         elif sub_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}step':
             self.steps.append(Model.load(self, sub_el))
         else:
-            return super(StepType, self).parse_sub_el(sub_el)
+            return super(StepType, self).parse_element(sub_el)
         return True
 
     # def get_attributes(self):

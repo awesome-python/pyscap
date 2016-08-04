@@ -33,7 +33,7 @@ class CompoundTestActionType(TestActionType):
         self.references = []
         self.actions = None
 
-    def parse_sub_el(self, sub_el):
+    def parse_element(self, sub_el):
         if sub_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}title':
             self.title = sub_el.text
         elif sub_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}description':
@@ -44,5 +44,5 @@ class CompoundTestActionType(TestActionType):
         elif sub_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}actions':
             self.actions = Model.load(self, sub_el)
         else:
-            return super(CompoundTestActionType, self).parse_sub_el(sub_el)
+            return super(CompoundTestActionType, self).parse_element(sub_el)
         return True

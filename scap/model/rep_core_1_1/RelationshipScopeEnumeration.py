@@ -15,19 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.model.ocil_2_0.QuestionResultType import QuestionResultType
-import logging
-
-logger = logging.getLogger(__name__)
-class StringQuestionResultType(QuestionResultType):
-    def __init__(self):
-        super(StringQuestionResultType, self).__init__()
-
-        self.answer = None
-
-    def parse_element(self, sub_el):
-        if sub_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}answer':
-            self.answer = sub_el.text
-        else:
-            return super(StringQuestionResultType, self).parse_element(sub_el)
-        return True
+RELATIONSHIP_SCOPE_ENUMERATION = [
+    'inclusive',
+    'exclusive',
+]

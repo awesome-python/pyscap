@@ -57,7 +57,7 @@ class OCILType(Model):
             '{http://scap.nist.gov/schema/ocil/2.0}generator',
         ])
 
-    def parse_sub_el(self, sub_el):
+    def parse_element(self, sub_el):
         if sub_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}document':
             self.document = Model.load(self, sub_el)
         elif sub_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}questionnaires':
@@ -78,5 +78,5 @@ class OCILType(Model):
         elif sub_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}results':
             self.results = Model.load(self, sub_el)
         else:
-            return super(OCILType, self).parse_sub_el(sub_el)
+            return super(OCILType, self).parse_element(sub_el)
         return True

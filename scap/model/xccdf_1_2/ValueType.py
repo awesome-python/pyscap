@@ -52,7 +52,7 @@ class ValueType(ItemType):
             return super(ValueType, self).parse_attribute(name, value)
         return True
 
-    def parse_sub_el(self, sub_el):
+    def parse_element(self, sub_el):
         if sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}value':
             if 'selector' in sub_el.attrib:
                 logger.debug('Selector value of ' + self.id + ' ' + sub_el.attrib['selector'] + ' = ' + str(sub_el.text))
@@ -67,5 +67,5 @@ class ValueType(ItemType):
                 else:
                     self.selectors[None] = sub_el.text
         else:
-            return super(ValueType, self).parse_sub_el(sub_el)
+            return super(ValueType, self).parse_element(sub_el)
         return True

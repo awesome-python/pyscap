@@ -20,18 +20,5 @@ import logging
 import xml.etree.ElementTree as ET
 
 logger = logging.getLogger(__name__)
-class RelationshipsContainer(Model):
-    def __init__(self, tag=None):
-        super(RelationshipsContainer, self).__init__(tag)
-        self.relationships = []
-
-    def get_sub_elements(self):
-        sub_els = super(RelationshipsContainer, self).get_sub_elements()
-
-        if len(self.relationships) > 0:
-            relationships_el = ET.Element('{' + self.get_xml_namespace() + '}relationships')
-            for relationship in self.relationships:
-                relationships_el.append(relationship.to_xml())
-            sub_els.append(relationships_el)
-
-        return sub_els
+class List(Model):
+    pass

@@ -27,13 +27,13 @@ class Test(scap.model.oval_defs_5.Test.Test):
         self.object_ref = None
         self.state_refs = []
 
-    def parse_sub_el(self, sub_el):
+    def parse_element(self, sub_el):
         if sub_el.tag == '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}object':
             self.object_ref = sub_el.attrib['object_ref']
         elif sub_el.tag == '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}state':
             self.state_refs.append(sub_el.attrib['state_ref'])
         else:
-            return super(Test, self).parse_sub_el(sub_el)
+            return super(Test, self).parse_element(sub_el)
         return True
 
     def resolve_object(self):

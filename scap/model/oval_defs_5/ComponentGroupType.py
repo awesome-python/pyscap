@@ -43,7 +43,7 @@ class ComponentGroupType(Model):
 
         self.components = []
 
-    def parse_sub_el(self, sub_el):
+    def parse_element(self, sub_el):
         sub_el_tags = {
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5}object_component': True,
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5}variable_component': True,
@@ -67,5 +67,5 @@ class ComponentGroupType(Model):
         if sub_el.tag in sub_el_tags:
             self.components.append(Model.load(self, sub_el))
         else:
-            return super(ComponentGroupType, self).parse_sub_el(sub_el)
+            return super(ComponentGroupType, self).parse_element(sub_el)
         return True

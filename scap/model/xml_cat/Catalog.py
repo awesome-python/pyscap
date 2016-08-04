@@ -25,11 +25,11 @@ class Catalog(Model):
 
         self.entries = {}
 
-    def parse_sub_el(self, sub_el):
+    def parse_element(self, sub_el):
         if sub_el.tag == '{urn:oasis:names:tc:entity:xmlns:xml:catalog}uri':
             self.entries[sub_el.attrib['name']] = sub_el.attrib['uri']
         else:
-            return super(SubClass, self).parse_sub_el(sub_el)
+            return super(SubClass, self).parse_element(sub_el)
         return True
 
     def to_dict(self):

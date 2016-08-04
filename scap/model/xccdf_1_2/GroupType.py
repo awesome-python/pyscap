@@ -38,7 +38,7 @@ class GroupType(SelectableItemType):
             '{http://checklists.nist.gov/xccdf/1.2}signature',
         ])
 
-    def parse_sub_el(self, sub_el):
+    def parse_element(self, sub_el):
         if sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}Value':
             self.values[sub_el.attrib['id']] = Model.load(self, sub_el)
         elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}Group':
@@ -48,7 +48,7 @@ class GroupType(SelectableItemType):
             r = Model.load(self, sub_el)
             self.rules[sub_el.attrib['id']] = r
         else:
-            return super(GroupType, self).parse_sub_el(sub_el)
+            return super(GroupType, self).parse_element(sub_el)
         return True
 
     def get_values(self):

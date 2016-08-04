@@ -40,11 +40,11 @@ class ArtifactType(ItemBaseType):
             return super(ArtifactType, self).parse_attribute(name, value)
         return True
 
-    def parse_sub_el(self, sub_el):
+    def parse_element(self, sub_el):
         if sub_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}title':
             self.title = sub_el.text
         elif sub_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}description':
             self.description = sub_el.text
         else:
-            return super(ArtifactType, self).parse_sub_el(sub_el)
+            return super(ArtifactType, self).parse_element(sub_el)
         return True

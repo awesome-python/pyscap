@@ -55,7 +55,7 @@ class CheckType(Model):
             return super(CheckType, self).parse_attribute(name, value)
         return True
 
-    def parse_sub_el(self, sub_el):
+    def parse_element(self, sub_el):
         if sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}check-content-ref':
             self.check_content_ref = sub_el.attrib['href']
             if 'name' not in sub_el.attrib:
@@ -64,7 +64,7 @@ class CheckType(Model):
                 self.check_content_name = sub_el.attrib['name']
                 logger.debug('Rule ' + self.parent.id + ' will load ' + self.check_content_ref + ' and use item ' + self.check_content_name)
         else:
-            return super(CheckType, self).parse_sub_el(sub_el)
+            return super(CheckType, self).parse_element(sub_el)
         return True
 
     def resolve(self):

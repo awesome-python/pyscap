@@ -30,9 +30,9 @@ class StringQuestionType(QuestionType):
         # self.ignore_sub_elements.extend([
         # ])
 
-    def parse_sub_el(self, sub_el):
+    def parse_element(self, sub_el):
         if sub_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}default_answer':
             self.default_answer = sub_el.text
         else:
-            return super(StringQuestionType, self).parse_sub_el(sub_el)
+            return super(StringQuestionType, self).parse_element(sub_el)
         return True

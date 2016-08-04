@@ -20,7 +20,7 @@ import xml.etree.ElementTree as ET
 
 logger = logging.getLogger(__name__)
 class Model(object):
-    namespaces = {
+    NAMESPACES = {
         'http://scap.nist.gov/schema/asset-identification/1.1': 'ai_1_1',
         'http://scap.nist.gov/schema/asset-reporting-format/1.1': 'arf_1_1',
         'http://scap.nist.gov/specifications/arf/vocabulary/relationships/1.0': 'arf_rel_1_0',
@@ -49,16 +49,25 @@ class Model(object):
         'http://www.w3.org/XML/1998/namespace': 'xml'
     }
 
+    ATTRIBUTE_MAP = {
+        '{http://www.w3.org/XML/1998/namespace}lang': {'ignore': True},
+        '{http://www.w3.org/XML/1998/namespace}base': {'ignore': True},
+        '{http://www.w3.org/2001/XMLSchema-instance}schemaLocation': {'ignore': True},
+    }
+
+    class_attribute_maps = {}
+    class_tag_maps = {}
+
     @staticmethod
     def parse_tag(tag):
         # parse tag
         xml_namespace, tag_name = tag[1:].split('}')
 
-        if xml_namespace not in Model.namespaces:
+        if xml_namespace not in Model.NAMESPACES:
             logger.critical('Unsupported ' + tag_name + ' tag with namespace: ' + xml_namespace)
             import sys
             sys.exit()
-        model_namespace = Model.namespaces[xml_namespace]
+        model_namespace = Model.NAMESPACES[xml_namespace]
 
         return xml_namespace, model_namespace, tag_name
 
@@ -116,14 +125,38 @@ class Model(object):
         self.ref_mapping = {}
 
         self.id = None
-        self.required_attributes = []
-        self.ignore_attributes = [
-            '{http://www.w3.org/XML/1998/namespace}lang',
-            '{http://www.w3.org/XML/1998/namespace}base',
-            '{http://www.w3.org/2001/XMLSchema-instance}schemaLocation',
-        ]
-        self.required_sub_elements = []
-        self.ignore_sub_elements = []
+
+        if self.__class__.__name__ not in Model.class_attribute_maps:
+            attribute_map = {}
+            for class_ in self.__class__.__mro__:
+                if class_ == object:
+                    break
+
+                # overwrite the super class' attribute map with what we've already loaded
+                try:
+                    super_attribute_map = class_.ATTRIBUTE_MAP.copy()
+                except AttributeError:
+                    continue
+                super_attribute_map.update(attribute_map)
+                attribute_map = super_attribute_map
+            Model.class_attribute_maps[self.__class__.__name__] = attribute_map
+        self.attribute_map = Model.class_attribute_maps[self.__class__.__name__]
+
+        if self.__class__.__name__ not in Model.class_tag_maps:
+            tag_map = {}
+            for class_ in self.__class__.__mro__:
+                if class_ == object:
+                    break
+
+                # overwrite the super class' tag map with what we've already loaded
+                try:
+                    super_tag_map = class_.TAG_MAP.copy()
+                except AttributeError:
+                    continue
+                super_tag_map.update(tag_map)
+                tag_map = super_tag_map
+            Model.class_tag_maps[self.__class__.__name__] = tag_map
+        self.tag_map = Model.class_tag_maps[self.__class__.__name__]
 
     def get_tag(self):
         if self.tag_name is None or self.xml_namespace is None:
@@ -142,8 +175,8 @@ class Model(object):
         if self.xml_namespace is None or self.model_namespace is None or self.tag_name is None:
             self.xml_namespace, self.model_namespace, self.tag_name = Model.parse_tag(el.tag)
 
-        for attrib in self.required_attributes:
-            if attrib not in self.element.attrib:
+        for attrib in self.attribute_map:
+            if 'required' in self.attribute_map[attrib] and self.attribute_map[attrib]['required'] and attrib not in self.element.attrib:
                 logger.critical(el.tag + ' must define ' + attrib + ' attribute')
                 import sys
                 sys.exit()
@@ -154,25 +187,37 @@ class Model(object):
                 import sys
                 sys.exit()
 
-        parsed_sub_elements = []
+        sub_el_counts = {}
         for sub_el in el:
-            if not self.parse_sub_el(sub_el):
+            if not self.parse_element(sub_el):
                 logger.critical('Unknown element in ' + el.tag + ': ' + sub_el.tag)
                 import sys
                 sys.exit()
-            parsed_sub_elements.append(sub_el.tag)
+            if sub_el.tag not in sub_el_counts:
+                sub_el_counts[sub_el.tag] = 1
+            else:
+                sub_el_counts[sub_el.tag] += 1
 
-        for sub_el_tag in self.required_sub_elements:
-            if sub_el_tag not in parsed_sub_elements:
-                logger.critical(el.tag + ' does not contain a required sub element: ' + sub_el_tag)
+        for tag in self.tag_map:
+            if 'minCount' in self.tag_map[tag] and (tag not in sub_el_counts or sub_el_counts[tag] < self.tag_map[tag]['minCount']):
+                logger.critical(el.tag + ' does not contain a required sub element: ' + tag)
                 import sys
                 sys.exit()
 
+        import pprint
+        pprint.pprint(self)
+
     def parse_attribute(self, name, value):
-        if name == 'id':
-            self.id = value
-        elif name in self.ignore_attributes:
-            pass
+        if name in self.attribute_map:
+            if 'ignore' in self.attribute_map[name] and self.attribute_map[name]['ignore']:
+                return True
+
+            if 'in' in self.attribute_map[name]:
+                setattr(self, self.attribute_map[name]['in'], value)
+            else:
+                name = name.replace('-', '_')
+                setattr(self, name, value)
+            return True
         else:
             return False
         return True
@@ -185,17 +230,69 @@ class Model(object):
     #         return super(SubClass, self).parse_attribute(name, value)
     #     return True
 
-    def parse_sub_el(self, sub_el):
-        if sub_el.tag in self.ignore_sub_elements:
-            return True
+    def parse_element(self, el):
+        xml_namespace, model_namespace, tag_name = Model.parse_tag(el.tag)
+        for tag in [el.tag, tag_name]:
+            # check both namespace + tag_name and just tag_name
+            if tag in self.tag_map:
+                if 'ignore' in self.tag_map[tag] and self.tag_map[tag]['ignore']:
+                    return True
+
+                if 'append' in self.tag_map[tag]:
+                    #from scap.model.List import List
+                    lst = getattr(self, self.tag_map[tag]['append'])
+                    lst.append(Model.load(self, el))
+                    return True
+
+                if 'map' in self.tag_map[tag]:
+                    #from scap.model.List import List
+                    dic = getattr(self, self.tag_map[tag]['map'])
+                    if 'key' in self.tag_map[tag]:
+                        key = el.attrib[self.tag_map[tag]['key']]
+                    # TODO: implement keyElement as well
+                    else:
+                        key = el.attrib['id']
+                    dic[key] = Model.load(self, el)
+                    return True
+
+                if 'class' in self.tag_map[tag] and self.tag_map[tag]['class'] == 'scap.model.List':
+                    #from scap.model.List import List
+                    if 'in' in self.tag_map[tag]:
+                        lst = getattr(self, self.tag_map[tag]['in'])
+                    else:
+                        lst = getattr(self, tag_name.replace('-', '_'))
+                    for sub_el in el:
+                        lst.append(Model.load(self, sub_el))
+                    return True
+                elif 'class' in self.tag_map[tag] and self.tag_map[tag]['class'] == 'scap.model.Dictionary':
+                    #from scap.model.List import List
+                    if 'in' in self.tag_map[tag]:
+                        dic = getattr(self, self.tag_map[tag]['in'])
+                    else:
+                        dic = getattr(self, tag_name.replace('-', '_'))
+                    if 'key' in self.tag_map[tag]:
+                        key = sub_el.attrib[self.tag_map[tag]['key']]
+                    # TODO: implement keyElement as well
+                    else:
+                        key = sub_el.attrib['id']
+                    for sub_el in el:
+                        dic[key] = Model.load(self, sub_el)
+                    return True
+
+                if 'in' in self.tag_map[tag]:
+                    setattr(self, self.tag_map[tag]['in'], Model.load(self, el))
+                else:
+                    name = name.replace('-', '_')
+                    setattr(self, name, Model.load(self, el))
+                return True
         return False
 
     # Template
-    # def parse_sub_el(self, sub_el):
-    #     if sub_el.tag == '{namespace}tag':
-    #         self.tags.append(sub_el.tag)
+    # def parse_element(self, el):
+    #     if el.tag == '{namespace}tag':
+    #         self.tags.append(el.tag)
     #     else:
-    #         return super(SubClass, self).parse_sub_el(sub_el)
+    #         return super(SubClass, self).parse_element(el)
     #     return True
 
     def parse_boolean(self, value):

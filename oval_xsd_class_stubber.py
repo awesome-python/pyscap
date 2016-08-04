@@ -78,7 +78,7 @@ module_path = 'scap/model/oval_defs_5_linux'
 module_namespace = 'oval_defs_5_linux'
 
 prefix_map = {}
-for k,v in Model.namespaces.items():
+for k,v in Model.NAMESPACES.items():
     ET.register_namespace(v, k)
     prefix_map[v] = k
 

@@ -15,19 +15,23 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.model.ocil_2_0.QuestionResultType import QuestionResultType
+from scap.Model import Model
 import logging
+import xml.etree.ElementTree as ET
 
 logger = logging.getLogger(__name__)
-class StringQuestionResultType(QuestionResultType):
-    def __init__(self):
-        super(StringQuestionResultType, self).__init__()
+class RelationshipsContainerType(Model):
+    def __init__(self, tag=None):
+        super(RelationshipsContainerType, self).__init__(tag)
+        self.relationships = []
 
-        self.answer = None
+    def get_sub_elements(self):
+        sub_els = super(RelationshipsContainerType, self).get_sub_elements()
 
-    def parse_element(self, sub_el):
-        if sub_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}answer':
-            self.answer = sub_el.text
-        else:
-            return super(StringQuestionResultType, self).parse_element(sub_el)
-        return True
+        if len(self.relationships) > 0:
+            relationships_el = ET.Element('{' + self.get_xml_namespace() + '}relationships')
+            for relationship in self.relationships:
+                relationships_el.append(relationship.to_xml())
+            sub_els.append(relationships_el)
+
+        return sub_els

@@ -27,7 +27,7 @@ class UserType(TargetType):
         self.position = None
         self.email = None
 
-    def parse_sub_el(self, sub_el):
+    def parse_element(self, sub_el):
         if sub_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}organization':
             self.organization = sub_el.text
         elif sub_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}position':
@@ -35,5 +35,5 @@ class UserType(TargetType):
         elif sub_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}email':
             self.email = sub_el.text
         else:
-            return super(UserType, self).parse_sub_el(sub_el)
+            return super(UserType, self).parse_element(sub_el)
         return True

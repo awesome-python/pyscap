@@ -33,9 +33,9 @@ class ChoiceGroupType(Model):
         # self.ignore_sub_elements.extend([
         # ])
 
-    def parse_sub_el(self, sub_el):
+    def parse_element(self, sub_el):
         if sub_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}choice':
             self.choices.append(Model.load(self, sub_el))
         else:
-            return super(ChoiceGroupType, self).parse_sub_el(sub_el)
+            return super(ChoiceGroupType, self).parse_element(sub_el)
         return True

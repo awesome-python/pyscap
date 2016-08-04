@@ -42,7 +42,7 @@ class ArtifactResultType(Model):
             return super(ArtifactResultType, self).parse_attribute(name, value)
         return True
 
-    def parse_sub_el(self, sub_el):
+    def parse_element(self, sub_el):
         if sub_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}artifact_value':
             self.artifact_value = sub_el.text
         elif sub_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}provider':
@@ -50,5 +50,5 @@ class ArtifactResultType(Model):
         elif sub_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}submitter':
             self.submitter = Model.load(self, sub_el)
         else:
-            return super(ArtifactResultType, self).parse_sub_el(sub_el)
+            return super(ArtifactResultType, self).parse_element(sub_el)
         return True

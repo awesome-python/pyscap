@@ -40,9 +40,9 @@ class QuestionTestActionType(TestActionType):
             '{http://scap.nist.gov/schema/ocil/2.0}title',
         ])
 
-    def parse_sub_el(self, sub_el):
+    def parse_element(self, sub_el):
         if sub_el.tag.startswith('{http://scap.nist.gov/schema/ocil/2.0}when_'):
             self.conditions.append(Model.load(self, sub_el))
         else:
-            return super(QuestionTestActionType, self).parse_sub_el(sub_el)
+            return super(QuestionTestActionType, self).parse_element(sub_el)
         return True

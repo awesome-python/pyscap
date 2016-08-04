@@ -40,10 +40,10 @@ class ComplexCheckType(Model):
             return super(ComplexCheckType, self).parse_attribute(name, value)
         return True
 
-    def parse_sub_el(self, sub_el):
+    def parse_element(self, sub_el):
         if sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}complex-check' \
             or sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}check':
             self.checks.append(Model.load(self, sub_el))
         else:
-            return super(ComplexCheckType, self).parse_sub_el(sub_el)
+            return super(ComplexCheckType, self).parse_element(sub_el)
         return True

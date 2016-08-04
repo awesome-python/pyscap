@@ -46,7 +46,7 @@ class ProfileType(Model):
             return super(ProfileType, self).parse_attribute(name, value)
         return True
 
-    def parse_sub_el(self, sub_el):
+    def parse_element(self, sub_el):
         if sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}select':
             if sub_el.attrib['idref'] not in self.parent.rules:
                 logger.critical('Rule idref in Profile not found: ' + sub_el.attrib['idref'])
@@ -93,7 +93,7 @@ class ProfileType(Model):
             logger.info('Using check selector ' + sub_el.attrib['selector'] + ' for rule ' + sub_el.attrib['idref'] + ' in profile ' + self.id)
             self.rule_check_selections[sub_el.attrib['idref']] = sub_el.attrib['selector']
         else:
-            return super(ProfileType, self).parse_sub_el(sub_el)
+            return super(ProfileType, self).parse_element(sub_el)
         return True
 
     def from_xml(self, parent, el):

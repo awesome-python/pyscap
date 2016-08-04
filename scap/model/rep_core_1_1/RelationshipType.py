@@ -19,30 +19,22 @@ from scap.Model import Model
 import logging
 
 logger = logging.getLogger(__name__)
-class Relationship(Model):
-    class Scope(object):
-        INCLUSIVE = 'inclusive'
-        EXCLUSIVE = 'exclusive'
-
+class RelationshipType(Model):
+    ATTRIBUTE_MAP = {
+        'type': {'required': True}
+        'subject': {'required': True}
+    }
     def __init__(self, tag=None):
-        super(Relationship, self).__init__(tag)
+        super(RelationshipType, self).__init__(tag)
 
         self.refs = []
 
         self.type = None
-        self.scope = Relationship.Scope.INCLUSIVE
+        self.scope = 'inclusive'
         self.subject = None
 
-        self.required_attributes.extend([
-            'type',
-            'subject',
-        ])
-        self.required_sub_elements.extend([
-            '{' + self.get_xml_namespace() + '}ref',
-        ])
-
     def get_attributes(self):
-        attribs = super(Relationship, self).get_attributes()
+        attribs = super(RelationshipType, self).get_attributes()
 
         attribs['type'] = self.type
         attribs['scope'] = self.scope
@@ -51,7 +43,7 @@ class Relationship(Model):
         return attribs
 
     def get_sub_elements(self):
-        sub_els = super(Relationship, self).get_sub_elements()
+        sub_els = super(RelationshipType, self).get_sub_elements()
 
         for ref in self.refs:
             sub_els.append(self.get_text_element('{' + self.get_xml_namespace() + '}ref', ref))

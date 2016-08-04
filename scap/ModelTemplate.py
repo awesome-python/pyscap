@@ -20,17 +20,15 @@ import logging
 
 logger = logging.getLogger(__name__)
 class ModelTemplate(Model):
+    ATTRIBUTE_MAP = {
+    
+    }
+    TAG_MAP = {
+
+    }
+
     def __init__(self):
         super(ModelTemplate, self).__init__()
-
-        # self.required_attributes.extend([
-        # ])
-        # self.ignore_attributes.extend([
-        # ])
-        # self.required_sub_elements.extend([
-        # ])
-        # self.ignore_sub_elements.extend([
-        # ])
 
     # def parse_attribute(self, name, value):
     #     if name == 'id':
@@ -39,7 +37,7 @@ class ModelTemplate(Model):
     #         return super(ModelTemplate, self).parse_attribute(name, value)
     #     return True
 
-    # def parse_sub_el(self, sub_el):
+    # def parse_element(self, sub_el):
     #     if sub_el.tag == '{namespace}tag':
     #         self.tags.append(sub_el.tag)
     #     elif sub_el.tag == '{namespace}tag':
@@ -47,7 +45,7 @@ class ModelTemplate(Model):
     #     elif sub_el.tag == '{namespace}flag':
     #         self.flag = self.parse_boolean(value)
     #     else:
-    #         return super(ModelTemplate, self).parse_sub_el(sub_el)
+    #         return super(ModelTemplate, self).parse_element(sub_el)
     #     return True
 
     # def get_attributes(self):

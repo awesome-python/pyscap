@@ -63,7 +63,7 @@ class BenchmarkType(Model):
             '{http://checklists.nist.gov/xccdf/1.2}signature',
         ])
 
-    def parse_sub_el(self, sub_el):
+    def parse_element(self, sub_el):
         if sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}notice':
             logger.info('Notice: \n' + sub_el.text)
         elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}Profile':
@@ -87,7 +87,7 @@ class BenchmarkType(Model):
         elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}TestResult':
             self.test_results[sub_el.attrib['id']] = Model.load(self, sub_el)
         else:
-            return super(BenchmarkType, self).parse_sub_el(sub_el)
+            return super(BenchmarkType, self).parse_element(sub_el)
         return True
 
     def from_xml(self, parent, el):
