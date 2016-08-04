@@ -236,3 +236,14 @@ OVAL_XLATE = {
 }
 def oval_translate(value):
     return OVAL_XLATE[value]
+
+OCIL_XLATE = {
+    'PASS': 'pass',
+    'FAIL': 'fail',
+    'ERROR': 'error',
+    'UNKNOWN': 'unknown',
+    'NOT_TESTED': 'notchecked',
+    'NOT_APPLICABLE': 'notapplicable',
+}
+def ocil_translate(value):
+    return OCIL_XLATE[value]

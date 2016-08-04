@@ -19,28 +19,31 @@ from scap.Checker import Checker
 import logging
 
 logger = logging.getLogger(__name__)
-class data_stream(Checker):
+class DataStreamCollectionType(Checker):
     def __init__(self, host, content, args=None):
-        super(data_stream, self).__init__(host, content, args)
+        super(DataStreamCollectionType, self).__init__(host, content, args)
 
-        if 'checklist' in args:
-            checklist_id = args[checklist]
-            if checklist_id not in content.checklists:
-                logger.critical('Specified --checklist, ' + checklist_id + ', not found in content. Available checklists: ' + str(content.checklists.keys()))
+        if 'data_stream' in args:
+            ds_name = args['data_stream']
+            if ds_name not in content.data_streams:
+                logger.critical('Specified --data_stream, ' + ds_name + ', not found in content. Available data streams: ' + str(content.data_streams.keys()))
                 import sys
                 sys.exit()
             else:
-                checklist = content.checklists[checklist_id].resolve()
+                ds = content.data_streams[ds_name]
         else:
-            if len(content.checklists) == 1:
-                checklist = content.checklists.values()[0].resolve()
+            if len(content.data_streams) == 1:
+                ds = content.data_streams.values()[0]
             else:
-                logger.critical('No --checklist specified and unable to implicitly choose one. Available checklists: ' + str(content.checklists.keys()))
+                logger.critical('No --data_stream specified and unable to implicitly choose one. Available data-streams: ' + str(content.data_streams.keys()))
                 import sys
                 sys.exit()
-        logger.info('Selecting checklist ' + checklist.id)
+        logger.info('Selecting data stream ' + ds.id)
 
-        self.checklist_checker = Checker.load(host, checklist, args)
+        # have to set the selected data stream so references resolve properly
+        content.selected_data_stream = ds.id
+
+        self.ds_checker = Checker.load(host, ds, args)
 
     def check(self):
-        return self.checklist_checker.check()
+        return self.ds_checker.check()

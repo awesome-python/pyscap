@@ -15,15 +15,12 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.Checker import Checker
+import scap.checker.oval_defs_5.TestType
 import logging
 
 logger = logging.getLogger(__name__)
-class definition(Checker):
-    def __init__(self, host, content, args=None):
-        super(definition, self).__init__(host, content, args)
-
-        self.checker = Checker.load(host, content.criteria, args)
-
+class TestType(scap.checker.oval_defs_5.TestType.TestType):
     def check(self):
-        return self.checker.check()
+        if self.host.facts['oval_family'] != 'windows':
+            return 'not applicable'
+        return super(TestType, self).check()

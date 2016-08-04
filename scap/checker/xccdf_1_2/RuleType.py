@@ -19,9 +19,9 @@ from scap.Checker import Checker
 import logging
 
 logger = logging.getLogger(__name__)
-class Rule(Checker):
+class RuleType(Checker):
     def __init__(self, host, content, args=None):
-        super(Rule, self).__init__(host, content, args)
+        super(RuleType, self).__init__(host, content, args)
 
         if args['check_selector'] not in content.checks:
             logger.critical('Check selector ' + args['check_selector'] + ' not found for rule ' + content.id)
@@ -32,8 +32,9 @@ class Rule(Checker):
         self.checker = None
         try:
             self.checker = Checker.load(host, check, args)
-        except ImportError:
-            logger.warning('Unknown check type ' + check.__class__.__name__ + ' for rule ' + content.id)
+        except ImportError, e:
+            import traceback
+            logger.warning('Could not load checker for check ' + check.__class__.__name__ + ' for rule ' + content.id + ': ' + str(e) + ':\n' + traceback.format_exc())
 
     def check(self):
         try:

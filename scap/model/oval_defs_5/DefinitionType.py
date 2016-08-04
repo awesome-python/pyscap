@@ -19,13 +19,13 @@ from scap.Model import Model
 import logging
 
 logger = logging.getLogger(__name__)
-class DefintionType(Model):
+class DefinitionType(Model):
     TAG_MAP = {
         '{http://oval.mitre.org/XMLSchema/oval-definitions-5}criteria': {'class': 'CriteriaType'},
     }
 
     def __init__(self):
-        super(DefintionType, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5}definition
+        super(DefinitionType, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5}definition
 
         self.criteria = None
 
@@ -49,12 +49,12 @@ class DefintionType(Model):
         if name == 'deprecated':
             logger.warning('Using deprecated definition ' + self.id)
         else:
-            return super(DefintionType, self).parse_attribute(name, value)
+            return super(DefinitionType, self).parse_attribute(name, value)
         return True
 
     def parse_sub_el(self, sub_el):
         if sub_el.tag == '{http://oval.mitre.org/XMLSchema/oval-definitions-5}criteria':
             self.criteria = Model.load(self, sub_el)
         else:
-            return super(DefintionType, self).parse_sub_el(sub_el)
+            return super(DefinitionType, self).parse_sub_el(sub_el)
         return True

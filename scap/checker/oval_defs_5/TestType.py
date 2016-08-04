@@ -19,9 +19,9 @@ from scap.Checker import Checker
 import logging
 
 logger = logging.getLogger(__name__)
-class Test(Checker):
+class TestType(Checker):
     def __init__(self, host, content, args=None):
-        super(Test, self).__init__(host, content, args)
+        super(TestType, self).__init__(host, content, args)
 
         self.object = content.resolve_object()
         self.states = content.resolve_states()

@@ -19,31 +19,28 @@ from scap.Checker import Checker
 import logging
 
 logger = logging.getLogger(__name__)
-class data_stream_collection(Checker):
+class BenchmarkType(Checker):
     def __init__(self, host, content, args=None):
-        super(data_stream_collection, self).__init__(host, content, args)
+        super(BenchmarkType, self).__init__(host, content, args)
 
-        if 'data_stream' in args:
-            ds_name = args['data_stream']
-            if ds_name not in content.data_streams:
-                logger.critical('Specified --data_stream, ' + ds_name + ', not found in content. Available data streams: ' + str(content.data_streams.keys()))
+        if 'profile' in args:
+            profile_id = args['profile']
+            if profile_id not in content.profiles:
+                logger.critical('Specified --profile, ' + profile_id + ', not found in content. Available profiles: ' + str(content.profiles.keys()))
                 import sys
                 sys.exit()
             else:
-                ds = content.data_streams[ds_name]
+                profile = content.profiles[profile_id]
         else:
-            if len(content.data_streams) == 1:
-                ds = content.data_streams.values()[0]
+            if len(content.profiles) == 1:
+                profile = content.profiles.values()[0]
             else:
-                logger.critical('No --data_stream specified and unable to implicitly choose one. Available data-streams: ' + str(content.data_streams.keys()))
+                logger.critical('No --profile specified and unable to implicitly choose one. Available profiles: ' + str(content.profiles.keys()))
                 import sys
                 sys.exit()
-        logger.info('Selecting data stream ' + ds.id)
+        logger.info('Selecting profile ' + profile.id)
 
-        # have to set the selected data stream so references resolve properly
-        content.selected_data_stream = ds.id
-
-        self.ds_checker = Checker.load(host, ds, args)
+        self.profile_checker = Checker.load(host, profile, args)
 
     def check(self):
-        return self.ds_checker.check()
+        return self.profile_checker.check()

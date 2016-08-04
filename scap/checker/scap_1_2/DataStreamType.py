@@ -19,28 +19,28 @@ from scap.Checker import Checker
 import logging
 
 logger = logging.getLogger(__name__)
-class Benchmark(Checker):
+class DataStreamType(Checker):
     def __init__(self, host, content, args=None):
-        super(Benchmark, self).__init__(host, content, args)
+        super(DataStreamType, self).__init__(host, content, args)
 
-        if 'profile' in args:
-            profile_id = args['profile']
-            if profile_id not in content.profiles:
-                logger.critical('Specified --profile, ' + profile_id + ', not found in content. Available profiles: ' + str(content.profiles.keys()))
+        if 'checklist' in args:
+            checklist_id = args[checklist]
+            if checklist_id not in content.checklists:
+                logger.critical('Specified --checklist, ' + checklist_id + ', not found in content. Available checklists: ' + str(content.checklists.keys()))
                 import sys
                 sys.exit()
             else:
-                profile = content.profiles[profile_id]
+                checklist = content.checklists[checklist_id].resolve()
         else:
-            if len(content.profiles) == 1:
-                profile = content.profiles.values()[0]
+            if len(content.checklists) == 1:
+                checklist = content.checklists.values()[0].resolve()
             else:
-                logger.critical('No --profile specified and unable to implicitly choose one. Available profiles: ' + str(content.profiles.keys()))
+                logger.critical('No --checklist specified and unable to implicitly choose one. Available checklists: ' + str(content.checklists.keys()))
                 import sys
                 sys.exit()
-        logger.info('Selecting profile ' + profile.id)
+        logger.info('Selecting checklist ' + checklist.id)
 
-        self.profile_checker = Checker.load(host, profile, args)
+        self.checklist_checker = Checker.load(host, checklist, args)
 
     def check(self):
-        return self.profile_checker.check()
+        return self.checklist_checker.check()

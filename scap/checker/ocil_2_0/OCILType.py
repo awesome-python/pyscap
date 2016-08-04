@@ -15,9 +15,9 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.checker.oval_defs_5_windows.Test import Test
+from scap.Checker import Checker
 import logging
 
 logger = logging.getLogger(__name__)
-class registry_test(Test):
+class OCILType(Checker):
     pass

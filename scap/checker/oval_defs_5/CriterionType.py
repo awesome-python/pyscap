@@ -19,33 +19,22 @@ from scap.Checker import Checker
 import logging
 
 logger = logging.getLogger(__name__)
-class criteria(Checker):
+class CriterionType(Checker):
     def __init__(self, host, content, args=None):
-        super(criteria, self).__init__(host, content, args)
+        super(CriterionType, self).__init__(host, content, args)
 
-        self.checkers = []
-        for crit in content.criteria:
-            self.checkers.append(Checker.load(host, crit, args))
+        test = content.resolve()
+        try:
+            self.checker = Checker.load(host, test, args)
+        except ImportError:
+            raise NotImplementedError('Test checker type scap.checker.' + test.model_namespace + '.' \
+                + test.__class__.__name__ + ' has not been implemented')
 
     def check(self):
-        result = None
-
         # TODO applicability_check?
-
-        results = []
-        for checker in self.checkers:
-            results.append(checker.check())
+        result = self.checker.check()
 
         from scap.model.oval_common_5 import OperatorEnumeration
-        if self.content.operator == 'AND':
-            result = OperatorEnumeration.AND(results)
-        elif self.content.operator == 'ONE':
-            result = OperatorEnumeration.ONE(results)
-        elif self.content.operator == 'OR':
-            result = OperatorEnumeration.OR(results)
-        elif self.content.operator == 'XOR':
-            result = OperatorEnumeration.XOR(results)
-
         if self.content.negate:
             return OperatorEnumeration.negate(result)
         else:

@@ -15,9 +15,17 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.checker.oval_defs_5_windows.Test import Test
+from scap.Checker import Checker
 import logging
 
 logger = logging.getLogger(__name__)
-class wuaupdatesearcher_test(Test):
-    pass
+class QuestionnaireType(Checker):
+    def __init__(self, host, content, args=None):
+        super(QuestionnaireType, self).__init__(host, content, args)
+
+        #self.checker = Checker.load(host, content.criteria, args)
+
+    def check(self):
+        print self.content.title
+        print self.content.description
+        return 'NOT_TESTED'

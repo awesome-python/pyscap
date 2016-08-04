@@ -76,7 +76,16 @@ class CheckType(Model):
                 # looking for a definition
                 return content.definitions[self.check_content_name]
         elif self.system == 'http://scap.nist.gov/schema/ocil/2' or self.system == 'http://scap.nist.gov/schema/ocil/2.0':
-            return content
+            if self.check_content_name is None:
+                return content
+            else:
+                logger.debug('Looking in ocil content "' + content.document.title + '" for ' + self.check_content_name)
+                id_parts = self.check_content_name.split(':')
+                if id_parts[2] == 'questionnaire':
+                    # looking for a questionnaire
+                    return content.questionnaires[self.check_content_name]
+                else:
+                    raise NotImplementedError('Checking of OCIL ' + id_parts[2] + ' content is not implemented')
         else:
             print str(content)
             raise NotImplementedError('Check system not implemented ' + self.system)

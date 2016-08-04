@@ -19,31 +19,34 @@ from scap.Checker import Checker
 import logging
 
 logger = logging.getLogger(__name__)
-class complex_check(Checker):
+class CheckType(Checker):
     def __init__(self, host, content, args=None):
-        super(complex_check, self).__init__(host, content, args)
+        super(CheckType, self).__init__(host, content, args)
 
         self.checkers = []
-        for check in content.checks:
-            self.checkers.append(Checker.load(host, check, args))
+        content = self.content.resolve()
+        if isinstance(content, list):
+            for defn in content:
+                self.checkers.append(Checker.load(host, defn, args))
+        else:
+            self.checkers.append(Checker.load(host, content, args))
 
     def check(self):
-        from scap.model.xccdf_1_2 import OperatorsEnumeration
+        # TODO: multi-check
+
+        from scap.model.xccdf_1_2 import CheckOperatorEnumeration
         results = []
         for checker in self.checkers:
             if checker.content.model_namespace.startswith('oval'):
-                results.append(OperatorsEnumeration.oval_translate(checker.check()))
+                results.append(CheckOperatorEnumeration.oval_translate(checker.check()))
+            elif checker.content.model_namespace.startswith('ocil'):
+                results.append(CheckOperatorEnumeration.ocil_translate(checker.check()))
             else:
                 raise NotImplementedError('Unknown model namespace: ' + checker.content.model_namespace)
 
-        if self.content.operator == 'AND':
-            result = OperatorsEnumeration.AND(results)
-        elif self.content.operator == 'OR':
-            result = OperatorsEnumeration.OR(results)
-        else:
-            raise NotImplementedError('Unknown complex_check operator: ' + self.content.operator)
+        result = CheckOperatorEnumeration.AND(results)
 
         if self.content.negate:
-            return OperatorsEnumeration.negate(result)
+            return CheckOperatorEnumeration.negate(result)
         else:
             return result

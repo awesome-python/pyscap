@@ -23,7 +23,7 @@ class Checker(object):
     def load(host, content, args=None):
         collector_module = 'scap.checker.' + content.model_namespace + '.' + content.__class__.__name__
         # try to load the collector's module
-        import sys
+        import sys, importlib
         if collector_module not in sys.modules:
             logger.debug('Loading module ' + collector_module)
             import importlib
@@ -36,7 +36,8 @@ class Checker(object):
             mod = sys.modules[collector_module]
 
         # instantiate an instance of the class & load it
-        inst = eval('mod.' + content.__class__.__name__ + '(host, content, args)')
+        class_ = getattr(mod, content.__class__.__name__)
+        inst = class_(host, content, args)
 
         return inst
 

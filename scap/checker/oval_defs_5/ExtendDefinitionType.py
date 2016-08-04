@@ -19,32 +19,18 @@ from scap.Checker import Checker
 import logging
 
 logger = logging.getLogger(__name__)
-class check(Checker):
+class ExtendDefinitionType(Checker):
     def __init__(self, host, content, args=None):
-        super(check, self).__init__(host, content, args)
+        super(ExtendDefinitionType, self).__init__(host, content, args)
 
-        self.checkers = []
-        content = self.content.resolve()
-        if isinstance(content, list):
-            for defn in content:
-                self.checkers.append(Checker.load(host, defn, args))
-        else:
-            self.checkers.append(Checker.load(host, content, args))
+        self.checker = Checker.load(host, content.resolve(), args)
 
     def check(self):
-        # TODO: multi-check
+        # TODO applicability_check?
 
-        from scap.model.xccdf_1_2 import OperatorsEnumeration
-        results = []
-        for checker in self.checkers:
-            if checker.content.model_namespace.startswith('oval'):
-                results.append(OperatorsEnumeration.oval_translate(checker.check()))
-            else:
-                raise NotImplementedError('Unknown model namespace: ' + checker.content.model_namespace)
-
-        result = OperatorsEnumeration.AND(results)
-
+        result = self.checker.check()
+        from scap.model.oval_common_5 import OperatorEnumeration
         if self.content.negate:
-            return OperatorsEnumeration.negate(result)
+            return OperatorEnumeration.negate(result)
         else:
             return result
