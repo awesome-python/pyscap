@@ -15,14 +15,45 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.model.ai_1_1.ITAsset import ITAsset
+from scap.model.ai_1_1.ITAssetType import ITAssetType
 import logging
 import xml.etree.ElementTree as ET
 
 logger = logging.getLogger(__name__)
-class computing_device(ITAsset):
+class ComputingDeviceType(ITAssetType):
+    TAG_MAP = {
+        '{http://scap.nist.gov/schema/asset-identification/1.1}distinguished-name': {
+            'class': 'scap.model.xs.Token',
+            'attributes': {
+                'source': {'class': 'SourceType'},
+                'timestamp': {'class': 'TimestampType'},
+            }
+        },
+        '{http://scap.nist.gov/schema/asset-identification/1.1}cpe': {'class': 'scap.model.xs.String'},
+        '{http://scap.nist.gov/schema/asset-identification/1.1}connections': {
+            'class': 'scap.model.List',
+            'items': {
+                '{http://scap.nist.gov/schema/asset-identification/1.1}connection': {'class': 'NetworkInterfaceType'}
+            }
+        },
+        '{http://scap.nist.gov/schema/asset-identification/1.1}fqdn': {'class': 'FQDNType'},
+        '{http://scap.nist.gov/schema/asset-identification/1.1}hostname': {
+            'class': 'HostnameType',
+            'attributes': {
+                'source': {'class': 'SourceType'},
+                'timestamp': {'class': 'TimestampType'},
+            }
+        },
+        '{http://scap.nist.gov/schema/asset-identification/1.1}motherboard-guid': {
+            'class': 'scap.model.xs.String',
+            'attributes': {
+                'source': {'class': 'SourceType'},
+                'timestamp': {'class': 'TimestampType'},
+            }
+        },
+    }
     def __init__(self):
-        super(computing_device, self).__init__('{http://scap.nist.gov/schema/asset-identification/1.1}computing-device')    #
+        super(ComputingDeviceType, self).__init__('{http://scap.nist.gov/schema/asset-identification/1.1}computing-device')    #
 
         self.distinguished_name = None
         self.cpes = []
@@ -32,7 +63,7 @@ class computing_device(ITAsset):
         self.motherboard_guid = None
 
     def get_sub_elements(self):
-        sub_els = super(computing_device, self).get_sub_elements()
+        sub_els = super(ComputingDeviceType, self).get_sub_elements()
 
         if self.distinguished_name is not None:
             sub_els.append(self.get_text_element('{http://scap.nist.gov/schema/asset-identification/1.1}distinguished-name', self.distinguished_name))

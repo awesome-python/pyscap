@@ -15,11 +15,11 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.model.ai_1_1.ITAsset import ITAsset
+from scap.Model import Model
 import logging
 import xml.etree.ElementTree as ET
 
 logger = logging.getLogger(__name__)
-class website(ITAsset):
+class LocationPointType(Model):
     def __init__(self):
-        super(website, self).__init__('{http://scap.nist.gov/schema/asset-identification/1.1}website')    #
+        super(LocationPointType, self).__init__('{http://scap.nist.gov/schema/asset-identification/1.1}location-point')    #

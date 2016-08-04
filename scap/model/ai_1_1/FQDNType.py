@@ -15,11 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.model.ai_1_1.AI import AI
-import logging
-import xml.etree.ElementTree as ET
+from scap.Model import Model
 
-logger = logging.getLogger(__name__)
-class host(AI):
-    def __init__(self):
-        super(host, self).__init__('{http://scap.nist.gov/schema/asset-identification/1.1}host')    #
+class FQDNType(Model):
+    pass

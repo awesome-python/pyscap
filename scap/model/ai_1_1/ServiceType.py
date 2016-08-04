@@ -15,14 +15,14 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.model.ai_1_1.ITAsset import ITAsset
+from scap.model.ai_1_1.ITAssetType import ITAssetType
 import logging
 import xml.etree.ElementTree as ET
 
 logger = logging.getLogger(__name__)
-class service(ITAsset):
+class ServiceType(ITAssetType):
     def __init__(self):
-        super(service, self).__init__('{http://scap.nist.gov/schema/asset-identification/1.1}service')    #
+        super(ServiceType, self).__init__('{http://scap.nist.gov/schema/asset-identification/1.1}service')    #
 
         self.host = None
         self.ports = []
@@ -30,7 +30,7 @@ class service(ITAsset):
         self.protocol = None
 
     def get_sub_elements(self):
-        sub_els = super(Service, self).get_sub_elements()
+        sub_els = super(ServiceType, self).get_sub_elements()
 
         if self.host is not None:
             sub_els.append(self.host.to_xml())

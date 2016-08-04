@@ -15,13 +15,11 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.model.ai_1_1.ITAsset import ITAsset
+from scap.model.ai_1_1.ITAssetType import ITAssetType
 import logging
 import xml.etree.ElementTree as ET
 
 logger = logging.getLogger(__name__)
-class software(ITAsset):
+class WebsiteType(ITAssetType):
     def __init__(self):
-        super(software, self).__init__('{http://scap.nist.gov/schema/asset-identification/1.1}software')    #
-
-        self.licenses = []
+        super(WebsiteType, self).__init__('{http://scap.nist.gov/schema/asset-identification/1.1}website')    #

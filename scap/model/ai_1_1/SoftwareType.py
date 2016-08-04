@@ -15,26 +15,13 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.Model import Model
+from scap.model.ai_1_1.ITAssetType import ITAssetType
 import logging
 import xml.etree.ElementTree as ET
 
 logger = logging.getLogger(__name__)
-class AI(Model):
-    def __init__(self, tag=None):
-        super(AI, self).__init__(tag)
+class SoftwareType(ITAssetType):
+    def __init__(self):
+        super(SoftwareType, self).__init__('{http://scap.nist.gov/schema/asset-identification/1.1}software')    #
 
-        # attribs
-        self.timestamp = None
-        self.source = None
-
-    def get_attributes(self):
-        attribs = super(AI, self).get_attributes()
-
-        if self.timestamp is not None:
-            attribs['timestamp'] = self.timestamp
-
-        if self.source is not None:
-            attribs['source'] = self.source
-
-        return attribs
+        self.licenses = []

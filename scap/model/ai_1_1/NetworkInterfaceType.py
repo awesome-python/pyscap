@@ -15,14 +15,14 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.model.ai_1_1.AI import AI
+from scap.Model import Model
 import logging
 import xml.etree.ElementTree as ET
 
 logger = logging.getLogger(__name__)
-class connection(AI):
+class NetworkInterfaceType(Model):
     def __init__(self):
-        super(connection, self).__init__('{http://scap.nist.gov/schema/asset-identification/1.1}connection')    #
+        super(NetworkInterfaceType, self).__init__('{http://scap.nist.gov/schema/asset-identification/1.1}connection')    #
 
         self.ip_address = None
         self.mac_address = None
@@ -31,7 +31,7 @@ class connection(AI):
         self.default_route = None
 
     def get_sub_elements(self):
-        sub_els = super(connection, self).get_sub_elements()
+        sub_els = super(NetworkInterfaceType, self).get_sub_elements()
 
         if self.ip_address is not None:
             sub_els.append(self.get_text_element('{http://scap.nist.gov/schema/asset-identification/1.1}ip-address', self.ip_address))

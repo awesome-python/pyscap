@@ -15,11 +15,15 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.model.ai_1_1.AI import AI
+from scap.Model import Model
 import logging
 import xml.etree.ElementTree as ET
 
 logger = logging.getLogger(__name__)
-class location_point(AI):
+class IPNetRangeType(Model):
+    TAG_MAP = {
+        '{http://scap.nist.gov/schema/asset-identification/1.1}ip-net-range-start': {'class': 'IPAddressType'},
+        '{http://scap.nist.gov/schema/asset-identification/1.1}ip-net-range-end': {'class': 'IPAddressType'},
+    }
     def __init__(self):
-        super(location_point, self).__init__('{http://scap.nist.gov/schema/asset-identification/1.1}location-point')    #
+        super(IPNetRange, self).__init__('{http://scap.nist.gov/schema/asset-identification/1.1}ip-net-range')    #

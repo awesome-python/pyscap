@@ -15,7 +15,11 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-TAG-MAP = {
-    '{http://scap.nist.gov/schema/asset-identification/1.1}asset-related': {'class': 'AssetIdentificationType'},
-    '{http://scap.nist.gov/schema/asset-identification/1.1}assets': {'class': 'AssetsType'},
-}
+from scap.Model import Model
+import logging
+import xml.etree.ElementTree as ET
+
+logger = logging.getLogger(__name__)
+class SyntheticIDType(Model):
+    def __init__(self):
+        super(SyntheticIDType, self).__init__('{http://scap.nist.gov/schema/asset-identification/1.1}synthetic-id')    #

@@ -15,21 +15,32 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.model.ai_1_1.AI import AI
+from scap.Model import Model
 import logging
 import xml.etree.ElementTree as ET
 
 logger = logging.getLogger(__name__)
-class Asset(AI):
+class AssetType(Model):
+    ATTRIBUTE_MAP = {
+        'timestamp': {'class': 'TimestampType'}
+    }
+    TAG_MAP = {
+        '{http://scap.nist.gov/schema/asset-identification/1.1}synthetic-id': {'class': 'SyntheticIDType'},
+        '{http://scap.nist.gov/schema/asset-identification/1.1}location-point': {'class': 'LocationPointType'},
+        '{http://scap.nist.gov/schema/asset-identification/1.1}location-region': {'class': 'LocationRegionType'},
+        '{http://scap.nist.gov/schema/asset-identification/1.1}extended-information': {'class': 'ExtendedInformationType'},
+    }
+
+    # abstract
     def __init__(self, tag=None):
-        super(Asset, self).__init__(tag)
+        super(AssetType, self).__init__(tag)
 
         self.synthetic_ids = []
         self.locations = []
         self.extended_information = []
 
     def get_sub_elements(self):
-        sub_els = super(Asset, self).get_sub_elements()
+        sub_els = super(AssetType, self).get_sub_elements()
 
         for sid in self.synthetic_ids:
             sub_els.append(sid.to_xml())
