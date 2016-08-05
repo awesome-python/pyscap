@@ -15,24 +15,17 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.model.xccdf_1_2.ItemType import ItemType
+from scap.model.xs.String import String
 import logging
 
 logger = logging.getLogger(__name__)
-class SelectableItemType(ItemType):
+class ProfileSetComplexValueType(String):
     ATTRIBUTE_MAP = {
-        'selected': {'type': 'Boolean'},
-        'weight': {'type': 'Float'},
+        'idref': {'required': True},
     }
     TAG_MAP = {
-        '{http://checklists.nist.gov/xccdf/1.2}rationale': {'ignore': True},
-        '{http://checklists.nist.gov/xccdf/1.2}platform': {'ignore': True},
-        '{http://checklists.nist.gov/xccdf/1.2}requires': {'ignore': True},
-        '{http://checklists.nist.gov/xccdf/1.2}conflicts': {'ignore': True},
     }
-    # abstract
     def __init__(self):
-        super(SelectableItemType, self).__init__()
+        super(ProfileSetComplexValueType, self).__init__()
 
-        self.selected = True
-        self.weight = 1.0
+        self.idref = None

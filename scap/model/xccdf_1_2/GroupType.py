@@ -21,10 +21,14 @@ import logging
 
 logger = logging.getLogger(__name__)
 class GroupType(SelectableItemType):
+    ATTRIBUTE_MAP = {
+        'id': {'required': True},
+    }
     TAG_MAP = {
-        '{http://checklists.nist.gov/xccdf/1.2}Value': {'class': 'ValueType'},
-        '{http://checklists.nist.gov/xccdf/1.2}Group': {'class': 'GroupType'},
-        '{http://checklists.nist.gov/xccdf/1.2}Rule': {'class': 'RuleType'},
+        '{http://checklists.nist.gov/xccdf/1.2}Value': {'class': 'ValueType', 'map': 'values'},
+        '{http://checklists.nist.gov/xccdf/1.2}Group': {'class': 'GroupType', 'map': 'groups'},
+        '{http://checklists.nist.gov/xccdf/1.2}Rule': {'class': 'RuleType', 'map': 'rules'},
+        '{http://checklists.nist.gov/xccdf/1.2}signature': {'ignore': True},
     }
 
     def __init__(self):
@@ -32,33 +36,3 @@ class GroupType(SelectableItemType):
         self.values = {}
         self.rules = {}
         self.groups = {}
-
-        self.required_attributes.append('id')
-        self.ignore_sub_elements.extend([
-            '{http://checklists.nist.gov/xccdf/1.2}signature',
-        ])
-
-    def parse_element(self, sub_el):
-        if sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}Value':
-            self.values[sub_el.attrib['id']] = Model.load(self, sub_el)
-        elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}Group':
-            g = Model.load(self, sub_el)
-            self.groups[sub_el.attrib['id']] = g
-        elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}Rule':
-            r = Model.load(self, sub_el)
-            self.rules[sub_el.attrib['id']] = r
-        else:
-            return super(GroupType, self).parse_element(sub_el)
-        return True
-
-    def get_values(self):
-        values = self.values.copy()
-        for g in self.groups.values():
-            values.update(g.get_values())
-        return values
-
-    def get_rules(self):
-        rules = self.rules.copy()
-        for g in self.groups.values():
-            rules.update(g.get_rules())
-        return rules

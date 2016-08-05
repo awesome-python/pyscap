@@ -27,9 +27,9 @@ class DataStreamType(Model):
         'timestamp': {'required': True, 'ignore': True},
     }
     TAG_MAP = {
-        '{http://scap.nist.gov/schema/scap/source/1.2}dictionaries': { 'class': 'scap.model.Dictionary' },
-        '{http://scap.nist.gov/schema/scap/source/1.2}checklists': { 'class': 'scap.model.Dictionary' },
-        '{http://scap.nist.gov/schema/scap/source/1.2}checks': { 'class': 'scap.model.Dictionary' },
+        '{http://scap.nist.gov/schema/scap/source/1.2}dictionaries': { 'dictionary': True },
+        '{http://scap.nist.gov/schema/scap/source/1.2}checklists': { 'dictionary': True },
+        '{http://scap.nist.gov/schema/scap/source/1.2}checks': { 'dictionary': True },
         '{http://scap.nist.gov/schema/scap/source/1.2}extended-components': {'ignore': True},
 
         '{http://scap.nist.gov/schema/scap/source/1.2}component-ref': {'class': 'ComponentRefType'},
@@ -40,7 +40,7 @@ class DataStreamType(Model):
         self.dictionaries = {}
         self.checklists = {}
         self.checks = {}
-        
+
         self.selected_checklist = None
 
     def resolve_reference(self, ref):

@@ -20,35 +20,33 @@ import logging
 
 logger = logging.getLogger(__name__)
 class ItemType(Model):
+    ATTRIBUTE_MAP = {
+        'abstract': {'ignore': True},
+        'cluster-id': {'ignore': True},
+        'extends': {'ignore': True},
+        'hidden': {'ignore': True},
+        'prohibitChanges': {'ignore': True},
+        'Id': {'ignore': True},
+    }
+    TAG_MAP = {
+        '{http://checklists.nist.gov/xccdf/1.2}status': {'ignore': True},
+        '{http://checklists.nist.gov/xccdf/1.2}dc-status': {'ignore': True},
+        '{http://checklists.nist.gov/xccdf/1.2}version': {'ignore': True},
+        '{http://checklists.nist.gov/xccdf/1.2}title': {'ignore': True},
+        '{http://checklists.nist.gov/xccdf/1.2}description': {'ignore': True},
+        '{http://checklists.nist.gov/xccdf/1.2}warning': {'type': 'String', 'append': 'warnings'},
+        '{http://checklists.nist.gov/xccdf/1.2}question': {'ignore': True},
+        '{http://checklists.nist.gov/xccdf/1.2}reference': {'ignore': True},
+        '{http://checklists.nist.gov/xccdf/1.2}metadata': {'ignore': True},
+    }
     # abstract
     def __init__(self):
         super(ItemType, self).__init__()
 
-        self.ignore_attributes.extend([
-            'abstract',
-            'cluster-id',
-            'extends',
-            'hidden',
-            'prohibitChanges',
-            'Id',
-        ])
-        self.ignore_sub_elements.extend([
-            '{http://checklists.nist.gov/xccdf/1.2}status',
-            '{http://purl.org/dc/elements/1.1/}dc-status',
-            '{http://checklists.nist.gov/xccdf/1.2}version',
-            '{http://checklists.nist.gov/xccdf/1.2}title',
-            '{http://checklists.nist.gov/xccdf/1.2}description',
-            '{http://checklists.nist.gov/xccdf/1.2}question',
-            '{http://checklists.nist.gov/xccdf/1.2}reference',
-            '{http://checklists.nist.gov/xccdf/1.2}metadata',
-        ])
+        self.warnings = []
 
-    def parse_element(self, sub_el):
-        if sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}warning':
-            if 'category' in sub_el.attrib:
-                logger.warning('Item ' + sub_el.attrib['category'] + ' warning: ' + sub_el.text)
-            else:
-                logger.warning(sub_el.text)
-        else:
-            return super(ItemType, self).parse_element(sub_el)
-        return True
+    def from_xml(self, parent, el):
+        super(ItemType, self).from_xml(parent, el)
+
+        for warning in self.warnings:
+            logger.warning('Warning:\n' + warning)

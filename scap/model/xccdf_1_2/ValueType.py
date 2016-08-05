@@ -20,52 +20,54 @@ import logging
 
 logger = logging.getLogger(__name__)
 class ValueType(ItemType):
+    ATTRIBUTE_MAP = {
+        'id': {'required': True},
+        'type': {},
+        'operator': {},
+        'interactive': {'ignore': True},
+        'interfaceHint': {'ignore': True},
+    }
+    TAG_MAP = {
+        '{http://checklists.nist.gov/xccdf/1.2}value': {'type': 'String', 'map': 'values', 'key': 'selector'},
+        '{http://checklists.nist.gov/xccdf/1.2}complex-value': {'notImplemented': True},
+        '{http://checklists.nist.gov/xccdf/1.2}default': {'ignore': True},
+        '{http://checklists.nist.gov/xccdf/1.2}complex-default': {'notImplemented': True},
+        '{http://checklists.nist.gov/xccdf/1.2}match': {'ignore': True},
+        '{http://checklists.nist.gov/xccdf/1.2}lower-bound': {'ignore': True},
+        '{http://checklists.nist.gov/xccdf/1.2}upper-bound': {'ignore': True},
+        '{http://checklists.nist.gov/xccdf/1.2}choices': {'ignore': True},
+        '{http://checklists.nist.gov/xccdf/1.2}source': {'ignore': True},
+        '{http://checklists.nist.gov/xccdf/1.2}signature': {'ignore': True},
+    }
     def __init__(self):
         super(ValueType, self).__init__()
-        self.selectors = {}
+        self.values = {}
         self.type = 'string'
         self.operator = 'equals'
 
-        self.ignore_attributes.extend([
-            'interactive',
-            'interfaceHint',
-        ])
-
-        self.ignore_sub_elements.extend([
-            '{http://checklists.nist.gov/xccdf/1.2}complex-value',
-            '{http://checklists.nist.gov/xccdf/1.2}default',
-            '{http://checklists.nist.gov/xccdf/1.2}complex-default',
-            '{http://checklists.nist.gov/xccdf/1.2}match',
-            '{http://checklists.nist.gov/xccdf/1.2}lower-bound',
-            '{http://checklists.nist.gov/xccdf/1.2}upper-bound',
-            '{http://checklists.nist.gov/xccdf/1.2}choices',
-            '{http://checklists.nist.gov/xccdf/1.2}source',
-            '{http://checklists.nist.gov/xccdf/1.2}signature',
-        ])
-
-    def parse_attribute(self, name, value):
-        if name == 'type':
-            self.type = value
-        elif name == 'operator':
-            self.operator = value
-        else:
-            return super(ValueType, self).parse_attribute(name, value)
-        return True
-
-    def parse_element(self, sub_el):
-        if sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}value':
-            if 'selector' in sub_el.attrib:
-                logger.debug('Selector value of ' + self.id + ' ' + sub_el.attrib['selector'] + ' = ' + str(sub_el.text))
-                if sub_el.text is None:
-                    self.selectors[sub_el.attrib['selector']] = ''
-                else:
-                    self.selectors[sub_el.attrib['selector']] = sub_el.text
-            else:
-                logger.debug('Default value of ' + self.id + ' is ' + str(sub_el.text))
-                if sub_el.text is None:
-                    self.selectors[None] = ''
-                else:
-                    self.selectors[None] = sub_el.text
-        else:
-            return super(ValueType, self).parse_element(sub_el)
-        return True
+    # def parse_attribute(self, name, value):
+    #     if name == 'type':
+    #         self.type = value
+    #     elif name == 'operator':
+    #         self.operator = value
+    #     else:
+    #         return super(ValueType, self).parse_attribute(name, value)
+    #     return True
+    #
+    # def parse_element(self, sub_el):
+    #     if sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}value':
+    #         if 'selector' in sub_el.attrib:
+    #             logger.debug('Selector value of ' + self.id + ' ' + sub_el.attrib['selector'] + ' = ' + str(sub_el.text))
+    #             if sub_el.text is None:
+    #                 self.selectors[sub_el.attrib['selector']] = ''
+    #             else:
+    #                 self.selectors[sub_el.attrib['selector']] = sub_el.text
+    #         else:
+    #             logger.debug('Default value of ' + self.id + ' is ' + str(sub_el.text))
+    #             if sub_el.text is None:
+    #                 self.selectors[None] = ''
+    #             else:
+    #                 self.selectors[None] = sub_el.text
+    #     else:
+    #         return super(ValueType, self).parse_element(sub_el)
+    #     return True

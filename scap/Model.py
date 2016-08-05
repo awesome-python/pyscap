@@ -175,6 +175,8 @@ class Model(object):
         self.parent = parent
         self.element = el
 
+        logger.debug('Parsing ' + el.tag + ' element into ' + self.__class__.__name__ + ' class')
+
         if self.xml_namespace is None or self.model_namespace is None or self.tag_name is None:
             self.xml_namespace, self.model_namespace, self.tag_name = Model.parse_tag(el.tag)
 
@@ -241,35 +243,52 @@ class Model(object):
             if tag in self.tag_map:
                 if 'ignore' in self.tag_map[tag] and self.tag_map[tag]['ignore']:
                     return True
+                if 'notImplemented' in self.tag_map[tag] and self.tag_map[tag]['notImplemented']:
+                    raise NotImplementedError(tag + ' support is not implemented')
 
                 if 'append' in self.tag_map[tag]:
                     #from scap.model.List import List
                     lst = getattr(self, self.tag_map[tag]['append'])
                     if 'type' in self.tag_map[tag]:
                         type_ = self.tag_map[tag]['type']
-                        import scap.model.xs
-                        if type_ in scap.model.xs:
-                            lst.append(type_().parse_value(el))
-                        else:
+                        try:
+                            import importlib
+                            mod = importlib.import_module('scap.model.xs.' + type_)
+                        except ImportError:
                             raise NotImplementedError('Type value ' + type_ + ' not defined in scap.model.xs')
+                        class_ = getattr(mod, type_)
+                        value = class_().parse_value(el)
+                        lst.append(value)
+                        logger.debug('Appended "' + value + '" to ' + self.tag_map[tag]['append'])
                     else:
                         lst.append(Model.load(self, el))
-                    logger.debug('Appended ' + el.tag + ' to ' + self.tag_map[tag]['append'])
-                    return True
-
-                if 'map' in self.tag_map[tag]:
+                        logger.debug('Appended ' + el.tag + ' to ' + self.tag_map[tag]['append'])
+                elif 'map' in self.tag_map[tag]:
                     #from scap.model.List import List
                     dic = getattr(self, self.tag_map[tag]['map'])
                     if 'key' in self.tag_map[tag]:
-                        key = el.attrib[self.tag_map[tag]['key']]
+                        try:
+                            key = el.attrib[self.tag_map[tag]['key']]
+                        except KeyError:
+                            key = None
                     # TODO: implement keyElement as well
                     else:
                         key = el.attrib['id']
-                    dic[key] = Model.load(self, el)
-                    logger.debug('Mapped ' + key + ' to ' + el.tag + ' in ' + self.tag_map[tag]['map'])
-                    return True
-
-                if 'class' in self.tag_map[tag] and self.tag_map[tag]['class'] == 'scap.model.List':
+                    if 'type' in self.tag_map[tag]:
+                        type_ = self.tag_map[tag]['type']
+                        try:
+                            import importlib
+                            mod = importlib.import_module('scap.model.xs.' + type_)
+                        except ImportError:
+                            raise NotImplementedError('Type value ' + type_ + ' not defined in scap.model.xs')
+                        class_ = getattr(mod, type_)
+                        value = class_().parse_value(el)
+                        dic[key] = value
+                        logger.debug('Mapped ' + str(key) + ' to ' + str(value) + ' in ' + self.tag_map[tag]['map'])
+                    else:
+                        dic[key] = Model.load(self, el)
+                        logger.debug('Mapped ' + key + ' to ' + el.tag + ' in ' + self.tag_map[tag]['map'])
+                elif 'list' in self.tag_map[tag] and self.tag_map[tag]['list']:
                     #from scap.model.List import List
                     if 'in' in self.tag_map[tag]:
                         lst = getattr(self, self.tag_map[tag]['in'])
@@ -277,8 +296,7 @@ class Model(object):
                         lst = getattr(self, tag_name.replace('-', '_'))
                     for sub_el in el:
                         lst.append(Model.load(self, sub_el))
-                    return True
-                elif 'class' in self.tag_map[tag] and self.tag_map[tag]['class'] == 'scap.model.Dictionary':
+                elif 'dictionary' in self.tag_map[tag] and self.tag_map[tag]['dictionary']:
                     #from scap.model.List import List
                     if 'in' in self.tag_map[tag]:
                         dic = getattr(self, self.tag_map[tag]['in'])
@@ -291,9 +309,7 @@ class Model(object):
                         else:
                             key = sub_el.attrib['id']
                         dic[key] = Model.load(self, sub_el)
-                    return True
-
-                if 'in' in self.tag_map[tag]:
+                elif 'in' in self.tag_map[tag]:
                     setattr(self, self.tag_map[tag]['in'], Model.load(self, el))
                 else:
                     name = tag_name.replace('-', '_')
