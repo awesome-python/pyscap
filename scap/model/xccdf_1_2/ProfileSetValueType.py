@@ -21,11 +21,7 @@ import logging
 logger = logging.getLogger(__name__)
 class ProfileSetValueType(String):
     ATTRIBUTE_MAP = {
-        'idref': {'required': True},
+        'idref': {'type': 'NCName', 'required': True},
     }
     TAG_MAP = {
     }
-    def __init__(self):
-        super(ProfileSetValueType, self).__init__()
-
-        self.idref = None

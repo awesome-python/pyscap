@@ -21,30 +21,30 @@ import logging
 logger = logging.getLogger(__name__)
 class ItemType(Model):
     ATTRIBUTE_MAP = {
-        'abstract': {'ignore': True},
-        'cluster-id': {'ignore': True},
-        'extends': {'ignore': True},
-        'hidden': {'ignore': True},
-        'prohibitChanges': {'ignore': True},
-        'Id': {'ignore': True},
+        'abstract': {'ignore': True, 'type': 'Boolean', 'default': False},
+        'cluster-id': {'ignore': True, 'type': 'NCName'},
+        'extends': {'ignore': True, 'type': 'NCName'},
+        'hidden': {'ignore': True, 'type': 'Boolean', 'default': False},
+        'prohibitChanges': {'ignore': True, 'type': 'Boolean', 'default': False},
+        'Id': {'ignore': True, 'type': 'ID'},
     }
     TAG_MAP = {
-        '{http://checklists.nist.gov/xccdf/1.2}status': {'ignore': True},
-        '{http://checklists.nist.gov/xccdf/1.2}dc-status': {'ignore': True},
-        '{http://checklists.nist.gov/xccdf/1.2}version': {'ignore': True},
-        '{http://checklists.nist.gov/xccdf/1.2}title': {'ignore': True},
-        '{http://checklists.nist.gov/xccdf/1.2}description': {'ignore': True},
-        '{http://checklists.nist.gov/xccdf/1.2}warning': {'type': 'String', 'append': 'warnings'},
-        '{http://checklists.nist.gov/xccdf/1.2}question': {'ignore': True},
-        '{http://checklists.nist.gov/xccdf/1.2}reference': {'ignore': True},
-        '{http://checklists.nist.gov/xccdf/1.2}metadata': {'ignore': True},
+        '{http://checklists.nist.gov/xccdf/1.2}status': {'class': 'StatusType', 'ignore': True},
+        '{http://checklists.nist.gov/xccdf/1.2}dc-status': {'class': 'DCStatusType', 'ignore': True},
+        '{http://checklists.nist.gov/xccdf/1.2}version': {'class': 'VersionType', 'ignore': True},
+        '{http://checklists.nist.gov/xccdf/1.2}title': {'class': 'TextWithSubType', 'ignore': True},
+        '{http://checklists.nist.gov/xccdf/1.2}description': {'class': 'HTMLTextWithSubType', 'ignore': True},
+        '{http://checklists.nist.gov/xccdf/1.2}warning': {'class': 'WarningType', 'type': 'String', 'append': 'warnings'},
+        '{http://checklists.nist.gov/xccdf/1.2}question': {'class': 'TextType', 'ignore': True},
+        '{http://checklists.nist.gov/xccdf/1.2}reference': {'class': 'ReferenceType', 'ignore': True},
+        '{http://checklists.nist.gov/xccdf/1.2}metadata': {'class': 'MetadataType', 'ignore': True},
     }
     # abstract
-    def __init__(self):
-        super(ItemType, self).__init__()
-
-        self.warnings = []
-
+    # def __init__(self):
+    #     super(ItemType, self).__init__()
+    #
+    #     self.warnings = []
+    #
     def from_xml(self, parent, el):
         super(ItemType, self).from_xml(parent, el)
 

@@ -22,14 +22,14 @@ logger = logging.getLogger(__name__)
 class ComponentRefType(Model):
     ATTRIBUTE_MAP = {
         'id': {'required': True},
-        '{http://www.w3.org/1999/xlink}href': {},
+        '{http://www.w3.org/1999/xlink}href': {'default': None},
     }
     TAG_MAP = {
     }
-    def __init__(self):
-        super(ComponentRefType, self).__init__()    # {http://checklists.nist.gov/xccdf/1.2}component-ref
-
-        self.href = None
+    # def __init__(self):
+    #     super(ComponentRefType, self).__init__()    # {http://checklists.nist.gov/xccdf/1.2}component-ref
+    #
+    #     self.href = None
 
     # def parse_attribute(self, name, value):
     #     if name == '{http://www.w3.org/1999/xlink}href':

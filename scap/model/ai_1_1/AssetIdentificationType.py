@@ -22,7 +22,7 @@ import xml.etree.ElementTree as ET
 logger = logging.getLogger(__name__)
 class AssetIdentificationType(AssetsType):
     ATTRIBUTE_MAP = {
-        'asset-ref': {'required': True, 'type': 'scap.model.xs.NonColonizedName'}
+        'asset-ref': {'required': True, 'type': 'scap.model.xs.NCName'}
     }
 
     def __init__(self):

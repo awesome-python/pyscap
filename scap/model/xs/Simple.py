@@ -25,8 +25,8 @@ class Simple(Model):
 
         self.value = None
 
-    def parse_value(self, el):
-        return el.text
+    def parse_value(self, value):
+        return value
 
     def from_xml(self, parent, sub_el):
         super(Simple, self).from_xml(parent, sub_el)

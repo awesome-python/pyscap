@@ -16,22 +16,22 @@
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
 from scap.Model import Model
+from scap.model.xccdf_1_2.FixStrategyEnumeration import FIX_STRATEGY_ENUMERATION
+from scap.model.xccdf_1_2.RatingEnumeration import RATING_ENUMERATION
 import logging
 
 logger = logging.getLogger(__name__)
 class FixType(Model):
-    def __init__(self):
-        super(FixType, self).__init__()
-
-        self.ignore_attributes.extend([
-            'reboot',
-            'strategy',
-            'disruption',
-            'complexity',
-            'system',
-            'platform',
-        ])
-        self.ignore_sub_elements.extend([
-            '{http://checklists.nist.gov/xccdf/1.2}sub',
-            '{http://checklists.nist.gov/xccdf/1.2}instance',
-        ])
+    ATTRIBUTE_MAP = {
+        'id': {'type': 'NCNAME'},
+        'reboot': {'ignore': True, 'type': 'Boolean'},
+        'strategy': {'ignore': True, 'enum': FIX_STRATEGY_ENUMERATION, 'default': 'unknown'},
+        'disruption': {'ignore': True, 'enum': RATING_ENUMERATION, 'default': 'unknown'},
+        'complexity': {'ignore': True, 'enum': RATING_ENUMERATION, 'default': 'unknown'},
+        'system': {'ignore': True, 'type': 'AnyURI'},
+        'platform': {'ignore': True, 'type': 'AnyURI'},
+    }
+    TAG_MAP = {
+        '{http://checklists.nist.gov/xccdf/1.2}sub': {'ignore': True, 'class': 'SubType'},
+        '{http://checklists.nist.gov/xccdf/1.2}instance': {'ignore': True, 'class': 'InstanceFixType'},
+    }

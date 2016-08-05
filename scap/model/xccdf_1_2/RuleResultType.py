@@ -16,8 +16,29 @@
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
 from scap.Model import Model
+from scap.model.xccdf_1_2.ResultEnumeration import RESULT_ENUMERATION
+from scap.model.xccdf_1_2.RoleEnumeration import ROLE_ENUMERATION
+from scap.model.xccdf_1_2.SeverityEnumeration import SEVERITY_ENUMERATION
 import logging
 
 logger = logging.getLogger(__name__)
 class RuleResultType(Model):
-    pass
+    ATTRIBUTE_MAP = {
+        'idref': {'type': 'NCName', 'required': True},
+        'role': {'enum': ROLE_ENUMERATION},
+        'severity': {'enum': SEVERITY_ENUMERATION},
+        'time': {'type': 'DateTime'},
+        'version': {'type': 'String'},
+        'weight': {'type': 'Weight'},
+    }
+    TAG_MAP = {
+        '{http://checklists.nist.gov/xccdf/1.2}result': {'enum': RESULT_ENUMERATION},
+        '{http://checklists.nist.gov/xccdf/1.2}override': {'class': 'OverrideType', 'append': 'overrides'},
+        '{http://checklists.nist.gov/xccdf/1.2}ident': {'class': 'IdentType', 'append': 'idents'},
+        '{http://checklists.nist.gov/xccdf/1.2}metadata': {'class': 'MetadataType', 'append': 'metadata'},
+        '{http://checklists.nist.gov/xccdf/1.2}message': {'class': 'MessageType', 'append': 'messages'},
+        '{http://checklists.nist.gov/xccdf/1.2}instance': {'class': 'InstanceResultType', 'append': 'instances'},
+        '{http://checklists.nist.gov/xccdf/1.2}fix': {'class': 'FixType', 'append': 'fixes'},
+        '{http://checklists.nist.gov/xccdf/1.2}check': {'class': 'CheckType', 'append': 'checks'},
+        '{http://checklists.nist.gov/xccdf/1.2}complex-check': {'class': 'ComplexCheckType'},
+    }

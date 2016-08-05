@@ -18,55 +18,73 @@
 from scap.Model import Model
 import logging
 
+SYSTEM_ENUMERATION = [
+    'http://oval.mitre.org/XMLSchema/oval-definitions-5',
+    'http://scap.nist.gov/schema/ocil/2.0',
+    'http://scap.nist.gov/schema/ocil/2',
+]
 logger = logging.getLogger(__name__)
 class CheckType(Model):
-    def __init__(self):
-        super(CheckType, self).__init__()
+    ATTRIBUTE_MAP = {
+        'system': {'enum': SYSTEM_ENUMERATION, 'required': True},
+        'negate': {'type': 'Boolean', 'default': False},
+        'id': {'type': 'NCName'},
+        'selector': {'default': '', 'type': 'String'},
+        'multi-check': {'type': 'Boolean', 'default': False},
+    }
+    TAG_MAP = {
+        '{http://checklists.nist.gov/xccdf/1.2}check-import': {'class': 'CheckImportType', 'append': 'check_imports'},
+        '{http://checklists.nist.gov/xccdf/1.2}check-export': {'class': 'CheckExportType', 'append': 'check_exports'},
+        '{http://checklists.nist.gov/xccdf/1.2}check-content-ref': {'class': 'CheckContentRefType', 'append': 'check_content_refs'},
+        '{http://checklists.nist.gov/xccdf/1.2}check-content': {'class': 'CheckContentType'},
+    }
+    # def __init__(self):
+    #     super(CheckType, self).__init__()
+    #
+    #     # self.negate = False
+    #     # self.multi_check = False
+    #     # self.system = None
+    #     #
+    #     self.check_content_ref = None
+    #     self.check_content_name = None
+    #     #
+    #     # self.ignore_attributes.extend([
+    #     #     'selector',
+    #     # ])
+    #     # self.ignore_sub_elements.extend([
+    #     #     '{http://checklists.nist.gov/xccdf/1.2}check-import',
+    #     #     '{http://checklists.nist.gov/xccdf/1.2}check-export',
+    #     # ])
 
-        self.negate = False
-        self.multi_check = False
-        self.system = None
-
-        self.check_content_ref = None
-        self.check_content_name = None
-
-        self.ignore_attributes.extend([
-            'selector',
-        ])
-        self.ignore_sub_elements.extend([
-            '{http://checklists.nist.gov/xccdf/1.2}check-import',
-            '{http://checklists.nist.gov/xccdf/1.2}check-export',
-        ])
-
-    def parse_attribute(self, name, value):
-        if name == 'system':
-            if value not in [
-                'http://oval.mitre.org/XMLSchema/oval-definitions-5',
-                'http://scap.nist.gov/schema/ocil/2.0',
-                'http://scap.nist.gov/schema/ocil/2',
-            ]:
-                raise NotImplementedError('Check system ' + value + ' is not implemented')
-            self.system = value
-        elif name == 'negate':
-            self.negate = self.parse_boolean(value)
-        elif name == 'multi-check':
-            self.multi_check = self.parse_boolean(value)
-        else:
-            return super(CheckType, self).parse_attribute(name, value)
-        return True
-
-    def parse_element(self, sub_el):
-        if sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}check-content-ref':
-            self.check_content_ref = sub_el.attrib['href']
-            if 'name' not in sub_el.attrib:
-                logger.debug('Rule ' + self.parent.id + ' will load ' + self.check_content_ref + ' and use all items')
-            else:
-                self.check_content_name = sub_el.attrib['name']
-                logger.debug('Rule ' + self.parent.id + ' will load ' + self.check_content_ref + ' and use item ' + self.check_content_name)
-        else:
-            return super(CheckType, self).parse_element(sub_el)
-        return True
-
+    # def parse_attribute(self, name, value):
+    #     if name == 'system':
+    #         if value not in [
+    #             'http://oval.mitre.org/XMLSchema/oval-definitions-5',
+    #             'http://scap.nist.gov/schema/ocil/2.0',
+    #             'http://scap.nist.gov/schema/ocil/2',
+    #         ]:
+    #             raise NotImplementedError('Check system ' + value + ' is not implemented')
+    #         self.system = value
+    #     elif name == 'negate':
+    #         self.negate = self.parse_boolean(value)
+    #     elif name == 'multi-check':
+    #         self.multi_check = self.parse_boolean(value)
+    #     else:
+    #         return super(CheckType, self).parse_attribute(name, value)
+    #     return True
+    #
+    # def parse_element(self, sub_el):
+    #     if sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}check-content-ref':
+    #         self.check_content_ref = sub_el.attrib['href']
+    #         if 'name' not in sub_el.attrib:
+    #             logger.debug('Rule ' + self.parent.id + ' will load ' + self.check_content_ref + ' and use all items')
+    #         else:
+    #             self.check_content_name = sub_el.attrib['name']
+    #             logger.debug('Rule ' + self.parent.id + ' will load ' + self.check_content_ref + ' and use item ' + self.check_content_name)
+    #     else:
+    #         return super(CheckType, self).parse_element(sub_el)
+    #     return True
+    #
     def resolve(self):
         content = self.resolve_reference(self.check_content_ref)
         if self.system == 'http://oval.mitre.org/XMLSchema/oval-definitions-5':

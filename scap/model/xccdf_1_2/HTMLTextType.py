@@ -20,4 +20,8 @@ import logging
 
 logger = logging.getLogger(__name__)
 class HTMLTextType(Model):
-    pass
+    ATTRIBUTE_MAP = {
+        'override': {'type': 'Boolean', 'default': False},
+    }
+    TAG_MAP = {
+    }

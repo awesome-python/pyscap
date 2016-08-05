@@ -20,10 +20,8 @@ import logging
 
 logger = logging.getLogger(__name__)
 class IDRefType(Model):
-    def __init__(self):
-        super(IDRefType, self).__init__()
-
-        self.required_attributes.append('idref')
-        self.ignore_attributes.extend([
-            'idref',
-        ])
+    ATTRIBUTE_MAP = {
+        'idref': {'type': 'NCName', 'required': True},
+    }
+    TAG_MAP = {
+    }

@@ -21,45 +21,45 @@ import logging
 logger = logging.getLogger(__name__)
 class BenchmarkType(Model):
     ATTRIBUTE_MAP = {
-        'id': {'required': True},
-        'Id': {'ignore': True},
-        'resolved': {'ignore': True},
-        'style': {'ignore': True},
-        'style-href': {'ignore': True},
+        'id': {'required': True, 'type': 'BenchmarkIDPattern'},
+        'Id': {'ignore': True, 'type': 'ID'},
+        'resolved': {'ignore': True, 'type': 'Boolean', 'default': False},
+        'style': {'ignore': True, 'type': 'String'},
+        'style-href': {'ignore': True, 'type': 'AnyURI'},
     }
     TAG_MAP = {
-        '{http://checklists.nist.gov/xccdf/1.2}status': {'ignore': True},
-        '{http://purl.org/dc/elements/1.1/}dc-status': {'ignore': True},
-        '{http://checklists.nist.gov/xccdf/1.2}title': {'ignore': True},
-        '{http://checklists.nist.gov/xccdf/1.2}description': {'ignore': True},
-        '{http://checklists.nist.gov/xccdf/1.2}notice': {'type': 'String', 'map': 'notices'},
-        '{http://checklists.nist.gov/xccdf/1.2}front-matter': {'ignore': True},
-        '{http://checklists.nist.gov/xccdf/1.2}rear-matter': {'ignore': True},
-        '{http://checklists.nist.gov/xccdf/1.2}reference': {'ignore': True},
-        '{http://checklists.nist.gov/xccdf/1.2}plain-text': {'ignore': True},
-        '{http://cpe.mitre.org/language/2.0}platform-specification': {'ignore': True},
-        '{http://checklists.nist.gov/xccdf/1.2}platform': {'ignore': True},
-        '{http://checklists.nist.gov/xccdf/1.2}version': {'ignore': True},
-        '{http://checklists.nist.gov/xccdf/1.2}metadata': {'ignore': True},
-        '{http://checklists.nist.gov/xccdf/1.2}model': {'ignore': True},
+        '{http://checklists.nist.gov/xccdf/1.2}status': {'class': 'StatusType', 'ignore': True},
+        '{http://purl.org/dc/elements/1.1/}dc-status': {'class': 'DCStatusType', 'ignore': True},
+        '{http://checklists.nist.gov/xccdf/1.2}title': {'class': 'TextType', 'ignore': True},
+        '{http://checklists.nist.gov/xccdf/1.2}description': {'class': 'HTMLTextWithSubType', 'ignore': True},
+        '{http://checklists.nist.gov/xccdf/1.2}notice': {'class': 'NoticeType', 'map': 'notices'},
+        '{http://checklists.nist.gov/xccdf/1.2}front-matter': {'class': 'HtmlTextWithSubType', 'ignore': True},
+        '{http://checklists.nist.gov/xccdf/1.2}rear-matter': {'class': 'HtmlTextWithSubType', 'ignore': True},
+        '{http://checklists.nist.gov/xccdf/1.2}reference': {'class': 'ReferenceType', 'ignore': True},
+        '{http://checklists.nist.gov/xccdf/1.2}plain-text': {'class': 'PlainTextType', 'ignore': True},
+        '{http://cpe.mitre.org/language/2.0}platform-specification': {'class': 'scap.model.cpe_2_3.PlatformSpecificationType', 'ignore': True},
+        '{http://checklists.nist.gov/xccdf/1.2}platform': {'class': 'CPE2IDRefType', 'ignore': True},
+        '{http://checklists.nist.gov/xccdf/1.2}version': {'class': 'VersionType', 'ignore': True},
+        '{http://checklists.nist.gov/xccdf/1.2}metadata': {'class': 'MetadataType', 'ignore': True},
+        '{http://checklists.nist.gov/xccdf/1.2}model': {'class': 'ModelType', 'ignore': True},
         '{http://checklists.nist.gov/xccdf/1.2}Profile': {'class': 'ProfileType', 'map': 'profiles'},
         '{http://checklists.nist.gov/xccdf/1.2}Value': {'class': 'ValueType', 'map': 'values'},
         '{http://checklists.nist.gov/xccdf/1.2}Group': {'class': 'GroupType', 'map': 'groups'},
         '{http://checklists.nist.gov/xccdf/1.2}Rule': {'class': 'RuleType', 'map': 'rules'},
         '{http://checklists.nist.gov/xccdf/1.2}TestResult': {'class': 'TestResultType', 'map': 'tests'},
-        '{http://checklists.nist.gov/xccdf/1.2}signature': {'ignore': True},
+        '{http://checklists.nist.gov/xccdf/1.2}signature': {'class': 'SignatureType', 'ignore': True},
     }
 
-    def __init__(self):
-        super(BenchmarkType, self).__init__()
-
-        self.notices = {}
-        self.rules = {}
-        self.values = {}
-        self.profiles = {}
-        self.groups = {}
-        self.test_results = {}
-        self.selected_rules = []
+    # def __init__(self):
+    #     super(BenchmarkType, self).__init__()
+    #
+    #     self.notices = {}
+    #     self.rules = {}
+    #     self.values = {}
+    #     self.profiles = {}
+    #     self.groups = {}
+    #     self.test_results = {}
+    #     self.selected_rules = []
 
     # def parse_element(self, sub_el):
     #     if sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}notice':
@@ -92,7 +92,7 @@ class BenchmarkType(Model):
         super(BenchmarkType, self).from_xml(parent, el)
 
         for notice in self.notices.values():
-            logger.info('Notice: \n' + notice)
+            logger.info('Notice: \n' + notice.value)
 
         for profile_id in self.profiles:
             logger.debug('found profile ' + profile_id)

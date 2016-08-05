@@ -21,18 +21,13 @@ import logging
 logger = logging.getLogger(__name__)
 class SelectableItemType(ItemType):
     ATTRIBUTE_MAP = {
-        'selected': {'type': 'Boolean'},
-        'weight': {'type': 'Float'},
+        'selected': {'type': 'Boolean', 'default': True},
+        'weight': {'type': 'Weight', 'default': 1.0},
     }
     TAG_MAP = {
-        '{http://checklists.nist.gov/xccdf/1.2}rationale': {'ignore': True},
-        '{http://checklists.nist.gov/xccdf/1.2}platform': {'ignore': True},
-        '{http://checklists.nist.gov/xccdf/1.2}requires': {'ignore': True},
-        '{http://checklists.nist.gov/xccdf/1.2}conflicts': {'ignore': True},
+        '{http://checklists.nist.gov/xccdf/1.2}rationale': {'ignore': True, 'class': 'HTMLTextWithSubType'},
+        '{http://checklists.nist.gov/xccdf/1.2}platform': {'ignore': True, 'class': 'OverrideableCPE2IDRefType'},
+        '{http://checklists.nist.gov/xccdf/1.2}requires': {'ignore': True, 'class': 'IDRefListType'},
+        '{http://checklists.nist.gov/xccdf/1.2}conflicts': {'ignore': True, 'class': 'IDRefType'},
     }
     # abstract
-    def __init__(self):
-        super(SelectableItemType, self).__init__()
-
-        self.selected = True
-        self.weight = 1.0

@@ -15,9 +15,13 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.model.xs.Name import Name
+from scap.xs.String import String
 import logging
 
 logger = logging.getLogger(__name__)
-class NonColonizedName(Name):
-    pass
+class PlainTextType(String):
+    ATTRIBUTE_MAP = {
+        'id': {'required': True, 'type': 'NCName'},
+    }
+    TAG_MAP = {
+    }

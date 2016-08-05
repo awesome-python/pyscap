@@ -16,17 +16,18 @@
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
 from scap.model.xccdf_1_2.HTMLTextWithSubType import HTMLTextWithSubType
+from scap.model.xccdf_1_2.FixStrategyEnumeration import FIX_STRATEGY_ENUMERATION
+from scap.model.xccdf_1_2.RatingEnumeration import RATING_ENUMERATION
 import logging
 
 logger = logging.getLogger(__name__)
 class FixtextType(HTMLTextWithSubType):
-    def __init__(self):
-        super(FixtextType, self).__init__()
-
-        self.ignore_attributes.extend([
-            'fixref',
-            'reboot',
-            'strategy',
-            'disruption',
-            'complexity',
-        ])
+    ATTRIBUTE_MAP = {
+        'fixref': {'ignore': True, 'type': 'NCName'},
+        'reboot': {'ignore': True, 'type': 'Boolean'},
+        'strategy': {'ignore': True, 'enum': FIX_STRATEGY_ENUMERATION, 'default': 'unknown'},
+        'disruption': {'ignore': True, 'enum': RATING_ENUMERATION, 'default': 'unknown'},
+        'complexity': {'ignore': True, 'enum': RATING_ENUMERATION, 'default': 'unknown'},
+    }
+    TAG_MAP = {
+    }

@@ -20,4 +20,8 @@ import logging
 
 logger = logging.getLogger(__name__)
 class Boolean(Simple):
-    pass
+    def parse_value(self, value):
+        if value == 'true' or value == '1':
+            return True
+        else:
+            return False

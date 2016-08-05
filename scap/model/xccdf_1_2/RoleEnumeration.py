@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-FIX_STRATEGY_ENUMERATION = [
+ROLE_ENUMERATION = [
     'full',
     'unscored',
     'unchecked',

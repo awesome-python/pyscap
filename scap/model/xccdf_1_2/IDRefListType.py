@@ -20,16 +20,8 @@ import logging
 
 logger = logging.getLogger(__name__)
 class IDRefListType(Model):
-    def __init__(self):
-        super(IDRefListType, self).__init__()
-
-        self.idrefs = []
-
-        self.required_attributes.append('idref')
-
-    def parse_attribute(self, name, value):
-        if name == 'idref':
-            self.idrefs = value.split(' ')
-        else:
-            return super(IDRefListType, self).parse_attribute(name, value)
-        return True
+    ATTRIBUTE_MAP = {
+        'idref': {'type': 'NMTOKENS', 'required': True},
+    }
+    TAG_MAP = {
+    }

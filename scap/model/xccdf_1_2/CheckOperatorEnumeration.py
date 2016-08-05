@@ -15,6 +15,11 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
+CHECK_OPERATOR_ENUMERATION = [
+    'AND',
+    'OR',
+]
+
 AND_TABLE = {}
 # ------------------------------------------------------
 #    AND             || P | F | U | E | N | K | S | I ||

@@ -20,11 +20,8 @@ import logging
 
 logger = logging.getLogger(__name__)
 class TextType(String):
-    def __init__(self):
-        super(Text, self).__init__()
-
-        self.ignore_attributes.extend([
-            'override',
-        ])
-        self.ignore_sub_elements.extend([
-        ])
+    ATTRIBUTE_MAP = {
+        'override': {'type': 'Boolean', 'default': False},
+    }
+    TAG_MAP = {
+    }

@@ -37,9 +37,9 @@ class DataStreamType(Model):
     def __init__(self):
         super(DataStreamType, self).__init__()    # {http://checklists.nist.gov/xccdf/1.2}data-stream
 
-        self.dictionaries = {}
-        self.checklists = {}
-        self.checks = {}
+        # self.dictionaries = {}
+        # self.checklists = {}
+        # self.checks = {}
 
         self.selected_checklist = None
 

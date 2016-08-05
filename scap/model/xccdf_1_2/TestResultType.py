@@ -20,6 +20,35 @@ import logging
 
 logger = logging.getLogger(__name__)
 class TestResultType(Model):
+    ATTRIBUTE_MAP = {
+        'id': {'required': True, 'type': 'TestResultIDPattern'},
+        'start-time': {'type': 'DateTime'},
+        'end-time': {'type': 'DateTime'},
+        'test-system': {'type': 'String'}
+        'version': {'type': 'String'}
+        'Id': {'ignore': True, 'type': 'ID'},
+    }
+    TAG_MAP = {
+        '{http://checklists.nist.gov/xccdf/1.2}benchmark': {'class': 'BenchmarkReferenceType'},
+        '{http://checklists.nist.gov/xccdf/1.2}tailoring-file': {'class': 'TailoringReferenceType'},
+        '{http://checklists.nist.gov/xccdf/1.2}title': {'ignore': True, 'class': 'TextType', 'append': 'titles'},
+        '{http://checklists.nist.gov/xccdf/1.2}remark': {'ignore': True, 'class': 'TextType', 'append': 'remarks'},
+        '{http://checklists.nist.gov/xccdf/1.2}organization': {'ignore': True, 'type': 'String', 'append': 'organizations'},
+        '{http://checklists.nist.gov/xccdf/1.2}identity': {'ignore': True, 'class': 'IdentityType'},
+        '{http://checklists.nist.gov/xccdf/1.2}profile': {'ignore': True, 'class': 'IDRefType'},
+        '{http://checklists.nist.gov/xccdf/1.2}target': {'ignore': True, 'type': 'String', 'append': 'targets'},
+        '{http://checklists.nist.gov/xccdf/1.2}target-address': {'ignore': True, 'type': 'String', 'append': 'target_addresses'},
+        '{http://checklists.nist.gov/xccdf/1.2}target-facts': {'ignore': True, 'class': 'TargetFactsType', 'append': 'target_facts'},
+        '{http://checklists.nist.gov/xccdf/1.2}target-id-ref': {'ignore': True, 'class': 'TargetIDRefType', 'append': 'target_id_refs'},
+        '*': {'ignore': True},
+        '{http://checklists.nist.gov/xccdf/1.2}platform': {'ignore': True, 'class': 'CPE2IDRefType', 'append': 'platforms'},
+        '{http://checklists.nist.gov/xccdf/1.2}set-value': {'class': 'ProfileSetValueType', 'map': 'set_values', 'key': 'idref'},
+        '{http://checklists.nist.gov/xccdf/1.2}set-complex-value': {'class': 'ProfileSetComplexValueType', 'map': 'set_complex_values', 'key': 'idref'},
+        '{http://checklists.nist.gov/xccdf/1.2}rule-result': {'class': 'RuleResultType', 'map': 'rule_results', 'key': 'idref'},
+        '{http://checklists.nist.gov/xccdf/1.2}score': {'class': 'ScoreType', 'map': 'refine_rules', 'key': 'idref'},
+        '{http://checklists.nist.gov/xccdf/1.2}metadata': {'ignore': True, 'class': 'MetadataType', 'append': 'metadata'},
+        '{http://checklists.nist.gov/xccdf/1.2}signature': {'ignore': True, 'class': 'SignatureType'},
+    }
     # urn:xccdf:fact:asset:identifier:mac Ethernet media access control address (SHOULD be sent as a pair with the IPv4 or IPv6 address to ensure uniqueness)
     # urn:xccdf:fact:asset:identifier:ipv4 IPv4 address
     # urn:xccdf:fact:asset:identifier:ipv6 IPv6 address
@@ -39,4 +68,3 @@ class TestResultType(Model):
     # urn:xccdf:fact:asset:environmental_information: administration_poc:e-mail E-mail address of the system administrator for the asset
     # urn:xccdf:fact:asset:environmental_information: administration_poc:first_name First name of the system administrator for the asset
     # urn:xccdf:fact:asset:environmental_information: administration_poc:last_name Last name of the system administrator for the asset
-    pass

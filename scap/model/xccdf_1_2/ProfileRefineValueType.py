@@ -16,21 +16,16 @@
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
 from scap.Model import Model
+from scap.model.xccdf_1_2.ValueOperatorEnumeration import VALUE_OPERATOR_ENUMERATION
 import logging
 
 logger = logging.getLogger(__name__)
 class ProfileRefineValueType(Model):
     ATTRIBUTE_MAP = {
-        'idref': {'required': True},
-        'selector': {},
-        'operator': {},
-}
-    TAG_MAP = {
-        '{http://checklists.nist.gov/xccdf/1.2}remark': {'ignore': True},
+        'idref': {'type': 'NCName', 'required': True},
+        'selector': {'type': 'String'},
+        'operator': {'enum': VALUE_OPERATOR_ENUMERATION},
     }
-    def __init__(self):
-        super(ProfileRefineValueType, self).__init__()
-
-        self.idref = None
-        self.selector = None
-        self.operator = None
+    TAG_MAP = {
+        '{http://checklists.nist.gov/xccdf/1.2}remark': {'ignore': True, 'type': 'TextType', 'append': 'remarks'},
+    }

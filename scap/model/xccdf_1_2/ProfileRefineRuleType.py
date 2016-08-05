@@ -16,25 +16,19 @@
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
 from scap.Model import Model
+from scap.model.xccdf_1_2.SeverityEnumeration import SEVERITY_ENUMERATION
+from scap.model.xccdf_1_2.RoleEnumeration import ROLE_ENUMERATION
 import logging
 
 logger = logging.getLogger(__name__)
 class ProfileRefineRuleType(Model):
     ATTRIBUTE_MAP = {
-        'idref': {'required': True},
-        'weight': {},
-        'selector': {},
-        'severity': {},
-        'role': {},
+        'idref': {'type': 'NCName', 'required': True},
+        'weight': {'type': 'Weight'},
+        'selector': {'type': 'String'},
+        'severity': {'enum': SEVERITY_ENUMERATION},
+        'role': {'enum': ROLE_ENUMERATION},
 }
     TAG_MAP = {
-        '{http://checklists.nist.gov/xccdf/1.2}remark': {'ignore': True},
+        '{http://checklists.nist.gov/xccdf/1.2}remark': {'ignore': True, 'type': 'TextType', 'append': 'remarks'},
     }
-    def __init__(self):
-        super(ProfileRefineRuleType, self).__init__()
-
-        self.idref = None
-        self.weight = None
-        self.selector = None
-        self.severity = None
-        self.role = None

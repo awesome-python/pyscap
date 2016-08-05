@@ -145,6 +145,19 @@ class Model(object):
             Model.class_attribute_maps[self.__class__.__name__] = attribute_map
         self.attribute_map = Model.class_attribute_maps[self.__class__.__name__]
 
+        # set default values
+        for name in self.attribute_map:
+            if 'default' in self.attribute_map[name]:
+                value = self.attribute_map[name]['default']
+                if 'in' in self.attribute_map[name]:
+                    setattr(self, self.attribute_map[name]['in'], value)
+                    logger.debug('Default of attribute ' + self.attribute_map[name]['in'] + ' = ' + str(value))
+                else:
+                    xml_namespace, model_namespace, attr_name = Model.parse_tag(name)
+                    name = attr_name.replace('-', '_')
+                    setattr(self, name, value)
+                    logger.debug('Default of attribute ' + name + ' = ' + str(value))
+
         if self.__class__.__name__ not in Model.class_tag_maps:
             tag_map = {}
             for class_ in self.__class__.__mro__:
@@ -160,6 +173,38 @@ class Model(object):
                 tag_map = super_tag_map
             Model.class_tag_maps[self.__class__.__name__] = tag_map
         self.tag_map = Model.class_tag_maps[self.__class__.__name__]
+
+        # initialize structures
+        for t in self.tag_map:
+            xml_namespace, model_namespace, tag_name = Model.parse_tag(t)
+            for tag in [t, tag_name]:
+                if tag in self.tag_map:
+                    if 'append' in self.tag_map[tag]:
+                        # initialze the array if it doesn't exist
+                        if self.tag_map[tag]['append'] not in self.__dict__.keys():
+                            setattr(self, self.tag_map[tag]['append'], [])
+                    elif 'map' in self.tag_map[tag]:
+                        # initialze the dict if it doesn't exist
+                        if self.tag_map[tag]['map'] not in self.__dict__.keys():
+                            setattr(self, self.tag_map[tag]['map'], {})
+                    elif 'list' in self.tag_map[tag] and self.tag_map[tag]['list']:
+                        if 'in' in self.tag_map[tag]:
+                            list_name = self.tag_map[tag]['in']
+                        else:
+                            list_name = tag_name.replace('-', '_')
+
+                        # initialze the list if it doesn't exist
+                        if list_name not in self.__dict__.keys():
+                            setattr(self, list_name, [])
+                    elif 'dictionary' in self.tag_map[tag] and self.tag_map[tag]['dictionary']:
+                        if 'in' in self.tag_map[tag]:
+                            dict_name = self.tag_map[tag]['in']
+                        else:
+                            dict_name = tag_name.replace('-', '_')
+
+                        # initialze the dict if it doesn't exist
+                        if dict_name not in self.__dict__.keys():
+                            setattr(self, dict_name, {})
 
     def get_tag(self):
         if self.tag_name is None or self.xml_namespace is None:
@@ -209,24 +254,50 @@ class Model(object):
                 import sys
                 sys.exit()
 
-    def parse_attribute(self, name, value):
-        if name in self.attribute_map:
-            if 'ignore' in self.attribute_map[name] and self.attribute_map[name]['ignore']:
-                logger.debug('Ignoring attribute ' + name + ' = ' + value)
-                return True
+    def _parse_value_as_type(self, value, type_):
+        import importlib
+        try:
+            mod = importlib.import_module('scap.model.xs.' + type_)
+        except ImportError:
+            try:
+                mod = importlib.import_module('scap.model.' + self.model_namespace + '.' + type_)
+            except ImportError:
+                raise NotImplementedError('Type value ' + type_ + ' not defined in scap.model.xs or local namespace (scap.model.' + self.model_namespace + ')')
+        class_ = getattr(mod, type_)
+        return class_().parse_value(value)
 
-            if 'in' in self.attribute_map[name]:
-                setattr(self, self.attribute_map[name]['in'], value)
-                logger.debug('Set attribute ' + self.attribute_map[name]['in'] + ' = ' + value)
-            else:
-                xml_namespace, model_namespace, attr_name = Model.parse_tag(name)
-                name = attr_name.replace('-', '_')
-                setattr(self, name, value)
-                logger.debug('Set attribute ' + name + ' = ' + value)
-            return True
+    def parse_attribute(self, name, value):
+        xml_namespace, model_namespace, attr_name = Model.parse_tag(name)
+        if xml_namespace is None:
+            ns_any = '{' + self.xml_namespace + '}*'
         else:
-            return False
-        return True
+            ns_any = '{' + xml_namespace + '}*'
+        for name in [name, attr_name, ns_any, '*']:
+            if name in self.attribute_map:
+                if 'ignore' in self.attribute_map[name] and self.attribute_map[name]['ignore']:
+                    logger.debug('Ignoring attribute ' + name + ' = ' + value)
+                    return True
+
+                if 'notImplemented' in self.attribute_map[name] and self.attribute_map[name]['notImplemented']:
+                    raise NotImplementedError(name + ' attribute support is not implemented')
+
+                if 'enum' in self.attribute_map[name] and value not in self.attribute_map[name]['enum']:
+                    raise ValueError(name + ' attribute must be one of ' + str(self.attribute_map[name]['enum']))
+
+                # convert value
+                if 'type' in self.attribute_map[name]:
+                    logger.debug('Converting ' + str(value) + ' to ' + self.attribute_map[name]['type'] + ' type')
+                    value = self._parse_value_as_type(value, self.attribute_map[name]['type'])
+
+                if 'in' in self.attribute_map[name]:
+                    setattr(self, self.attribute_map[name]['in'], value)
+                    logger.debug('Set attribute ' + self.attribute_map[name]['in'] + ' = ' + str(value))
+                else:
+                    name = attr_name.replace('-', '_')
+                    setattr(self, name, value)
+                    logger.debug('Set attribute ' + name + ' = ' + str(value))
+                return True
+        return False
 
     # Template
     # def parse_attribute(self, name, value):
@@ -238,33 +309,29 @@ class Model(object):
 
     def parse_element(self, el):
         xml_namespace, model_namespace, tag_name = Model.parse_tag(el.tag)
-        for tag in [el.tag, tag_name]:
+        if xml_namespace is None:
+            ns_any = '{' + self.xml_namespace + '}*'
+        else:
+            ns_any = '{' + xml_namespace + '}*'
+        for tag in [el.tag, tag_name, ns_any, '*']:
             # check both namespace + tag_name and just tag_name
             if tag in self.tag_map:
                 if 'ignore' in self.tag_map[tag] and self.tag_map[tag]['ignore']:
                     return True
+
                 if 'notImplemented' in self.tag_map[tag] and self.tag_map[tag]['notImplemented']:
-                    raise NotImplementedError(tag + ' support is not implemented')
+                    raise NotImplementedError(tag + ' element support is not implemented')
 
                 if 'append' in self.tag_map[tag]:
-                    #from scap.model.List import List
                     lst = getattr(self, self.tag_map[tag]['append'])
                     if 'type' in self.tag_map[tag]:
-                        type_ = self.tag_map[tag]['type']
-                        try:
-                            import importlib
-                            mod = importlib.import_module('scap.model.xs.' + type_)
-                        except ImportError:
-                            raise NotImplementedError('Type value ' + type_ + ' not defined in scap.model.xs')
-                        class_ = getattr(mod, type_)
-                        value = class_().parse_value(el)
+                        value = self._parse_value_as_type(el.text, self.tag_map[tag]['type'])
                         lst.append(value)
                         logger.debug('Appended "' + value + '" to ' + self.tag_map[tag]['append'])
                     else:
                         lst.append(Model.load(self, el))
                         logger.debug('Appended ' + el.tag + ' to ' + self.tag_map[tag]['append'])
                 elif 'map' in self.tag_map[tag]:
-                    #from scap.model.List import List
                     dic = getattr(self, self.tag_map[tag]['map'])
                     if 'key' in self.tag_map[tag]:
                         try:
@@ -275,33 +342,26 @@ class Model(object):
                     else:
                         key = el.attrib['id']
                     if 'type' in self.tag_map[tag]:
-                        type_ = self.tag_map[tag]['type']
-                        try:
-                            import importlib
-                            mod = importlib.import_module('scap.model.xs.' + type_)
-                        except ImportError:
-                            raise NotImplementedError('Type value ' + type_ + ' not defined in scap.model.xs')
-                        class_ = getattr(mod, type_)
-                        value = class_().parse_value(el)
+                        value = self._parse_value_as_type(el.text, self.tag_map[tag]['type'])
                         dic[key] = value
                         logger.debug('Mapped ' + str(key) + ' to ' + str(value) + ' in ' + self.tag_map[tag]['map'])
                     else:
                         dic[key] = Model.load(self, el)
-                        logger.debug('Mapped ' + key + ' to ' + el.tag + ' in ' + self.tag_map[tag]['map'])
+                        logger.debug('Mapped ' + str(key) + ' to ' + el.tag + ' in ' + self.tag_map[tag]['map'])
                 elif 'list' in self.tag_map[tag] and self.tag_map[tag]['list']:
-                    #from scap.model.List import List
                     if 'in' in self.tag_map[tag]:
-                        lst = getattr(self, self.tag_map[tag]['in'])
+                        list_name = self.tag_map[tag]['in']
                     else:
-                        lst = getattr(self, tag_name.replace('-', '_'))
+                        list_name = tag_name.replace('-', '_')
+                    lst = getattr(self, list_name)
                     for sub_el in el:
                         lst.append(Model.load(self, sub_el))
                 elif 'dictionary' in self.tag_map[tag] and self.tag_map[tag]['dictionary']:
-                    #from scap.model.List import List
                     if 'in' in self.tag_map[tag]:
-                        dic = getattr(self, self.tag_map[tag]['in'])
+                        dict_name = self.tag_map[tag]['in']
                     else:
-                        dic = getattr(self, tag_name.replace('-', '_'))
+                        dict_name = tag_name.replace('-', '_')
+                    dic = getattr(self, dict_name)
                     for sub_el in el:
                         if 'key' in self.tag_map[tag]:
                             key = sub_el.attrib[self.tag_map[tag]['key']]
@@ -309,11 +369,32 @@ class Model(object):
                         else:
                             key = sub_el.attrib['id']
                         dic[key] = Model.load(self, sub_el)
-                elif 'in' in self.tag_map[tag]:
-                    setattr(self, self.tag_map[tag]['in'], Model.load(self, el))
+                elif 'class' in self.tag_map[tag]:
+                    if 'in' in self.tag_map[tag]:
+                        name = self.tag_map[tag]['in']
+                        setattr(self, name, Model.load(self, el))
+                    else:
+                        name = tag_name.replace('-', '_')
+                        setattr(self, name, Model.load(self, el))
+                elif 'type' in self.tag_map[tag]:
+                    value = self._parse_value_as_type(el.text, self.tag_map[tag]['type'])
+                    if 'in' in self.tag_map[tag]:
+                        name = self.tag_map[tag]['in']
+                        setattr(self, name, value)
+                    else:
+                        name = tag_name.replace('-', '_')
+                        setattr(self, name, value)
+                elif 'enum' in self.tag_map[tag]:
+                    if el.text not in self.tag_map[tag]['enum']:
+                        raise ValueError(tag + ' value must be one of ' + str(self.tag_map[tag]['enum']))
+                    if 'in' in self.tag_map[tag]:
+                        name = self.tag_map[tag]['in']
+                        setattr(self, name, value)
+                    else:
+                        name = tag_name.replace('-', '_')
+                        setattr(self, name, value)
                 else:
-                    name = tag_name.replace('-', '_')
-                    setattr(self, name, Model.load(self, el))
+                    return False
                 return True
         return False
 

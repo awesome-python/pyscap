@@ -16,34 +16,37 @@
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
 from scap.model.xccdf_1_2.ItemType import ItemType
+from scap.model.xccdf_1_2.ValueTypeEnumeration import VALUE_TYPE_ENUMERATION
+from scap.model.xccdf_1_2.ValueOperatorEnumeration import VALUE_OPERATOR_ENUMERATION
+from scap.model.xccdf_1_2.InterfaceHintEnumeration import INTERFACE_HINT_ENUMERATION
 import logging
 
 logger = logging.getLogger(__name__)
 class ValueType(ItemType):
     ATTRIBUTE_MAP = {
-        'id': {'required': True},
-        'type': {},
-        'operator': {},
-        'interactive': {'ignore': True},
-        'interfaceHint': {'ignore': True},
+        'id': {'type': 'ValueIDPattern', 'required': True},
+        'type': {'enum': VALUE_TYPE_ENUMERATION, 'default': 'string'},
+        'operator': {'enum': VALUE_OPERATOR_ENUMERATION, 'default': 'equals'},
+        'interactive': {'ignore': True, 'type': 'Boolean'},
+        'interfaceHint': {'ignore': True, 'enum': INTERFACE_HINT_ENUMERATION},
     }
     TAG_MAP = {
-        '{http://checklists.nist.gov/xccdf/1.2}value': {'type': 'String', 'map': 'values', 'key': 'selector'},
-        '{http://checklists.nist.gov/xccdf/1.2}complex-value': {'notImplemented': True},
-        '{http://checklists.nist.gov/xccdf/1.2}default': {'ignore': True},
-        '{http://checklists.nist.gov/xccdf/1.2}complex-default': {'notImplemented': True},
-        '{http://checklists.nist.gov/xccdf/1.2}match': {'ignore': True},
-        '{http://checklists.nist.gov/xccdf/1.2}lower-bound': {'ignore': True},
-        '{http://checklists.nist.gov/xccdf/1.2}upper-bound': {'ignore': True},
-        '{http://checklists.nist.gov/xccdf/1.2}choices': {'ignore': True},
-        '{http://checklists.nist.gov/xccdf/1.2}source': {'ignore': True},
-        '{http://checklists.nist.gov/xccdf/1.2}signature': {'ignore': True},
+        '{http://checklists.nist.gov/xccdf/1.2}value': {'class': 'SelStringType', 'map': 'values', 'key': 'selector'},
+        '{http://checklists.nist.gov/xccdf/1.2}complex-value': {'class': 'SelComplexValueType'},
+        '{http://checklists.nist.gov/xccdf/1.2}default': {'class': 'SelStringType'},
+        '{http://checklists.nist.gov/xccdf/1.2}complex-default': {'class': 'SelComplexValueType'},
+        '{http://checklists.nist.gov/xccdf/1.2}match': {'class': 'SelStringType', 'map': 'matches', 'key': 'selector'},
+        '{http://checklists.nist.gov/xccdf/1.2}lower-bound': {'class': 'SelNumType', 'map': 'lower_bounds', 'key': 'selector'},
+        '{http://checklists.nist.gov/xccdf/1.2}upper-bound': {'class': 'SelNumType', 'map': 'upper_bounds', 'key': 'selector'},
+        '{http://checklists.nist.gov/xccdf/1.2}choices': {'class': 'SelChoicesType', 'map': 'choices', 'key': 'selector'},
+        '{http://checklists.nist.gov/xccdf/1.2}source': {'class': 'URIRefType', 'append': 'sources'},
+        '{http://checklists.nist.gov/xccdf/1.2}signature': {'ignore': True, 'class': 'SignatureType'},
     }
-    def __init__(self):
-        super(ValueType, self).__init__()
-        self.values = {}
-        self.type = 'string'
-        self.operator = 'equals'
+    # def __init__(self):
+    #     super(ValueType, self).__init__()
+    #     self.values = {}
+    #     self.type = 'string'
+    #     self.operator = 'equals'
 
     # def parse_attribute(self, name, value):
     #     if name == 'type':
