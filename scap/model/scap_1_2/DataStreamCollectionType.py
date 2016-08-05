@@ -51,17 +51,6 @@ class DataStreamCollectionType(Model):
 
         self.selected_data_stream = None
 
-    # def parse_element(self, sub_el):
-    #     if sub_el.tag == '{http://scap.nist.gov/schema/scap/source/1.2}data-stream':
-    #         self.data_streams[sub_el.attrib['id']] = Model.load(self, sub_el)
-    #     elif sub_el.tag == '{http://scap.nist.gov/schema/scap/source/1.2}component':
-    #         self.components[sub_el.attrib['id']] = Model.load(self, sub_el)
-    #     elif sub_el.tag == '{http://scap.nist.gov/schema/scap/source/1.2}extended-component':
-    #         self.extended_components[sub_el.attrib['id']] = Model.load(self, sub_el)
-    #     else:
-    #         return super(DataStreamCollectionType, self).parse_element(sub_el)
-    #     return True
-    #
     def resolve_reference(self, ref):
         if ref[0] == '#':
             ref = ref[1:]

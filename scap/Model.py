@@ -61,7 +61,10 @@ class Model(object):
     @staticmethod
     def parse_tag(tag):
         # parse tag
-        xml_namespace, tag_name = tag[1:].split('}')
+        if tag[0] == '{':
+            xml_namespace, tag_name = tag[1:].split('}')
+        else:
+            return None, None, tag
 
         if xml_namespace not in Model.NAMESPACES:
             logger.critical('Unsupported ' + tag_name + ' tag with namespace: ' + xml_namespace)
@@ -204,19 +207,20 @@ class Model(object):
                 import sys
                 sys.exit()
 
-        import pprint
-        pprint.pprint(self)
-
     def parse_attribute(self, name, value):
         if name in self.attribute_map:
             if 'ignore' in self.attribute_map[name] and self.attribute_map[name]['ignore']:
+                logger.debug('Ignoring attribute ' + name + ' = ' + value)
                 return True
 
             if 'in' in self.attribute_map[name]:
                 setattr(self, self.attribute_map[name]['in'], value)
+                logger.debug('Set attribute ' + self.attribute_map[name]['in'] + ' = ' + value)
             else:
-                name = name.replace('-', '_')
+                xml_namespace, model_namespace, attr_name = Model.parse_tag(name)
+                name = attr_name.replace('-', '_')
                 setattr(self, name, value)
+                logger.debug('Set attribute ' + name + ' = ' + value)
             return True
         else:
             return False
@@ -241,7 +245,16 @@ class Model(object):
                 if 'append' in self.tag_map[tag]:
                     #from scap.model.List import List
                     lst = getattr(self, self.tag_map[tag]['append'])
-                    lst.append(Model.load(self, el))
+                    if 'type' in self.tag_map[tag]:
+                        type_ = self.tag_map[tag]['type']
+                        import scap.model.xs
+                        if type_ in scap.model.xs:
+                            lst.append(type_().parse_value(el))
+                        else:
+                            raise NotImplementedError('Type value ' + type_ + ' not defined in scap.model.xs')
+                    else:
+                        lst.append(Model.load(self, el))
+                    logger.debug('Appended ' + el.tag + ' to ' + self.tag_map[tag]['append'])
                     return True
 
                 if 'map' in self.tag_map[tag]:
@@ -253,6 +266,7 @@ class Model(object):
                     else:
                         key = el.attrib['id']
                     dic[key] = Model.load(self, el)
+                    logger.debug('Mapped ' + key + ' to ' + el.tag + ' in ' + self.tag_map[tag]['map'])
                     return True
 
                 if 'class' in self.tag_map[tag] and self.tag_map[tag]['class'] == 'scap.model.List':
@@ -270,19 +284,19 @@ class Model(object):
                         dic = getattr(self, self.tag_map[tag]['in'])
                     else:
                         dic = getattr(self, tag_name.replace('-', '_'))
-                    if 'key' in self.tag_map[tag]:
-                        key = sub_el.attrib[self.tag_map[tag]['key']]
-                    # TODO: implement keyElement as well
-                    else:
-                        key = sub_el.attrib['id']
                     for sub_el in el:
+                        if 'key' in self.tag_map[tag]:
+                            key = sub_el.attrib[self.tag_map[tag]['key']]
+                        # TODO: implement keyElement as well
+                        else:
+                            key = sub_el.attrib['id']
                         dic[key] = Model.load(self, sub_el)
                     return True
 
                 if 'in' in self.tag_map[tag]:
                     setattr(self, self.tag_map[tag]['in'], Model.load(self, el))
                 else:
-                    name = name.replace('-', '_')
+                    name = tag_name.replace('-', '_')
                     setattr(self, name, Model.load(self, el))
                 return True
         return False

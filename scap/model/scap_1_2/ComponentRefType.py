@@ -19,29 +19,34 @@ from scap.Model import Model
 import logging
 
 logger = logging.getLogger(__name__)
-class ComponentReferenceType(Model):
+class ComponentRefType(Model):
+    ATTRIBUTE_MAP = {
+        'id': {'required': True},
+        '{http://www.w3.org/1999/xlink}href': {},
+    }
+    TAG_MAP = {
+    }
     def __init__(self):
-        super(ComponentReferenceType, self).__init__()    # {http://checklists.nist.gov/xccdf/1.2}component-ref
+        super(ComponentRefType, self).__init__()    # {http://checklists.nist.gov/xccdf/1.2}component-ref
 
         self.href = None
-        self.ref_mapping = {}
 
-    def parse_attribute(self, name, value):
-        if name == '{http://www.w3.org/1999/xlink}href':
-            self.href = value
-        else:
-            return super(ComponentReferenceType, self).parse_attribute(name, value)
-        return True
-
+    # def parse_attribute(self, name, value):
+    #     if name == '{http://www.w3.org/1999/xlink}href':
+    #         self.href = value
+    #     else:
+    #         return super(ComponentRefType, self).parse_attribute(name, value)
+    #     return True
+    #
     def parse_element(self, sub_el):
         if sub_el.tag == '{urn:oasis:names:tc:entity:xmlns:xml:catalog}catalog':
             logger.debug('Loading catalog for ' + self.href)
             from scap.model.xml_cat.Catalog import Catalog
             cat = Catalog()
             cat.from_xml(self, sub_el)
-            self.ref_mapping = cat.to_dict()
+            self.set_ref_mapping(cat.to_dict())
         else:
-            return super(ComponentReferenceType, self).parse_element(sub_el)
+            return super(ComponentRefType, self).parse_element(sub_el)
         return True
 
     def resolve(self):

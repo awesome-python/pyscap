@@ -20,8 +20,19 @@ import logging
 
 logger = logging.getLogger(__name__)
 class DataStreamType(Model):
+    ATTRIBUTE_MAP = {
+        'id': {'required': True},
+        'use-case': {'required': True, 'ignore': True},
+        'scap-version': {'required': True, 'ignore': True},
+        'timestamp': {'required': True, 'ignore': True},
+    }
     TAG_MAP = {
-        '{http://scap.nist.gov/schema/scap/source/1.2}component-ref': {'class': 'ComponentReferenceType'},
+        '{http://scap.nist.gov/schema/scap/source/1.2}dictionaries': { 'class': 'scap.model.Dictionary' },
+        '{http://scap.nist.gov/schema/scap/source/1.2}checklists': { 'class': 'scap.model.Dictionary' },
+        '{http://scap.nist.gov/schema/scap/source/1.2}checks': { 'class': 'scap.model.Dictionary' },
+        '{http://scap.nist.gov/schema/scap/source/1.2}extended-components': {'ignore': True},
+
+        '{http://scap.nist.gov/schema/scap/source/1.2}component-ref': {'class': 'ComponentRefType'},
     }
     def __init__(self):
         super(DataStreamType, self).__init__()    # {http://checklists.nist.gov/xccdf/1.2}data-stream
@@ -29,51 +40,8 @@ class DataStreamType(Model):
         self.dictionaries = {}
         self.checklists = {}
         self.checks = {}
+        
         self.selected_checklist = None
-
-        self.required_attributes.extend([
-            'id',
-            'use-case',
-            'scap-version',
-            'timestamp',
-        ])
-        self.ignore_attributes.extend([
-            'use-case',
-            'scap-version',
-            'timestamp',
-        ])
-        self.ignore_sub_elements.extend([
-            '{http://scap.nist.gov/schema/scap/source/1.2}extended-components',
-        ])
-
-    def parse_element(self, sub_el):
-        if sub_el.tag == '{http://scap.nist.gov/schema/scap/source/1.2}dictionaries':
-            for comp_ref_el in sub_el:
-                if comp_ref_el.tag != '{http://scap.nist.gov/schema/scap/source/1.2}component-ref':
-                    logger.critical(sub_el.tag + ' element can only contain component-ref elements')
-                    import sys
-                    sys.exit()
-                comp_ref = Model.load(self, comp_ref_el)
-                self.dictionaries[comp_ref.id] = comp_ref
-        elif sub_el.tag == '{http://scap.nist.gov/schema/scap/source/1.2}checklists':
-            for comp_ref_el in sub_el:
-                if comp_ref_el.tag != '{http://scap.nist.gov/schema/scap/source/1.2}component-ref':
-                    logger.critical(sub_el.tag + ' element can only contain component-ref elements')
-                    import sys
-                    sys.exit()
-                comp_ref = Model.load(self, comp_ref_el)
-                self.checklists[comp_ref.id] = comp_ref
-        elif sub_el.tag == '{http://scap.nist.gov/schema/scap/source/1.2}checks':
-            for comp_ref_el in sub_el:
-                if comp_ref_el.tag != '{http://scap.nist.gov/schema/scap/source/1.2}component-ref':
-                    logger.critical(sub_el.tag + ' element can only contain component-ref elements')
-                    import sys
-                    sys.exit()
-                comp_ref = Model.load(self, comp_ref_el)
-                self.checks[comp_ref.id] = comp_ref
-        else:
-            return super(DataStreamType, self).parse_element(sub_el)
-        return True
 
     def resolve_reference(self, ref):
         if ref in self.ref_mapping:

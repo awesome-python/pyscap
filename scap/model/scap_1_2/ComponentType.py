@@ -20,29 +20,27 @@ import logging
 
 logger = logging.getLogger(__name__)
 class ComponentType(Model):
+    ATTRIBUTE_MAP = {
+        'timestamp': {'ignore': True},
+        'id': {}
+    }
     TAG_MAP = {
         '{http://checklists.nist.gov/xccdf/1.2}Benchmark': { 'class': 'BenchmarkType' },
         '{http://scap.nist.gov/schema/ocil/2.0}ocil': {'class': 'OCILType'},
         '{http://oval.mitre.org/XMLSchema/oval-definitions-5}oval_definitions': {'class': 'OVALDefintionsType'},
+        '{http://cpe.mitre.org/dictionary/2.0}cpe-list': {'ignore': True},
+        '{http://checklists.nist.gov/xccdf/1.2}Tailoring': {'ignore': True},
     }
     def __init__(self):
         super(ComponentType, self).__init__()    # {http://checklists.nist.gov/xccdf/1.2}component
 
         self.model = None
 
-        self.ignore_attributes.extend([
-            'timestamp',
-        ])
-        self.ignore_sub_elements.extend([
-            '{http://cpe.mitre.org/dictionary/2.0}cpe-list',
-            '{http://checklists.nist.gov/xccdf/1.2}Tailoring',
-        ])
-
-    def parse_element(self, sub_el):
-        if sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}Benchmark' \
-            or sub_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}ocil' \
-            or sub_el.tag == '{http://oval.mitre.org/XMLSchema/oval-definitions-5}oval_definitions':
-            self.model = Model.load(self, sub_el)
-        else:
-            return super(ComponentType, self).parse_element(sub_el)
-        return True
+    # def parse_element(self, sub_el):
+    #     if sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}Benchmark' \
+    #         or sub_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}ocil' \
+    #         or sub_el.tag == '{http://oval.mitre.org/XMLSchema/oval-definitions-5}oval_definitions':
+    #         self.model = Model.load(self, sub_el)
+    #     else:
+    #         return super(ComponentType, self).parse_element(sub_el)
+    #     return True
