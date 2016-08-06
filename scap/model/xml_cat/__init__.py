@@ -14,3 +14,6 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
+TAG_MAP = {
+    '{urn:oasis:names:tc:entity:xmlns:xml:catalog}catalog': {'class': 'Catalog'},
+}
