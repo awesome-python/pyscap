@@ -20,8 +20,8 @@ import logging
 
 logger = logging.getLogger(__name__)
 class CPE2IDRefType(Model):
-    ATTRIBUTE_MAP = {
-        'idref': {'type': 'String', 'required': True},
-    }
-    TAG_MAP = {
+    MODEL_MAP = {
+        'attributes': {
+            'idref': {'type': 'String', 'required': True},
+        }
     }

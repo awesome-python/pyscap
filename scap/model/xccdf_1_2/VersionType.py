@@ -20,9 +20,9 @@ import logging
 
 logger = logging.getLogger(__name__)
 class VersionType(String):
-    ATTRIBUTE_MAP = {
-        'time': {'type': 'DateTime'},
-        'update': {'type': 'AnyURI'},
-    }
-    TAG_MAP = {
+    MODEL_MAP = {
+        'attributes': {
+            'time': {'type': 'DateTime'},
+            'update': {'type': 'AnyURI'},
+        }
     }

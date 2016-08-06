@@ -20,8 +20,8 @@ import logging
 
 logger = logging.getLogger(__name__)
 class SelComplexValueType(ComplexValueType):
-    ATTRIBUTE_MAP = {
-        'selector': {'type': 'String'}
-    }
-    TAG_MAP = {
+    MODEL_MAP = {
+        'attributes': {
+            'selector': {'type': 'String'}
+        }
     }

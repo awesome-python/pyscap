@@ -20,10 +20,12 @@ import logging
 
 logger = logging.getLogger(__name__)
 class HTMLTextWithSubType(Model):
-    ATTRIBUTE_MAP = {
-        'override': {'type': 'Boolean', 'default': False},
-    }
-    TAG_MAP = {
-        '{http://checklists.nist.gov/xccdf/1.2}sub': {'class': 'SubType', 'append': 'subs'},
-        '{http://www.w3.org/1999/xhtml}*': {'ignore': True},
+    MODEL_MAP = {
+        'attributes': {
+            'override': {'type': 'Boolean', 'default': False},
+        },
+        'elements': {
+            '{http://checklists.nist.gov/xccdf/1.2}sub': {'class': 'SubType', 'append': 'subs'},
+            '{http://www.w3.org/1999/xhtml}*': {'ignore': True},
+        },
     }

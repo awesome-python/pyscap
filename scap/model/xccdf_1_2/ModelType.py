@@ -20,9 +20,11 @@ import logging
 
 logger = logging.getLogger(__name__)
 class ModelType(Model):
-    ATTRIBUTE_MAP = {
-        'system': {'required': True, 'type': 'AnyURI'},
-    }
-    TAG_MAP = {
-        '{http://checklists.nist.gov/xccdf/1.2}param': {'class': 'ParamType', 'map': 'params', 'key': 'name'},
+    MODEL_MAP = {
+        'attributes': {
+            'system': {'required': True, 'type': 'AnyURI'},
+        },
+        'elements': {
+            '{http://checklists.nist.gov/xccdf/1.2}param': {'class': 'ParamType', 'map': 'params', 'key': 'name'},
+        }
     }

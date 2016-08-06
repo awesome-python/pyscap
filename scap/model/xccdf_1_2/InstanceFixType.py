@@ -20,8 +20,8 @@ import logging
 
 logger = logging.getLogger(__name__)
 class InstanceFixType(Model):
-    ATTRIBUTE_MAP = {
-        'context': {'type': 'String', 'default': 'undefined'}
-    }
-    TAG_MAP = {
+    MODEL_MAP = {
+        'attributes': {
+            'context': {'type': 'String', 'default': 'undefined'}
+        }
     }

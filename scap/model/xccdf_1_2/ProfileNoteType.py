@@ -20,10 +20,12 @@ import logging
 
 logger = logging.getLogger(__name__)
 class ProfileNoteType(Model):
-    ATTRIBUTE_MAP = {
-        'tag': {'type': 'NCName'},
-    }
-    TAG_MAP = {
-        '{http://checklists.nist.gov/xccdf/1.2}sub': {'class': 'SubType', 'append': 'subs'},
-        '{http://www.w3.org/1999/xhtml}*': {'ignore': True},
+    MODEL_MAP = {
+        'attributes': {
+            'tag': {'type': 'NCName'},
+        },
+        'elements': {
+            '{http://checklists.nist.gov/xccdf/1.2}sub': {'class': 'SubType', 'append': 'subs'},
+            '{http://www.w3.org/1999/xhtml}*': {'ignore': True},
+        },
     }

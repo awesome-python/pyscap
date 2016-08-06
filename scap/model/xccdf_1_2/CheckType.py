@@ -25,18 +25,20 @@ SYSTEM_ENUMERATION = [
 ]
 logger = logging.getLogger(__name__)
 class CheckType(Model):
-    ATTRIBUTE_MAP = {
-        'system': {'enum': SYSTEM_ENUMERATION, 'required': True},
-        'negate': {'type': 'Boolean', 'default': False},
-        'id': {'type': 'NCName'},
-        'selector': {'default': '', 'type': 'String'},
-        'multi-check': {'type': 'Boolean', 'default': False},
-    }
-    TAG_MAP = {
-        '{http://checklists.nist.gov/xccdf/1.2}check-import': {'class': 'CheckImportType', 'append': 'check_imports'},
-        '{http://checklists.nist.gov/xccdf/1.2}check-export': {'class': 'CheckExportType', 'append': 'check_exports'},
-        '{http://checklists.nist.gov/xccdf/1.2}check-content-ref': {'class': 'CheckContentRefType', 'append': 'check_content_refs'},
-        '{http://checklists.nist.gov/xccdf/1.2}check-content': {'class': 'CheckContentType'},
+    MODEL_MAP = {
+        'attributes': {
+            'system': {'enum': SYSTEM_ENUMERATION, 'required': True},
+            'negate': {'type': 'Boolean', 'default': False},
+            'id': {'type': 'NCName'},
+            'selector': {'default': '', 'type': 'String'},
+            'multi-check': {'type': 'Boolean', 'default': False},
+        },
+        'elements': {
+            '{http://checklists.nist.gov/xccdf/1.2}check-import': {'class': 'CheckImportType', 'append': 'check_imports'},
+            '{http://checklists.nist.gov/xccdf/1.2}check-export': {'class': 'CheckExportType', 'append': 'check_exports'},
+            '{http://checklists.nist.gov/xccdf/1.2}check-content-ref': {'class': 'CheckContentRefType', 'append': 'check_content_refs'},
+            '{http://checklists.nist.gov/xccdf/1.2}check-content': {'class': 'CheckContentType'},
+        },
     }
     # def __init__(self):
     #     super(CheckType, self).__init__()

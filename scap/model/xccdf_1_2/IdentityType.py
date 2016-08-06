@@ -20,7 +20,5 @@ import logging
 
 logger = logging.getLogger(__name__)
 class IdentityType(String):
-    ATTRIBUTE_MAP = {
-    }
-    TAG_MAP = {
+    MODEL_MAP = {
     }

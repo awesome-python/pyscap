@@ -20,8 +20,8 @@ import logging
 
 logger = logging.getLogger(__name__)
 class StatusType(String):
-    ATTRIBUTE_MAP = {
-        'date': {'type': 'Date'},
-    }
-    TAG_MAP = {
+    MODEL_MAP = {
+        'attributes': {
+            'date': {'type': 'Date'},
+        }
     }

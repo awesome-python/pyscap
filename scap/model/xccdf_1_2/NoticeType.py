@@ -20,9 +20,11 @@ import logging
 
 logger = logging.getLogger(__name__)
 class NoticeType(String):
-    ATTRIBUTE_MAP = {
-        'id': {'required': True, 'type': 'NCName'},
-    }
-    TAG_MAP = {
-        '{http://www.w3.org/1999/xhtml}*': {'ignore': True},
+    MODEL_MAP = {
+        'attributes': {
+            'id': {'required': True, 'type': 'NCName'},
+        },
+        'elements': {
+            '{http://www.w3.org/1999/xhtml}*': {'ignore': True},
+        },
     }

@@ -22,16 +22,18 @@ import logging
 
 logger = logging.getLogger(__name__)
 class FixType(Model):
-    ATTRIBUTE_MAP = {
-        'id': {'type': 'NCNAME'},
-        'reboot': {'ignore': True, 'type': 'Boolean'},
-        'strategy': {'ignore': True, 'enum': FIX_STRATEGY_ENUMERATION, 'default': 'unknown'},
-        'disruption': {'ignore': True, 'enum': RATING_ENUMERATION, 'default': 'unknown'},
-        'complexity': {'ignore': True, 'enum': RATING_ENUMERATION, 'default': 'unknown'},
-        'system': {'ignore': True, 'type': 'AnyURI'},
-        'platform': {'ignore': True, 'type': 'AnyURI'},
-    }
-    TAG_MAP = {
-        '{http://checklists.nist.gov/xccdf/1.2}sub': {'ignore': True, 'class': 'SubType'},
-        '{http://checklists.nist.gov/xccdf/1.2}instance': {'ignore': True, 'class': 'InstanceFixType'},
+    MODEL_MAP = {
+        'attributes': {
+            'id': {'type': 'NCNAME'},
+            'reboot': {'ignore': True, 'type': 'Boolean'},
+            'strategy': {'ignore': True, 'enum': FIX_STRATEGY_ENUMERATION, 'default': 'unknown'},
+            'disruption': {'ignore': True, 'enum': RATING_ENUMERATION, 'default': 'unknown'},
+            'complexity': {'ignore': True, 'enum': RATING_ENUMERATION, 'default': 'unknown'},
+            'system': {'ignore': True, 'type': 'AnyURI'},
+            'platform': {'ignore': True, 'type': 'AnyURI'},
+        },
+        'elements': {
+            '{http://checklists.nist.gov/xccdf/1.2}sub': {'ignore': True, 'class': 'SubType'},
+            '{http://checklists.nist.gov/xccdf/1.2}instance': {'ignore': True, 'class': 'InstanceFixType'},
+        },
     }

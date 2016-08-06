@@ -21,8 +21,8 @@ import logging
 
 logger = logging.getLogger(__name__)
 class MessageType(String):
-    ATTRIBUTE_MAP = {
-        'severity': {'enum': MESSAGE_SEVERITY_ENUMERATION, 'required': True},
-    }
-    TAG_MAP = {
+    MODEL_MAP = {
+        'attributes': {
+            'severity': {'enum': MESSAGE_SEVERITY_ENUMERATION, 'required': True},
+        }
     }

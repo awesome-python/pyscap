@@ -20,8 +20,8 @@ import logging
 
 logger = logging.getLogger(__name__)
 class TargetFactsType(Model):
-    ATTRIBUTE_MAP = {
-    }
-    TAG_MAP = {
-        '{http://checklists.nist.gov/xccdf/1.2}fact': {'class': 'FactType', 'append': 'facts'},
+    MODEL_MAP = {
+        'elements': {
+            '{http://checklists.nist.gov/xccdf/1.2}fact': {'class': 'FactType', 'append': 'facts'},
+        }
     }

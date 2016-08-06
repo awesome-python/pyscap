@@ -20,8 +20,8 @@ import logging
 
 logger = logging.getLogger(__name__)
 class ComplexValueType(Model):
-    ATTRIBUTE_MAP = {
-    }
-    TAG_MAP = {
-        '{http://checklists.nist.gov/xccdf/1.2}item': {'class': 'scap.model.xs.String', 'append': 'items'},
+    MODEL_MAP = {
+        'elements': {
+            '{http://checklists.nist.gov/xccdf/1.2}item': {'class': 'scap.model.xs.String', 'append': 'items'},
+        },
     }

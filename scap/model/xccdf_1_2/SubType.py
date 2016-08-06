@@ -21,9 +21,11 @@ import logging
 
 logger = logging.getLogger(__name__)
 class SubType(IDRefType):
-    ATTRIBUTE_MAP = {
-        'use': {'enum': SUB_USE_ENUMERATION, 'default': 'value'},
-    }
-    TAG_MAP = {
-        '{http://checklists.nist.gov/xccdf/1.2}sub': {'class': 'SubType', 'append': 'subs'},
+    MODEL_MAP = {
+        'attributes': {
+            'use': {'enum': SUB_USE_ENUMERATION, 'default': 'value'},
+        },
+        'elements': {
+            '{http://checklists.nist.gov/xccdf/1.2}sub': {'class': 'SubType', 'append': 'subs'},
+        },
     }

@@ -20,11 +20,11 @@ import logging
 
 logger = logging.getLogger(__name__)
 class TailoringReferenceType(Model):
-    ATTRIBUTE_MAP = {
-        'href': {'type': 'AnyURI', 'required': True},
-        'id': {'type': 'NCName', 'required': True},
-        'version': {'type': 'String', 'required': True},
-        'time': {'type': 'DateTime', 'required': True},
-    }
-    TAG_MAP = {
+    MODEL_MAP = {
+        'attributes': {
+            'href': {'type': 'AnyURI', 'required': True},
+            'id': {'type': 'NCName', 'required': True},
+            'version': {'type': 'String', 'required': True},
+            'time': {'type': 'DateTime', 'required': True},
+        }
     }

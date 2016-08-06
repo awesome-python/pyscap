@@ -20,12 +20,14 @@ import logging
 
 logger = logging.getLogger(__name__)
 class ProfileSelectType(Model):
-    ATTRIBUTE_MAP = {
-        'idref': {'type': 'NCName', 'required': True},
-        'selected': {'type': 'Boolean', 'required': True},
-    }
-    TAG_MAP = {
-        '{http://checklists.nist.gov/xccdf/1.2}remark': {'ignore': True, 'class': 'TextType', 'append': 'remarks'},
+    MODEL_MAP = {
+        'attributes': {
+            'idref': {'type': 'NCName', 'required': True},
+            'selected': {'type': 'Boolean', 'required': True},
+        },
+        'elements': {
+            '{http://checklists.nist.gov/xccdf/1.2}remark': {'ignore': True, 'class': 'TextType', 'append': 'remarks'},
+        },
     }
     # def __init__(self):
     #     super(ProfileSelectType, self).__init__()

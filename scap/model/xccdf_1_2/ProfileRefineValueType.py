@@ -21,11 +21,13 @@ import logging
 
 logger = logging.getLogger(__name__)
 class ProfileRefineValueType(Model):
-    ATTRIBUTE_MAP = {
-        'idref': {'type': 'NCName', 'required': True},
-        'selector': {'type': 'String'},
-        'operator': {'enum': VALUE_OPERATOR_ENUMERATION},
-    }
-    TAG_MAP = {
-        '{http://checklists.nist.gov/xccdf/1.2}remark': {'ignore': True, 'type': 'TextType', 'append': 'remarks'},
+    MODEL_MAP = {
+        'attributes': {
+            'idref': {'type': 'NCName', 'required': True},
+            'selector': {'type': 'String'},
+            'operator': {'enum': VALUE_OPERATOR_ENUMERATION},
+        },
+        'elements': {
+            '{http://checklists.nist.gov/xccdf/1.2}remark': {'ignore': True, 'type': 'TextType', 'append': 'remarks'},
+        },
     }

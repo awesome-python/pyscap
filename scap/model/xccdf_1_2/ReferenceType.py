@@ -20,10 +20,12 @@ import logging
 
 logger = logging.getLogger(__name__)
 class ReferenceType(String):
-    ATTRIBUTE_MAP = {
-        'href': {'type': 'AnyURI'},
-        'override': {'type': 'Boolean'},
-    }
-    TAG_MAP = {
-        '{http://purl.org/dc/elements/1.1/}*': {'ignore': True},
+    MODEL_MAP = {
+        'attributes': {
+            'href': {'type': 'AnyURI'},
+            'override': {'type': 'Boolean'},
+        },
+        'elements': {
+            '{http://purl.org/dc/elements/1.1/}*': {'ignore': True},
+        },
     }

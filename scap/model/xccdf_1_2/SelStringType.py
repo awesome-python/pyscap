@@ -20,8 +20,8 @@ import logging
 
 logger = logging.getLogger(__name__)
 class SelStringType(String):
-    ATTRIBUTE_MAP = {
-        'selector': {'type': 'String', 'default': ''},
-    }
-    TAG_MAP = {
+    MODEL_MAP = {
+        'attributes': {
+            'selector': {'type': 'String', 'default': ''},
+        }
     }

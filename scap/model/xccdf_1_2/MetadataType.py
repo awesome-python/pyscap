@@ -20,8 +20,8 @@ import logging
 
 logger = logging.getLogger(__name__)
 class MetadataType(Model):
-    ATTRIBUTE_MAP = {
-    }
-    TAG_MAP = {
-        '*': {'ignore': True},
+    MODEL_MAP = {
+        'elements': {
+            '*': {'ignore': True},
+        }
     }

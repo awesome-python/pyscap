@@ -20,16 +20,18 @@ import logging
 
 logger = logging.getLogger(__name__)
 class TailoringType(Model):
-    ATTRIBUTE_MAP = {
-        'id': {'type': 'TailoringIDPattern', 'required': True},
-        'Id': {'type': 'ID'},
-    }
-    TAG_MAP = {
-        '{http://checklists.nist.gov/xccdf/1.2}benchmark': {'class': 'TailoringBenchmarkReferenceType'},
-        '{http://checklists.nist.gov/xccdf/1.2}status': {'class': 'StatusType', 'append': 'statuses'},
-        '{http://checklists.nist.gov/xccdf/1.2}dc-status': {'class': 'DCStatusType', 'append': 'dc_statuses'},
-        '{http://checklists.nist.gov/xccdf/1.2}version': {'class': 'TailoringVersionType'},
-        '{http://checklists.nist.gov/xccdf/1.2}metadata': {'class': 'MetadataType', 'append': 'metadata'},
-        '{http://checklists.nist.gov/xccdf/1.2}Profile': {'class': 'ProfileType', 'append': 'profiles'},
-        '{http://checklists.nist.gov/xccdf/1.2}signature': {'ignore': True, 'class': 'SignatureType'},
+    MODEL_MAP = {
+        'attributes': {
+            'id': {'type': 'TailoringIDPattern', 'required': True},
+            'Id': {'type': 'ID'},
+        },
+        'elements': {
+            '{http://checklists.nist.gov/xccdf/1.2}benchmark': {'class': 'TailoringBenchmarkReferenceType'},
+            '{http://checklists.nist.gov/xccdf/1.2}status': {'class': 'StatusType', 'append': 'statuses'},
+            '{http://checklists.nist.gov/xccdf/1.2}dc-status': {'class': 'DCStatusType', 'append': 'dc_statuses'},
+            '{http://checklists.nist.gov/xccdf/1.2}version': {'class': 'TailoringVersionType'},
+            '{http://checklists.nist.gov/xccdf/1.2}metadata': {'class': 'MetadataType', 'append': 'metadata'},
+            '{http://checklists.nist.gov/xccdf/1.2}Profile': {'class': 'ProfileType', 'append': 'profiles'},
+            '{http://checklists.nist.gov/xccdf/1.2}signature': {'ignore': True, 'class': 'SignatureType'},
+        },
     }

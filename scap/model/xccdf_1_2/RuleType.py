@@ -23,21 +23,23 @@ import logging
 
 logger = logging.getLogger(__name__)
 class RuleType(SelectableItemType):
-    ATTRIBUTE_MAP = {
-        'id': {'required': True, 'type': 'RuleIDPattern'},
-        'role': {'ignore': True, 'enum': ROLE_ENUMERATION, 'default': 'full'},
-        'severity': {'ignore': True, 'enum': SEVERITY_ENUMERATION, 'default': 'unknown'},
-        'multiple': {'type': 'Boolean', 'default': False},
-    }
-    TAG_MAP = {
-        '{http://checklists.nist.gov/xccdf/1.2}ident': {'ignore': True, 'class': 'IdentType'},
-        '{http://checklists.nist.gov/xccdf/1.2}impact-metric': {'ignore': True, 'type': 'String'},
-        '{http://checklists.nist.gov/xccdf/1.2}profile-note': {'ignore': True, 'class': 'ProfileNoteType'},
-        '{http://checklists.nist.gov/xccdf/1.2}fix': {'class': 'FixType', 'append': 'fixes'},
-        '{http://checklists.nist.gov/xccdf/1.2}fixtext': {'class': 'FixtextType', 'append': 'fixtexts'},
-        '{http://checklists.nist.gov/xccdf/1.2}check': {'class': 'CheckType', 'map': 'checks', 'key': 'selector'},
-        '{http://checklists.nist.gov/xccdf/1.2}complex-check': {'class': 'ComplexCheckType', 'map': 'complex_checks', 'key': 'selector'},
-        '{http://checklists.nist.gov/xccdf/1.2}signature': {'ignore': True, 'class': 'SignatureType'},
+    MODEL_MAP = {
+        'attributes': {
+            'id': {'required': True, 'type': 'RuleIDPattern'},
+            'role': {'ignore': True, 'enum': ROLE_ENUMERATION, 'default': 'full'},
+            'severity': {'ignore': True, 'enum': SEVERITY_ENUMERATION, 'default': 'unknown'},
+            'multiple': {'type': 'Boolean', 'default': False},
+        },
+        'elements': {
+            '{http://checklists.nist.gov/xccdf/1.2}ident': {'ignore': True, 'class': 'IdentType'},
+            '{http://checklists.nist.gov/xccdf/1.2}impact-metric': {'ignore': True, 'type': 'String'},
+            '{http://checklists.nist.gov/xccdf/1.2}profile-note': {'ignore': True, 'class': 'ProfileNoteType'},
+            '{http://checklists.nist.gov/xccdf/1.2}fix': {'class': 'FixType', 'append': 'fixes'},
+            '{http://checklists.nist.gov/xccdf/1.2}fixtext': {'class': 'FixtextType', 'append': 'fixtexts'},
+            '{http://checklists.nist.gov/xccdf/1.2}check': {'class': 'CheckType', 'map': 'checks', 'key': 'selector'},
+            '{http://checklists.nist.gov/xccdf/1.2}complex-check': {'class': 'ComplexCheckType', 'map': 'complex_checks', 'key': 'selector'},
+            '{http://checklists.nist.gov/xccdf/1.2}signature': {'ignore': True, 'class': 'SignatureType'},
+        },
     }
 
     # def __init__(self):

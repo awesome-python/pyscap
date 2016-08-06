@@ -20,8 +20,8 @@ import logging
 
 logger = logging.getLogger(__name__)
 class DCStatusType(Model):
-    ATTRIBUTE_MAP = {
-    }
-    TAG_MAP = {
-        '{http://purl.org/dc/elements/1.1/}*': {'ignore': True},
+    MODEL_MAP = {
+        'elements': {
+            '{http://purl.org/dc/elements/1.1/}*': {'ignore': True},
+        },
     }

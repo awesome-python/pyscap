@@ -20,24 +20,26 @@ import logging
 
 logger = logging.getLogger(__name__)
 class ItemType(Model):
-    ATTRIBUTE_MAP = {
-        'abstract': {'ignore': True, 'type': 'Boolean', 'default': False},
-        'cluster-id': {'ignore': True, 'type': 'NCName'},
-        'extends': {'ignore': True, 'type': 'NCName'},
-        'hidden': {'ignore': True, 'type': 'Boolean', 'default': False},
-        'prohibitChanges': {'ignore': True, 'type': 'Boolean', 'default': False},
-        'Id': {'ignore': True, 'type': 'ID'},
-    }
-    TAG_MAP = {
-        '{http://checklists.nist.gov/xccdf/1.2}status': {'class': 'StatusType', 'ignore': True},
-        '{http://checklists.nist.gov/xccdf/1.2}dc-status': {'class': 'DCStatusType', 'ignore': True},
-        '{http://checklists.nist.gov/xccdf/1.2}version': {'class': 'VersionType', 'ignore': True},
-        '{http://checklists.nist.gov/xccdf/1.2}title': {'class': 'TextWithSubType', 'ignore': True},
-        '{http://checklists.nist.gov/xccdf/1.2}description': {'class': 'HTMLTextWithSubType', 'ignore': True},
-        '{http://checklists.nist.gov/xccdf/1.2}warning': {'class': 'WarningType', 'type': 'String', 'append': 'warnings'},
-        '{http://checklists.nist.gov/xccdf/1.2}question': {'class': 'TextType', 'ignore': True},
-        '{http://checklists.nist.gov/xccdf/1.2}reference': {'class': 'ReferenceType', 'ignore': True},
-        '{http://checklists.nist.gov/xccdf/1.2}metadata': {'class': 'MetadataType', 'ignore': True},
+    MODEL_MAP = {
+        'attributes': {
+            'abstract': {'ignore': True, 'type': 'Boolean', 'default': False},
+            'cluster-id': {'ignore': True, 'type': 'NCName'},
+            'extends': {'ignore': True, 'type': 'NCName'},
+            'hidden': {'ignore': True, 'type': 'Boolean', 'default': False},
+            'prohibitChanges': {'ignore': True, 'type': 'Boolean', 'default': False},
+            'Id': {'ignore': True, 'type': 'ID'},
+        },
+        'elements': {
+            '{http://checklists.nist.gov/xccdf/1.2}status': {'class': 'StatusType', 'ignore': True},
+            '{http://checklists.nist.gov/xccdf/1.2}dc-status': {'class': 'DCStatusType', 'ignore': True},
+            '{http://checklists.nist.gov/xccdf/1.2}version': {'class': 'VersionType', 'ignore': True},
+            '{http://checklists.nist.gov/xccdf/1.2}title': {'class': 'TextWithSubType', 'ignore': True},
+            '{http://checklists.nist.gov/xccdf/1.2}description': {'class': 'HTMLTextWithSubType', 'ignore': True},
+            '{http://checklists.nist.gov/xccdf/1.2}warning': {'class': 'WarningType', 'type': 'String', 'append': 'warnings'},
+            '{http://checklists.nist.gov/xccdf/1.2}question': {'class': 'TextType', 'ignore': True},
+            '{http://checklists.nist.gov/xccdf/1.2}reference': {'class': 'ReferenceType', 'ignore': True},
+            '{http://checklists.nist.gov/xccdf/1.2}metadata': {'class': 'MetadataType', 'ignore': True},
+        },
     }
     # abstract
     # def __init__(self):

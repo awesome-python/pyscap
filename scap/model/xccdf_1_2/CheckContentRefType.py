@@ -20,9 +20,9 @@ import logging
 
 logger = logging.getLogger(__name__)
 class CheckContentRefType(Model):
-    ATTRIBUTE_MAP = {
-        'href': {'type': 'AnyURI', 'requird': True},
-        'name': {'type': 'String'},
-    }
-    TAG_MAP = {
+    MODEL_MAP = {
+        'attributes': {
+            'href': {'type': 'AnyURI', 'requird': True},
+            'name': {'type': 'String'},
+        },
     }

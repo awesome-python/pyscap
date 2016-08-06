@@ -23,24 +23,26 @@ import logging
 
 logger = logging.getLogger(__name__)
 class ValueType(ItemType):
-    ATTRIBUTE_MAP = {
-        'id': {'type': 'ValueIDPattern', 'required': True},
-        'type': {'enum': VALUE_TYPE_ENUMERATION, 'default': 'string'},
-        'operator': {'enum': VALUE_OPERATOR_ENUMERATION, 'default': 'equals'},
-        'interactive': {'ignore': True, 'type': 'Boolean'},
-        'interfaceHint': {'ignore': True, 'enum': INTERFACE_HINT_ENUMERATION},
-    }
-    TAG_MAP = {
-        '{http://checklists.nist.gov/xccdf/1.2}value': {'class': 'SelStringType', 'map': 'values', 'key': 'selector'},
-        '{http://checklists.nist.gov/xccdf/1.2}complex-value': {'class': 'SelComplexValueType'},
-        '{http://checklists.nist.gov/xccdf/1.2}default': {'class': 'SelStringType'},
-        '{http://checklists.nist.gov/xccdf/1.2}complex-default': {'class': 'SelComplexValueType'},
-        '{http://checklists.nist.gov/xccdf/1.2}match': {'class': 'SelStringType', 'map': 'matches', 'key': 'selector'},
-        '{http://checklists.nist.gov/xccdf/1.2}lower-bound': {'class': 'SelNumType', 'map': 'lower_bounds', 'key': 'selector'},
-        '{http://checklists.nist.gov/xccdf/1.2}upper-bound': {'class': 'SelNumType', 'map': 'upper_bounds', 'key': 'selector'},
-        '{http://checklists.nist.gov/xccdf/1.2}choices': {'class': 'SelChoicesType', 'map': 'choices', 'key': 'selector'},
-        '{http://checklists.nist.gov/xccdf/1.2}source': {'class': 'URIRefType', 'append': 'sources'},
-        '{http://checklists.nist.gov/xccdf/1.2}signature': {'ignore': True, 'class': 'SignatureType'},
+    MODEL_MAP = {
+        'attributes': {
+            'id': {'type': 'ValueIDPattern', 'required': True},
+            'type': {'enum': VALUE_TYPE_ENUMERATION, 'default': 'string'},
+            'operator': {'enum': VALUE_OPERATOR_ENUMERATION, 'default': 'equals'},
+            'interactive': {'ignore': True, 'type': 'Boolean'},
+            'interfaceHint': {'ignore': True, 'enum': INTERFACE_HINT_ENUMERATION},
+        },
+        'elements': {
+            '{http://checklists.nist.gov/xccdf/1.2}value': {'class': 'SelStringType', 'map': 'values', 'key': 'selector'},
+            '{http://checklists.nist.gov/xccdf/1.2}complex-value': {'class': 'SelComplexValueType'},
+            '{http://checklists.nist.gov/xccdf/1.2}default': {'class': 'SelStringType'},
+            '{http://checklists.nist.gov/xccdf/1.2}complex-default': {'class': 'SelComplexValueType'},
+            '{http://checklists.nist.gov/xccdf/1.2}match': {'class': 'SelStringType', 'map': 'matches', 'key': 'selector'},
+            '{http://checklists.nist.gov/xccdf/1.2}lower-bound': {'class': 'SelNumType', 'map': 'lower_bounds', 'key': 'selector'},
+            '{http://checklists.nist.gov/xccdf/1.2}upper-bound': {'class': 'SelNumType', 'map': 'upper_bounds', 'key': 'selector'},
+            '{http://checklists.nist.gov/xccdf/1.2}choices': {'class': 'SelChoicesType', 'map': 'choices', 'key': 'selector'},
+            '{http://checklists.nist.gov/xccdf/1.2}source': {'class': 'URIRefType', 'append': 'sources'},
+            '{http://checklists.nist.gov/xccdf/1.2}signature': {'ignore': True, 'class': 'SignatureType'},
+        },
     }
     # def __init__(self):
     #     super(ValueType, self).__init__()

@@ -20,9 +20,9 @@ import logging
 
 logger = logging.getLogger(__name__)
 class ScoreType(Decimal):
-    ATTRIBUTE_MAP = {
-        'system': {'type': 'AnyURI'},
-        'maximum': {'type': 'Decimal'}
-    }
-    TAG_MAP = {
+    MODEL_MAP = {
+        'attributes': {
+            'system': {'type': 'AnyURI'},
+            'maximum': {'type': 'Decimal'}
+        }
     }

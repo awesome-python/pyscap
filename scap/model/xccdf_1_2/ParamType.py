@@ -20,8 +20,8 @@ import logging
 
 logger = logging.getLogger(__name__)
 class ParamType(String):
-    ATTRIBUTE_MAP = {
-        'name': {'type': 'NCName', 'required': True},
-    }
-    TAG_MAP = {
+    MODEL_MAP = {
+        'attributes': {
+            'name': {'type': 'NCName', 'required': True},
+        }
     }

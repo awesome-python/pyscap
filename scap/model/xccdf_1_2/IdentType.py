@@ -20,9 +20,9 @@ import logging
 
 logger = logging.getLogger(__name__)
 class IdentType(String):
-    ATTRIBUTE_MAP = {
-        'authenticated': {'type': 'Boolean', 'required': True},
-        'privileged': {'type': 'Boolean', 'required': True},
-    }
-    TAG_MAP = {
+    MODEL_MAP = {
+        'attributes': {
+            'authenticated': {'type': 'Boolean', 'required': True},
+            'privileged': {'type': 'Boolean', 'required': True},
+        }
     }

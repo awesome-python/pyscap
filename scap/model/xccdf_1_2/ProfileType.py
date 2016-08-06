@@ -20,29 +20,31 @@ import logging
 
 logger = logging.getLogger(__name__)
 class ProfileType(Model):
-    ATTRIBUTE_MAP = {
-        'id': {'required': True, 'type': 'ProfileIDPattern'},
-        'prohibitChanges': {'ignore': True, 'type': 'Boolean', 'default': False},
-        'abstract': {'ignore': True, 'type': 'Boolean', 'default': False},
-        'note-tag': {'ignore': True, 'type': 'NCName'},
-        'extends': {'notImplemented': True, 'type': 'NCName'},
-        'Id': {'ignore': True, 'type': 'ID'},
-    }
-    TAG_MAP = {
-        '{http://checklists.nist.gov/xccdf/1.2}status': {'ignore': True, 'class': 'StatusType', 'append': 'statuses'},
-        '{http://checklists.nist.gov/xccdf/1.2}dc-status': {'ignore': True, 'class': 'DCStatusType', 'append': 'dc_statuses'},
-        '{http://checklists.nist.gov/xccdf/1.2}version': {'ignore': True, 'class': 'VersionType'},
-        '{http://checklists.nist.gov/xccdf/1.2}title': {'ignore': True, 'class': 'TextWithSubType', 'append': 'titles'},
-        '{http://checklists.nist.gov/xccdf/1.2}description': {'ignore': True, 'class': 'HTMLTextWithSubType', 'append': 'descriptions'},
-        '{http://checklists.nist.gov/xccdf/1.2}reference': {'ignore': True, 'class': 'ReferenceType', 'append': 'references'},
-        '{http://checklists.nist.gov/xccdf/1.2}platform': {'ignore': True, 'class': 'OverrideableCPE2IDRefType', 'append': 'platforms'},
-        '{http://checklists.nist.gov/xccdf/1.2}select': {'class': 'ProfileSelectType', 'map': 'selects', 'key': 'idref'},
-        '{http://checklists.nist.gov/xccdf/1.2}set-complex-value': {'class': 'ProfileSetComplexValueType', 'map': 'set_complex_values', 'key': 'idref'},
-        '{http://checklists.nist.gov/xccdf/1.2}set-value': {'class': 'ProfileSetValueType', 'map': 'set_values', 'key': 'idref'},
-        '{http://checklists.nist.gov/xccdf/1.2}refine-value': {'class': 'ProfileRefineValueType', 'map': 'refine_values', 'key': 'idref'},
-        '{http://checklists.nist.gov/xccdf/1.2}refine-rule': {'class': 'ProfileRefineRuleType', 'map': 'refine_rules', 'key': 'idref'},
-        '{http://checklists.nist.gov/xccdf/1.2}metadata': {'ignore': True, 'class': 'MetadataType', 'append': 'metadata'},
-        '{http://checklists.nist.gov/xccdf/1.2}signature': {'ignore': True, 'class': 'SignatureType'},
+    MODEL_MAP = {
+        'attributes': {
+            'id': {'required': True, 'type': 'ProfileIDPattern'},
+            'prohibitChanges': {'ignore': True, 'type': 'Boolean', 'default': False},
+            'abstract': {'ignore': True, 'type': 'Boolean', 'default': False},
+            'note-tag': {'ignore': True, 'type': 'NCName'},
+            'extends': {'notImplemented': True, 'type': 'NCName'},
+            'Id': {'ignore': True, 'type': 'ID'},
+        },
+        'elements': {
+            '{http://checklists.nist.gov/xccdf/1.2}status': {'ignore': True, 'class': 'StatusType', 'append': 'statuses'},
+            '{http://checklists.nist.gov/xccdf/1.2}dc-status': {'ignore': True, 'class': 'DCStatusType', 'append': 'dc_statuses'},
+            '{http://checklists.nist.gov/xccdf/1.2}version': {'ignore': True, 'class': 'VersionType'},
+            '{http://checklists.nist.gov/xccdf/1.2}title': {'ignore': True, 'class': 'TextWithSubType', 'append': 'titles'},
+            '{http://checklists.nist.gov/xccdf/1.2}description': {'ignore': True, 'class': 'HTMLTextWithSubType', 'append': 'descriptions'},
+            '{http://checklists.nist.gov/xccdf/1.2}reference': {'ignore': True, 'class': 'ReferenceType', 'append': 'references'},
+            '{http://checklists.nist.gov/xccdf/1.2}platform': {'ignore': True, 'class': 'OverrideableCPE2IDRefType', 'append': 'platforms'},
+            '{http://checklists.nist.gov/xccdf/1.2}select': {'class': 'ProfileSelectType', 'map': 'selects', 'key': 'idref'},
+            '{http://checklists.nist.gov/xccdf/1.2}set-complex-value': {'class': 'ProfileSetComplexValueType', 'map': 'set_complex_values', 'key': 'idref'},
+            '{http://checklists.nist.gov/xccdf/1.2}set-value': {'class': 'ProfileSetValueType', 'map': 'set_values', 'key': 'idref'},
+            '{http://checklists.nist.gov/xccdf/1.2}refine-value': {'class': 'ProfileRefineValueType', 'map': 'refine_values', 'key': 'idref'},
+            '{http://checklists.nist.gov/xccdf/1.2}refine-rule': {'class': 'ProfileRefineRuleType', 'map': 'refine_rules', 'key': 'idref'},
+            '{http://checklists.nist.gov/xccdf/1.2}metadata': {'ignore': True, 'class': 'MetadataType', 'append': 'metadata'},
+            '{http://checklists.nist.gov/xccdf/1.2}signature': {'ignore': True, 'class': 'SignatureType'},
+        },
     }
     # def __init__(self):
     #     super(ProfileType, self).__init__()

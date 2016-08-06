@@ -22,13 +22,15 @@ import logging
 
 logger = logging.getLogger(__name__)
 class ProfileRefineRuleType(Model):
-    ATTRIBUTE_MAP = {
-        'idref': {'type': 'NCName', 'required': True},
-        'weight': {'type': 'Weight'},
-        'selector': {'type': 'String'},
-        'severity': {'enum': SEVERITY_ENUMERATION},
-        'role': {'enum': ROLE_ENUMERATION},
-}
-    TAG_MAP = {
-        '{http://checklists.nist.gov/xccdf/1.2}remark': {'ignore': True, 'type': 'TextType', 'append': 'remarks'},
+    MODEL_MAP = {
+        'attributes': {
+            'idref': {'type': 'NCName', 'required': True},
+            'weight': {'type': 'Weight'},
+            'selector': {'type': 'String'},
+            'severity': {'enum': SEVERITY_ENUMERATION},
+            'role': {'enum': ROLE_ENUMERATION},
+        },
+        'elements': {
+            '{http://checklists.nist.gov/xccdf/1.2}remark': {'ignore': True, 'type': 'TextType', 'append': 'remarks'},
+        },
     }

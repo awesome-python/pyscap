@@ -20,8 +20,8 @@ import logging
 
 logger = logging.getLogger(__name__)
 class URIRefType(String):
-    ATTRIBUTE_MAP = {
-        'uri': {'type': 'AnyURI', 'required': True},
-    }
-    TAG_MAP = {
+    MODEL_MAP = {
+        'attributes': {
+            'uri': {'type': 'AnyURI', 'required': True},
+        }
     }

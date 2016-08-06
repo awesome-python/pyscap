@@ -20,12 +20,8 @@ import logging
 
 logger = logging.getLogger(__name__)
 class ProfileSetComplexValueType(ComplexValueType):
-    ATTRIBUTE_MAP = {
-        'idref': {'type': 'NCName', 'required': True},
+    MODEL_MAP = {
+        'attributes': {
+            'idref': {'type': 'NCName', 'required': True},
+        }
     }
-    TAG_MAP = {
-    }
-    def __init__(self):
-        super(ProfileSetComplexValueType, self).__init__()
-
-        self.idref = None

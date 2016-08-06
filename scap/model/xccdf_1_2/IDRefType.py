@@ -20,8 +20,8 @@ import logging
 
 logger = logging.getLogger(__name__)
 class IDRefType(Model):
-    ATTRIBUTE_MAP = {
-        'idref': {'type': 'NCName', 'required': True},
-    }
-    TAG_MAP = {
+    MODEL_MAP = {
+        'attributes': {
+            'idref': {'type': 'NCName', 'required': True},
+        }
     }

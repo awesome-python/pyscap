@@ -20,8 +20,8 @@ import logging
 
 logger = logging.getLogger(__name__)
 class PlainTextType(String):
-    ATTRIBUTE_MAP = {
-        'id': {'required': True, 'type': 'NCName'},
-    }
-    TAG_MAP = {
+    MODEL_MAP = {
+        'attributes': {
+            'id': {'required': True, 'type': 'NCName'},
+        }
     }

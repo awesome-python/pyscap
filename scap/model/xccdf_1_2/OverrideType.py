@@ -21,12 +21,14 @@ import logging
 
 logger = logging.getLogger(__name__)
 class OverrideType(Decimal):
-    ATTRIBUTE_MAP = {
-        'time': {'type': 'DateTime', 'required': True},
-        'authority': {'type': 'String', 'required': True},
-    }
-    TAG_MAP = {
-        '{http://checklists.nist.gov/xccdf/1.2}old-result': {'enum': RESULT_ENUMERATION},
-        '{http://checklists.nist.gov/xccdf/1.2}new-result': {'enum': RESULT_ENUMERATION},
-        '{http://checklists.nist.gov/xccdf/1.2}remark': {'class': 'TextType'},
+    MODEL_MAP = {
+        'attributes': {
+            'time': {'type': 'DateTime', 'required': True},
+            'authority': {'type': 'String', 'required': True},
+        },
+        'elements': {
+            '{http://checklists.nist.gov/xccdf/1.2}old-result': {'enum': RESULT_ENUMERATION},
+            '{http://checklists.nist.gov/xccdf/1.2}new-result': {'enum': RESULT_ENUMERATION},
+            '{http://checklists.nist.gov/xccdf/1.2}remark': {'class': 'TextType'},
+        },
     }

@@ -21,8 +21,8 @@ import logging
 
 logger = logging.getLogger(__name__)
 class WarningType(HTMLTextWithSubType):
-    ATTRIBUTE_MAP = {
-        'category': {'enum': WARNING_CATEGORY_ENUMERATION, 'default': 'general'},
-    }
-    TAG_MAP = {
+    MODEL_MAP = {
+        'attributes': {
+            'category': {'enum': WARNING_CATEGORY_ENUMERATION, 'default': 'general'},
+        }
     }

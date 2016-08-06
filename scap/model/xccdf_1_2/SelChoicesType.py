@@ -20,11 +20,13 @@ import logging
 
 logger = logging.getLogger(__name__)
 class SelChoicesType(Model):
-    ATTRIBUTE_MAP = {
-        'mustMatch': {'type': 'Boolean'},
-        'selector': {'type': 'String', 'default': ''},
-    }
-    TAG_MAP = {
-        '{http://checklists.nist.gov/xccdf/1.2}choice': {'class': 'scap.model.xs.String', 'append': 'choices'},
-        '{http://checklists.nist.gov/xccdf/1.2}complex-choice': {'class': 'ComplexValueType'},
+    MODEL_MAP = {
+        'attributes': {
+            'mustMatch': {'type': 'Boolean'},
+            'selector': {'type': 'String', 'default': ''},
+        },
+        'elements': {
+            '{http://checklists.nist.gov/xccdf/1.2}choice': {'class': 'scap.model.xs.String', 'append': 'choices'},
+            '{http://checklists.nist.gov/xccdf/1.2}complex-choice': {'class': 'ComplexValueType'},
+        },
     }

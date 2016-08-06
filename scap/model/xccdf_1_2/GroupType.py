@@ -21,14 +21,16 @@ import logging
 
 logger = logging.getLogger(__name__)
 class GroupType(SelectableItemType):
-    ATTRIBUTE_MAP = {
-        'id': {'required': True, 'type': 'GroupIDPattern'},
-    }
-    TAG_MAP = {
-        '{http://checklists.nist.gov/xccdf/1.2}Value': {'class': 'ValueType', 'map': 'values'},
-        '{http://checklists.nist.gov/xccdf/1.2}Group': {'class': 'GroupType', 'map': 'groups'},
-        '{http://checklists.nist.gov/xccdf/1.2}Rule': {'class': 'RuleType', 'map': 'rules'},
-        '{http://checklists.nist.gov/xccdf/1.2}signature': {'ignore': True, 'class': 'SignatureType'},
+    MODEL_MAP = {
+        'attributes': {
+            'id': {'required': True, 'type': 'GroupIDPattern'},
+        },
+        'elements': {
+            '{http://checklists.nist.gov/xccdf/1.2}Value': {'class': 'ValueType', 'map': 'values'},
+            '{http://checklists.nist.gov/xccdf/1.2}Group': {'class': 'GroupType', 'map': 'groups'},
+            '{http://checklists.nist.gov/xccdf/1.2}Rule': {'class': 'RuleType', 'map': 'rules'},
+            '{http://checklists.nist.gov/xccdf/1.2}signature': {'ignore': True, 'class': 'SignatureType'},
+        },
     }
 
     # def __init__(self):

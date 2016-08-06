@@ -20,9 +20,9 @@ import logging
 
 logger = logging.getLogger(__name__)
 class InstanceResultType(String):
-    ATTRIBUTE_MAP = {
-        'context': {'default': 'undefined', 'type': 'String'},
-        'parentContext': {'type': 'String'},
-    }
-    TAG_MAP = {
+    MODEL_MAP = {
+        'attributes': {
+            'context': {'default': 'undefined', 'type': 'String'},
+            'parentContext': {'type': 'String'},
+        }
     }

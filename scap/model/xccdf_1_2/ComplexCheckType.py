@@ -21,13 +21,15 @@ import logging
 
 logger = logging.getLogger(__name__)
 class ComplexCheckType(Model):
-    ATTRIBUTE_MAP = {
-        'operator': {'enum': CHECK_OPERATOR_ENUMERATION, 'required': True},
-        'negate': {'type': 'Boolean', 'default': False},
-    }
-    TAG_MAP = {
-        '{http://checklists.nist.gov/xccdf/1.2}check': {'class': 'CheckType', 'append': 'checks'},
-        '{http://checklists.nist.gov/xccdf/1.2}complex-check': {'class': 'ComplexCheckType', 'append': 'checks'},
+    MODEL_MAP = {
+        'attributes': {
+            'operator': {'enum': CHECK_OPERATOR_ENUMERATION, 'required': True},
+            'negate': {'type': 'Boolean', 'default': False},
+        },
+        'elements': {
+            '{http://checklists.nist.gov/xccdf/1.2}check': {'class': 'CheckType', 'append': 'checks'},
+            '{http://checklists.nist.gov/xccdf/1.2}complex-check': {'class': 'ComplexCheckType', 'append': 'checks'},
+        },
     }
 
     # def __init__(self):

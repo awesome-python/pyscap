@@ -20,9 +20,9 @@ import logging
 
 logger = logging.getLogger(__name__)
 class BenchmarkReferenceType(Model):
-    ATTRIBUTE_MAP = {
-        'href': {'type': 'AnyURI'},
-        'id': {'type': 'NCName'},
-    }
-    TAG_MAP = {
+    MODEL_MAP = {
+        'attributes': {
+            'href': {'type': 'AnyURI'},
+            'id': {'type': 'NCName'},
+        },
     }

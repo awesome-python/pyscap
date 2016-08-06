@@ -20,9 +20,9 @@ import logging
 
 logger = logging.getLogger(__name__)
 class CheckExportType(Model):
-    ATTRIBUTE_MAP = {
-        'value-id': {'type': 'NCName', 'required': True},
-        'export-name': {'type': 'String', 'required': True},
-    }
-    TAG_MAP = {
+    MODEL_MAP = {
+        'attributes': {
+            'value-id': {'type': 'NCName', 'required': True},
+            'export-name': {'type': 'String', 'required': True},
+        },
     }

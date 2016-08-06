@@ -20,8 +20,8 @@ import logging
 
 logger = logging.getLogger(__name__)
 class TailoringVersionType(String):
-    ATTRIBUTE_MAP = {
-        'time': {'type': 'DateTime', 'required': True},
-    }
-    TAG_MAP = {
+    MODEL_MAP = {
+        'attributes': {
+            'time': {'type': 'DateTime', 'required': True},
+        }
     }

@@ -20,8 +20,8 @@ import logging
 
 logger = logging.getLogger(__name__)
 class SignatureType(Model):
-    ATTRIBUTE_MAP = {
-    }
-    TAG_MAP = {
-        '{http://www.w3.org/2000/09/xmldsig#}*': {'ignore': True},
+    MODEL_MAP = {
+        'elements': {
+            '{http://www.w3.org/2000/09/xmldsig#}*': {'ignore': True},
+        }
     }

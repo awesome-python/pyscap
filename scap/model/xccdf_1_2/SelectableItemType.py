@@ -20,14 +20,16 @@ import logging
 
 logger = logging.getLogger(__name__)
 class SelectableItemType(ItemType):
-    ATTRIBUTE_MAP = {
-        'selected': {'type': 'Boolean', 'default': True},
-        'weight': {'type': 'Weight', 'default': 1.0},
-    }
-    TAG_MAP = {
-        '{http://checklists.nist.gov/xccdf/1.2}rationale': {'ignore': True, 'class': 'HTMLTextWithSubType'},
-        '{http://checklists.nist.gov/xccdf/1.2}platform': {'ignore': True, 'class': 'OverrideableCPE2IDRefType'},
-        '{http://checklists.nist.gov/xccdf/1.2}requires': {'ignore': True, 'class': 'IDRefListType'},
-        '{http://checklists.nist.gov/xccdf/1.2}conflicts': {'ignore': True, 'class': 'IDRefType'},
+    MODEL_MAP = {
+        'attributes': {
+            'selected': {'type': 'Boolean', 'default': True},
+            'weight': {'type': 'Weight', 'default': 1.0},
+        },
+        'elements': {
+            '{http://checklists.nist.gov/xccdf/1.2}rationale': {'ignore': True, 'class': 'HTMLTextWithSubType'},
+            '{http://checklists.nist.gov/xccdf/1.2}platform': {'ignore': True, 'class': 'OverrideableCPE2IDRefType'},
+            '{http://checklists.nist.gov/xccdf/1.2}requires': {'ignore': True, 'class': 'IDRefListType'},
+            '{http://checklists.nist.gov/xccdf/1.2}conflicts': {'ignore': True, 'class': 'IDRefType'},
+        },
     }
     # abstract

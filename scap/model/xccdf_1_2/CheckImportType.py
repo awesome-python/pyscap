@@ -20,10 +20,12 @@ import logging
 
 logger = logging.getLogger(__name__)
 class CheckImportType(Model):
-    ATTRIBUTE_MAP = {
-        'import-name': {'type': 'String', 'required': True},
-        'import-xpath': {'type': 'String'}
-    }
-    TAG_MAP = {
-        '*': {'ignore': True},
+    MODEL_MAP = {
+        'attributes': {
+            'import-name': {'type': 'String', 'required': True},
+            'import-xpath': {'type': 'String'}
+        },
+        'elements': {
+            '*': {'ignore': True},
+        },
     }

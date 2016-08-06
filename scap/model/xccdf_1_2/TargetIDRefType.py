@@ -20,10 +20,10 @@ import logging
 
 logger = logging.getLogger(__name__)
 class TargetIDRefType(String):
-    ATTRIBUTE_MAP = {
-        'system': {'type': 'AnyURI', 'required': True},
-        'href': {'type': 'String', 'required': True},
-        'name': {'type': 'String'}
-    }
-    TAG_MAP = {
+    MODEL_MAP = {
+        'attributes': {
+            'system': {'type': 'AnyURI', 'required': True},
+            'href': {'type': 'String', 'required': True},
+            'name': {'type': 'String'}
+        },
     }
