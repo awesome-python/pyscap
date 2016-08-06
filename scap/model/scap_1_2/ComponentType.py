@@ -21,8 +21,8 @@ import logging
 logger = logging.getLogger(__name__)
 class ComponentType(Model):
     ATTRIBUTE_MAP = {
-        'timestamp': {'ignore': True},
-        'id': {'required': True}
+        'id': {'required': True, 'type': 'ComponentIDPattern'}
+        'timestamp': {'ignore': True, 'type': 'DateTime'},
     }
     TAG_MAP = {
         '{http://checklists.nist.gov/xccdf/1.2}Benchmark': { 'class': 'BenchmarkType', 'in': 'model'},
@@ -31,10 +31,10 @@ class ComponentType(Model):
         '{http://cpe.mitre.org/dictionary/2.0}cpe-list': {'ignore': True, 'in': 'model'},
         '{http://checklists.nist.gov/xccdf/1.2}Tailoring': {'ignore': True, 'in': 'model'},
     }
-    def __init__(self):
-        super(ComponentType, self).__init__()    # {http://checklists.nist.gov/xccdf/1.2}component
-
-        self.model = None
+    # def __init__(self):
+    #     super(ComponentType, self).__init__()    # {http://checklists.nist.gov/xccdf/1.2}component
+    #
+    #     self.model = None
 
     # def parse_element(self, sub_el):
     #     if sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}Benchmark' \

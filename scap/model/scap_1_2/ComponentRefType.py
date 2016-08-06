@@ -21,10 +21,12 @@ import logging
 logger = logging.getLogger(__name__)
 class ComponentRefType(Model):
     ATTRIBUTE_MAP = {
-        'id': {'required': True},
-        '{http://www.w3.org/1999/xlink}href': {'default': None},
+        'id': {'required': True, 'type': 'ComponentRefIDPattern'},
+        '{http://www.w3.org/1999/xlink}type': {'enum': ['simple'], 'ignore': True},
+        '{http://www.w3.org/1999/xlink}href': {'type': 'String', 'required': True},
     }
     TAG_MAP = {
+        #'{urn:oasis:names:tc:entity:xmlns:xml:catalog}catalog'
     }
     # def __init__(self):
     #     super(ComponentRefType, self).__init__()    # {http://checklists.nist.gov/xccdf/1.2}component-ref

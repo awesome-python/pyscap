@@ -15,15 +15,9 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.Model import Model
-import logging
-
-logger = logging.getLogger(__name__)
-class ExtendedComponentType(Model):
-    ATTRIBUTE_MAP = {
-        'id': {'required': True, 'type': 'ExtendedComponentIDPattern'},
-        'timestamp': {'type': 'DateTime', 'required': True, 'ignore': True}
-    }
-    TAG_MAP = {
-        '*': {'ignore': True}
-    }
+USE_CASE_ENUMERATION = [
+    'CONFIGURATION',
+    'VULNERABILITY',
+    'INVENTORY',
+    'OTHER',
+]

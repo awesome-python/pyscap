@@ -21,12 +21,12 @@ import logging
 logger = logging.getLogger(__name__)
 class DataStreamCollectionType(Model):
     ATTRIBUTE_MAP = {
-        'id': {'required': True},
-        'schematron-version':{'required': True, 'ignore': True},
+        'id': {'required': True, 'type': 'DataStreamCollectionIDPattern'},
+        'schematron-version':{'type': 'Token', 'required': True, 'ignore': True},
     }
     TAG_MAP = {
-        '{http://scap.nist.gov/schema/scap/source/1.2}component': { 'class': 'ComponentType', 'map': 'components' },
         '{http://scap.nist.gov/schema/scap/source/1.2}data-stream': { 'class': 'DataStreamType', 'map': 'data_streams' },
+        '{http://scap.nist.gov/schema/scap/source/1.2}component': { 'class': 'ComponentType', 'map': 'components' },
         '{http://scap.nist.gov/schema/scap/source/1.2}extended-component': { 'class': 'ExtendedComponentType', 'map': 'extended_components' },
         '{http://www.w3.org/2000/09/xmldsig#}Signature': {'ignore': True},
     }

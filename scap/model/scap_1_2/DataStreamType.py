@@ -16,15 +16,17 @@
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
 from scap.Model import Model
+from scap.model.scap_1_2.UseCaseEnumeration import USE_CASE_ENUMERATION
+from scap.model.scap_1_2.SCAPVersionEnumeration import SCAP_VERSION_ENUMERATION
 import logging
 
 logger = logging.getLogger(__name__)
 class DataStreamType(Model):
     ATTRIBUTE_MAP = {
-        'id': {'required': True},
-        'use-case': {'required': True, 'ignore': True},
-        'scap-version': {'required': True, 'ignore': True},
-        'timestamp': {'required': True, 'ignore': True},
+        'id': {'required': True, 'type': 'DataStreamIDPattern'},
+        'use-case': {'required': True, 'ignore': True, 'enum': USE_CASE_ENUMERATION},
+        'scap-version': {'required': True, 'ignore': True, 'enum': SCAP_VERSION_ENUMERATION},
+        'timestamp': {'required': True, 'ignore': True, 'type': 'DateTime'},
     }
     TAG_MAP = {
         '{http://scap.nist.gov/schema/scap/source/1.2}dictionaries': { 'dictionary': True },
@@ -36,10 +38,6 @@ class DataStreamType(Model):
     }
     def __init__(self):
         super(DataStreamType, self).__init__()    # {http://checklists.nist.gov/xccdf/1.2}data-stream
-
-        # self.dictionaries = {}
-        # self.checklists = {}
-        # self.checks = {}
 
         self.selected_checklist = None
 
