@@ -43,7 +43,7 @@ class ComponentRefType(Model):
     # def parse_element(self, sub_el):
     #     if sub_el.tag == '{urn:oasis:names:tc:entity:xmlns:xml:catalog}catalog':
     #         logger.debug('Loading catalog for ' + self.href)
-    #         from scap.model.xml_cat.Catalog import Catalog
+    #         from scap.model.xml_cat_1_1.Catalog import Catalog
     #         cat = Catalog()
     #         cat.from_xml(self, sub_el)
     #         self.set_ref_mapping(cat.to_dict())

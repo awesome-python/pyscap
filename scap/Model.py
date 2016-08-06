@@ -41,7 +41,7 @@ class Model(object):
         'http://checklists.nist.gov/xccdf/1.2': 'xccdf_1_2',
         'http://www.w3.org/1999/xhtml': 'xhtml',
         'http://www.w3.org/1999/xlink': 'xlink',
-        'urn:oasis:names:tc:entity:xmlns:xml:catalog': 'xml_cat',
+        'urn:oasis:names:tc:entity:xmlns:xml:catalog': 'xml_cat_1_1',
         'http://scap.nist.gov/schema/xml-dsig/1.0': 'xml_dsig_1_0',
         'http://www.w3.org/2001/XMLSchema-instance': 'xsi',
         'http://www.w3.org/2000/09/xmldsig#': 'xmldsig_2000_09',
