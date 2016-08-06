@@ -26,7 +26,7 @@ class ComponentRefType(Model):
         '{http://www.w3.org/1999/xlink}href': {'type': 'String', 'required': True},
     }
     TAG_MAP = {
-        #'{urn:oasis:names:tc:entity:xmlns:xml:catalog}catalog'
+        '{urn:oasis:names:tc:entity:xmlns:xml:catalog}catalog': {'class': 'Catalog'},
     }
     # def __init__(self):
     #     super(ComponentRefType, self).__init__()    # {http://checklists.nist.gov/xccdf/1.2}component-ref
@@ -40,16 +40,24 @@ class ComponentRefType(Model):
     #         return super(ComponentRefType, self).parse_attribute(name, value)
     #     return True
     #
-    def parse_element(self, sub_el):
-        if sub_el.tag == '{urn:oasis:names:tc:entity:xmlns:xml:catalog}catalog':
-            logger.debug('Loading catalog for ' + self.href)
-            from scap.model.xml_cat.Catalog import Catalog
-            cat = Catalog()
-            cat.from_xml(self, sub_el)
-            self.set_ref_mapping(cat.to_dict())
-        else:
-            return super(ComponentRefType, self).parse_element(sub_el)
-        return True
+    # def parse_element(self, sub_el):
+    #     if sub_el.tag == '{urn:oasis:names:tc:entity:xmlns:xml:catalog}catalog':
+    #         logger.debug('Loading catalog for ' + self.href)
+    #         from scap.model.xml_cat.Catalog import Catalog
+    #         cat = Catalog()
+    #         cat.from_xml(self, sub_el)
+    #         self.set_ref_mapping(cat.to_dict())
+    #     else:
+    #         return super(ComponentRefType, self).parse_element(sub_el)
+    #     return True
+    #
+    def from_xml(self, parent, sub_el):
+        super(ComponentRefType, self).from_xml(parent, sub_el)
+
+        try:
+            self.set_ref_mapping(self.catalog.to_dict())
+        except AttributeError:
+            pass
 
     def resolve(self):
         component = self.resolve_reference(self.href)

@@ -299,14 +299,6 @@ class Model(object):
                 return True
         return False
 
-    # Template
-    # def parse_attribute(self, name, value):
-    #     if name == 'tag':
-    #         self.tag = value
-    #     else:
-    #         return super(SubClass, self).parse_attribute(name, value)
-    #     return True
-
     def parse_element(self, el):
         xml_namespace, model_namespace, tag_name = Model.parse_tag(el.tag)
         if xml_namespace is None:
@@ -341,13 +333,25 @@ class Model(object):
                     # TODO: implement keyElement as well
                     else:
                         key = el.attrib['id']
-                    if 'type' in self.tag_map[tag]:
-                        value = self._parse_value_as_type(el.text, self.tag_map[tag]['type'])
+
+                    if 'value' in self.tag_map[tag]:
+                        try:
+                            value = el.attrib[self.tag_map[tag]['value']]
+                            if 'type' in self.tag_map[tag]:
+                                value = self._parse_value_as_type(value, self.tag_map[tag]['type'])
+                        except KeyError:
+                            value = None
                         dic[key] = value
                         logger.debug('Mapped ' + str(key) + ' to ' + str(value) + ' in ' + self.tag_map[tag]['map'])
+                    # TODO: implement valueElement? as well
                     else:
-                        dic[key] = Model.load(self, el)
-                        logger.debug('Mapped ' + str(key) + ' to ' + el.tag + ' in ' + self.tag_map[tag]['map'])
+                        if 'type' in self.tag_map[tag]:
+                            value = self._parse_value_as_type(el.text, self.tag_map[tag]['type'])
+                            dic[key] = value
+                            logger.debug('Mapped ' + str(key) + ' to ' + str(value) + ' in ' + self.tag_map[tag]['map'])
+                        else:
+                            dic[key] = Model.load(self, el)
+                            logger.debug('Mapped ' + str(key) + ' to ' + el.tag + ' in ' + self.tag_map[tag]['map'])
                 elif 'list' in self.tag_map[tag] and self.tag_map[tag]['list']:
                     if 'in' in self.tag_map[tag]:
                         list_name = self.tag_map[tag]['in']
@@ -397,20 +401,6 @@ class Model(object):
                     return False
                 return True
         return False
-
-    # Template
-    # def parse_element(self, el):
-    #     if el.tag == '{namespace}tag':
-    #         self.tags.append(el.tag)
-    #     else:
-    #         return super(SubClass, self).parse_element(el)
-    #     return True
-
-    def parse_boolean(self, value):
-        if value == 'true' or value == '1':
-            return True
-        else:
-            return False
 
     def resolve_reference(self, ref):
         if ref in self.ref_mapping:

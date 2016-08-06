@@ -21,7 +21,7 @@ import logging
 logger = logging.getLogger(__name__)
 class ComponentType(Model):
     ATTRIBUTE_MAP = {
-        'id': {'required': True, 'type': 'ComponentIDPattern'}
+        'id': {'required': True, 'type': 'ComponentIDPattern'},
         'timestamp': {'ignore': True, 'type': 'DateTime'},
     }
     TAG_MAP = {
