@@ -15,8 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-import pytest, sys
-#sys.path.append('/home/cjaymes/pyscap')
+import pytest
 from scap.model.cpe_2_3.CPE import CPE
 
 class TestCPE:
