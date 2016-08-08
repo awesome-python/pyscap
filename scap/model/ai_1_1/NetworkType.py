@@ -21,22 +21,24 @@ import xml.etree.ElementTree as ET
 
 logger = logging.getLogger(__name__)
 class NetworkType(ITAssetType):
-    TAG_MAP = {
-        '{http://scap.nist.gov/schema/asset-identification/1.1}network-name': {
-            'class': 'scap.model.xs.NormalizedString',
-            'attributes': {
-                'source': {'class': 'SourceType'},
-                'timestamp': {'class': 'TimestampType'},
-            }
-        },
-        '{http://scap.nist.gov/schema/asset-identification/1.1}ip-net-range': {'class': 'IPNetRangeType'},
-        '{http://scap.nist.gov/schema/asset-identification/1.1}cidr': {
-            'class': 'CIDRType',
-            'attributes': {
-                'source': {'class': 'SourceType'},
-                'timestamp': {'class': 'TimestampType'},
-            }
-        },
+    MODEL_MAP = {
+        'elements': {
+            '{http://scap.nist.gov/schema/asset-identification/1.1}network-name': {
+                'class': 'scap.model.xs.NormalizedString',
+                'attributes': {
+                    'source': {'class': 'SourceType'},
+                    'timestamp': {'class': 'TimestampType'},
+                }
+            },
+            '{http://scap.nist.gov/schema/asset-identification/1.1}ip-net-range': {'class': 'IPNetRangeType'},
+            '{http://scap.nist.gov/schema/asset-identification/1.1}cidr': {
+                'class': 'CIDRType',
+                'attributes': {
+                    'source': {'class': 'SourceType'},
+                    'timestamp': {'class': 'TimestampType'},
+                }
+            },
+        }
     }
     def __init__(self):
         super(NetworkType, self).__init__('{http://scap.nist.gov/schema/asset-identification/1.1}network')    #

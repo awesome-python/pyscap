@@ -20,8 +20,10 @@ import logging
 
 logger = logging.getLogger(__name__)
 class ArtifactResultType(Model):
-    TAG_MAP = {
-        '{http://scap.nist.gov/schema/ocil/2.0}submitter': {'class': 'UserType'},
+    MODEL_MAP = {
+        'elements': {
+            '{http://scap.nist.gov/schema/ocil/2.0}submitter': {'class': 'UserType'},
+        }
     }
     def __init__(self):
         super(ArtifactResultType, self).__init__()

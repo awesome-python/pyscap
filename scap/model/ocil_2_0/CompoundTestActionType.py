@@ -21,9 +21,11 @@ import logging
 
 logger = logging.getLogger(__name__)
 class CompoundTestActionType(TestActionType):
-    TAG_MAP = {
-        '{http://scap.nist.gov/schema/ocil/2.0}reference': {'class': 'ReferenceType'},
-        '{http://scap.nist.gov/schema/ocil/2.0}actions': {'class': 'OperationType'},
+    MODEL_MAP = {
+        'elements': {
+            '{http://scap.nist.gov/schema/ocil/2.0}reference': {'class': 'ReferenceType'},
+            '{http://scap.nist.gov/schema/ocil/2.0}actions': {'class': 'OperationType'},
+        }
     }
     def __init__(self):
         super(CompoundTestActionType, self).__init__()

@@ -20,7 +20,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 class PossibleRestrictionType(Model):
-    TAG_MAP = {
+    'elements': {
         '{http://oval.mitre.org/XMLSchema/oval-definitions-5}restriction': {'class': 'RestrictionType'},
     }
     def __init__(self):

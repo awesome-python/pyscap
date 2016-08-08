@@ -20,7 +20,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 class CriteriaType(Model):
-    TAG_MAP = {
+    'elements': {
         '{http://oval.mitre.org/XMLSchema/oval-definitions-5}criteria': {'class': 'CriteriaType'},
         '{http://oval.mitre.org/XMLSchema/oval-definitions-5}criterion': {'class': 'CriterionType'},
         '{http://oval.mitre.org/XMLSchema/oval-definitions-5}extend_definition': {'class': 'ExtendDefinitionType'},

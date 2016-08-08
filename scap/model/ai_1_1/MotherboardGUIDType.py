@@ -15,17 +15,16 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.Model import Model
+from scap.model.xs.String import String
 import logging
 import xml.etree.ElementTree as ET
 
 logger = logging.getLogger(__name__)
-class IPNetRangeType(Model):
+class MotherboardGUIDType(String):
     MODEL_MAP = {
-        'elements': {
-            '{http://scap.nist.gov/schema/asset-identification/1.1}ip-net-range-start': {'class': 'IPAddressType'},
-            '{http://scap.nist.gov/schema/asset-identification/1.1}ip-net-range-end': {'class': 'IPAddressType'},
+        'attributes': {
+            'source': {'class': 'Source'},
+            'timestamp': {'class': 'Timestamp'},
+            '*': {'ignore': True},
         }
     }
-    def __init__(self):
-        super(IPNetRange, self).__init__('{http://scap.nist.gov/schema/asset-identification/1.1}ip-net-range')    #

@@ -21,20 +21,20 @@ import xml.etree.ElementTree as ET
 
 logger = logging.getLogger(__name__)
 class AssetsType(RelationshipsContainerType):
-    TAG_MAP = {
-        '{http://scap.nist.gov/schema/asset-identification/1.1}circuit': {'class': 'CircuitType'},
-        '{http://scap.nist.gov/schema/asset-identification/1.1}computing-device': {'class': 'ComputingDeviceType'},
-        '{http://scap.nist.gov/schema/asset-identification/1.1}data': {'class': 'DataType'},
-        '{http://scap.nist.gov/schema/asset-identification/1.1}database': {'class': 'DatabaseType'},
-        '{http://scap.nist.gov/schema/asset-identification/1.1}network': {'class': 'NetworkType'},
-        '{http://scap.nist.gov/schema/asset-identification/1.1}organization': {'class': 'OrganizationType'},
-        '{http://scap.nist.gov/schema/asset-identification/1.1}person': {'class': 'PersonType'},
-        '{http://scap.nist.gov/schema/asset-identification/1.1}service': {'class': 'ServiceType'},
-        '{http://scap.nist.gov/schema/asset-identification/1.1}software': {'class': 'SoftwareType'},
-        '{http://scap.nist.gov/schema/asset-identification/1.1}system': {'class': 'SystemType'},
-        '{http://scap.nist.gov/schema/asset-identification/1.1}website': {'class': 'WebsiteType'},
-    }
-    def __init__(self):
-        super(AssetsType, self).__init__('{http://scap.nist.gov/schema/asset-identification/1.1}assets')
+    MODEL_MAP = {
+        'elements': {
+            '{http://scap.nist.gov/schema/asset-identification/1.1}asset': {'dictionary': 'assets'},
 
-        self.assets = []
+            '{http://scap.nist.gov/schema/asset-identification/1.1}circuit': {'class': 'CircuitType'},
+            '{http://scap.nist.gov/schema/asset-identification/1.1}computing-device': {'class': 'ComputingDeviceType'},
+            '{http://scap.nist.gov/schema/asset-identification/1.1}data': {'class': 'DataType'},
+            '{http://scap.nist.gov/schema/asset-identification/1.1}database': {'class': 'DatabaseType'},
+            '{http://scap.nist.gov/schema/asset-identification/1.1}network': {'class': 'NetworkType'},
+            '{http://scap.nist.gov/schema/asset-identification/1.1}organization': {'class': 'OrganizationType'},
+            '{http://scap.nist.gov/schema/asset-identification/1.1}person': {'class': 'PersonType'},
+            '{http://scap.nist.gov/schema/asset-identification/1.1}service': {'class': 'ServiceType'},
+            '{http://scap.nist.gov/schema/asset-identification/1.1}software': {'class': 'SoftwareType'},
+            '{http://scap.nist.gov/schema/asset-identification/1.1}system': {'class': 'SystemType'},
+            '{http://scap.nist.gov/schema/asset-identification/1.1}website': {'class': 'WebsiteType'},
+        }
+    }

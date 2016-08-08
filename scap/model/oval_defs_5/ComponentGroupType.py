@@ -20,7 +20,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 class ComponentGroupType(Model):
-    TAG_MAP = {
+    'elements': {
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5}object_component': {'class': 'ObjectComponentType'},
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5}variable_component': {'class': 'VariableComponentType'},
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5}literal_component': {'class': 'LiteralComponentType'},

@@ -21,11 +21,13 @@ import logging
 
 logger = logging.getLogger(__name__)
 class QuestionTestActionType(TestActionType):
-    TAG_MAP = {
-        '{http://scap.nist.gov/schema/ocil/2.0}when_unknown': {'class': 'TestActionConditionType'},
-        '{http://scap.nist.gov/schema/ocil/2.0}when_not_tested': {'class': 'TestActionConditionType'},
-        '{http://scap.nist.gov/schema/ocil/2.0}when_not_applicable': {'class': 'TestActionConditionType'},
-        '{http://scap.nist.gov/schema/ocil/2.0}when_error': {'class': 'TestActionConditionType'},
+    MODEL_MAP = {
+        'elements': {
+            '{http://scap.nist.gov/schema/ocil/2.0}when_unknown': {'class': 'TestActionConditionType'},
+            '{http://scap.nist.gov/schema/ocil/2.0}when_not_tested': {'class': 'TestActionConditionType'},
+            '{http://scap.nist.gov/schema/ocil/2.0}when_not_applicable': {'class': 'TestActionConditionType'},
+            '{http://scap.nist.gov/schema/ocil/2.0}when_error': {'class': 'TestActionConditionType'},
+        }
     }
 
     def __init__(self):

@@ -21,16 +21,18 @@ import xml.etree.ElementTree as ET
 
 logger = logging.getLogger(__name__)
 class OrganizationType(AssetType):
-    TAG_MAP = {
-        '{xnl}:OrganisationNameDetails': {},
-        '{http://scap.nist.gov/schema/asset-identification/1.1}email-address': {'class': 'EmailAddressType'},
-        '{http://scap.nist.gov/schema/asset-identification/1.1}cidr': {
-            'class': 'CIDRType',
-            'attributes': {
-                'source': {'class': 'SourceType'},
-                'timestamp': {'class': 'TimestampType'},
-            }
-        },
+    MODEL_MAP = {
+        'elements': {
+            '{xnl}:OrganisationNameDetails': {},
+            '{http://scap.nist.gov/schema/asset-identification/1.1}email-address': {'class': 'EmailAddressType'},
+            '{http://scap.nist.gov/schema/asset-identification/1.1}cidr': {
+                'class': 'CIDRType',
+                'attributes': {
+                    'source': {'class': 'SourceType'},
+                    'timestamp': {'class': 'TimestampType'},
+                }
+            },
+        }
     }
     def __init__(self):
         super(OrganizationType, self).__init__('{http://scap.nist.gov/schema/asset-identification/1.1}organization')    #

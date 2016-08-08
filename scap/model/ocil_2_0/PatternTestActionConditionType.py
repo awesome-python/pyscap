@@ -21,8 +21,10 @@ import logging
 
 logger = logging.getLogger(__name__)
 class PatternTestActionConditionType(TestActionConditionType):
-    TAG_MAP = {
-        '{http://scap.nist.gov/schema/ocil/2.0}pattern': {'class': 'PatternType'},
+    MODEL_MAP = {
+        'elements': {
+            '{http://scap.nist.gov/schema/ocil/2.0}pattern': {'class': 'PatternType'},
+        }
     }
     def __init__(self):
         super(PatternTestActionConditionType, self).__init__()

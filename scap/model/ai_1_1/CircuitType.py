@@ -21,14 +21,10 @@ import xml.etree.ElementTree as ET
 
 logger = logging.getLogger(__name__)
 class CircuitType(ITAssetType):
-    TAG_MAP = {
-        '{http://scap.nist.gov/schema/asset-identification/1.1}circuit-name': {
-            'class': 'scap.model.xs.Token',
-            'attributes': {
-                'source': {'class': 'SourceType'},
-                'timestamp': {'class': 'TimestampType'},
-            }
-        },
+    MODEL_MAP = {
+        'elements': {
+            '{http://scap.nist.gov/schema/asset-identification/1.1}circuit-name': { 'class': 'CircuitNameType'},
+        }
     }
     def __init__(self):
         super(CircuitType, self).__init__('{http://scap.nist.gov/schema/asset-identification/1.1}circuit')    #

@@ -20,10 +20,12 @@ import logging
 
 logger = logging.getLogger(__name__)
 class ExtendedComponentType(Model):
-    ATTRIBUTE_MAP = {
-        'id': {'required': True, 'type': 'ExtendedComponentIDPattern'},
-        'timestamp': {'type': 'DateTime', 'required': True, 'ignore': True}
-    }
-    TAG_MAP = {
-        '*': {'ignore': True}
+    MODEL_MAP = {
+        'attributes': {
+            'id': {'required': True, 'type': 'ExtendedComponentIDPattern'},
+            'timestamp': {'type': 'DateTime', 'required': True, 'ignore': True}
+        },
+        'elements': {
+            '*': {'ignore': True}
+        },
     }

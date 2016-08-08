@@ -21,4 +21,4 @@ import xml.etree.ElementTree as ET
 
 logger = logging.getLogger(__name__)
 class ITAssetType(AssetType):
-    pass
+    MODEL_MAP = {}

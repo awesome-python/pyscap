@@ -96,7 +96,8 @@ args = arg_parser.parse_args()
 # configure ElementTree
 from scap.Model import Model
 import xml.etree.ElementTree as ET
-for k,v in Model.NAMESPACES.items():
+from scap.model import NAMESPACES
+for k,v in NAMESPACES.items():
     ET.register_namespace(v, k)
 
 # perform the operations

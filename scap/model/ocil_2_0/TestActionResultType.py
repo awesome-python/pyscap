@@ -20,8 +20,10 @@ import logging
 
 logger = logging.getLogger(__name__)
 class TestActionResultType(Model):
-    TAG_MAP = {
-        '{http://scap.nist.gov/schema/ocil/2.0}artifact_result': {'class': 'ArtifactResultType'},
+    MODEL_MAP = {
+        'elements': {
+            '{http://scap.nist.gov/schema/ocil/2.0}artifact_result': {'class': 'ArtifactResultType'},
+        }
     }
     def __init__(self):
         super(TestActionResultType, self).__init__()

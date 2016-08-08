@@ -20,7 +20,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 class SetType(Model):
-    TAG_MAP = {
+    'elements': {
         '{http://oval.mitre.org/XMLSchema/oval-definitions-5}set': {'class': 'SetType'},
         '{http://oval.mitre.org/XMLSchema/oval-definitions-5}object_reference': {'class': 'ObjectReferenceType'},
         '{http://oval.mitre.org/XMLSchema/oval-definitions-5}filter': {'class': 'FilterType'},

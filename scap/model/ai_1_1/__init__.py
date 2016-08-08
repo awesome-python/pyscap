@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-TAG-MAP = {
+TAG_MAP = {
     '{http://scap.nist.gov/schema/asset-identification/1.1}asset-related': {'class': 'AssetIdentificationType'},
     '{http://scap.nist.gov/schema/asset-identification/1.1}assets': {'class': 'AssetsType'},
 }

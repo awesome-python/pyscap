@@ -15,11 +15,17 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.Model import Model
+from scap.model.xs.Token import Token
 import logging
 import xml.etree.ElementTree as ET
 
 logger = logging.getLogger(__name__)
-class HostnameType(Model):
-    def __init__(self):
-        super(HostnameType, self).__init__('{http://scap.nist.gov/schema/asset-identification/1.1}hostname')    #
+class HostnameType(Token):
+    # [\w\-]+(\.[\w\-]+){0,}
+    MODEL_MAP = {
+        'attributes': {
+            'source': {'type': 'Source'},
+            'timestamp': {'type': 'Timestamp'},
+            '*': {'ignore': True},
+        }
+    }

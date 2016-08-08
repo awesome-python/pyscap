@@ -20,7 +20,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 class RelationshipType(Model):
-    ATTRIBUTE_MAP = {
+    'attributes': {
         'type': {'required': True}
         'subject': {'required': True}
     }

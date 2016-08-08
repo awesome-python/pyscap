@@ -21,8 +21,10 @@ import xml.etree.ElementTree as ET
 
 logger = logging.getLogger(__name__)
 class AssetIdentificationType(AssetsType):
-    ATTRIBUTE_MAP = {
-        'asset-ref': {'required': True, 'type': 'scap.model.xs.NCName'}
+    MODEL_MAP = {
+        'attributes': {
+            'asset-ref': {'type': 'NCName', 'required': True},
+        }
     }
 
     def __init__(self):

@@ -20,14 +20,18 @@ import logging
 
 logger = logging.getLogger(__name__)
 class Catalog(Model):
-    ATTRIBUTE_MAP = {
-        'id': {'ignore': True, 'type': 'ID'},
-        'prefer': {'ignore': True, 'enum': ['system', 'public']},
-        '*': {'ignore': True}
-    }
-    TAG_MAP = {
-        '{urn:oasis:names:tc:entity:xmlns:xml:catalog}uri': {'map': 'entries', 'key': 'name', 'value': 'uri'},
-        '*': {'ignore': True},
+    MODEL_MAP = {
+        'xml_namespace': 'urn:oasis:names:tc:entity:xmlns:xml:catalog',
+        'tag_name': 'catalog',
+        'attributes': {
+            'id': {'ignore': True, 'type': 'ID'},
+            'prefer': {'ignore': True, 'enum': ['system', 'public']},
+            '*': {'ignore': True}
+        },
+        'elements': {
+            '{urn:oasis:names:tc:entity:xmlns:xml:catalog}uri': {'map': 'entries', 'key': 'name', 'value': 'uri'},
+            '*': {'ignore': True},
+        },
     }
     # def __init__(self):
     #     super(Catalog, self).__init__()
@@ -44,3 +48,6 @@ class Catalog(Model):
     def to_dict(self):
         logger.debug('Catalog entries: ' + str(self.entries))
         return self.entries
+
+    def from_dict(self, dict_):
+        self.entries = dict_

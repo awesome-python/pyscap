@@ -15,7 +15,16 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.Model import Model
+from scap.model.xs.Token import Token
+import logging
+import xml.etree.ElementTree as ET
 
-class Source(Model):
-    pass
+logger = logging.getLogger(__name__)
+class CircuitNameType(Token):
+    MODEL_MAP = {
+        'attributes': {
+            'source': {'class': 'Source'},
+            'timestamp': {'class': 'Timestamp'},
+            '*': {'ignore': True},
+        }
+    }

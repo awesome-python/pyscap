@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.Model import Model
+from scap.model.xs.DateTime import DateTime
 
-class Timestamp(Model):
-    pass
+class Timestamp(DateTime):
+    MODEL_MAP = {}

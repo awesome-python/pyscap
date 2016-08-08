@@ -21,14 +21,20 @@ import xml.etree.ElementTree as ET
 
 logger = logging.getLogger(__name__)
 class AssetType(Model):
-    ATTRIBUTE_MAP = {
-        'timestamp': {'class': 'TimestampType'}
-    }
-    TAG_MAP = {
-        '{http://scap.nist.gov/schema/asset-identification/1.1}synthetic-id': {'class': 'SyntheticIDType'},
-        '{http://scap.nist.gov/schema/asset-identification/1.1}location-point': {'class': 'LocationPointType'},
-        '{http://scap.nist.gov/schema/asset-identification/1.1}location-region': {'class': 'LocationRegionType'},
-        '{http://scap.nist.gov/schema/asset-identification/1.1}extended-information': {'class': 'ExtendedInformationType'},
+    MODEL_MAP = {
+        'attributes': {
+            'timestamp': {'type': 'Timestamp'}
+        },
+        'elements': {
+            '{http://scap.nist.gov/schema/asset-identification/1.1}synthetic-id': {'class': 'SyntheticIDType', 'append': 'synthetic_ids'},
+            '{http://scap.nist.gov/schema/asset-identification/1.1}locations': {'list': 'locations'},
+            '{http://scap.nist.gov/schema/asset-identification/1.1}extended-information': {'class': 'ExtendedInformationType'},
+            '*': {'ignore': True},
+
+            '{http://scap.nist.gov/schema/asset-identification/1.1}location-address': {'class': 'LocationAddressType'},
+            '{http://scap.nist.gov/schema/asset-identification/1.1}location-point': {'class': 'LocationPointType'},
+            '{http://scap.nist.gov/schema/asset-identification/1.1}location-region': {'class': 'LocationRegionType'},
+        }
     }
 
     # abstract

@@ -20,9 +20,11 @@ import logging
 
 logger = logging.getLogger(__name__)
 class OperationType(Model):
-    TAG_MAP = {
-        '{http://scap.nist.gov/schema/ocil/2.0}test_action_ref': {'class': 'TestActionRefType'},
-        '{http://scap.nist.gov/schema/ocil/2.0}actions': {'class': 'OperationType'},
+    MODEL_MAP = {
+        'elements': {
+            '{http://scap.nist.gov/schema/ocil/2.0}test_action_ref': {'class': 'TestActionRefType'},
+            '{http://scap.nist.gov/schema/ocil/2.0}actions': {'class': 'OperationType'},
+        }
     }
     def __init__(self):
         super(OperationType, self).__init__()

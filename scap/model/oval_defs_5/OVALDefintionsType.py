@@ -20,7 +20,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 class OVALDefintionsType(Model):
-    TAG_MAP = {
+    'elements': {
         '{http://oval.mitre.org/XMLSchema/oval-definitions-5}definition': {'class': 'DefinitionType'},
 
         '{http://oval.mitre.org/XMLSchema/oval-definitions-5}external_variable': {'class': 'ExternalVariableType'},
