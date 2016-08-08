@@ -22,41 +22,22 @@ import xml.etree.ElementTree as ET
 logger = logging.getLogger(__name__)
 class AssetType(Model):
     MODEL_MAP = {
+        'xml_namespace': 'http://scap.nist.gov/schema/asset-identification/1.1',
+        'tag_name': 'asset',
         'attributes': {
             'timestamp': {'type': 'Timestamp'}
         },
         'elements': {
             '{http://scap.nist.gov/schema/asset-identification/1.1}synthetic-id': {'class': 'SyntheticIDType', 'append': 'synthetic_ids'},
-            '{http://scap.nist.gov/schema/asset-identification/1.1}locations': {'list': 'locations'},
+            '{http://scap.nist.gov/schema/asset-identification/1.1}locations': {
+                'list': 'locations',
+                'classes': {
+                    '{http://scap.nist.gov/schema/asset-identification/1.1}location-address': 'LocationAddressType',
+                    '{http://scap.nist.gov/schema/asset-identification/1.1}location-point': 'LocationPointType',
+                    '{http://scap.nist.gov/schema/asset-identification/1.1}location-region': 'LocationRegionType',
+                }
+            },
             '{http://scap.nist.gov/schema/asset-identification/1.1}extended-information': {'class': 'ExtendedInformationType'},
             '*': {'ignore': True},
-
-            '{http://scap.nist.gov/schema/asset-identification/1.1}location-address': {'class': 'LocationAddressType'},
-            '{http://scap.nist.gov/schema/asset-identification/1.1}location-point': {'class': 'LocationPointType'},
-            '{http://scap.nist.gov/schema/asset-identification/1.1}location-region': {'class': 'LocationRegionType'},
         }
     }
-
-    # abstract
-    def __init__(self, tag=None):
-        super(AssetType, self).__init__(tag)
-
-        self.synthetic_ids = []
-        self.locations = []
-        self.extended_information = []
-
-    def get_sub_elements(self):
-        sub_els = super(AssetType, self).get_sub_elements()
-
-        for sid in self.synthetic_ids:
-            sub_els.append(sid.to_xml())
-
-        for loc in self.locations:
-            sub_els.append(loc.to_xml())
-
-        for ext in self.extended_information:
-            ei = ET.Element('{http://scap.nist.gov/schema/asset-identification/1.1}extended-information')
-            ei.append(ext.to_xml())
-            sub_els.append(ei)
-
-        return sub_els

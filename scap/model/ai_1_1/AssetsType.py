@@ -21,6 +21,7 @@ import xml.etree.ElementTree as ET
 
 logger = logging.getLogger(__name__)
 class AssetsType(RelationshipsContainerType):
+    # abstract
     MODEL_MAP = {
         'elements': {
             '{http://scap.nist.gov/schema/asset-identification/1.1}asset': {'dictionary': 'assets'},

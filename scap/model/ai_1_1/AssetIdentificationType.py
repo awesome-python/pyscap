@@ -22,10 +22,9 @@ import xml.etree.ElementTree as ET
 logger = logging.getLogger(__name__)
 class AssetIdentificationType(AssetsType):
     MODEL_MAP = {
+        'xml_namespace': 'http://scap.nist.gov/schema/asset-identification/1.1',
+        'tag_name': 'asset-related',
         'attributes': {
             'asset-ref': {'type': 'NCName', 'required': True},
         }
     }
-
-    def __init__(self):
-        super(AssetIdentificationType, self).__init__('{http://scap.nist.gov/schema/asset-identification/1.1}asset-related')

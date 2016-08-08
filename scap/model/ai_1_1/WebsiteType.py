@@ -21,5 +21,7 @@ import xml.etree.ElementTree as ET
 
 logger = logging.getLogger(__name__)
 class WebsiteType(ITAssetType):
-    def __init__(self):
-        super(WebsiteType, self).__init__('{http://scap.nist.gov/schema/asset-identification/1.1}website')    #
+    MODEL_MAP = {
+        'xml_namespace': 'http://scap.nist.gov/schema/asset-identification/1.1',
+        'tag_name': 'website',
+    }

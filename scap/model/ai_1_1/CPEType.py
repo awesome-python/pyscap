@@ -23,6 +23,8 @@ logger = logging.getLogger(__name__)
 class CPEType(String):
     # TODO: <xs:union memberTypes="cpe-name:cpe22Type cpe-name:cpe23Type"/>
     MODEL_MAP = {
+        'xml_namespace': 'http://scap.nist.gov/schema/asset-identification/1.1',
+        'tag_name': 'cpe',
         'attributes': {
             'source': {'class': 'Source'},
             'timestamp': {'class': 'Timestamp'},

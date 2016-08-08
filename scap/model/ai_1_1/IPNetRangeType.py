@@ -22,10 +22,10 @@ import xml.etree.ElementTree as ET
 logger = logging.getLogger(__name__)
 class IPNetRangeType(Model):
     MODEL_MAP = {
+        'xml_namespace': 'http://scap.nist.gov/schema/asset-identification/1.1',
+        'tag_name': 'ip-net-range',
         'elements': {
             '{http://scap.nist.gov/schema/asset-identification/1.1}ip-net-range-start': {'class': 'IPAddressType'},
             '{http://scap.nist.gov/schema/asset-identification/1.1}ip-net-range-end': {'class': 'IPAddressType'},
         }
     }
-    def __init__(self):
-        super(IPNetRange, self).__init__('{http://scap.nist.gov/schema/asset-identification/1.1}ip-net-range')    #

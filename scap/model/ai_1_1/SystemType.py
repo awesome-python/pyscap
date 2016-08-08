@@ -21,7 +21,7 @@ import xml.etree.ElementTree as ET
 
 logger = logging.getLogger(__name__)
 class SystemType(ITAssetType):
-    def __init__(self):
-        super(SystemType, self).__init__('{http://scap.nist.gov/schema/asset-identification/1.1}system')    #
-
-        self.system_names = []
+    MODEL_MAP = {
+        'xml_namespace': 'http://scap.nist.gov/schema/asset-identification/1.1',
+        'tag_name': 'system',
+    }

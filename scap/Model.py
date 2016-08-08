@@ -20,7 +20,7 @@ import xml.etree.ElementTree as ET
 from scap.model import NAMESPACES
 
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
+#logger.setLevel(logging.INFO)
 class Model(object):
     MODEL_MAP = {
         'attributes': {
@@ -38,19 +38,22 @@ class Model(object):
         if tag[0] == '{':
             xml_namespace, tag_name = tag[1:].split('}')
         else:
-            return None, None, tag
+            return None, tag
 
         if xml_namespace not in NAMESPACES:
             logger.critical('Unsupported ' + tag_name + ' tag with namespace: ' + xml_namespace)
             import sys
             sys.exit()
-        model_namespace = NAMESPACES[xml_namespace]
 
-        return xml_namespace, model_namespace, tag_name
+        return xml_namespace, tag_name
 
     @staticmethod
     def load(parent, child_el):
-        xml_namespace, model_namespace, tag_name = Model.parse_tag(child_el.tag)
+        xml_namespace, tag_name = Model.parse_tag(child_el.tag)
+
+        if xml_namespace not in NAMESPACES:
+            raise NotImplementedError('Namespace ' + xml_namespace + ' is not supported')
+        model_namespace = NAMESPACES[xml_namespace]
 
         # try to load the tag's module
         import sys, importlib
@@ -76,6 +79,7 @@ class Model(object):
                 module_name = elmap[child_el.tag]['class']
             except KeyError:
                 sys.exit(parent.__class__.__name__ + ' does not define mapping for ' + child_el.tag + ' tag')
+
         model_module = 'scap.model.' + model_namespace + '.' + module_name
         if model_module not in sys.modules:
             logger.debug('Loading module ' + model_module)
@@ -87,18 +91,40 @@ class Model(object):
         # instantiate an instance of the class & load it
         class_ = getattr(mod, module_name)
         inst = class_()
-        inst.xml_namespace = xml_namespace
-        inst.model_namespace = model_namespace
-        inst.tag_name = tag_name
+        inst.from_xml(parent, child_el)
+
+        return inst
+
+    @staticmethod
+    def load_item(parent, child_el, classes):
+        xml_namespace, tag_name = Model.parse_tag(child_el.tag)
+
+        if xml_namespace not in NAMESPACES:
+            raise NotImplementedError('Namespace ' + xml_namespace + ' is not supported')
+        model_namespace = NAMESPACES[xml_namespace]
+
+        # try to load the tag's module
+        import sys, importlib
+        if child_el.tag not in classes:
+            raise NotImplementedError('Item tag ' + child_el.tag + ' is not mapped to a class by ' + parent.__class__.__name__)
+        module_name = classes[child_el.tag]
+
+        model_module = 'scap.model.' + model_namespace + '.' + module_name
+        if model_module not in sys.modules:
+            logger.debug('Loading module ' + model_module)
+
+            mod = importlib.import_module(model_module)
+        else:
+            mod = sys.modules[model_module]
+
+        # instantiate an instance of the class & load it
+        class_ = getattr(mod, module_name)
+        inst = class_()
         inst.from_xml(parent, child_el)
 
         return inst
 
     def __init__(self):
-        self.xml_namespace = None
-        self.model_namespace = None
-        self.tag_name = None
-
         self.parent = None
         self.element = None
         self.ref_mapping = {}
@@ -106,6 +132,8 @@ class Model(object):
         if self.__class__.__name__ not in Model.model_maps:
             at_map = {}
             el_map = {}
+            xml_namespace = None
+            tag_name = None
             for class_ in self.__class__.__mro__:
                 if class_ == object:
                     break
@@ -116,6 +144,16 @@ class Model(object):
                     logger.critical('Class ' + class_.__name__ + ' does not define MODEL_MAP')
                     import sys
                     sys.exit()
+
+                # overwrite the super class' ns & tag with what we've already loaded
+                try:
+                    xml_namespace = class_.MODEL_MAP['xml_namespace']
+                except KeyError:
+                    logger.debug('Class ' + class_.__name__ + ' does not have MODEL_MAP[xml_namespace] defined')
+                try:
+                    tag_name = class_.MODEL_MAP['tag_name']
+                except KeyError:
+                    logger.debug('Class ' + class_.__name__ + ' does not have MODEL_MAP[tag_name] defined')
 
                 # overwrite the super class' attribute map with what we've already loaded
                 try:
@@ -134,6 +172,8 @@ class Model(object):
                     logger.debug('Class ' + class_.__name__ + ' does not have MODEL_MAP[elements] defined')
 
             Model.model_maps[self.__class__.__name__] = {
+                'xml_namespace': xml_namespace,
+                'tag_name': tag_name,
                 'attributes': at_map,
                 'elements': el_map,
             }
@@ -142,7 +182,6 @@ class Model(object):
         if 'xml_namespace' in self.model_map:
             if self.model_map['xml_namespace'] not in NAMESPACES:
                 raise ValueError('Unknown namespace: ' + self.model_map['xml_namespace'])
-            self.model_namespace = NAMESPACES[self.model_map['xml_namespace']]
         if 'tag_name' in self.model_map:
             self.tag_name = self.model_map['tag_name']
 
@@ -154,14 +193,14 @@ class Model(object):
                     setattr(self, self.model_map['attributes'][name]['in'], value)
                     logger.debug('Default of attribute ' + self.model_map['attributes'][name]['in'] + ' = ' + str(value))
                 else:
-                    xml_namespace, model_namespace, attr_name = Model.parse_tag(name)
+                    xml_namespace, attr_name = Model.parse_tag(name)
                     name = attr_name.replace('-', '_')
                     setattr(self, name, value)
                     logger.debug('Default of attribute ' + name + ' = ' + str(value))
 
         # initialize structures
         for t in self.model_map['elements']:
-            xml_namespace, model_namespace, tag_name = Model.parse_tag(t)
+            xml_namespace, tag_name = Model.parse_tag(t)
             for tag in [t, tag_name]:
                 if tag in self.model_map['elements']:
                     if 'append' in self.model_map['elements'][tag]:
@@ -192,25 +231,29 @@ class Model(object):
                             setattr(self, dict_name, {})
 
     def get_tag_name(self):
-        if self.model_map['tag_name'] is None:
+        if 'tag_name' not in self.model_map:
             raise NotImplementedError('Subclass ' + self.__class__.__name__ + ' does not define tag_name')
         return self.model_map['tag_name']
 
     def get_xml_namespace(self):
-        if self.model_map['xml_namespace'] is None:
+        if 'xml_namespace' not in self.model_map:
             raise NotImplementedError('Subclass ' + self.__class__.__name__ + ' does not define namespace')
         return self.model_map['xml_namespace']
 
+    def get_model_namespace(self):
+        xml_namespace = self.get_xml_namespace()
+        if xml_namespace not in NAMESPACES:
+            raise NotImplementedError('Namespace ' + xml_namespace + ' is not supported')
+        return NAMESPACES[xml_namespace]
+
     def get_tag(self):
-        return '{' + self.get_xml_namespace() + '}' + self.tag_name()
+        return '{' + self.get_xml_namespace() + '}' + self.get_tag_name()
 
     def from_xml(self, parent, el):
         self.parent = parent
         self.element = el
 
         logger.debug('Parsing ' + el.tag + ' element into ' + self.__class__.__name__ + ' class')
-
-        xml_namespace, model_namespace, tag_name = Model.parse_tag(el.tag)
 
         for attrib in self.model_map['attributes']:
             if 'required' in self.model_map['attributes'][attrib] and self.model_map['attributes'][attrib]['required'] and attrib not in self.element.attrib:
@@ -246,15 +289,16 @@ class Model(object):
         try:
             mod = importlib.import_module('scap.model.xs.' + type_)
         except ImportError:
+            model_namespace = self.get_model_namespace()
             try:
-                mod = importlib.import_module('scap.model.' + self.model_namespace + '.' + type_)
+                mod = importlib.import_module('scap.model.' + model_namespace + '.' + type_)
             except ImportError:
-                raise NotImplementedError('Type value ' + type_ + ' not defined in scap.model.xs or local namespace (scap.model.' + self.model_namespace + ')')
+                raise NotImplementedError('Type value ' + type_ + ' not defined in scap.model.xs or local namespace (scap.model.' + model_namespace + ')')
         class_ = getattr(mod, type_)
         return class_().parse_value(value)
 
     def parse_attribute(self, name, value):
-        xml_namespace, model_namespace, attr_name = Model.parse_tag(name)
+        xml_namespace, attr_name = Model.parse_tag(name)
         if xml_namespace is None:
             ns_any = '{' + self.model_map['xml_namespace'] + '}*'
         else:
@@ -287,7 +331,7 @@ class Model(object):
         return False
 
     def parse_element(self, el):
-        xml_namespace, model_namespace, tag_name = Model.parse_tag(el.tag)
+        xml_namespace, tag_name = Model.parse_tag(el.tag)
         if xml_namespace is None:
             ns_any = '{' + self.model_map['xml_namespace'] + '}*'
         else:
@@ -342,18 +386,22 @@ class Model(object):
                 elif 'list' in self.model_map['elements'][tag]:
                     list_name = self.model_map['elements'][tag]['list']
                     lst = getattr(self, list_name)
+                    if 'classes' not in self.model_map['elements'][tag]:
+                        raise NotImplementedError('List tag ' + tag + ' does not define classes')
                     for sub_el in el:
-                        lst.append(Model.load(self, sub_el))
-                elif 'dictionary' in self.model_map['elements'][tag] and self.model_map['elements'][tag]['dictionary']:
+                        lst.append(Model.load_item(self, sub_el, self.model_map['elements'][tag]['classes']))
+                elif 'dictionary' in self.model_map['elements'][tag]:
                     dict_name = self.model_map['elements'][tag]['dictionary']
                     dic = getattr(self, dict_name)
+                    if 'classes' not in self.model_map['elements'][tag]:
+                        raise NotImplementedError('List tag ' + tag + ' does not define classes')
                     for sub_el in el:
                         if 'key' in self.model_map['elements'][tag]:
                             key = sub_el.attrib[self.model_map['elements'][tag]['key']]
                         # TODO: implement keyElement as well
                         else:
                             key = sub_el.attrib['id']
-                        dic[key] = Model.load(self, sub_el)
+                        dic[key] = Model.load_item(self, sub_el, self.model_map['elements'][tag]['classes'])
                 elif 'class' in self.model_map['elements'][tag]:
                     if 'in' in self.model_map['elements'][tag]:
                         name = self.model_map['elements'][tag]['in']
@@ -398,53 +446,103 @@ class Model(object):
         logger.debug('Updating reference mapping with ' + str(mapping))
         self.ref_mapping.update(mapping)
 
-    def get_text_element(self, tag, text):
-        sub_el = ET.Element(tag)
-        sub_el.text = text
-        return sub_el
+    def produce_attribute(self, name):
+        if name.endswith('*'):
+            return None
 
-    def get_attributes(self):
-        attribs = {}
-        if self.id is not None:
-            attribs['id'] = self.id
-        return attribs
+        xml_namespace, attr_name = Model.parse_tag(name)
+        if 'in' in self.model_map['attributes'][name]:
+            attr_name = self.model_map['attributes'][name]['in']
+        else:
+            attr_name = attr_name.replace('-', '_')
 
-    # Template
-    # def get_attributes(self):
-    #     attribs = super(Model, self).get_attributes()
-    #
-    #     return attribs
+        try:
+            value = getattr(self, attr_name)
+        except AttributeError:
+            if 'required' in self.model_map['attributes'][name] and self.model_map['attributes'][name]['required']:
+                logger.critical(self.__class__.__name__ + ' must assign required attribute ' + attrib)
+                import sys
+                sys.exit()
+            else:
+                logger.debug('Skipping attribute ' + name)
+                return None
 
-    # Template
-    # def get_sub_elements(self):
-    #     sub_els = super(Model, self).get_sub_elements()
-    #
-    #     return sub_els
+        logger.debug('Setting attribute ' + name + ' to ' + value)
+        return value
 
-    def get_sub_elements(self):
-        return []
+    def produce_sub_elements(self, tag):
+        sub_els = []
+        if tag.endswith('*'):
+            return []
+
+        if 'append' in self.model_map['elements'][tag]:
+            lst = getattr(self, self.model_map['elements'][tag]['append'])
+            for i in lst:
+                logger.debug('Creating ' + tag + ' for value ' + i)
+                el = ET.Element(tag)
+                el.text = i
+                sub_els.append(el)
+        elif 'map' in self.model_map['elements'][tag]:
+            dic = getattr(self, self.model_map['elements'][tag]['map'])
+            if 'key' in self.model_map['elements'][tag]:
+                key_name = self.model_map['elements'][tag]['key']
+            else:
+                key_name = 'id'
+            for k,v in dic.items():
+                el = ET.Element(tag)
+                el.attrib[key_name] = k
+
+                if 'value' in self.model_map['elements'][tag]:
+                    value_name = self.model_map['elements'][tag]['value']
+                    el.attrib[value_name] = v
+                else:
+                    el.text = v
+                sub_els.append(el)
+        elif 'list' in self.model_map['elements'][tag]:
+            list_name = self.model_map['elements'][tag]['list']
+            lst = getattr(self, list_name)
+            el = ET.Element(tag)
+            for i in lst:
+                el.append(i.to_xml())
+            sub_els.append(el)
+        elif 'dictionary' in self.model_map['elements'][tag]:
+            dict_name = self.model_map['elements'][tag]['dictionary']
+            dic = getattr(self, dict_name)
+            el = ET.Element(tag)
+            for k,v in dic.items():
+                el.append(v.to_xml())
+            sub_els.append(el)
+        elif 'class' in self.model_map['elements'][tag]:
+            if 'in' in self.model_map['elements'][tag]:
+                name = self.model_map['elements'][tag]['in']
+            else:
+                name = tag_name.replace('-', '_')
+            sub_els.append(getattr(self, name).to_xml())
+        elif 'type' in self.model_map['elements'][tag] \
+            or 'enum' in self.model_map['elements'][tag]:
+            if 'in' in self.model_map['elements'][tag]:
+                name = self.model_map['elements'][tag]['in']
+            else:
+                name = tag_name.replace('-', '_')
+            el = ET.Element(tag)
+            el.text = getattr(self, name)
+            sub_els.append(el)
+        elif 'required' in self.model_map['elements'][tag] and self.model_map['elements'][tag]['required']:
+            logger.critical(self.__class__.__name__ + ' must use the required element ' + tag)
+            import sys
+            sys.exit()
+        return sub_els
 
     def to_xml(self):
         if self.element is None:
             self.element = ET.Element(self.get_tag())
 
-            for name, value in self.get_attributes().items():
-                self.element.attrib[name] = value
+            for name in self.model_map['attributes']:
+                value = self.produce_attribute(name)
+                if value is not None:
+                    self.element.attrib[name] = value
 
-            for attrib in self.required_attributes:
-                if attrib not in self.element.attrib:
-                    logger.critical(self.__class__.__name__ + ' must define ' + attrib + ' attribute')
-                    import sys
-                    sys.exit()
+            for tag in self.model_map['elements']:
+                self.element.extend(self.produce_sub_elements(tag))
 
-            produced_sub_elements = []
-            for sub_el in self.get_sub_elements():
-                self.element.append(sub_el)
-                produced_sub_elements.append(sub_el.tag)
-
-            for sub_el_tag in self.required_sub_elements:
-                if sub_el_tag not in produced_sub_elements:
-                    logger.critical(self.element.tag + ' does not contain a required sub element: ' + sub_el_tag)
-                    import sys
-                    sys.exit()
         return self.element

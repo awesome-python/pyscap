@@ -21,5 +21,7 @@ import xml.etree.ElementTree as ET
 
 logger = logging.getLogger(__name__)
 class HostType(Model):
-    def __init__(self):
-        super(HostType, self).__init__('{http://scap.nist.gov/schema/asset-identification/1.1}host')    #
+    MODEL_MAP = {
+        'xml_namespace': 'http://scap.nist.gov/schema/asset-identification/1.1',
+        'tag_name': 'host',
+    }

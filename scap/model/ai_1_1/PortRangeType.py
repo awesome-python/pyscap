@@ -21,5 +21,9 @@ import xml.etree.ElementTree as ET
 
 logger = logging.getLogger(__name__)
 class PortRangeType(Model):
+    MODEL_MAP = {
+        'xml_namespace': 'http://scap.nist.gov/schema/asset-identification/1.1',
+        'tag_name': 'port-range',
+    }
     def __init__(self):
         super(PortRangeType, self).__init__('{http://scap.nist.gov/schema/asset-identification/1.1}port-range')    #

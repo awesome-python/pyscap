@@ -21,5 +21,7 @@ import xml.etree.ElementTree as ET
 
 logger = logging.getLogger(__name__)
 class SyntheticIDType(Model):
-    def __init__(self):
-        super(SyntheticIDType, self).__init__('{http://scap.nist.gov/schema/asset-identification/1.1}synthetic-id')    #
+    MODEL_MAP = {
+        'xml_namespace': 'http://scap.nist.gov/schema/asset-identification/1.1',
+        'tag_name': 'synthetic-id',
+    }

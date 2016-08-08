@@ -15,10 +15,12 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-import pytest
+import pytest, logging
 from scap.Model import Model
 from scap.model.xml_cat_1_1.Catalog import Catalog
 import xml.etree.ElementTree as ET
+
+logging.basicConfig(level=logging.DEBUG)
 ET.register_namespace('cat', 'urn:oasis:names:tc:entity:xmlns:xml:catalog')
 
 cat1 = Model.load(None, ET.fromstring('''<cat:catalog xmlns:cat="urn:oasis:names:tc:entity:xmlns:xml:catalog">
@@ -51,7 +53,4 @@ cat2.from_dict({'n1': 'u1', 'n2': 'u2'})
 def test_to_xml():
     xml = ET.tostring(cat2.to_xml())
     print xml
-    assert xml == '''<cat:catalog xmlns:cat="urn:oasis:names:tc:entity:xmlns:xml:catalog">
-    <cat:uri name="n1" uri="u1"/>
-    <cat:uri name="n2" uri="u2"/>
-</cat:catalog>'''
+    assert xml == '''<cat:catalog xmlns:cat="urn:oasis:names:tc:entity:xmlns:xml:catalog"><cat:uri name="n1" uri="u1" /><cat:uri name="n2" uri="u2" /></cat:catalog>'''

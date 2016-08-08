@@ -22,39 +22,20 @@ import xml.etree.ElementTree as ET
 logger = logging.getLogger(__name__)
 class ComputingDeviceType(ITAssetType):
     MODEL_MAP = {
+        'xml_namespace': 'http://scap.nist.gov/schema/asset-identification/1.1',
+        'tag_name': 'computing-device',
         'elements': {
             '{http://scap.nist.gov/schema/asset-identification/1.1}distinguished-name': {'class': 'DistinguishedNameType'},
-            '{http://scap.nist.gov/schema/asset-identification/1.1}cpe': {'class': 'scap.model.xs.String'},
-            '{http://scap.nist.gov/schema/asset-identification/1.1}connections': {'list': 'connections'},
+            '{http://scap.nist.gov/schema/asset-identification/1.1}cpe': {'append': 'cpes', 'class': 'scap.model.xs.String'},
+            '{http://scap.nist.gov/schema/asset-identification/1.1}connections': {
+                'list': 'connections',
+                'classes': {
+                    '{http://scap.nist.gov/schema/asset-identification/1.1}connection': 'NetworkInterfaceType',
+                },
+            },
             '{http://scap.nist.gov/schema/asset-identification/1.1}fqdn': {'class': 'FQDNType'},
             '{http://scap.nist.gov/schema/asset-identification/1.1}hostname': {'class': 'HostnameType'},
             '{http://scap.nist.gov/schema/asset-identification/1.1}motherboard-guid': {'class': 'MotherboardGUIDType'},
-
-            '{http://scap.nist.gov/schema/asset-identification/1.1}connection': {'class': 'NetworkInterfaceType'},
         },
     }
-    # def get_sub_elements(self):
-    #     sub_els = super(ComputingDeviceType, self).get_sub_elements()
-    #
-    #     if self.distinguished_name is not None:
-    #         sub_els.append(self.get_text_element('{http://scap.nist.gov/schema/asset-identification/1.1}distinguished-name', self.distinguished_name))
-    #
-    #     for cpe in self.cpes:
-    #         sub_els.append(self.get_text_element('{http://scap.nist.gov/schema/asset-identification/1.1}cpe', cpe.to_fs_string()))
-    #
-    #     if len(self.connections) > 0:
-    #         sub_el = ET.Element('{http://scap.nist.gov/schema/asset-identification/1.1}connections')
-    #         for conn in self.connections:
-    #             sub_el.append(conn.to_xml())
-    #         sub_els.append(sub_el)
-    #
-    #     if self.fqdn is not None:
-    #         sub_els.append(self.get_text_element('{http://scap.nist.gov/schema/asset-identification/1.1}fqdn', self.fqdn))
-    #
-    #     if self.hostname is not None:
-    #         sub_els.append(self.get_text_element('{http://scap.nist.gov/schema/asset-identification/1.1}hostname', self.hostname))
-    #
-    #     if self.motherboard_guid is not None:
-    #         sub_els.append(self.get_text_element('{http://scap.nist.gov/schema/asset-identification/1.1}motherboard-guid', self.motherboard_guid))
-    #
-    #     return sub_els
+    #TODO: cpes as fs_string
