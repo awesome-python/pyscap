@@ -14,7 +14,23 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
-TAG_MAP = {
-    '{urn:oasis:names:tc:ciq:xsdschema:xAL:2.0}xAL': {'class': 'XALType'},
-    '{urn:oasis:names:tc:ciq:xsdschema:xAL:2.0}AddressDetails': {'class': 'AddressDetailsType'},
-}
+
+from scap.Model import Model
+import logging
+import xml.etree.ElementTree as ET
+
+logger = logging.getLogger(__name__)
+class ThoroughfareNumberType(Model):
+    MODEL_MAP = {
+        'xml_namespace': 'urn:oasis:names:tc:ciq:xsdschema:xAL:2.0',
+        'tag_name': 'ThoroughfareNumber',
+        'attributes': {
+            'NumberType': {'enum': ['Single', 'Range']},
+            'Type': {},
+            'Indicator': {},
+            'IndicatorOccurrence': {'enum': ['Before', 'After']},
+            'NumberOccurrence': {'enum': ['BeforeName', 'AfterName', 'BeforeType', 'AfterType']},
+            'Code': {}, # from grPostal
+            '*': {'ignore': True},
+        }
+    }

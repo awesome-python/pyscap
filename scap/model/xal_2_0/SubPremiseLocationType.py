@@ -20,8 +20,11 @@ import logging
 import xml.etree.ElementTree as ET
 
 logger = logging.getLogger(__name__)
-class PersonNameType(Model):
+class SubPremiseLocationType(Model):
     MODEL_MAP = {
-        'xml_namespace': 'urn:oasis:names:tc:ciq:xsdschema:xNL:2.0',
-        'tag_name': 'PersonName',
+        'xml_namespace': 'urn:oasis:names:tc:ciq:xsdschema:xAL:2.0',
+        'tag_name': 'SubPremiseLocation',
+        'attributes': {
+            'Code': {}, # from grPostal
+        }
     }

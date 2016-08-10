@@ -22,6 +22,31 @@ import xml.etree.ElementTree as ET
 logger = logging.getLogger(__name__)
 class AddressDetailsType(Model):
     MODEL_MAP = {
-        'xml_namespace': 'urn:oasis:names:tc:ciq:xsdschema:xNL:2.0',
+        'xml_namespace': 'urn:oasis:names:tc:ciq:xsdschema:xAL:2.0',
         'tag_name': 'AddressDetails',
+        'elements': {
+            '{urn:oasis:names:tc:ciq:xsdschema:xAL:2.0}PostalServiceElements': {'class': 'PostalServiceElementsType'},
+            '{urn:oasis:names:tc:ciq:xsdschema:xAL:2.0}Address': {'class': 'AddressType'},
+            '{urn:oasis:names:tc:ciq:xsdschema:xAL:2.0}AddressLines': {
+                'list': 'address_lines',
+                'classes': {
+                    '{urn:oasis:names:tc:ciq:xsdschema:xAL:2.0}AddressLine': 'AddressLineType',
+                    '*': None,
+                }
+            },
+            '{urn:oasis:names:tc:ciq:xsdschema:xAL:2.0}Country': {'class': 'CountryType'},
+            '{urn:oasis:names:tc:ciq:xsdschema:xAL:2.0}AdministrativeArea': {'class': 'AdministrativeAreaType'},
+            '{urn:oasis:names:tc:ciq:xsdschema:xAL:2.0}Locality': {'class': 'LocalityType'},
+            '{urn:oasis:names:tc:ciq:xsdschema:xAL:2.0}Thoroughfare': {'class': 'ThoroughfareType'},
+        },
+        'attributes': {
+            'AddressType': {},
+            'CurrentStatus': {},
+            'ValidFromDate': {},
+            'ValidToDate': {},
+            'Usage': {},
+            'Code': {}, # from grPostal
+            'AddressDetailsKey': {},
+            '*': {'ignore': True},
+        }
     }
