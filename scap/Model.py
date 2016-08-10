@@ -105,9 +105,17 @@ class Model(object):
 
         # try to load the tag's module
         import sys, importlib
-        if child_el.tag not in classes:
+        if child_el.tag in classes:
+            module_name = classes[child_el.tag]
+        elif '{' + xml_namespace + '}*' in classes:
+            module_name = classes['{' + xml_namespace + '}*']
+        elif '*' in classes:
+            module_name = classes['*']
+        else:
             raise NotImplementedError('Item tag ' + child_el.tag + ' is not mapped to a class by ' + parent.__class__.__name__)
-        module_name = classes[child_el.tag]
+
+        if module_name is None:
+            return None
 
         model_module = 'scap.model.' + model_namespace + '.' + module_name
         if model_module not in sys.modules:
@@ -187,11 +195,12 @@ class Model(object):
 
         # set default values
         for name in self.model_map['attributes']:
-            if 'default' in self.model_map['attributes'][name]:
-                value = self.model_map['attributes'][name]['default']
-                if 'in' in self.model_map['attributes'][name]:
-                    setattr(self, self.model_map['attributes'][name]['in'], value)
-                    logger.debug('Default of attribute ' + self.model_map['attributes'][name]['in'] + ' = ' + str(value))
+            attr_map = self.model_map['attributes'][name]
+            if 'default' in attr_map:
+                value = attr_map['default']
+                if 'in' in attr_map:
+                    setattr(self, attr_map['in'], value)
+                    logger.debug('Default of attribute ' + attr_map['in'] + ' = ' + str(value))
                 else:
                     xml_namespace, attr_name = Model.parse_tag(name)
                     name = attr_name.replace('-', '_')
@@ -203,28 +212,23 @@ class Model(object):
             xml_namespace, tag_name = Model.parse_tag(t)
             for tag in [t, tag_name]:
                 if tag in self.model_map['elements']:
-                    if 'append' in self.model_map['elements'][tag]:
+                    tag_map = self.model_map['elements'][tag]
+                    if 'append' in tag_map:
                         # initialze the array if it doesn't exist
-                        if self.model_map['elements'][tag]['append'] not in self.__dict__.keys():
-                            setattr(self, self.model_map['elements'][tag]['append'], [])
-                    elif 'map' in self.model_map['elements'][tag]:
+                        if tag_map['append'] not in self.__dict__.keys():
+                            setattr(self, tag_map['append'], [])
+                    elif 'map' in tag_map:
                         # initialze the dict if it doesn't exist
-                        if self.model_map['elements'][tag]['map'] not in self.__dict__.keys():
-                            setattr(self, self.model_map['elements'][tag]['map'], {})
-                    elif 'list' in self.model_map['elements'][tag] and self.model_map['elements'][tag]['list']:
-                        if 'in' in self.model_map['elements'][tag]:
-                            list_name = self.model_map['elements'][tag]['in']
-                        else:
-                            list_name = tag_name.replace('-', '_')
+                        if tag_map['map'] not in self.__dict__.keys():
+                            setattr(self, tag_map['map'], {})
+                    elif 'list' in tag_map:
+                        list_name = tag_map['list']
 
                         # initialze the list if it doesn't exist
                         if list_name not in self.__dict__.keys():
                             setattr(self, list_name, [])
-                    elif 'dictionary' in self.model_map['elements'][tag] and self.model_map['elements'][tag]['dictionary']:
-                        if 'in' in self.model_map['elements'][tag]:
-                            dict_name = self.model_map['elements'][tag]['in']
-                        else:
-                            dict_name = tag_name.replace('-', '_')
+                    elif 'dictionary' in tag_map:
+                        dict_name = tag_map['dictionary']
 
                         # initialze the dict if it doesn't exist
                         if dict_name not in self.__dict__.keys():
@@ -279,7 +283,8 @@ class Model(object):
                 sub_el_counts[sub_el.tag] += 1
 
         for tag in self.model_map['elements']:
-            if 'minCount' in self.model_map['elements'][tag] and (tag not in sub_el_counts or sub_el_counts[tag] < self.model_map['elements'][tag]['minCount']):
+            tag_map = self.model_map['elements'][tag]
+            if 'minCount' in tag_map and (tag not in sub_el_counts or sub_el_counts[tag] < tag_map['minCount']):
                 logger.critical(el.tag + ' does not contain a required sub element: ' + tag)
                 import sys
                 sys.exit()
@@ -304,25 +309,26 @@ class Model(object):
         else:
             ns_any = '{' + xml_namespace + '}*'
         for name in [name, attr_name, ns_any, '*']:
+            attr_map = self.model_map['attributes'][name]
             if name in self.model_map['attributes']:
-                if 'ignore' in self.model_map['attributes'][name] and self.model_map['attributes'][name]['ignore']:
+                if 'ignore' in attr_map and attr_map['ignore']:
                     logger.debug('Ignoring attribute ' + name + ' = ' + value)
                     return True
 
-                if 'notImplemented' in self.model_map['attributes'][name] and self.model_map['attributes'][name]['notImplemented']:
+                if 'notImplemented' in attr_map and attr_map['notImplemented']:
                     raise NotImplementedError(name + ' attribute support is not implemented')
 
-                if 'enum' in self.model_map['attributes'][name] and value not in self.model_map['attributes'][name]['enum']:
-                    raise ValueError(name + ' attribute must be one of ' + str(self.model_map['attributes'][name]['enum']))
+                if 'enum' in attr_map and value not in attr_map['enum']:
+                    raise ValueError(name + ' attribute must be one of ' + str(attr_map['enum']))
 
                 # convert value
-                if 'type' in self.model_map['attributes'][name]:
-                    logger.debug('Parsing ' + str(value) + ' as ' + self.model_map['attributes'][name]['type'] + ' type')
-                    value = self._parse_value_as_type(value, self.model_map['attributes'][name]['type'])
+                if 'type' in attr_map:
+                    logger.debug('Parsing ' + str(value) + ' as ' + attr_map['type'] + ' type')
+                    value = self._parse_value_as_type(value, attr_map['type'])
 
-                if 'in' in self.model_map['attributes'][name]:
-                    setattr(self, self.model_map['attributes'][name]['in'], value)
-                    logger.debug('Set attribute ' + self.model_map['attributes'][name]['in'] + ' = ' + str(value))
+                if 'in' in attr_map:
+                    setattr(self, attr_map['in'], value)
+                    logger.debug('Set attribute ' + attr_map['in'] + ' = ' + str(value))
                 else:
                     name = attr_name.replace('-', '_')
                     setattr(self, name, value)
@@ -339,89 +345,94 @@ class Model(object):
         for tag in [el.tag, tag_name, ns_any, '*']:
             # check both namespace + tag_name and just tag_name
             if tag in self.model_map['elements']:
-                if 'ignore' in self.model_map['elements'][tag] and self.model_map['elements'][tag]['ignore']:
+                tag_map = self.model_map['elements'][tag]
+                if 'ignore' in tag_map and tag_map['ignore']:
                     return True
 
-                if 'notImplemented' in self.model_map['elements'][tag] and self.model_map['elements'][tag]['notImplemented']:
+                if 'notImplemented' in tag_map and tag_map['notImplemented']:
                     raise NotImplementedError(tag + ' element support is not implemented')
 
-                if 'append' in self.model_map['elements'][tag]:
-                    lst = getattr(self, self.model_map['elements'][tag]['append'])
-                    if 'type' in self.model_map['elements'][tag]:
-                        value = self._parse_value_as_type(el.text, self.model_map['elements'][tag]['type'])
+                if 'append' in tag_map:
+                    lst = getattr(self, tag_map['append'])
+                    if 'type' in tag_map:
+                        value = self._parse_value_as_type(el.text, tag_map['type'])
                         lst.append(value)
-                        logger.debug('Appended "' + value + '" to ' + self.model_map['elements'][tag]['append'])
+                        logger.debug('Appended "' + value + '" to ' + tag_map['append'])
                     else:
                         lst.append(Model.load(self, el))
-                        logger.debug('Appended ' + el.tag + ' to ' + self.model_map['elements'][tag]['append'])
-                elif 'map' in self.model_map['elements'][tag]:
-                    dic = getattr(self, self.model_map['elements'][tag]['map'])
-                    if 'key' in self.model_map['elements'][tag]:
+                        logger.debug('Appended ' + el.tag + ' to ' + tag_map['append'])
+                elif 'map' in tag_map:
+                    dic = getattr(self, tag_map['map'])
+                    if 'key' in tag_map:
                         try:
-                            key = el.attrib[self.model_map['elements'][tag]['key']]
+                            key = el.attrib[tag_map['key']]
                         except KeyError:
                             key = None
                     # TODO: implement keyElement as well
                     else:
                         key = el.attrib['id']
 
-                    if 'value' in self.model_map['elements'][tag]:
+                    if 'value' in tag_map:
                         try:
-                            value = el.attrib[self.model_map['elements'][tag]['value']]
-                            if 'type' in self.model_map['elements'][tag]:
-                                value = self._parse_value_as_type(value, self.model_map['elements'][tag]['type'])
+                            value = el.attrib[tag_map['value']]
+                            if 'type' in tag_map:
+                                value = self._parse_value_as_type(value, tag_map['type'])
                         except KeyError:
                             value = None
                         dic[key] = value
-                        logger.debug('Mapped ' + str(key) + ' to ' + str(value) + ' in ' + self.model_map['elements'][tag]['map'])
+                        logger.debug('Mapped ' + str(key) + ' to ' + str(value) + ' in ' + tag_map['map'])
                     # TODO: implement valueElement? as well
                     else:
-                        if 'type' in self.model_map['elements'][tag]:
-                            value = self._parse_value_as_type(el.text, self.model_map['elements'][tag]['type'])
+                        if 'type' in tag_map:
+                            value = self._parse_value_as_type(el.text, tag_map['type'])
                             dic[key] = value
-                            logger.debug('Mapped ' + str(key) + ' to ' + str(value) + ' in ' + self.model_map['elements'][tag]['map'])
+                            logger.debug('Mapped ' + str(key) + ' to ' + str(value) + ' in ' + tag_map['map'])
                         else:
                             dic[key] = Model.load(self, el)
-                            logger.debug('Mapped ' + str(key) + ' to ' + el.tag + ' in ' + self.model_map['elements'][tag]['map'])
-                elif 'list' in self.model_map['elements'][tag]:
-                    list_name = self.model_map['elements'][tag]['list']
+                            logger.debug('Mapped ' + str(key) + ' to ' + el.tag + ' in ' + tag_map['map'])
+                elif 'list' in tag_map:
+                    list_name = tag_map['list']
                     lst = getattr(self, list_name)
-                    if 'classes' not in self.model_map['elements'][tag]:
+                    if 'classes' not in tag_map:
                         raise NotImplementedError('List tag ' + tag + ' does not define classes')
                     for sub_el in el:
-                        lst.append(Model.load_item(self, sub_el, self.model_map['elements'][tag]['classes']))
-                elif 'dictionary' in self.model_map['elements'][tag]:
-                    dict_name = self.model_map['elements'][tag]['dictionary']
+                        item = Model.load_item(self, sub_el, tag_map['classes'])
+                        if item is not None:
+                            lst.append(item)
+                elif 'dictionary' in tag_map:
+                    dict_name = tag_map['dictionary']
                     dic = getattr(self, dict_name)
-                    if 'classes' not in self.model_map['elements'][tag]:
+                    if 'classes' not in tag_map:
                         raise NotImplementedError('List tag ' + tag + ' does not define classes')
                     for sub_el in el:
-                        if 'key' in self.model_map['elements'][tag]:
-                            key = sub_el.attrib[self.model_map['elements'][tag]['key']]
+                        if 'key' in tag_map:
+                            key = sub_el.attrib[tag_map['key']]
                         # TODO: implement keyElement as well
                         else:
                             key = sub_el.attrib['id']
-                        dic[key] = Model.load_item(self, sub_el, self.model_map['elements'][tag]['classes'])
-                elif 'class' in self.model_map['elements'][tag]:
-                    if 'in' in self.model_map['elements'][tag]:
-                        name = self.model_map['elements'][tag]['in']
+                        item = Model.load_item(self, sub_el, tag_map['classes'])
+                        if item is not None:
+                            dic[key] = item
+                elif 'class' in tag_map:
+                    if 'in' in tag_map:
+                        name = tag_map['in']
                         setattr(self, name, Model.load(self, el))
                     else:
                         name = tag_name.replace('-', '_')
                         setattr(self, name, Model.load(self, el))
-                elif 'type' in self.model_map['elements'][tag]:
-                    value = self._parse_value_as_type(el.text, self.model_map['elements'][tag]['type'])
-                    if 'in' in self.model_map['elements'][tag]:
-                        name = self.model_map['elements'][tag]['in']
+                elif 'type' in tag_map:
+                    value = self._parse_value_as_type(el.text, tag_map['type'])
+                    if 'in' in tag_map:
+                        name = tag_map['in']
                         setattr(self, name, value)
                     else:
                         name = tag_name.replace('-', '_')
                         setattr(self, name, value)
-                elif 'enum' in self.model_map['elements'][tag]:
-                    if el.text not in self.model_map['elements'][tag]['enum']:
-                        raise ValueError(tag + ' value must be one of ' + str(self.model_map['elements'][tag]['enum']))
-                    if 'in' in self.model_map['elements'][tag]:
-                        name = self.model_map['elements'][tag]['in']
+                elif 'enum' in tag_map:
+                    if el.text not in tag_map['enum']:
+                        raise ValueError(tag + ' value must be one of ' + str(tag_map['enum']))
+                    if 'in' in tag_map:
+                        name = tag_map['in']
                         setattr(self, name, value)
                     else:
                         name = tag_name.replace('-', '_')
@@ -451,15 +462,16 @@ class Model(object):
             return None
 
         xml_namespace, attr_name = Model.parse_tag(name)
-        if 'in' in self.model_map['attributes'][name]:
-            attr_name = self.model_map['attributes'][name]['in']
+        attr_map = self.model_map['attributes'][name]
+        if 'in' in attr_map:
+            attr_name = attr_map['in']
         else:
             attr_name = attr_name.replace('-', '_')
 
         try:
             value = getattr(self, attr_name)
         except AttributeError:
-            if 'required' in self.model_map['attributes'][name] and self.model_map['attributes'][name]['required']:
+            if 'required' in attr_map and attr_map['required']:
                 logger.critical(self.__class__.__name__ + ' must assign required attribute ' + attrib)
                 import sys
                 sys.exit()
@@ -475,59 +487,60 @@ class Model(object):
         if tag.endswith('*'):
             return []
 
-        if 'append' in self.model_map['elements'][tag]:
-            lst = getattr(self, self.model_map['elements'][tag]['append'])
+        tag_map = self.model_map['elements'][tag]
+        if 'append' in tag_map:
+            lst = getattr(self, tag_map['append'])
             for i in lst:
                 logger.debug('Creating ' + tag + ' for value ' + i)
                 el = ET.Element(tag)
                 el.text = i
                 sub_els.append(el)
-        elif 'map' in self.model_map['elements'][tag]:
-            dic = getattr(self, self.model_map['elements'][tag]['map'])
-            if 'key' in self.model_map['elements'][tag]:
-                key_name = self.model_map['elements'][tag]['key']
+        elif 'map' in tag_map:
+            dic = getattr(self, tag_map['map'])
+            if 'key' in tag_map:
+                key_name = tag_map['key']
             else:
                 key_name = 'id'
             for k,v in dic.items():
                 el = ET.Element(tag)
                 el.attrib[key_name] = k
 
-                if 'value' in self.model_map['elements'][tag]:
-                    value_name = self.model_map['elements'][tag]['value']
+                if 'value' in tag_map:
+                    value_name = tag_map['value']
                     el.attrib[value_name] = v
                 else:
                     el.text = v
                 sub_els.append(el)
-        elif 'list' in self.model_map['elements'][tag]:
-            list_name = self.model_map['elements'][tag]['list']
+        elif 'list' in tag_map:
+            list_name = tag_map['list']
             lst = getattr(self, list_name)
             el = ET.Element(tag)
             for i in lst:
                 el.append(i.to_xml())
             sub_els.append(el)
-        elif 'dictionary' in self.model_map['elements'][tag]:
-            dict_name = self.model_map['elements'][tag]['dictionary']
+        elif 'dictionary' in tag_map:
+            dict_name = tag_map['dictionary']
             dic = getattr(self, dict_name)
             el = ET.Element(tag)
             for k,v in dic.items():
                 el.append(v.to_xml())
             sub_els.append(el)
-        elif 'class' in self.model_map['elements'][tag]:
-            if 'in' in self.model_map['elements'][tag]:
-                name = self.model_map['elements'][tag]['in']
+        elif 'class' in tag_map:
+            if 'in' in tag_map:
+                name = tag_map['in']
             else:
                 name = tag_name.replace('-', '_')
             sub_els.append(getattr(self, name).to_xml())
-        elif 'type' in self.model_map['elements'][tag] \
-            or 'enum' in self.model_map['elements'][tag]:
-            if 'in' in self.model_map['elements'][tag]:
-                name = self.model_map['elements'][tag]['in']
+        elif 'type' in tag_map \
+            or 'enum' in tag_map:
+            if 'in' in tag_map:
+                name = tag_map['in']
             else:
                 name = tag_name.replace('-', '_')
             el = ET.Element(tag)
             el.text = getattr(self, name)
             sub_els.append(el)
-        elif 'required' in self.model_map['elements'][tag] and self.model_map['elements'][tag]['required']:
+        elif 'required' in tag_map and tag_map['required']:
             logger.critical(self.__class__.__name__ + ' must use the required element ' + tag)
             import sys
             sys.exit()
