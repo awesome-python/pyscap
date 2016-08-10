@@ -24,32 +24,11 @@ class NetworkInterfaceType(Model):
     MODEL_MAP = {
         'xml_namespace': 'http://scap.nist.gov/schema/asset-identification/1.1',
         'tag_name': 'connection',
+        'elements': {
+            '{http://scap.nist.gov/schema/asset-identification/1.1}ip-address': {'class': 'IPAddressType'},
+            '{http://scap.nist.gov/schema/asset-identification/1.1}mac-address': {'class': 'MACAddressType'},
+            '{http://scap.nist.gov/schema/asset-identification/1.1}url': {'append': 'urls', 'class': 'URLType'},
+            '{http://scap.nist.gov/schema/asset-identification/1.1}subnet-mask': {'class': 'IPAddressType'},
+            '{http://scap.nist.gov/schema/asset-identification/1.1}default-route': {'class': 'IPAddressType'},
+        }
     }
-    def __init__(self):
-        super(NetworkInterfaceType, self).__init__('{http://scap.nist.gov/schema/asset-identification/1.1}connection')    #
-
-        self.ip_address = None
-        self.mac_address = None
-        self.urls = []
-        self.subnet_mask = None
-        self.default_route = None
-
-    def get_sub_elements(self):
-        sub_els = super(NetworkInterfaceType, self).get_sub_elements()
-
-        if self.ip_address is not None:
-            sub_els.append(self.get_text_element('{http://scap.nist.gov/schema/asset-identification/1.1}ip-address', self.ip_address))
-
-        if self.mac_address is not None:
-            sub_els.append(self.get_text_element('{http://scap.nist.gov/schema/asset-identification/1.1}mac-address', self.mac_address))
-
-        for url in self.urls:
-            sub_els.append(self.get_text_element('{http://scap.nist.gov/schema/asset-identification/1.1}url', url))
-
-        if self.subnet_mask is not None:
-            sub_els.append(self.get_text_element('{http://scap.nist.gov/schema/asset-identification/1.1}subnet-mask', self.subnet_mask))
-
-        if self.default_route is not None:
-            sub_els.append(self.get_text_element('{http://scap.nist.gov/schema/asset-identification/1.1}default-route', self.default_route))
-
-        return sub_els

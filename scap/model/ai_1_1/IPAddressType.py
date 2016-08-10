@@ -21,7 +21,12 @@ import xml.etree.ElementTree as ET
 
 logger = logging.getLogger(__name__)
 class IPAddressType(Model):
+    # collapsed ip-address element into ip-address-type
     MODEL_MAP = {
         'xml_namespace': 'http://scap.nist.gov/schema/asset-identification/1.1',
         'tag_name': 'ip-address',
+        'elements': {
+            'ip-v4': {'class': 'IPAddressIPv4Type'},
+            'ip-v6': {'class': 'IPAddressIPv6Type'},
+        }
     }

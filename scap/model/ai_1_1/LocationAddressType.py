@@ -16,10 +16,11 @@
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
 from scap.model.ai_1_1.LocationType import LocationType
-# also xal:AddressDetails
+from scap.model.xal_2_0.AddressDetailsType import AddressDetailsType
 import logging
 import xml.etree.ElementTree as ET
 
 logger = logging.getLogger(__name__)
-class LocationAddressType(LocationType):
-    pass
+class LocationAddressType(LocationType, AddressDetailsType):
+    MODEL_MAP = {
+    }

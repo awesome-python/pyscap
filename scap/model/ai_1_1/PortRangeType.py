@@ -24,6 +24,11 @@ class PortRangeType(Model):
     MODEL_MAP = {
         'xml_namespace': 'http://scap.nist.gov/schema/asset-identification/1.1',
         'tag_name': 'port-range',
+        'attributes': {
+            'lower-bound': {'class': 'PortType', 'required': True},
+            'upper-bound': {'class': 'PortType', 'required': True},
+            'source': {'type': 'Source'},
+            'timestamp': {'type': 'Timestamp'},
+            '*': {'ignore': True},
+        }
     }
-    def __init__(self):
-        super(PortRangeType, self).__init__('{http://scap.nist.gov/schema/asset-identification/1.1}port-range')    #

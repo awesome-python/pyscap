@@ -24,4 +24,8 @@ class WebsiteType(ITAssetType):
     MODEL_MAP = {
         'xml_namespace': 'http://scap.nist.gov/schema/asset-identification/1.1',
         'tag_name': 'website',
+        'elements': {
+            '{http://scap.nist.gov/schema/asset-identification/1.1}document-root': {'class': 'DocumentRootType'},
+            '{http://scap.nist.gov/schema/asset-identification/1.1}locale': {'class': 'WebsiteLocaleType'},
+        }
     }

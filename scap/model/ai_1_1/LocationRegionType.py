@@ -16,9 +16,18 @@
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
 from scap.model.ai_1_1.LocationType import LocationType
+from scap.model.xs.NormalizedString import NormalizedString
 import logging
 import xml.etree.ElementTree as ET
 
 logger = logging.getLogger(__name__)
-class LocationRegionType(LocationType):
-    pass
+class LocationRegionType(LocationType, NormalizedString):
+    MODEL_MAP = {
+        'xml_namespace': 'http://scap.nist.gov/schema/asset-identification/1.1',
+        'tag_name': 'location-region',
+        'attributes': {
+            'source': {'type': 'Source'},
+            'timestamp': {'type': 'Timestamp'},
+            '*': {'ignore': True},
+        }
+    }

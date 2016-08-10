@@ -21,6 +21,8 @@ import xml.etree.ElementTree as ET
 
 logger = logging.getLogger(__name__)
 class CPEType(String):
+    # collapsed the cpe-type definition into cpe element definition
+    #(CPE 2.2 URI or CPE 2.3 Formatted String)
     # TODO: <xs:union memberTypes="cpe-name:cpe22Type cpe-name:cpe23Type"/>
     MODEL_MAP = {
         'xml_namespace': 'http://scap.nist.gov/schema/asset-identification/1.1',

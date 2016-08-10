@@ -23,11 +23,4 @@ logger = logging.getLogger(__name__)
 class HostnameType(Token):
     # [\w\-]+(\.[\w\-]+){0,}
     MODEL_MAP = {
-        'xml_namespace': 'http://scap.nist.gov/schema/asset-identification/1.1',
-        'tag_name': 'hostname',
-        'attributes': {
-            'source': {'type': 'Source'},
-            'timestamp': {'type': 'Timestamp'},
-            '*': {'ignore': True},
-        }
     }

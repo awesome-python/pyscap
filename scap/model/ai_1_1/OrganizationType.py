@@ -25,22 +25,9 @@ class OrganizationType(AssetType):
         'xml_namespace': 'http://scap.nist.gov/schema/asset-identification/1.1',
         'tag_name': 'organization',
         'elements': {
-            '{xnl}:OrganisationNameDetails': {},
-            '{http://scap.nist.gov/schema/asset-identification/1.1}email-address': {'class': 'EmailAddressType'},
-            '{http://scap.nist.gov/schema/asset-identification/1.1}cidr': {
-                'class': 'CIDRType',
-                'attributes': {
-                    'source': {'class': 'SourceType'},
-                    'timestamp': {'class': 'TimestampType'},
-                }
-            },
+            '{urn:oasis:names:tc:ciq:xsdschema:xNL:2.0}OrganisationNameDetails': {'list': 'organization_name_details', 'class': 'OrganisationNameDetailsType'},
+            '{http://scap.nist.gov/schema/asset-identification/1.1}email-address': {'list': 'email_addresses', 'class': 'EmailAddressType'},
+            '{http://scap.nist.gov/schema/asset-identification/1.1}telephone-number': {'list': 'telephone_numbers', 'class': 'TelephoneNumberType'},
+            '{http://scap.nist.gov/schema/asset-identification/1.1}website-url': {'list': 'website_urls', 'class': 'WebsiteURLType'},
         }
     }
-    def __init__(self):
-        super(OrganizationType, self).__init__('{http://scap.nist.gov/schema/asset-identification/1.1}organization')    #
-
-        self.email_addresses = []
-        self.telephone_numbers = []
-        self.website_urls = []
-
-        self.name_details = []

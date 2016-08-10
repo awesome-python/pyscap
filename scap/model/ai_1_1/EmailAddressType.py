@@ -15,7 +15,15 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.Model import Model
+from scap.model.xs.Token import Token
 
-class EmailAddressType(Model):
-    pass
+class EmailAddressType(Token):
+    MODEL_MAP = {
+        'xml_namespace': 'http://scap.nist.gov/schema/asset-identification/1.1',
+        'tag_name': 'email-address',
+        'attributes': {
+            'source': {'type': 'Source'},
+            'timestamp': {'type': 'Timestamp'},
+            '*': {'ignore': True},
+        }
+    }

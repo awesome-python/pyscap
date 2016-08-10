@@ -24,27 +24,10 @@ class ServiceType(ITAssetType):
     MODEL_MAP = {
         'xml_namespace': 'http://scap.nist.gov/schema/asset-identification/1.1',
         'tag_name': 'service',
+        'elements': {
+            '{http://scap.nist.gov/schema/asset-identification/1.1}host': {'class': 'HostType'},
+            '{http://scap.nist.gov/schema/asset-identification/1.1}port': {'append': 'ports', 'class': 'ServicePortType'},
+            '{http://scap.nist.gov/schema/asset-identification/1.1}port-range': {'append': 'port_ranges', 'class': 'PortRangeType'},
+            '{http://scap.nist.gov/schema/asset-identification/1.1}protocol': {'class': 'ProtocolType'},
+        }
     }
-    def __init__(self):
-        super(ServiceType, self).__init__('{http://scap.nist.gov/schema/asset-identification/1.1}service')    #
-
-        self.host = None
-        self.ports = []
-        self.port_ranges = []
-        self.protocol = None
-
-    def get_sub_elements(self):
-        sub_els = super(ServiceType, self).get_sub_elements()
-
-        if self.host is not None:
-            sub_els.append(self.host.to_xml())
-
-        for port in self.ports:
-            sub_els.append(self.get_text_element('{http://scap.nist.gov/schema/asset-identification/1.1}port', port))
-
-        for port_range in self.port_ranges:
-            sub_els.append(port_range.to_xml())
-
-        if self.protocol is not None:
-            sub_els.append(self.get_text_element('{http://scap.nist.gov/schema/asset-identification/1.1}protocol', self.protocol))
-        return sub_els

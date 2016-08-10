@@ -41,5 +41,7 @@ NAMESPACES = {
     'http://www.w3.org/2001/XMLSchema-instance': 'xsi',
     'http://www.w3.org/2000/09/xmldsig#': 'xmldsig_2000_09',
     'http://www.w3.org/2001/XMLSchema': 'xs',
-    'http://www.w3.org/XML/1998/namespace': 'xml'
+    'http://www.w3.org/XML/1998/namespace': 'xml',
+    'urn:oasis:names:tc:ciq:xsdschema:xNL:2.0': 'xnl_2_0',
+    'urn:oasis:names:tc:ciq:xsdschema:xAL:2.0': 'xal_2_0'
 }

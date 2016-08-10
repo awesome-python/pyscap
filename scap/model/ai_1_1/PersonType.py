@@ -24,9 +24,10 @@ class PersonType(AssetType):
     MODEL_MAP = {
         'xml_namespace': 'http://scap.nist.gov/schema/asset-identification/1.1',
         'tag_name': 'person',
+        'elements': {
+            '{urn:oasis:names:tc:ciq:xsdschema:xNL:2.0}PersonName': {'class': 'PersonNameType'},
+            '{http://scap.nist.gov/schema/asset-identification/1.1}email-address': {'append': 'email_addresses', 'class': 'EmailAddressType'},
+            '{http://scap.nist.gov/schema/asset-identification/1.1}telephone-number': {'append': 'telephone_numbers', 'class': 'TelephoneNumberType'},
+            '{http://scap.nist.gov/schema/asset-identification/1.1}birthdate': {'class': 'BirthdateType'},
+        }
     }
-    def __init__(self):
-        super(PersonType, self).__init__('{http://scap.nist.gov/schema/asset-identification/1.1}person')    #
-
-        self.email_addresses = []
-        self.telephone_numbers = []

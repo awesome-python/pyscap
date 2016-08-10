@@ -24,8 +24,9 @@ class SoftwareType(ITAssetType):
     MODEL_MAP = {
         'xml_namespace': 'http://scap.nist.gov/schema/asset-identification/1.1',
         'tag_name': 'software',
+        'elements': {
+            '{http://scap.nist.gov/schema/asset-identification/1.1}installation-id': {'class': 'InstallationIDType'},
+            '{http://scap.nist.gov/schema/asset-identification/1.1}cpe': {'class': 'CPEType'},
+            '{http://scap.nist.gov/schema/asset-identification/1.1}license': {'class': 'LicenseType'},
+        }
     }
-    def __init__(self):
-        super(SoftwareType, self).__init__('{http://scap.nist.gov/schema/asset-identification/1.1}software')    #
-
-        self.licenses = []

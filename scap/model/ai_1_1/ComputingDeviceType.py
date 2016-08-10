@@ -26,7 +26,7 @@ class ComputingDeviceType(ITAssetType):
         'tag_name': 'computing-device',
         'elements': {
             '{http://scap.nist.gov/schema/asset-identification/1.1}distinguished-name': {'class': 'DistinguishedNameType'},
-            '{http://scap.nist.gov/schema/asset-identification/1.1}cpe': {'append': 'cpes', 'class': 'scap.model.xs.String'},
+            '{http://scap.nist.gov/schema/asset-identification/1.1}cpe': {'append': 'cpes', 'class': 'CPEType'},
             '{http://scap.nist.gov/schema/asset-identification/1.1}connections': {
                 'list': 'connections',
                 'classes': {
@@ -34,7 +34,7 @@ class ComputingDeviceType(ITAssetType):
                 },
             },
             '{http://scap.nist.gov/schema/asset-identification/1.1}fqdn': {'class': 'FQDNType'},
-            '{http://scap.nist.gov/schema/asset-identification/1.1}hostname': {'class': 'HostnameType'},
+            '{http://scap.nist.gov/schema/asset-identification/1.1}hostname': {'class': 'ComputingDeviceHostnameType'},
             '{http://scap.nist.gov/schema/asset-identification/1.1}motherboard-guid': {'class': 'MotherboardGUIDType'},
         },
     }
