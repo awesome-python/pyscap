@@ -15,6 +15,21 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-TAG_MAP = {
-    'asset-report-collection': 'AssetReportCollectionElement',
-}
+from scap.Model import Model
+import logging
+import xml.etree.ElementTree as ET
+
+logger = logging.getLogger(__name__)
+class ReportContentElement(Model):
+    MODEL_MAP = {
+        'xml_namespace': 'http://scap.nist.gov/schema/asset-reporting-format/1.1',
+        'tag_name': 'content',
+        'elements': {
+            '*': {'ignore': True},
+        }
+        'attributes': {
+            'data-valid-start-date': {'type': 'Date'},
+            'data-valid-end-date': {'type': 'Date'},
+            '*': {'ignore': True},
+        }
+    }

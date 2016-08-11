@@ -21,26 +21,15 @@ import xml.etree.ElementTree as ET
 
 logger = logging.getLogger(__name__)
 class ReportRequestType(Model):
-    def __init__(self):
-        super(ReportRequestType, self).__init__('{http://scap.nist.gov/schema/asset-reporting-format/1.1}report-request')    #
-
-        self.content = None
-        self.remote_resource = None
-
-        self.required_attributes.append('id')
-
-    def get_sub_elements(self):
-        sub_els = super(ReportRequestType, self).get_sub_elements()
-
-        if self.content is not None:
-            sub_el = ET.Element('{http://scap.nist.gov/schema/asset-reporting-format/1.1}content')
-            sub_el.append(self.content)
-            sub_els.append(sub_el)
-        elif self.remote_resource is not None:
-            sub_els.append(self.remote_resource.to_xml())
-        else:
-            logger.critical('report_request must define content or remote-resource')
-            import sys
-            sys.exit()
-
-        return sub_els
+    MODEL_MAP = {
+        'xml_namespace': 'http://scap.nist.gov/schema/asset-reporting-format/1.1',
+        'tag_name': 'report-request',
+        'elements': {
+            '{http://scap.nist.gov/schema/asset-reporting-format/1.1}content': {'class': 'ReportRequestContentElement'},
+            '{http://scap.nist.gov/schema/asset-reporting-format/1.1}remote-resource': {'class': 'RemoteResourceElement'},
+        },
+        'attributes': {
+            'id': {'type': 'NCName', 'required': True},
+            '*': {'ignore': True},
+        }
+    }

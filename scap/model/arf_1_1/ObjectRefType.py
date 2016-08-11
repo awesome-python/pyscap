@@ -21,5 +21,10 @@ import xml.etree.ElementTree as ET
 
 logger = logging.getLogger(__name__)
 class ObjectRefType(Model):
-    def __init__(self):
-        super(ObjectRefType, self).__init__('{http://scap.nist.gov/schema/asset-reporting-format/1.1}object-ref')    #
+    MODEL_MAP = {
+        'xml_namespace': 'http://scap.nist.gov/schema/asset-reporting-format/1.1',
+        'tag_name': 'object-ref',
+        'attributes': {
+            'ref-id': {'type': 'NCName', 'required': True},
+        }
+    }

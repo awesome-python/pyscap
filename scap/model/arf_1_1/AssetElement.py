@@ -17,15 +17,16 @@
 
 from scap.Model import Model
 import logging
+import xml.etree.ElementTree as ET
 
 logger = logging.getLogger(__name__)
-class ReportType(Model):
+class AssetElement(Model):
     MODEL_MAP = {
         'xml_namespace': 'http://scap.nist.gov/schema/asset-reporting-format/1.1',
-        'tag_name': 'report',
+        'tag_name': 'asset',
         'elements': {
-            '{http://scap.nist.gov/schema/asset-reporting-format/1.1}content': {'class': 'ReportContentElement'},
-            '{http://scap.nist.gov/schema/asset-reporting-format/1.1}remote-resource': {'class': 'RemoteResourceElement'},
+            '{http://scap.nist.gov/schema/asset-identification/1.1}asset': {'append': 'assets', 'class': 'AssetType'},
+            '{http://scap.nist.gov/schema/asset-reporting-format/1.1}remote-resource': {'append': 'remote_resources', 'class': 'RemoteResourceElement'},
         },
         'attributes': {
             'id': {'type': 'NCName', 'required': True},

@@ -20,6 +20,13 @@ import logging
 import xml.etree.ElementTree as ET
 
 logger = logging.getLogger(__name__)
-class RemoteResourceType(Model):
-    def __init__(self):
-        super(RemoteResourceType, self).__init__('{http://scap.nist.gov/schema/asset-reporting-format/1.1}remote-resource')    # 
+class RemoteResourceElement(Model):
+    MODEL_MAP = {
+        'xml_namespace': 'http://scap.nist.gov/schema/asset-reporting-format/1.1',
+        'tag_name': 'remote-resource',
+        'attributes': {
+            '{http://www.w3.org/1999/xlink}type': {'required': True, 'enum': ['simple']},
+            '{http://www.w3.org/1999/xlink}href': {'required': True, 'type': 'AnyURI'},
+            '*': {'ignore': True},
+        }
+    }
