@@ -20,18 +20,19 @@ import logging
 import xml.etree.ElementTree as ET
 
 logger = logging.getLogger(__name__)
-class OrganisationNameDetailsElement(Model):
+class NameDetailsType(Model):
     MODEL_MAP = {
         'xml_namespace': 'urn:oasis:names:tc:ciq:xsdschema:xNL:2.0',
-        'tag_name': 'OrganisationNameDetails',
+        'tag_name': 'NameDetails',
         'elements': {
             '{urn:oasis:names:tc:ciq:xsdschema:xNL:2.0}NameLine': {'append', 'name_lines', 'class': 'NameLineType'},
-            '{urn:oasis:names:tc:ciq:xsdschema:xNL:2.0}OrganisationName': {'append': 'organisation_name', 'class': 'OrganisationNameElement'},
-            '{urn:oasis:names:tc:ciq:xsdschema:xNL:2.0}OrganisationType': {'append': 'organisation_type', 'class': 'OrganisationTypeElement'},
+            '{urn:oasis:names:tc:ciq:xsdschema:xNL:2.0}PersonName': {'in': 'person_name', 'class': 'PersonNameElement'},
+            '{urn:oasis:names:tc:ciq:xsdschema:xNL:2.0}JointPersonName': {'in': 'joint_person_name', 'class': 'JointPersonNameElement'},
+            '{urn:oasis:names:tc:ciq:xsdschema:xNL:2.0}OrganisationNameDetails': {'in': 'organisation_name_details', 'class': 'OrganisationNameDetailsElement'},
         },
         'attributes': {
-            'Type': {},
-            'NameDetailsKeyRef': {}, # from grKeyRefs
+            'PartyType': {},
+            'Code': {},
             '*': {'ignore': True},
         }
     }

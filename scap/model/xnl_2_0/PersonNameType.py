@@ -24,4 +24,24 @@ class PersonNameType(Model):
     MODEL_MAP = {
         'xml_namespace': 'urn:oasis:names:tc:ciq:xsdschema:xNL:2.0',
         'tag_name': 'PersonName',
+        'elements': {
+            '{urn:oasis:names:tc:ciq:xsdschema:xNL:2.0}NameLine': {'append', 'name_lines', 'class': 'NameLineType'},
+            '{urn:oasis:names:tc:ciq:xsdschema:xNL:2.0}PrecedingTitle': {'append': 'preceding_titles', 'class': 'PrecedingTitleElement'},
+            '{urn:oasis:names:tc:ciq:xsdschema:xNL:2.0}Title': {'append': 'titles', 'class': 'TitleElement'},
+            '{urn:oasis:names:tc:ciq:xsdschema:xNL:2.0}FirstName': {'append': 'first_names', 'class': 'FirstNameElement'},
+            '{urn:oasis:names:tc:ciq:xsdschema:xNL:2.0}MiddleName': {'append': 'middle_names', 'class': 'MiddleNameElement'},
+            '{urn:oasis:names:tc:ciq:xsdschema:xNL:2.0}NamePrefix': {'in': 'name_prefix', 'class': 'NamePrefixElement'},
+            '{urn:oasis:names:tc:ciq:xsdschema:xNL:2.0}LastName': {'append': 'last_names', 'class': 'LastNameElement'},
+            '{urn:oasis:names:tc:ciq:xsdschema:xNL:2.0}OtherName': {'append': 'other_names', 'class': 'OtherNameElement'},
+            '{urn:oasis:names:tc:ciq:xsdschema:xNL:2.0}Alias': {'append': 'aliases', 'class': 'AliasElement'},
+            '{urn:oasis:names:tc:ciq:xsdschema:xNL:2.0}GenerationIdentifier': {'append': 'generation_identifiers', 'class': 'GenerationIdentifierElement'},
+            '{urn:oasis:names:tc:ciq:xsdschema:xNL:2.0}Suffix': {'append': 'suffixes', 'class': 'SuffixElement'},
+            '{urn:oasis:names:tc:ciq:xsdschema:xNL:2.0}GeneralSuffix': {'append': 'general_suffix', 'class': 'GeneralSuffixElement'},
+        },
+        'attributes': {
+            'Type': {},
+            'Code': {},
+            'NameDetailsKeyRef': {}, # from grKeyRefs
+            '*': {'ignore': True},
+        }
     }

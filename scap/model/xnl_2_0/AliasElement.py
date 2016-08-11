@@ -20,16 +20,14 @@ import logging
 import xml.etree.ElementTree as ET
 
 logger = logging.getLogger(__name__)
-class XNLType(Model):
+class AliasElement(Model):
     MODEL_MAP = {
         'xml_namespace': 'urn:oasis:names:tc:ciq:xsdschema:xNL:2.0',
-        'tag_name': 'xNL',
-        'elements': {
-            '{urn:oasis:names:tc:ciq:xsdschema:xNL:2.0}NameDetails': {'append': 'name_details', 'class': 'NameDetailsType'},
-            '*': {'ignore': True},
-        },
+        'tag_name': 'Alias',
         'attributes': {
-            'Version': {},
+            'Type': {},
+            'NameType': {},
+            'Code': {},
             '*': {'ignore': True},
         }
     }
