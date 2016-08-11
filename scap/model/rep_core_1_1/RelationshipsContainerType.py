@@ -21,17 +21,15 @@ import xml.etree.ElementTree as ET
 
 logger = logging.getLogger(__name__)
 class RelationshipsContainerType(Model):
-    def __init__(self, tag=None):
-        super(RelationshipsContainerType, self).__init__(tag)
-        self.relationships = []
-
-    def get_sub_elements(self):
-        sub_els = super(RelationshipsContainerType, self).get_sub_elements()
-
-        if len(self.relationships) > 0:
-            relationships_el = ET.Element('{' + self.get_xml_namespace() + '}relationships')
-            for relationship in self.relationships:
-                relationships_el.append(relationship.to_xml())
-            sub_els.append(relationships_el)
-
-        return sub_els
+    # abstract
+    MODEL_MAP = {
+        'xml_namespace': 'http://scap.nist.gov/schema/reporting-core/1.1',
+        'elements': {
+            '{http://scap.nist.gov/schema/reporting-core/1.1}relationships': {
+                'list': 'relationships',
+                'classes': {
+                    '{http://scap.nist.gov/schema/reporting-core/1.1}relationship': 'RelationshipType',
+                }
+            },
+        },
+    }

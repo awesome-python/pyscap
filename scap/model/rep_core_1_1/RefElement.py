@@ -15,21 +15,12 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.Model import Model
+from scap.model.xs.NCName import NCName
 import logging
 
 logger = logging.getLogger(__name__)
-class RelationshipType(Model):
+class RefElement(NCName):
     MODEL_MAP = {
         'xml_namespace': 'http://scap.nist.gov/schema/reporting-core/1.1',
-        'tag_name': 'relationship',
-        'elements': {
-            '{http://scap.nist.gov/schema/reporting-core/1.1}ref': {'append': 'refs', 'class': 'RefElement'},
-        },
-        'attributes': {
-            'type': {'type': 'QName', 'required': True},
-            'scope': {'enum': ['inclusive', 'exclusive'], 'default': 'inclusive'},
-            'subject': {'type': 'NCName', 'required': True},
-            '*': {'ignore': True},
-        },
+        'tag_name': 'ref',
     }
