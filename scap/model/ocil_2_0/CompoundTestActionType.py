@@ -15,12 +15,12 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.model.ocil_2_0.TestActionType import TestActionType
+from scap.model.ocil_2_0.TestActionElement import TestActionElement
 from scap.Model import Model
 import logging
 
 logger = logging.getLogger(__name__)
-class CompoundTestActionType(TestActionType):
+class CompoundTestActionType(TestActionElement):
     MODEL_MAP = {
         'elements': {
             '{http://scap.nist.gov/schema/ocil/2.0}reference': {'class': 'ReferenceType'},

@@ -20,12 +20,11 @@ import logging
 
 logger = logging.getLogger(__name__)
 class EqualsTestActionConditionType(TestActionConditionType):
-    def __init__(self):
-        super(EqualsTestActionConditionType, self).__init__()
-
-        self.ignore_attributes.extend([
-            'var_ref',
-        ])
-        self.ignore_sub_elements.extend([
-            '{http://scap.nist.gov/schema/ocil/2.0}value',
-        ])
+    MODEL_MAP = {
+        'elements': {
+            '{http://scap.nist.gov/schema/ocil/2.0}value': {'append': 'values', 'type': 'Decimal', 'required': True},
+        },
+        'attributes': {
+            'var_ref': {'type': 'VariableIDPattern'},
+        },
+    }

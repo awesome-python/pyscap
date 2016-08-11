@@ -20,19 +20,8 @@ import logging
 
 logger = logging.getLogger(__name__)
 class NumericQuestionType(QuestionType):
-    def __init__(self):
-        super(NumericQuestionType, self).__init__()
-
-        self.default_answer = None
-
-        # self.ignore_attributes.extend([
-        # ])
-        # self.ignore_sub_elements.extend([
-        # ])
-
-    def parse_element(self, sub_el):
-        if sub_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}default_answer':
-            self.default_answer = sub_el.text
-        else:
-            return super(NumericQuestionType, self).parse_element(sub_el)
-        return True
+    MODEL_MAP = {
+        'attributes': {
+            'default_answer': {'type': 'Decimal'},
+        }
+    }

@@ -1,0 +1,2 @@
+Model
+- add min/max vs. required

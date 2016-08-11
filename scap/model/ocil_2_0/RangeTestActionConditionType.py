@@ -23,22 +23,6 @@ logger = logging.getLogger(__name__)
 class RangeTestActionConditionType(TestActionConditionType):
     MODEL_MAP = {
         'elements': {
-            '{http://scap.nist.gov/schema/ocil/2.0}range': {'class': 'RangeType'},
-        }
+            '{http://scap.nist.gov/schema/ocil/2.0}range': {'append': 'ranges', 'class': 'RangeType', 'required': True},
+        },
     }
-    def __init__(self):
-        super(RangeTestActionConditionType, self).__init__()
-
-        self.ranges = []
-
-        # self.ignore_attributes.extend([
-        # ])
-        # self.ignore_sub_elements.extend([
-        # ])
-
-    def parse_element(self, sub_el):
-        if sub_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}range':
-            self.ranges.append(Model.load(self, sub_el))
-        else:
-            return super(RangeTestActionConditionType, self).parse_element(sub_el)
-        return True

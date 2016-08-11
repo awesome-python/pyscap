@@ -23,22 +23,6 @@ logger = logging.getLogger(__name__)
 class PatternTestActionConditionType(TestActionConditionType):
     MODEL_MAP = {
         'elements': {
-            '{http://scap.nist.gov/schema/ocil/2.0}pattern': {'class': 'PatternType'},
-        }
+            '{http://scap.nist.gov/schema/ocil/2.0}pattern': {'append': 'patterns', 'class': 'PatternType', 'required': True},
+        },
     }
-    def __init__(self):
-        super(PatternTestActionConditionType, self).__init__()
-
-        self.patterns = []
-
-        # self.ignore_attributes.extend([
-        # ])
-        # self.ignore_sub_elements.extend([
-        # ])
-
-    def parse_element(self, sub_el):
-        if '{http://scap.nist.gov/schema/ocil/2.0}pattern':
-            self.patterns.append(Model.load(self, sub_el))
-        else:
-            return super(PatternTestActionConditionType, self).parse_element(sub_el)
-        return True

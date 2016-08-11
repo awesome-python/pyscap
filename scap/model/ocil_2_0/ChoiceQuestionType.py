@@ -20,22 +20,12 @@ import logging
 
 logger = logging.getLogger(__name__)
 class ChoiceQuestionType(QuestionType):
-    def __init__(self):
-        super(ChoiceQuestionType, self).__init__()
-
-        self.choice_group_ref = None
-        self.default_answer_ref = None
-
-        # self.ignore_attributes.extend([
-        # ])
-        # self.ignore_sub_elements.extend([
-        # ])
-
-    def parse_element(self, sub_el):
-        if sub_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}choice_group_ref':
-            self.choice_group_ref = sub_el.text
-        elif sub_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}default_answer_ref':
-            self.default_answer_ref = sub_el.text
-        else:
-            return super(ChoiceQuestionType, self).parse_element(sub_el)
-        return True
+    MODEL_MAP = {
+        'elements': {
+            '{http://scap.nist.gov/schema/ocil/2.0}choice': {'append': 'choices', 'class': 'ChoiceType'},
+            '{http://scap.nist.gov/schema/ocil/2.0}choice_group_ref': {'append': 'choice_group_refs', 'type': 'ChoiceGroupIDPattern'},
+        }
+        'attributes': {
+            'default_answer_ref': {'type': 'ChoiceIDPattern'},
+        }
+    }

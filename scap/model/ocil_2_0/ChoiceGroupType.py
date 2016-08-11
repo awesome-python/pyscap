@@ -22,22 +22,9 @@ logger = logging.getLogger(__name__)
 class ChoiceGroupType(Model):
     MODEL_MAP = {
         'elements': {
-            '{http://scap.nist.gov/schema/ocil/2.0}choice': {'class': 'ChoiceType'},
-        }
+            '{http://scap.nist.gov/schema/ocil/2.0}choice': {'append': 'choices', 'class': 'ChoiceType', 'required': True},
+        },
+        'attributes': {
+            'id': {'type': 'ChoiceGroupIDPattern', 'required': True},
+        },
     }
-    def __init__(self):
-        super(ChoiceGroupType, self).__init__()
-
-        self.choices = []
-
-        # self.ignore_attributes.extend([
-        # ])
-        # self.ignore_sub_elements.extend([
-        # ])
-
-    def parse_element(self, sub_el):
-        if sub_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}choice':
-            self.choices.append(Model.load(self, sub_el))
-        else:
-            return super(ChoiceGroupType, self).parse_element(sub_el)
-        return True

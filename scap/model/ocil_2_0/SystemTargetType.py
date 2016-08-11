@@ -15,11 +15,11 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.model.ocil_2_0.TargetType import TargetType
+from scap.model.ocil_2_0.TargetElement import TargetElement
 import logging
 
 logger = logging.getLogger(__name__)
-class SystemTargetType(TargetType):
+class SystemTargetType(TargetElement):
     def __init__(self):
         super(SystemTargetType, self).__init__()
 

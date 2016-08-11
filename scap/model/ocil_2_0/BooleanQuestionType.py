@@ -20,17 +20,9 @@ import logging
 
 logger = logging.getLogger(__name__)
 class BooleanQuestionType(QuestionType):
-    def __init__(self):
-        super(BooleanQuestionType, self).__init__()
-
-        self.model = 'MODEL_YES_NO'
-        self.default_answer = None
-
-    def parse_attribute(self, name, value):
-        if name == 'model':
-            self.model = value
-        elif name == 'default_answer':
-            self.default_answer = value
-        else:
-            return super(BooleanQuestionType, self).parse_attribute(name, value)
-        return True
+    MODEL_MAP = {
+        'attributes': {
+            'default_answer': {'type': 'Boolean'},
+            'model': {'enum': ['MODEL_YES_NO', 'MODEL_TRUE_FALSE']},
+        }
+    }

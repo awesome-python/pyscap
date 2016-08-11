@@ -20,10 +20,8 @@ import logging
 
 logger = logging.getLogger(__name__)
 class StringQuestionTestActionType(QuestionTestActionType):
-    def __init__(self):
-        super(StringQuestionTestActionType, self).__init__()    # {http://scap.nist.gov/schema/ocil/2.0}ocil
-
-        # self.ignore_attributes.extend([
-        # ])
-        # self.ignore_sub_elements.extend([
-        # ])
+    MODEL_MAP = {
+        'elements': {
+            '{http://scap.nist.gov/schema/ocil/2.0}when_pattern': {'append': 'when_ranges', 'class': 'PatternTestActionConditionType', 'required': True},
+        },
+    }

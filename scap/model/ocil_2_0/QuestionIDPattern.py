@@ -15,10 +15,8 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.model.ocil_2_0.ItemBaseType import ItemBaseType
-import logging
+from scap.model.xs.Token import Token
 
-logger = logging.getLogger(__name__)
-class TestActionType(ItemBaseType):
-    def __init__(self):
-        super(TestActionType, self).__init__()
+class QuestionIDPattern(Token):
+    # <xsd:pattern value="ocil:[A-Za-z0-9_\-\.]+:questionnaire:[1-9][0-9]*"/>
+    pass

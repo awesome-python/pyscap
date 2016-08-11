@@ -20,10 +20,9 @@ import logging
 
 logger = logging.getLogger(__name__)
 class NumericQuestionTestActionType(QuestionTestActionType):
-    def __init__(self):
-        super(NumericQuestionTestActionType, self).__init__()    # {http://scap.nist.gov/schema/ocil/2.0}ocil
-
-        # self.ignore_attributes.extend([
-        # ])
-        # self.ignore_sub_elements.extend([
-        # ])
+    MODEL_MAP = {
+        'elements': {
+            '{http://scap.nist.gov/schema/ocil/2.0}when_equals': {'append': 'when_equals', 'class': 'EqualsTestActionConditionType'},
+            '{http://scap.nist.gov/schema/ocil/2.0}when_range': {'append': 'when_ranges', 'class': 'RangeTestActionConditionType'},
+        },
+    }

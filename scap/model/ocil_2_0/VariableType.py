@@ -20,10 +20,10 @@ import logging
 
 logger = logging.getLogger(__name__)
 class VariableType(ItemBaseType):
-    def __init__(self):
-        super(VariableType, self).__init__()
-
-        # self.ignore_attributes.extend([
-        # ])
-        # self.ignore_sub_elements.extend([
-        # ])
+    # abstract
+    MODEL_MAP = {
+        'elements': {
+            '{http://scap.nist.gov/schema/ocil/2.0}instructions': {'class': 'InstructionsType'},
+            '{http://scap.nist.gov/schema/ocil/2.0}question_text': {'class': 'QuestionTextType'},
+        }
+    }

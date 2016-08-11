@@ -20,19 +20,9 @@ import logging
 
 logger = logging.getLogger(__name__)
 class ChoiceType(NormalizedString):
-    def __init__(self):
-        super(ChoiceType, self).__init__()
-
-        self.var_ref = None
-
-        # self.ignore_attributes.extend([
-        # ])
-        # self.ignore_sub_elements.extend([
-        # ])
-
-    def parse_attribute(self, name, value):
-        if name == 'var_ref':
-            self.var_ref = value
-        else:
-            return super(ChoiceType, self).parse_attribute(name, value)
-        return True
+    MODEL_MAP = {
+        'attributes': {
+            'id': {'type': 'ChoiceIDPattern', 'required': True},
+            'var_ref': {'type': 'VariableIDPattern'},
+        },
+    }

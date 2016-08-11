@@ -20,20 +20,12 @@ import logging
 
 logger = logging.getLogger(__name__)
 class DocumentType(Model):
-    def __init__(self):
-        super(DocumentType, self).__init__()
-
-        self.title = None
-        self.descriptions = []
-        self.notices = []
-
-    def parse_element(self, sub_el):
-        if sub_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}title':
-            self.title = sub_el.text
-        elif sub_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}description':
-            self.descriptions = sub_el.text
-        elif sub_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}notice':
-            self.notices = sub_el.text
-        else:
-            return super(DocumentType, self).parse_element(sub_el)
-        return True
+    MODEL_MAP = {
+        'xml_namespace': 'http://scap.nist.gov/schema/ocil/2.0',
+        'tag_name': 'document',
+        'elements': {
+            '{http://scap.nist.gov/schema/ocil/2.0}title': {'type': 'NormalizedString', 'required': True},
+            '{http://scap.nist.gov/schema/ocil/2.0}description': {'append': 'descriptions', 'type': 'NormalizedString'},
+            '{http://scap.nist.gov/schema/ocil/2.0}notice': {'append': 'notices', 'type': 'String'},
+        }
+    }

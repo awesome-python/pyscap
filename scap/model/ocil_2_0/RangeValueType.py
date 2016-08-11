@@ -20,22 +20,9 @@ import logging
 
 logger = logging.getLogger(__name__)
 class RangeValueType(Decimal):
-    def __init__(self):
-        super(RangeValueType, self).__init__()
-
-        self.inclusive = True
-        self.var_ref = None
-
-        # self.ignore_attributes.extend([
-        # ])
-        # self.ignore_sub_elements.extend([
-        # ])
-
-    def parse_attribute(self, name, value):
-        if name == 'inclusive':
-            self.inclusive = self.parse_boolean(value)
-        elif name == 'var_ref':
-            self.var_ref = value
-        else:
-            return super(RangeValueType, self).parse_attribute(name, value)
-        return True
+    MODEL_MAP = {
+        'attributes': {
+            'inclusive': {'type': 'Boolean', 'default': True},
+            'var_ref': {'type': 'VariableIDPattern'},
+        },
+    }

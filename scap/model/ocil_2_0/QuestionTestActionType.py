@@ -15,36 +15,23 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.model.ocil_2_0.TestActionType import TestActionType
+from scap.model.ocil_2_0.ItemBaseType import ItemBaseType
 from scap.Model import Model
 import logging
 
 logger = logging.getLogger(__name__)
-class QuestionTestActionType(TestActionType):
+class QuestionTestActionType(ItemBaseType):
     MODEL_MAP = {
+        # abstract
         'elements': {
+            '{http://scap.nist.gov/schema/ocil/2.0}title': {'class': 'TextType'},
             '{http://scap.nist.gov/schema/ocil/2.0}when_unknown': {'class': 'TestActionConditionType'},
             '{http://scap.nist.gov/schema/ocil/2.0}when_not_tested': {'class': 'TestActionConditionType'},
             '{http://scap.nist.gov/schema/ocil/2.0}when_not_applicable': {'class': 'TestActionConditionType'},
             '{http://scap.nist.gov/schema/ocil/2.0}when_error': {'class': 'TestActionConditionType'},
+        },
+        'attributes': {
+            'question_ref': {'type': 'QuestionIDPattern', 'required': True}
+            'id': {'type': 'QuestionTestActionIDPattern', 'required': True}
         }
     }
-
-    def __init__(self):
-        super(QuestionTestActionType, self).__init__()
-
-        self.conditions = []
-
-        self.ignore_attributes.extend([
-            'question_ref',
-        ])
-        self.ignore_sub_elements.extend([
-            '{http://scap.nist.gov/schema/ocil/2.0}title',
-        ])
-
-    def parse_element(self, sub_el):
-        if sub_el.tag.startswith('{http://scap.nist.gov/schema/ocil/2.0}when_'):
-            self.conditions.append(Model.load(self, sub_el))
-        else:
-            return super(QuestionTestActionType, self).parse_element(sub_el)
-        return True

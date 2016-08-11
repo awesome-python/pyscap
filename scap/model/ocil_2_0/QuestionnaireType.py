@@ -20,11 +20,11 @@ import logging
 
 logger = logging.getLogger(__name__)
 class QuestionnaireType(CompoundTestActionType):
-    def __init__(self):
-        super(QuestionnaireType, self).__init__()
-
-        self.ignore_attributes.extend([
-            'child_only',
-        ])
-        # self.ignore_sub_elements.extend([
-        # ])
+    MODEL_MAP = {
+        'xml_namespace': 'http://scap.nist.gov/schema/ocil/2.0',
+        'tag_name': 'questionnaire',
+        'attributes': {
+            'id': {'type': 'QuestionnaireIDPattern', 'required': True},
+            'child_only': {'type': 'Boolean', 'default': False},
+        }
+    }

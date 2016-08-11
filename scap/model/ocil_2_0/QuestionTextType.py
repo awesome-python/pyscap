@@ -15,16 +15,13 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.model.xs.String import String
+from scap.Model import Model
 import logging
 
 logger = logging.getLogger(__name__)
-class QuestionTextType(String):
-    def __init__(self):
-        super(QuestionTextType, self).__init__()
-
-        # self.ignore_attributes.extend([
-        # ])
-        self.ignore_sub_elements.extend([
-            '{http://scap.nist.gov/schema/ocil/2.0}sub',
-        ])
+class QuestionTextType(Model):
+    MODEL_MAP = {
+        'elements': {
+            '{http://scap.nist.gov/schema/ocil/2.0}sub': {'class': 'SubstitutionTextType'},
+        },
+    }

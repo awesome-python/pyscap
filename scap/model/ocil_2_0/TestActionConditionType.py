@@ -20,13 +20,10 @@ import logging
 
 logger = logging.getLogger(__name__)
 class TestActionConditionType(Model):
-    def __init__(self):
-        super(TestActionConditionType, self).__init__()
-
-        # self.ignore_attributes.extend([
-        # ])
-        self.ignore_sub_elements.extend([
-            '{http://scap.nist.gov/schema/ocil/2.0}result',
-            '{http://scap.nist.gov/schema/ocil/2.0}test_action_ref',
-            '{http://scap.nist.gov/schema/ocil/2.0}artifact_refs',
-        ])
+    MODEL_MAP = {
+        'elements': {
+            '{http://scap.nist.gov/schema/ocil/2.0}result': {'class': 'ResultType'},
+            '{http://scap.nist.gov/schema/ocil/2.0}test_action_ref': {'class': 'TestActionRefType'},
+            '{http://scap.nist.gov/schema/ocil/2.0}artifact_refs': {'class': 'ArtifactRefsType'},
+        },
+    }

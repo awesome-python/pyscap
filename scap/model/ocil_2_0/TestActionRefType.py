@@ -15,16 +15,15 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.Model import Model
+from scap.model.ocil_2_0.TestActionRefValuePattern import TestActionRefValuePattern
 import logging
 
 logger = logging.getLogger(__name__)
-class TestActionRefType(Model):
-    def __init__(self):
-        super(TestActionRefType, self).__init__()
-
-        self.ignore_attributes.extend([
-            'negate'
-        ])
-        # self.ignore_sub_elements.extend([
-        # ])
+class TestActionRefType(TestActionRefValuePattern):
+    MODEL_MAP = {
+        'xml_namespace': 'http://scap.nist.gov/schema/ocil/2.0',
+        'tag_name': 'test_action_ref',
+        'attributes': {
+            'negate': {'type': 'Boolean', 'default': False},
+        },
+    }

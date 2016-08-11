@@ -20,11 +20,8 @@ import logging
 
 logger = logging.getLogger(__name__)
 class PatternType(String):
-    def __init__(self):
-        super(PatternType, self).__init__()
-
-        self.ignore_attributes.extend([
-            'var_ref',
-        ])
-        # self.ignore_sub_elements.extend([
-        # ])
+    MODEL_MAP = {
+        'attributes': {
+            'var_ref': {'type': 'VariableIDPattern'},
+        },
+    }

@@ -23,26 +23,10 @@ logger = logging.getLogger(__name__)
 class QuestionType(ItemBaseType):
     MODEL_MAP = {
         'elements': {
+            '{http://scap.nist.gov/schema/ocil/2.0}question_text': {'append': 'question_texts', 'class': 'QuestionTextType', 'required': True},
             '{http://scap.nist.gov/schema/ocil/2.0}instructions': {'class': 'InstructionsType'},
-            '{http://scap.nist.gov/schema/ocil/2.0}question_text': {'class': 'QuestionTextType'},
+        }
+        'attributes': {
+            'id': {'type': 'QuestionIDPattern', 'required': True},
         }
     }
-    def __init__(self):
-        super(QuestionType, self).__init__()
-
-        self.question_texts = []
-        self.instructions = []
-
-        # self.ignore_attributes.extend([
-        # ])
-        # self.ignore_sub_elements.extend([
-        # ])
-
-    def parse_element(self, sub_el):
-        if sub_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}instructions':
-            self.instructions.append(Model.load(self, sub_el))
-        if sub_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}question_text':
-            self.question_texts.append(Model.load(self, sub_el))
-        else:
-            return super(QuestionType, self).parse_element(sub_el)
-        return True
