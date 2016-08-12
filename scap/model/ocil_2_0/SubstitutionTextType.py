@@ -20,4 +20,8 @@ import logging
 
 logger = logging.getLogger(__name__)
 class SubstitutionTextType(Model):
-    pass
+    MODEL_MAP = {
+        'attributes': {
+            'var_ref': {'type': 'VariableIDPattern', 'required': True},
+        }
+    }

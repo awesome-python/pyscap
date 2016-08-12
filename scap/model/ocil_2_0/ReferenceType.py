@@ -15,19 +15,13 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.model.xs.NormalizedString import NormalizedString
+from scap.model.ocil_2_0.TextType import TextType
 import logging
 
 logger = logging.getLogger(__name__)
-class ReferenceType(NormalizedString):
-    def __init__(self):
-        super(ReferenceType, self).__init__()
-
-        self.href = None
-
-    def parse_attribute(self, name, value):
-        if name == 'href':
-            self.href = value
-        else:
-            return super(ReferenceType, self).parse_attribute(name, value)
-        return True
+class ReferenceType(TextType):
+    MODEL_MAP = {
+        'attributes': {
+            'href': {'type': 'AnyURI'},
+        }
+    }

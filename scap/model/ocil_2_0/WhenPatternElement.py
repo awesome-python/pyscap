@@ -15,14 +15,12 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.Model import Model
+from scap.model.ocil_2_0.SetExpressionPatternType import SetExpressionPatternType
 import logging
 
 logger = logging.getLogger(__name__)
-class SetExpressionBaseType(Model):
+class WhenPatternElement(SetExpressionPatternType):
     MODEL_MAP = {
-        # abstract
-        'elements': {
-            '{http://scap.nist.gov/schema/ocil/2.0}value': {'class': 'SetExpressionValueType'},
-        },
+        'xml_namespace': 'http://scap.nist.gov/schema/ocil/2.0',
+        'tag_name': 'when_pattern',
     }

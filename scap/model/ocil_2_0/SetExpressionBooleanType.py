@@ -20,4 +20,8 @@ import logging
 
 logger = logging.getLogger(__name__)
 class SetExpressionBooleanType(SetExpressionBaseType):
-    pass
+    MODEL_MAP = {
+        'attributes': {
+            'value': {'type': 'Boolean', 'required': True},
+        }
+    }

@@ -23,7 +23,10 @@ class VariableType(ItemBaseType):
     # abstract
     MODEL_MAP = {
         'elements': {
-            '{http://scap.nist.gov/schema/ocil/2.0}instructions': {'class': 'InstructionsType'},
-            '{http://scap.nist.gov/schema/ocil/2.0}question_text': {'class': 'QuestionTextType'},
+            '{http://scap.nist.gov/schema/ocil/2.0}description': {'class': 'TextType'},
+        },
+        'attributes': {
+            'id': {'type': 'VariableIDPattern', 'required': True},
+            'datatype': {'enum': ['TEXT', 'NUMERIC'], 'required': True},
         }
     }

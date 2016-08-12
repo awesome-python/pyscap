@@ -20,4 +20,9 @@ import logging
 
 logger = logging.getLogger(__name__)
 class SetExpressionRangeType(SetExpressionBaseType):
-    pass
+    MODEL_MAP = {
+        'attributes': {
+            'min': {'type': 'Decimal', 'required': True},
+            'max': {'type': 'Decimal', 'required': True},
+        }
+    }

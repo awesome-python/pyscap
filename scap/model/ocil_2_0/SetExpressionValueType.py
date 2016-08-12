@@ -19,10 +19,6 @@ from scap.Model import Model
 import logging
 
 logger = logging.getLogger(__name__)
-class SetExpressionBaseType(Model):
+class SetExpressionValueType(Model):
     MODEL_MAP = {
-        # abstract
-        'elements': {
-            '{http://scap.nist.gov/schema/ocil/2.0}value': {'class': 'SetExpressionValueType'},
-        },
     }

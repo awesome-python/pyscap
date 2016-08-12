@@ -20,12 +20,11 @@ import logging
 
 logger = logging.getLogger(__name__)
 class ItemBaseType(Model):
-    def __init__(self):
-        super(ItemBaseType, self).__init__()
-
-        self.ignore_attributes.extend([
-            'revision',
-        ])
-        self.ignore_sub_elements.extend([
-            '{http://scap.nist.gov/schema/ocil/2.0}notes',
-        ])
+    MODEL_MAP = {
+        'elements': {
+            '{http://scap.nist.gov/schema/ocil/2.0}notes': {'append': 'notes', 'type': 'String'},
+        },
+        'attributes': {
+            'revision': {'type': 'NonNegativeInteger', 'default': 0},
+        }
+    }

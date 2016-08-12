@@ -20,10 +20,5 @@ import logging
 
 logger = logging.getLogger(__name__)
 class ExternalVariableType(VariableType):
-    def __init__(self):
-        super(ExternalVariableType, self).__init__()
-
-        # self.ignore_attributes.extend([
-        # ])
-        # self.ignore_sub_elements.extend([
-        # ])
+    MODEL_MAP = {
+    }

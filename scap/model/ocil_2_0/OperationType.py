@@ -22,31 +22,10 @@ logger = logging.getLogger(__name__)
 class OperationType(Model):
     MODEL_MAP = {
         'elements': {
-            '{http://scap.nist.gov/schema/ocil/2.0}test_action_ref': {'class': 'TestActionRefType'},
-            '{http://scap.nist.gov/schema/ocil/2.0}actions': {'class': 'OperationType'},
+            '{http://scap.nist.gov/schema/ocil/2.0}test_action_ref': {'append': 'test_action_refs', 'class': 'TestActionRefType'},
+        },
+        'attributes': {
+            'operation': {'enum': ['AND', 'OR'], 'default': 'AND'},
+            'negate': {'type': 'Boolean', 'default': False},
         }
     }
-    def __init__(self):
-        super(OperationType, self).__init__()
-
-        self.operation = 'AND'
-        self.negate = False
-
-        self.test_action_refs = []
-
-    def parse_attribute(self, name, value):
-        if name == 'operation':
-            self.operation = value
-        elif name == 'negate':
-            self.negate = self.parse_boolean(value)
-        else:
-            return super(OperationType, self).parse_attribute(name, value)
-        return True
-
-    def parse_element(self, sub_el):
-        if sub_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}test_action_ref':
-            for sub_sub_el in sub_el:
-                self.test_action_refs.append(Model.load(self, sub_sub_el))
-        else:
-            return super(OperationType, self).parse_element(sub_el)
-        return True

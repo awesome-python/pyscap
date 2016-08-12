@@ -15,16 +15,13 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.model.ocil_2_0.ItemBase import ItemBase
+from scap.model.ocil_2_0.ItemBaseType import ItemBaseType
 import logging
 
 logger = logging.getLogger(__name__)
-class NamedItemBaseType(ItemBase):
-    def __init__(self):
-        super(NamedItemBaseType, self).__init__()    # {http://scap.nist.gov/schema/ocil/2.0}ocil
-
-        # self.ignore_attributes.extend([
-        # ])
-        self.ignore_sub_elements.extend([
-            '{http://scap.nist.gov/schema/ocil/2.0}name',
-        ])
+class NamedItemBaseType(ItemBaseType):
+    MODEL_MAP = {
+        'elements': {
+            '{http://scap.nist.gov/schema/ocil/2.0}name': {'type': 'String', 'required': True},
+        },
+    }

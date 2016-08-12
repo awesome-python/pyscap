@@ -20,10 +20,8 @@ import logging
 
 logger = logging.getLogger(__name__)
 class ConstantVariableType(VariableType):
-    def __init__(self):
-        super(ConstantVariableType, self).__init__()
-
-        # self.ignore_attributes.extend([
-        # ])
-        # self.ignore_sub_elements.extend([
-        # ])
+    MODEL_MAP = {
+        'elements': {
+            '{http://scap.nist.gov/schema/ocil/2.0}value': {'type': 'String'},
+        },
+    }

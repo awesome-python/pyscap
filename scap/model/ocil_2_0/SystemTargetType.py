@@ -15,25 +15,15 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.model.ocil_2_0.TargetElement import TargetElement
+from scap.model.ocil_2_0.NamedItemBaseType import NamedItemBaseType
 import logging
 
 logger = logging.getLogger(__name__)
-class SystemTargetType(TargetElement):
-    def __init__(self):
-        super(SystemTargetType, self).__init__()
-
-        self.organization = None
-        self.ipaddress = None
-        self.description = None
-
-    def parse_element(self, sub_el):
-        if sub_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}organization':
-            self.organization = sub_el.text
-        elif sub_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}ipaddress':
-            self.ipaddress = sub_el.text
-        elif sub_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}description':
-            self.description = sub_el.text
-        else:
-            return super(SystemTargetType, self).parse_element(sub_el)
-        return True
+class SystemTargetType(NamedItemBaseType):
+    MODEL_MAP = {
+        'elements': {
+            '{http://scap.nist.gov/schema/ocil/2.0}organization': {'type': 'String'},
+            '{http://scap.nist.gov/schema/ocil/2.0}ipaddress': {'append': 'ipaddresses', 'type': 'String'},
+            '{http://scap.nist.gov/schema/ocil/2.0}description': {'class': 'TextType'},
+        },
+    }

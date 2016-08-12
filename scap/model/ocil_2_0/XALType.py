@@ -17,12 +17,19 @@
 
 from scap.Model import Model
 import logging
+import xml.etree.ElementTree as ET
 
 logger = logging.getLogger(__name__)
-class SetExpressionBaseType(Model):
+class XALType(Model):
     MODEL_MAP = {
-        # abstract
+        'xml_namespace': 'urn:oasis:names:tc:ciq:xsdschema:xAL:2.0',
+        'tag_name': 'xAL',
         'elements': {
-            '{http://scap.nist.gov/schema/ocil/2.0}value': {'class': 'SetExpressionValueType'},
+            '{urn:oasis:names:tc:ciq:xsdschema:xAL:2.0}AddressDetails': {'append': 'address_details', 'class': 'AddressDetailsType'},
+            '*': {'ignore': True},
         },
+        'attributes': {
+            'Version': {},
+            '*': {'ignore': True},
+        }
     }

@@ -20,4 +20,8 @@ import logging
 
 logger = logging.getLogger(__name__)
 class SetExpressionChoiceType(SetExpressionBaseType):
-    pass
+    MODEL_MAP = {
+        'attributes': {
+            'choice_ref': {'type': 'ChoiceIDPattern', 'required': True},
+        }
+    }

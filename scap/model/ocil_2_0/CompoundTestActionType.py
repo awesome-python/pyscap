@@ -15,36 +15,25 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.model.ocil_2_0.TestActionElement import TestActionElement
+from scap.model.ocil_2_0.ItemBaseType import ItemBaseType
 from scap.Model import Model
 import logging
 
 logger = logging.getLogger(__name__)
-class CompoundTestActionType(TestActionElement):
+class CompoundTestActionType(ItemBaseType):
     MODEL_MAP = {
         'elements': {
-            '{http://scap.nist.gov/schema/ocil/2.0}reference': {'class': 'ReferenceType'},
+            '{http://scap.nist.gov/schema/ocil/2.0}title': {'class': 'TextType'},
+            '{http://scap.nist.gov/schema/ocil/2.0}description': {'class': 'TextType'},
+            '{http://scap.nist.gov/schema/ocil/2.0}references': {
+                'list': 'references',
+                'classes': {
+                    '{http://scap.nist.gov/schema/ocil/2.0}reference': 'ReferenceType',
+                }
+            },
             '{http://scap.nist.gov/schema/ocil/2.0}actions': {'class': 'OperationType'},
+        },
+        'attributes': {
+            'question_ref': {'type': 'QuestionIDPattern', 'required': True},
         }
     }
-    def __init__(self):
-        super(CompoundTestActionType, self).__init__()
-
-        self.title = None
-        self.description = None
-        self.references = []
-        self.actions = None
-
-    def parse_element(self, sub_el):
-        if sub_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}title':
-            self.title = sub_el.text
-        elif sub_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}description':
-            self.description = sub_el.text
-        elif sub_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}references':
-            for sub_sub_el in sub_el:
-                self.references.append(Model.load(self, sub_sub_el))
-        elif sub_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}actions':
-            self.actions = Model.load(self, sub_el)
-        else:
-            return super(CompoundTestActionType, self).parse_element(sub_el)
-        return True
