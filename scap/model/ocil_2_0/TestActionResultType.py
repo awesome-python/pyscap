@@ -22,30 +22,15 @@ logger = logging.getLogger(__name__)
 class TestActionResultType(Model):
     MODEL_MAP = {
         'elements': {
-            '{http://scap.nist.gov/schema/ocil/2.0}artifact_result': {'class': 'ArtifactResultType'},
+            '{http://scap.nist.gov/schema/ocil/2.0}artifact_results': {
+                'list': 'artifact_results',
+                'classes': {
+                    '{http://scap.nist.gov/schema/ocil/2.0}artifact_result': 'ArtifactRefType',
+                },
+            },
+        },
+        'attributes': {
+            'test_action_ref': {'type': 'TestActionRefValuePattern', 'required': True},
+            'result': {'class': 'ResultType', 'required': True},
         }
     }
-    def __init__(self):
-        super(TestActionResultType, self).__init__()
-
-        self.test_action_ref = None
-        self.result = None
-
-        self.artifact_results = []
-
-    def parse_attribute(self, name, value):
-        if name == 'test_action_ref':
-            self.test_action_ref = value
-        elif name == 'result':
-            self.result = value
-        else:
-            return super(TestActionResultType, self).parse_attribute(name, value)
-        return True
-
-    def parse_element(self, sub_el):
-        if sub_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}artifact_results':
-            for sub_sub_el in sub_el:
-                self.artifact_results[sub_sub_el.attrib['id']] = Model.load(self, sub_sub_el)
-        else:
-            return super(TestActionResultType, self).parse_element(sub_el)
-        return True

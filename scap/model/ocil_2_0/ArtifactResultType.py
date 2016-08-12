@@ -22,35 +22,16 @@ logger = logging.getLogger(__name__)
 class ArtifactResultType(Model):
     MODEL_MAP = {
         'elements': {
-            '{http://scap.nist.gov/schema/ocil/2.0}submitter': {'class': 'UserType'},
+            # children of artifact_value tag
+            '{http://scap.nist.gov/schema/ocil/2.0}text_artifact_value': {'class': 'TextArtifactValueElement'},
+            '{http://scap.nist.gov/schema/ocil/2.0}binary_artifact_value': {'class': 'BinaryArtifactValueElement'},
+            '{http://scap.nist.gov/schema/ocil/2.0}reference_artifact_value': {'class': 'ReferenceArtifactValueElement'},
+
+            '{http://scap.nist.gov/schema/ocil/2.0}provider': {'type': 'ProviderValuePattern', 'required': True},
+            '{http://scap.nist.gov/schema/ocil/2.0}submitter': {'class': 'UserType', 'required': True},
+        },
+        'attributes': {
+            'artifact_ref': {'type': 'ArtifactIDPattern', 'required': True},
+            'timestamp': {'type': 'DateTime', 'required': True},
         }
     }
-    def __init__(self):
-        super(ArtifactResultType, self).__init__()
-
-        self.artifact_ref = None
-        self.timestamp = None
-
-        self.artifact_value = None
-        self.provider = None
-        self.submitter = None
-
-    def parse_attribute(self, name, value):
-        if name == 'artifact_ref':
-            self.artifact_ref = value
-        elif name == 'timestamp':
-            self.timestamp = value
-        else:
-            return super(ArtifactResultType, self).parse_attribute(name, value)
-        return True
-
-    def parse_element(self, sub_el):
-        if sub_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}artifact_value':
-            self.artifact_value = sub_el.text
-        elif sub_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}provider':
-            self.provider = sub_el.text
-        elif sub_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}submitter':
-            self.submitter = Model.load(self, sub_el)
-        else:
-            return super(ArtifactResultType, self).parse_element(sub_el)
-        return True

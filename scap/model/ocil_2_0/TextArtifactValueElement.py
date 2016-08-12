@@ -15,17 +15,12 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.model.ocil_2_0.ArtifactValueType import ArtifactValueType
+from scap.model.ocil_2_0.TextArtifactValueType import TextArtifactValueType
 import logging
 
 logger = logging.getLogger(__name__)
-class ReferenceArtifactValueType(ArtifactValueType):
+class TextArtifactValueElement(TextArtifactValueType):
     MODEL_MAP = {
-        'elements': {
-            '{http://scap.nist.gov/schema/ocil/2.0}reference': {'class': 'ReferenceType'},
-        },
-        'attributes': {
-            'id': {'type': 'ArtifactIDPattern', 'required': True},
-            'persistent': {'type': 'Boolean', 'default': True},
-        }
+        'xml_namespace': 'http://scap.nist.gov/schema/ocil/2.0',
+        'tag_name': 'text_artifact_value',
     }

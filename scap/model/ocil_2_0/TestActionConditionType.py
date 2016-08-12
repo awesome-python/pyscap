@@ -24,6 +24,11 @@ class TestActionConditionType(Model):
         'elements': {
             '{http://scap.nist.gov/schema/ocil/2.0}result': {'class': 'ResultType'},
             '{http://scap.nist.gov/schema/ocil/2.0}test_action_ref': {'class': 'TestActionRefType'},
-            '{http://scap.nist.gov/schema/ocil/2.0}artifact_refs': {'class': 'ArtifactRefsType'},
+            '{http://scap.nist.gov/schema/ocil/2.0}artifact_refs': {
+                'list': 'artifact_refs',
+                'classes': {
+                    '{http://scap.nist.gov/schema/ocil/2.0}artifact_ref': {'class': 'ArtifactRefType'},
+                },
+            },
         },
     }

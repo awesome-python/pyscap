@@ -1,2 +1,3 @@
 Model
 - add min/max vs. required
+- lots & lots of tests

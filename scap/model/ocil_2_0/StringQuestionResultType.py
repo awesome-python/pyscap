@@ -20,14 +20,8 @@ import logging
 
 logger = logging.getLogger(__name__)
 class StringQuestionResultType(QuestionResultType):
-    def __init__(self):
-        super(StringQuestionResultType, self).__init__()
-
-        self.answer = None
-
-    def parse_element(self, sub_el):
-        if sub_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}answer':
-            self.answer = sub_el.text
-        else:
-            return super(StringQuestionResultType, self).parse_element(sub_el)
-        return True
+    MODEL_MAP = {
+        'elements': {
+            '{http://scap.nist.gov/schema/ocil/2.0}answer': {'type': 'String'},
+        },
+    }

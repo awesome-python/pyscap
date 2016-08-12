@@ -20,19 +20,8 @@ import logging
 
 logger = logging.getLogger(__name__)
 class BooleanQuestionResultType(QuestionResultType):
-    def __init__(self):
-        super(BooleanQuestionResultType, self).__init__()
-
-        self.answer = None
-
-        # self.ignore_attributes.extend([
-        # ])
-        # self.ignore_sub_elements.extend([
-        # ])
-
-    def parse_element(self, sub_el):
-        if sub_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}answer':
-            self.answer = self.parse_boolean(sub_el.text)
-        else:
-            return super(BooleanQuestionResultType, self).parse_element(sub_el)
-        return True
+    MODEL_MAP = {
+        'elements': {
+            '{http://scap.nist.gov/schema/ocil/2.0}answer': {'type': 'Boolean'},
+        },
+    }

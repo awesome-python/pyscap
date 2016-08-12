@@ -20,14 +20,8 @@ import logging
 
 logger = logging.getLogger(__name__)
 class ChoiceQuestionResultType(QuestionResultType):
-    def __init__(self):
-        super(ChoiceQuestionResultType, self).__init__()
-
-        self.answer = None
-
-    def parse_element(self, sub_el):
-        if sub_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}answer':
-            self.answer = sub_el.attrib['choice_ref']
-        else:
-            return super(ChoiceQuestionResultType, self).parse_element(sub_el)
-        return True
+    MODEL_MAP = {
+        'elements': {
+            '{http://scap.nist.gov/schema/ocil/2.0}answer': {'class': 'ChoiceAnswerType'},
+        },
+    }

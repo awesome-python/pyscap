@@ -20,4 +20,8 @@ import logging
 
 logger = logging.getLogger(__name__)
 class BinaryArtifactValueType(EmbeddedArtifactValueType):
-    pass
+    MODEL_MAP = {
+        'elements': {
+            '{http://scap.nist.gov/schema/ocil/2.0}data': {'type': 'Base64Binary'},
+        },
+    }

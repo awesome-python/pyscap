@@ -20,31 +20,13 @@ import logging
 
 logger = logging.getLogger(__name__)
 class ArtifactType(ItemBaseType):
-    def __init__(self):
-        super(ArtifactType, self).__init__()
-
-        self.persistent = True
-
-        self.title = None
-        self.description = None
-
-        # self.ignore_attributes.extend([
-        # ])
-        # self.ignore_sub_elements.extend([
-        # ])
-
-    def parse_attribute(self, name, value):
-        if name == 'persistent':
-            self.persistent = self.parse_boolean(value)
-        else:
-            return super(ArtifactType, self).parse_attribute(name, value)
-        return True
-
-    def parse_element(self, sub_el):
-        if sub_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}title':
-            self.title = sub_el.text
-        elif sub_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}description':
-            self.description = sub_el.text
-        else:
-            return super(ArtifactType, self).parse_element(sub_el)
-        return True
+    MODEL_MAP = {
+        'elements': {
+            '{http://scap.nist.gov/schema/ocil/2.0}title': {'class': 'TextType'},
+            '{http://scap.nist.gov/schema/ocil/2.0}description': {'class': 'TextType'},
+        },
+        'attributes': {
+            'id': {'type': 'ArtifactIDPattern', 'required': True},
+            'persistent': {'type': 'Boolean', 'default': True},
+        }
+    }

@@ -20,4 +20,6 @@ import logging
 
 logger = logging.getLogger(__name__)
 class ArtifactValueType(Model):
-    pass
+    MODEL_MAP = {
+        # abstract
+    }

@@ -20,4 +20,8 @@ import logging
 
 logger = logging.getLogger(__name__)
 class EmbeddedArtifactValueType(ArtifactValueType):
-    pass
+    MODEL_MAP = {
+        'attributes': {
+            'mime_type': {'type': 'String', 'required': True},
+        }
+    }

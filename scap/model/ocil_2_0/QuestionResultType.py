@@ -20,17 +20,9 @@ import logging
 
 logger = logging.getLogger(__name__)
 class QuestionResultType(Model):
-    def __init__(self):
-        super(QuestionResultType, self).__init__()
-
-        self.question_ref = None
-        self.response = None    # UserResponseEnumeration
-
-    def parse_attribute(self, name, value):
-        if name == 'question_ref':
-            self.test_action_ref = value
-        elif name == 'response':
-            self.response = value
-        else:
-            return super(QuestionResultType, self).parse_attribute(name, value)
-        return True
+    MODEL_MAP = {
+        'attributes': {
+            'question_ref': {'type': 'QuestionIDPattern', 'required': True},
+            'response': {'enum': ['UNKNOWN', 'ERROR', 'NOT_TESTED', 'NOT_APPLICABLE', 'ANSWERED'], 'default': 'ANSWERED'},
+        }
+    }

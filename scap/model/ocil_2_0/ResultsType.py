@@ -22,75 +22,44 @@ logger = logging.getLogger(__name__)
 class ResultsType(Model):
     MODEL_MAP = {
         'elements': {
-            '{http://scap.nist.gov/schema/ocil/2.0}questionnaire_result': {'class': 'QuestionnaireResultType'},
-            '{http://scap.nist.gov/schema/ocil/2.0}test_action_result': {'class': 'TestActionResultType'},
-
-            '{http://scap.nist.gov/schema/ocil/2.0}boolean_question_result': {'class': 'BooleanQuestionResultType'},
-            '{http://scap.nist.gov/schema/ocil/2.0}choice_question_result': {'class': 'ChoiceQuestionResultType'},
-            '{http://scap.nist.gov/schema/ocil/2.0}numeric_question_result': {'class': 'NumericQuestionResultType'},
-            '{http://scap.nist.gov/schema/ocil/2.0}string_question_result': {'class': 'StringQuestionResultType'},
-
-            '{http://scap.nist.gov/schema/ocil/2.0}artifact_result': {'class': 'ArtifactResultType'},
-
-            '{http://scap.nist.gov/schema/ocil/2.0}user': {'class': 'UserType'},
-            '{http://scap.nist.gov/schema/ocil/2.0}system': {'class': 'SystemTargetType'},
-            '{http://scap.nist.gov/schema/ocil/2.0}system': {'class': 'SystemTargetType'},
+            '{http://scap.nist.gov/schema/ocil/2.0}title': {'class': 'TextType'},
+            '{http://scap.nist.gov/schema/ocil/2.0}questionnaire_results': {
+                'list': 'questionnaire_results',
+                'classes': {
+                    '{http://scap.nist.gov/schema/ocil/2.0}questionnaire_result': {'class': 'QuestionnaireResultType'},
+                },
+            },
+            '{http://scap.nist.gov/schema/ocil/2.0}test_action_results': {
+                'list': 'test_action_results',
+                'classes': {
+                    '{http://scap.nist.gov/schema/ocil/2.0}test_action_result': {'class': 'TestActionResultType'},
+                },
+            },
+            '{http://scap.nist.gov/schema/ocil/2.0}question_results': {
+                'list': 'question_results',
+                'classes': {
+                    '{http://scap.nist.gov/schema/ocil/2.0}boolean_question_result': {'class': 'BooleanQuestionResultType'},
+                    '{http://scap.nist.gov/schema/ocil/2.0}choice_question_result': {'class': 'ChoiceQuestionResultType'},
+                    '{http://scap.nist.gov/schema/ocil/2.0}numeric_question_result': {'class': 'NumericQuestionResultType'},
+                    '{http://scap.nist.gov/schema/ocil/2.0}string_question_result': {'class': 'StringQuestionResultType'},
+                },
+            },
+            '{http://scap.nist.gov/schema/ocil/2.0}artifact_results': {
+                'list': 'artifact_results',
+                'classes': {
+                    '{http://scap.nist.gov/schema/ocil/2.0}artifact_result': {'class': 'ArtifactResultType'},
+                },
+            },
+            '{http://scap.nist.gov/schema/ocil/2.0}targets': {
+                'list': 'targets',
+                'classes': {
+                    '{http://scap.nist.gov/schema/ocil/2.0}user': {'class': 'UserType'},
+                    '{http://scap.nist.gov/schema/ocil/2.0}system': {'class': 'SystemTargetType'},
+                },
+            },
+        },
+        'attributes': {
+            'start_time': {'type': 'DateTime'},
+            'end_time': {'type': 'DateTime'},
         }
     }
-    def __init__(self):
-        super(ResultsType, self).__init__()
-
-        self.start_time = None
-        self.end_time = None
-
-        self.title = None
-        self.questionnaire_results = []
-        self.test_action_results = []
-        self.question_results = []
-        self.artifact_results = []
-        self.targets = []
-
-    def parse_attribute(self, name, value):
-        if name == 'start_time':
-            self.start_time = value
-        elif name == 'end_time':
-            self.end_time = value
-        else:
-            return super(ResultsType, self).parse_attribute(name, value)
-        return True
-
-    def parse_element(self, sub_el):
-        if sub_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}title':
-            self.title = sub_el.text
-        elif sub_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}questionnaire_results':
-            for sub_sub_el in sub_el:
-                self.questionnaire_results[sub_sub_el.attrib['id']] = Model.load(self, sub_sub_el)
-        elif sub_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}test_action_results':
-            for sub_sub_el in sub_el:
-                self.test_action_results[sub_sub_el.attrib['id']] = Model.load(self, sub_sub_el)
-        elif sub_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}question_results':
-            for sub_sub_el in sub_el:
-                self.question_results[sub_sub_el.attrib['id']] = Model.load(self, sub_sub_el)
-        elif sub_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}artifact_results':
-            for sub_sub_el in sub_el:
-                self.artifact_results[sub_sub_el.attrib['id']] = Model.load(self, sub_sub_el)
-        elif sub_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}targets':
-            for sub_sub_el in sub_el:
-                self.targets[sub_sub_el.attrib['id']] = Model.load(self, sub_sub_el)
-        else:
-            return super(ResultsType, self).parse_element(sub_el)
-        return True
-
-    # def get_attributes(self):
-    #     attribs = super(Model, self).get_attributes()
-    #
-    #     ###
-    #
-    #     return attribs
-
-    # def get_sub_elements(self):
-    #     sub_els = super(Model, self).get_sub_elements()
-    #
-    #     ###
-    #
-    #     return sub_els

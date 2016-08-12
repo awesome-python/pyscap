@@ -20,17 +20,9 @@ import logging
 
 logger = logging.getLogger(__name__)
 class ArtifactRefType(Model):
-    def __init__(self):
-        super(ArtifactRefType, self).__init__()
-
-        self.idref = True
-        self.persistent = True
-
-    def parse_attribute(self, name, value):
-        if name == 'idref':
-            self.idref = value
-        elif name == 'persistent':
-            self.persistent = self.parse_boolean(value)
-        else:
-            return super(ArtifactRefType, self).parse_attribute(name, value)
-        return True
+    MODEL_MAP = {
+        'attributes': {
+            'idref': {'type': 'ArtifactIDPattern',},
+            'required': {'type': 'Boolean', 'default': False},
+        }
+    }
