@@ -20,5 +20,12 @@ import logging
 
 logger = logging.getLogger(__name__)
 class GeneratorType(Model):
-    def __init__(self):
-        super(GeneratorType, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-common-5}generator
+    MODEL_MAP = {
+        'elements': {
+            '{http://oval.mitre.org/XMLSchema/oval-common-5}product_name': {'type': 'String'},
+            '{http://oval.mitre.org/XMLSchema/oval-common-5}product_version': {'type': 'String'},
+            '{http://oval.mitre.org/XMLSchema/oval-common-5}schema_version': {'class': 'SchemaVersionType'},
+            '{http://oval.mitre.org/XMLSchema/oval-common-5}timestamp': {'type': 'DateTime'},
+            '*': {'ignore': True},
+        }
+    }

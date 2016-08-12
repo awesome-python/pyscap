@@ -20,5 +20,10 @@ import logging
 
 logger = logging.getLogger(__name__)
 class DeprecatedInfoType(Model):
-    def __init__(self):
-        super(DeprecatedInfoType, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-common-5}deprecated_info
+    MODEL_MAP = {
+        'elements': {
+            '{http://oval.mitre.org/XMLSchema/oval-common-5}version': {'type': 'SchemaVersionPattern'},
+            '{http://oval.mitre.org/XMLSchema/oval-common-5}reason': {'type': 'String'},
+            '{http://oval.mitre.org/XMLSchema/oval-common-5}comment': {'type': 'String'},
+        }
+    }

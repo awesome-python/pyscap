@@ -15,10 +15,13 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.Model import Model
+from scap.model.oval_common_5.SchemaVersionPattern import SchemaVersionPattern
 import logging
 
 logger = logging.getLogger(__name__)
-class SchemaVersionType(Model):
-    def __init__(self):
-        super(SchemaVersionType, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-common-5}schema-version
+class SchemaVersionType(SchemaVersionPattern):
+    MODEL_MAP = {
+        'attributes': {
+            'platform': {'type': 'AnyURI'},
+        }
+    }

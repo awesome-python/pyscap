@@ -15,10 +15,14 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.Model import Model
+from scap.model.xs.String import String
+from scap.model.oval_common_5.MessageLevelEnumeration import MESSAGE_LEVEL_ENUMERATION
 import logging
 
 logger = logging.getLogger(__name__)
-class MessageType(Model):
-    def __init__(self):
-        super(MessageType, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-common-5}schema-version
+class MessageType(String):
+    MODEL_MAP = {
+        'attributes': {
+            'level': {'enum': MESSAGE_LEVEL_ENUMERATION, 'default': 'info'},
+        }
+    }

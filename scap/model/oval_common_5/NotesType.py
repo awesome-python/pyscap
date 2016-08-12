@@ -20,9 +20,8 @@ import logging
 
 logger = logging.getLogger(__name__)
 class NotesType(Model):
-    def __init__(self):
-        super(NotesType, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-common-5}notes
-
-        self.ignore_sub_elements.extend([
-            '{http://oval.mitre.org/XMLSchema/oval-common-5}note',
-        ])
+    MODEL_MAP = {
+        'elements': {
+            '{http://oval.mitre.org/XMLSchema/oval-common-5}note': {'append': 'notes', 'type': 'String'},
+        }
+    }

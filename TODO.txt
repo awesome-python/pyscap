@@ -1,3 +1,4 @@
 Model
 - add min/max vs. required
 - lots & lots of tests
+- flesh out xs simple types

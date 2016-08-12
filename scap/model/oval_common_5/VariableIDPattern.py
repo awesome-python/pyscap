@@ -15,8 +15,10 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-TAG_MAP = {
-    '{http://oval.mitre.org/XMLSchema/oval-common-5}deprecated_info': {'class': 'DeprecatedInfoElement'},
-    '{http://oval.mitre.org/XMLSchema/oval-common-5}element_mapping': {'class': 'ElementMappingElement'},
-    '{http://oval.mitre.org/XMLSchema/oval-common-5}notes': {'class': 'NotesElement'},
-}
+from scap.model.xs.String import String
+import logging
+
+logger = logging.getLogger(__name__)
+class VariableIDPattern(String):
+    # <xsd:pattern value="oval:[A-Za-z0-9_\-\.]+:var:[1-9][0-9]*"/>
+    pass

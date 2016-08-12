@@ -15,8 +15,9 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-TAG_MAP = {
-    '{http://oval.mitre.org/XMLSchema/oval-common-5}deprecated_info': {'class': 'DeprecatedInfoElement'},
-    '{http://oval.mitre.org/XMLSchema/oval-common-5}element_mapping': {'class': 'ElementMappingElement'},
-    '{http://oval.mitre.org/XMLSchema/oval-common-5}notes': {'class': 'NotesElement'},
-}
+from scap.model.xs.Integer import Integer
+import logging
+
+logger = logging.getLogger(__name__)
+class ItemIDPattern(Integer):
+    pass
