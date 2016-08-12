@@ -15,6 +15,12 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-TAG_MAP = {
-    '{http://oval.mitre.org/XMLSchema/oval-definitions-5}oval_definitions': {'class': 'OVALDefintionsElement'},
-}
+from scap.model.oval_defs_5.DefinitionType import DefinitionType
+import logging
+
+logger = logging.getLogger(__name__)
+class DefinitionElement(DefinitionType):
+    MODEL_MAP = {
+        'xml_schema': 'http://oval.mitre.org/XMLSchema/oval-definitions-5',
+        'tag_name' : 'definition',
+    }

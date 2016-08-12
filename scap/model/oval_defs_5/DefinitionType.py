@@ -16,48 +16,22 @@
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
 from scap.Model import Model
+from scap.oval_common_5.ClassEnumeration import CLASS_ENUMERATION
 import logging
 
 logger = logging.getLogger(__name__)
 class DefinitionType(Model):
-    'elements': {
-        '{http://oval.mitre.org/XMLSchema/oval-definitions-5}criteria': {
-            'class': 'CriteriaType',
-            'minCount': 1,
+    MODEL_MAP = {
+        'elements': {
+            '{http://www.w3.org/2000/09/xmldsig#}Signature': {'ignore': True},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}metadata': {'class': 'MetadataType'},
+            '{http://oval.mitre.org/XMLSchema/oval-common-5}notes': {'class': 'NotesType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}criteria': {'class': 'CriteriaType'},
         },
+        'attributes': {
+            'id': {'type': 'DefinitionIDPattern', 'required': True},
+            'version': {'type': 'NonNegativeInteger', 'required': True},
+            'class': {'enum': CLASS_ENUMERATION, 'required': True},
+            'deprecated': {'type': 'Boolean', 'default': False},
+        }
     }
-
-    def __init__(self):
-        super(DefinitionType, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5}definition
-
-        self.criteria = None
-
-        self.ignore_attributes.extend([
-            'version',
-            'class',
-        ])
-        self.required_attributes.extend([
-            'id',
-            'version',
-            'class',
-        ])
-        self.ignore_sub_elements.extend([
-            '{http://www.w3.org/2000/09/xmldsig#}Signature',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}metadata',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}notes',
-        ])
-        self.required_sub_elements.append('{http://oval.mitre.org/XMLSchema/oval-definitions-5}criteria')
-
-    def parse_attribute(self, name, value):
-        if name == 'deprecated':
-            logger.warning('Using deprecated definition ' + self.id)
-        else:
-            return super(DefinitionType, self).parse_attribute(name, value)
-        return True
-
-    def parse_element(self, sub_el):
-        if sub_el.tag == '{http://oval.mitre.org/XMLSchema/oval-definitions-5}criteria':
-            self.criteria = Model.load(self, sub_el)
-        else:
-            return super(DefinitionType, self).parse_element(sub_el)
-        return True

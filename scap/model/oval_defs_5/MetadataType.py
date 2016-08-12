@@ -15,6 +15,17 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-TAG_MAP = {
-    '{http://oval.mitre.org/XMLSchema/oval-definitions-5}oval_definitions': {'class': 'OVALDefintionsElement'},
-}
+from scap.Model import Model
+import logging
+
+logger = logging.getLogger(__name__)
+class MetadataType(Model):
+    MODEL_MAP = {
+        'elements': {
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}title': {'type': 'String'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}affected': {'append': 'affecteds', 'class': 'AffectedType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}reference': {'append': 'references', 'class': 'ReferenceType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}description': {'type': 'String'},
+            '*': {'ignore': True},
+        },
+    }

@@ -20,36 +20,13 @@ import logging
 
 logger = logging.getLogger(__name__)
 class CriteriaType(Model):
-    'elements': {
-        '{http://oval.mitre.org/XMLSchema/oval-definitions-5}criteria': {'class': 'CriteriaType'},
-        '{http://oval.mitre.org/XMLSchema/oval-definitions-5}criterion': {'class': 'CriterionType'},
-        '{http://oval.mitre.org/XMLSchema/oval-definitions-5}extend_definition': {'class': 'ExtendDefinitionType'},
+    MODEL_MAP = {
+        'elements': {
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}criteria': {'append': 'criteria', 'class': 'CriteriaType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}criterion': {'append': 'criteria', 'class': 'CriterionType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}extend_definition': {'append': 'criteria', 'class': 'ExtendDefinitionType'},
+        },
+        'attributes': {
+            'applicability_check': {'type': 'Boolean'},
+        }
     }
-
-    def __init__(self):
-        super(CriteriaType, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5}criteria
-
-        self.operator = 'AND'
-        self.negate = False
-        self.applicability_check = False
-        self.criteria = []
-
-    def parse_attribute(self, name, value):
-        if name == 'operator':
-            self.operator = value
-        elif name == 'negate':
-            self.negate = self.parse_boolean(value)
-        elif name == 'applicability_check':
-            self.applicability_check = self.parse_boolean(value)
-        else:
-            return super(CriteriaType, self).parse_attribute(name, value)
-        return True
-
-    def parse_element(self, sub_el):
-        if sub_el.tag == '{http://oval.mitre.org/XMLSchema/oval-definitions-5}criteria' \
-            or sub_el.tag == '{http://oval.mitre.org/XMLSchema/oval-definitions-5}criterion' \
-            or sub_el.tag == '{http://oval.mitre.org/XMLSchema/oval-definitions-5}extend_definition':
-            self.criteria.append(Model.load(self, sub_el))
-        else:
-            return super(CriteriaType, self).parse_element(sub_el)
-        return True

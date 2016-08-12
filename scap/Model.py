@@ -291,14 +291,20 @@ class Model(object):
 
     def _parse_value_as_type(self, value, type_):
         import importlib
-        try:
-            mod = importlib.import_module('scap.model.xs.' + type_)
-        except ImportError:
-            model_namespace = self.get_model_namespace()
+        if '.' in type_:
             try:
-                mod = importlib.import_module('scap.model.' + model_namespace + '.' + type_)
+                mod = importlib.import_module('scap.model.' + type_)
             except ImportError:
-                raise NotImplementedError('Type value ' + type_ + ' not defined in scap.model.xs or local namespace (scap.model.' + model_namespace + ')')
+                raise NotImplementedError('Type value scap.model.' + type_ + ' was not found')
+        else:
+            try:
+                mod = importlib.import_module('scap.model.xs.' + type_)
+            except ImportError:
+                model_namespace = self.get_model_namespace()
+                try:
+                    mod = importlib.import_module('scap.model.' + model_namespace + '.' + type_)
+                except ImportError:
+                    raise NotImplementedError('Type value ' + type_ + ' not defined in scap.model.xs or local namespace (scap.model.' + model_namespace + ')')
         class_ = getattr(mod, type_)
         return class_().parse_value(value)
 
