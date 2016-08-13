@@ -20,28 +20,14 @@ import logging
 
 logger = logging.getLogger(__name__)
 class CriterionType(Model):
-    def __init__(self):
-        super(CriterionType, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5}criterion
-
-        self.negate = False
-        self.applicability_check = False
-        self.test_ref = None
-
-        self.ignore_attributes.extend([
-            'comment',
-        ])
-        self.required_attributes.append('test_ref')
-
-    def parse_attribute(self, name, value):
-        if name == 'negate':
-            self.negate = self.parse_boolean(value)
-        elif name == 'applicability_check':
-            self.applicability_check = self.parse_boolean(value)
-        elif name == 'test_ref':
-            self.test_ref = value
-        else:
-            return super(CriterionType, self).parse_attribute(name, value)
-        return True
+    MODEL_MAP = {
+        'attributes': {
+            'applicability_check': {'type': 'Boolean'},
+            'test_ref': {'type': 'TestIDPattern', 'required': True},
+            'negate': {'type': 'Boolean', 'default': False},
+            'comment': {'type': 'oval_common_5.NonEmptyStringType'},
+        }
+    }
 
     def resolve(self):
         return self.resolve_reference(self.test_ref)

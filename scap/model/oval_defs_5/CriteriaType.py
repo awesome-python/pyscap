@@ -16,6 +16,7 @@
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
 from scap.Model import Model
+from scap.model.oval_defs_5.OperatorEnumeration import OPERATOR_ENUMERATION
 import logging
 
 logger = logging.getLogger(__name__)
@@ -28,5 +29,8 @@ class CriteriaType(Model):
         },
         'attributes': {
             'applicability_check': {'type': 'Boolean'},
+            'operator': {'enum': OPERATOR_ENUMERATION, 'default': 'AND'},
+            'negate': {'type': 'Boolean', 'default': False},
+            'comment': {'type': 'oval_common_5.NonEmptyStringType'},
         }
     }

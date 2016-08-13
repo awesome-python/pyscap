@@ -20,28 +20,14 @@ import logging
 
 logger = logging.getLogger(__name__)
 class ExtendDefinitionType(Model):
-    def __init__(self):
-        super(ExtendDefinitionType, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5}extend_definition
-
-        self.applicability_check = False
-        self.definition_ref = None
-        self.negate = False
-
-        self.ignore_attributes.extend([
-            'comment',
-        ])
-        self.required_attributes.append('definition_ref')
-
-    def parse_attribute(self, name, value):
-        if name == 'applicability_check':
-            self.applicability_check = self.parse_boolean(value)
-        elif name == 'definition_ref':
-            self.definition_ref = value
-        elif name == 'negate':
-            self.negate = self.parse_boolean(value)
-        else:
-            return super(ExtendDefinitionType, self).parse_attribute(name, value)
-        return True
+    MODEL_MAP = {
+        'attributes': {
+            'applicability_check': {'type': 'Boolean'},
+            'definition_ref': {'type': 'DefinitionIDPattern', 'required': True},
+            'negate': {'type': 'Boolean', 'default': False},
+            'comment': {'type': 'oval_common_5.NonEmptyStringType'},
+        }
+    }
 
     def resolve(self):
         return self.resolve_reference(self.definition_ref)
