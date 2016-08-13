@@ -26,35 +26,11 @@ class OVALDefintionsType(Model):
         'elements': {
             '{http://oval.mitre.org/XMLSchema/oval-common-5}generator': {'class': 'GeneratorType'},
 
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}definitions': {
-                'dictionary': 'definitions',
-                'classes': {
-                    '{http://oval.mitre.org/XMLSchema/oval-definitions-5}definition': 'DefinitionElement',
-                },
-            },
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}tests': {
-                'dictionary': 'tests',
-                'classes': {
-                },
-            },
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}objects': {
-                'dictionary': 'objects',
-                'classes': {
-                },
-            },
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}states': {
-                'dictionary': 'states',
-                'classes': {
-                },
-            },
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}variables': {
-                'dictionary': 'variables',
-                'classes': {
-                    '{http://oval.mitre.org/XMLSchema/oval-definitions-5}external_variable': {'class': 'ExternalVariableType'},
-                    '{http://oval.mitre.org/XMLSchema/oval-definitions-5}constant_variable': {'class': 'ConstantVariableType'},
-                    '{http://oval.mitre.org/XMLSchema/oval-definitions-5}local_variable': {'class': 'LocalVariableType'},
-                },
-            },
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}definitions': {'class': 'DefinitionsType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}tests': {'class': 'TestsType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}objects': {'class': 'ObjectsType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}states': {'class': 'StatesType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}variables': {'class': 'VariablesType'},
             '{http://www.w3.org/2000/09/xmldsig#}Signature': {'ignore': True},
         }
     }

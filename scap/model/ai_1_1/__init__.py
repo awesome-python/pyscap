@@ -16,6 +16,6 @@
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
 TAG_MAP = {
-    '{http://scap.nist.gov/schema/asset-identification/1.1}asset-related': {'class': 'AssetIdentificationType'},
-    '{http://scap.nist.gov/schema/asset-identification/1.1}assets': {'class': 'AssetsType'},
+    '{http://scap.nist.gov/schema/asset-identification/1.1}asset-related': {'class': 'AssetRelatedElement'},
+    '{http://scap.nist.gov/schema/asset-identification/1.1}assets': {'class': 'AssetsElement'},
 }

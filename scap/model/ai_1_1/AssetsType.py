@@ -24,18 +24,6 @@ class AssetsType(RelationshipsContainerType):
     # abstract
     MODEL_MAP = {
         'elements': {
-            '{http://scap.nist.gov/schema/asset-identification/1.1}asset': {'dictionary': 'assets'},
-
-            '{http://scap.nist.gov/schema/asset-identification/1.1}circuit': {'class': 'CircuitType'},
-            '{http://scap.nist.gov/schema/asset-identification/1.1}computing-device': {'class': 'ComputingDeviceType'},
-            '{http://scap.nist.gov/schema/asset-identification/1.1}data': {'class': 'DataType'},
-            '{http://scap.nist.gov/schema/asset-identification/1.1}database': {'class': 'DatabaseType'},
-            '{http://scap.nist.gov/schema/asset-identification/1.1}network': {'class': 'NetworkType'},
-            '{http://scap.nist.gov/schema/asset-identification/1.1}organization': {'class': 'OrganizationType'},
-            '{http://scap.nist.gov/schema/asset-identification/1.1}person': {'class': 'PersonType'},
-            '{http://scap.nist.gov/schema/asset-identification/1.1}service': {'class': 'ServiceType'},
-            '{http://scap.nist.gov/schema/asset-identification/1.1}software': {'class': 'SoftwareType'},
-            '{http://scap.nist.gov/schema/asset-identification/1.1}system': {'class': 'SystemType'},
-            '{http://scap.nist.gov/schema/asset-identification/1.1}website': {'class': 'WebsiteType'},
+            '{http://scap.nist.gov/schema/asset-identification/1.1}asset': {'append': 'assets', 'class': 'AssetsAssetElement'},
         }
     }

@@ -95,43 +95,6 @@ class Model(object):
 
         return inst
 
-    @staticmethod
-    def load_item(parent, child_el, classes):
-        xml_namespace, tag_name = Model.parse_tag(child_el.tag)
-
-        if xml_namespace not in NAMESPACES:
-            raise NotImplementedError('Namespace ' + xml_namespace + ' is not supported')
-        model_namespace = NAMESPACES[xml_namespace]
-
-        # try to load the tag's module
-        import sys, importlib
-        if child_el.tag in classes:
-            module_name = classes[child_el.tag]
-        elif '{' + xml_namespace + '}*' in classes:
-            module_name = classes['{' + xml_namespace + '}*']
-        elif '*' in classes:
-            module_name = classes['*']
-        else:
-            raise NotImplementedError('Item tag ' + child_el.tag + ' is not mapped to a class by ' + parent.__class__.__name__)
-
-        if module_name is None:
-            return None
-
-        model_module = 'scap.model.' + model_namespace + '.' + module_name
-        if model_module not in sys.modules:
-            logger.debug('Loading module ' + model_module)
-
-            mod = importlib.import_module(model_module)
-        else:
-            mod = sys.modules[model_module]
-
-        # instantiate an instance of the class & load it
-        class_ = getattr(mod, module_name)
-        inst = class_()
-        inst.from_xml(parent, child_el)
-
-        return inst
-
     def __init__(self):
         self.parent = None
         self.element = None
@@ -221,12 +184,6 @@ class Model(object):
                         # initialze the dict if it doesn't exist
                         if tag_map['map'] not in self.__dict__.keys():
                             setattr(self, tag_map['map'], {})
-                    elif 'dictionary' in tag_map:
-                        dict_name = tag_map['dictionary']
-
-                        # initialze the dict if it doesn't exist
-                        if dict_name not in self.__dict__.keys():
-                            setattr(self, dict_name, {})
 
     def get_tag_name(self):
         if 'tag_name' not in self.model_map:
@@ -390,20 +347,6 @@ class Model(object):
                         else:
                             dic[key] = Model.load(self, el)
                             logger.debug('Mapped ' + str(key) + ' to ' + el.tag + ' in ' + tag_map['map'])
-                elif 'dictionary' in tag_map:
-                    dict_name = tag_map['dictionary']
-                    dic = getattr(self, dict_name)
-                    if 'classes' not in tag_map:
-                        raise NotImplementedError('List tag ' + tag + ' does not define classes')
-                    for sub_el in el:
-                        if 'key' in tag_map:
-                            key = sub_el.attrib[tag_map['key']]
-                        # TODO: implement keyElement as well
-                        else:
-                            key = sub_el.attrib['id']
-                        item = Model.load_item(self, sub_el, tag_map['classes'])
-                        if item is not None:
-                            dic[key] = item
                 elif 'class' in tag_map:
                     if 'in' in tag_map:
                         name = tag_map['in']
@@ -502,13 +445,6 @@ class Model(object):
                 else:
                     el.text = v
                 sub_els.append(el)
-        elif 'dictionary' in tag_map:
-            dict_name = tag_map['dictionary']
-            dic = getattr(self, dict_name)
-            el = ET.Element(tag)
-            for k,v in dic.items():
-                el.append(v.to_xml())
-            sub_els.append(el)
         elif 'class' in tag_map:
             if 'in' in tag_map:
                 name = tag_map['in']

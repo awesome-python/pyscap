@@ -30,12 +30,10 @@ class DataStreamType(Model):
             'timestamp': {'required': True, 'ignore': True, 'type': 'DateTime'},
         },
         'elements': {
-            '{http://scap.nist.gov/schema/scap/source/1.2}dictionaries': { 'dictionary': 'dictionaries' },
-            '{http://scap.nist.gov/schema/scap/source/1.2}checklists': { 'dictionary': 'checklists' },
-            '{http://scap.nist.gov/schema/scap/source/1.2}checks': { 'dictionary': 'checks' },
+            '{http://scap.nist.gov/schema/scap/source/1.2}dictionaries': { 'class': 'RefListType' },
+            '{http://scap.nist.gov/schema/scap/source/1.2}checklists': { 'class': 'RefListType' },
+            '{http://scap.nist.gov/schema/scap/source/1.2}checks': { 'class': 'RefListType' },
             '{http://scap.nist.gov/schema/scap/source/1.2}extended-components': {'ignore': True},
-
-            '{http://scap.nist.gov/schema/scap/source/1.2}component-ref': {'class': 'ComponentRefType'},
         },
     }
     def __init__(self):
