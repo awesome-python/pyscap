@@ -17,13 +17,15 @@
 
 from scap.Model import Model
 import logging
+import xml.etree.ElementTree as ET
 
 logger = logging.getLogger(__name__)
-class TestActionConditionType(Model):
+class AddressLinesType(Model):
     MODEL_MAP = {
+        'xml_namespace': 'urn:oasis:names:tc:ciq:xsdschema:xAL:2.0',
+        'tag_name': 'AddressLines',
         'elements': {
-            '{http://scap.nist.gov/schema/ocil/2.0}result': {'class': 'ResultType'},
-            '{http://scap.nist.gov/schema/ocil/2.0}test_action_ref': {'class': 'TestActionRefType'},
-            '{http://scap.nist.gov/schema/ocil/2.0}artifact_refs': {'class': 'ArtifactRefsType'},
+            '{urn:oasis:names:tc:ciq:xsdschema:xAL:2.0}AddressLine': {'append': 'address_lines', 'class': 'AddressLineType'},
+            '*': {'ignore': True},
         },
     }

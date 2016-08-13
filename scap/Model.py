@@ -221,12 +221,6 @@ class Model(object):
                         # initialze the dict if it doesn't exist
                         if tag_map['map'] not in self.__dict__.keys():
                             setattr(self, tag_map['map'], {})
-                    elif 'list' in tag_map:
-                        list_name = tag_map['list']
-
-                        # initialze the list if it doesn't exist
-                        if list_name not in self.__dict__.keys():
-                            setattr(self, list_name, [])
                     elif 'dictionary' in tag_map:
                         dict_name = tag_map['dictionary']
 
@@ -396,15 +390,6 @@ class Model(object):
                         else:
                             dic[key] = Model.load(self, el)
                             logger.debug('Mapped ' + str(key) + ' to ' + el.tag + ' in ' + tag_map['map'])
-                elif 'list' in tag_map:
-                    list_name = tag_map['list']
-                    lst = getattr(self, list_name)
-                    if 'classes' not in tag_map:
-                        raise NotImplementedError('List tag ' + tag + ' does not define classes')
-                    for sub_el in el:
-                        item = Model.load_item(self, sub_el, tag_map['classes'])
-                        if item is not None:
-                            lst.append(item)
                 elif 'dictionary' in tag_map:
                     dict_name = tag_map['dictionary']
                     dic = getattr(self, dict_name)
@@ -517,13 +502,6 @@ class Model(object):
                 else:
                     el.text = v
                 sub_els.append(el)
-        elif 'list' in tag_map:
-            list_name = tag_map['list']
-            lst = getattr(self, list_name)
-            el = ET.Element(tag)
-            for i in lst:
-                el.append(i.to_xml())
-            sub_els.append(el)
         elif 'dictionary' in tag_map:
             dict_name = tag_map['dictionary']
             dic = getattr(self, dict_name)

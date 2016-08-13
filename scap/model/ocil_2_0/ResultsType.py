@@ -23,40 +23,11 @@ class ResultsType(Model):
     MODEL_MAP = {
         'elements': {
             '{http://scap.nist.gov/schema/ocil/2.0}title': {'class': 'TextType'},
-            '{http://scap.nist.gov/schema/ocil/2.0}questionnaire_results': {
-                'list': 'questionnaire_results',
-                'classes': {
-                    '{http://scap.nist.gov/schema/ocil/2.0}questionnaire_result': {'class': 'QuestionnaireResultType'},
-                },
-            },
-            '{http://scap.nist.gov/schema/ocil/2.0}test_action_results': {
-                'list': 'test_action_results',
-                'classes': {
-                    '{http://scap.nist.gov/schema/ocil/2.0}test_action_result': {'class': 'TestActionResultType'},
-                },
-            },
-            '{http://scap.nist.gov/schema/ocil/2.0}question_results': {
-                'list': 'question_results',
-                'classes': {
-                    '{http://scap.nist.gov/schema/ocil/2.0}boolean_question_result': {'class': 'BooleanQuestionResultType'},
-                    '{http://scap.nist.gov/schema/ocil/2.0}choice_question_result': {'class': 'ChoiceQuestionResultType'},
-                    '{http://scap.nist.gov/schema/ocil/2.0}numeric_question_result': {'class': 'NumericQuestionResultType'},
-                    '{http://scap.nist.gov/schema/ocil/2.0}string_question_result': {'class': 'StringQuestionResultType'},
-                },
-            },
-            '{http://scap.nist.gov/schema/ocil/2.0}artifact_results': {
-                'list': 'artifact_results',
-                'classes': {
-                    '{http://scap.nist.gov/schema/ocil/2.0}artifact_result': {'class': 'ArtifactResultType'},
-                },
-            },
-            '{http://scap.nist.gov/schema/ocil/2.0}targets': {
-                'list': 'targets',
-                'classes': {
-                    '{http://scap.nist.gov/schema/ocil/2.0}user': {'class': 'UserType'},
-                    '{http://scap.nist.gov/schema/ocil/2.0}system': {'class': 'SystemTargetType'},
-                },
-            },
+            '{http://scap.nist.gov/schema/ocil/2.0}questionnaire_results': {'class': 'QuestionnaireResultsType'},
+            '{http://scap.nist.gov/schema/ocil/2.0}test_action_results': {'class': 'TestActionResultsType'},
+            '{http://scap.nist.gov/schema/ocil/2.0}question_results': {'class': 'QuestionResultsType'},
+            '{http://scap.nist.gov/schema/ocil/2.0}artifact_results': {'class': 'ArtifactResultsType'},
+            '{http://scap.nist.gov/schema/ocil/2.0}targets': {'class': 'TargetsType'},
         },
         'attributes': {
             'start_time': {'type': 'DateTime'},

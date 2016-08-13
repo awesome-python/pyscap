@@ -19,11 +19,13 @@ from scap.Model import Model
 import logging
 
 logger = logging.getLogger(__name__)
-class TestActionConditionType(Model):
+class QuestionsType(Model):
     MODEL_MAP = {
         'elements': {
-            '{http://scap.nist.gov/schema/ocil/2.0}result': {'class': 'ResultType'},
-            '{http://scap.nist.gov/schema/ocil/2.0}test_action_ref': {'class': 'TestActionRefType'},
-            '{http://scap.nist.gov/schema/ocil/2.0}artifact_refs': {'class': 'ArtifactRefsType'},
-        },
+            '{http://scap.nist.gov/schema/ocil/2.0}boolean_question': {'append': 'questions', 'class': 'BooleanQuestionElement'},
+            '{http://scap.nist.gov/schema/ocil/2.0}choice_question': {'append': 'questions', 'class': 'ChoiceQuestionElement'},
+            '{http://scap.nist.gov/schema/ocil/2.0}numeric_question': {'append': 'questions', 'class': 'NumericQuestionElement'},
+            '{http://scap.nist.gov/schema/ocil/2.0}string_question': {'append': 'questions', 'class': 'StringQuestionElement'},
+            '{http://scap.nist.gov/schema/ocil/2.0}choice_group': {'append': 'questions', 'class': 'ChoiceGroupType'},
+        }
     }

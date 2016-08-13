@@ -29,14 +29,7 @@ class AssetType(Model):
         },
         'elements': {
             '{http://scap.nist.gov/schema/asset-identification/1.1}synthetic-id': {'class': 'SyntheticIDType', 'append': 'synthetic_ids'},
-            '{http://scap.nist.gov/schema/asset-identification/1.1}locations': {
-                'list': 'locations',
-                'classes': {
-                    '{http://scap.nist.gov/schema/asset-identification/1.1}location-address': 'LocationAddressType',
-                    '{http://scap.nist.gov/schema/asset-identification/1.1}location-point': 'LocationPointType',
-                    '{http://scap.nist.gov/schema/asset-identification/1.1}location-region': 'LocationRegionType',
-                }
-            },
+            '{http://scap.nist.gov/schema/asset-identification/1.1}locations': {'class': 'LocationsType'},
             '{http://scap.nist.gov/schema/asset-identification/1.1}extended-information': {'class': 'ExtendedInformationType'},
             '*': {'ignore': True},
         }

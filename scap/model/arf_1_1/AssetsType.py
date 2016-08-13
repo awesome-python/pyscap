@@ -16,14 +16,15 @@
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
 from scap.Model import Model
+import xml.etree.ElementTree as ET
 import logging
 
 logger = logging.getLogger(__name__)
-class TestActionConditionType(Model):
+class AssetsType(Model):
     MODEL_MAP = {
+        'xml_namespace': 'http://scap.nist.gov/schema/asset-reporting-format/1.1',
+        'tag_name': 'assets',
         'elements': {
-            '{http://scap.nist.gov/schema/ocil/2.0}result': {'class': 'ResultType'},
-            '{http://scap.nist.gov/schema/ocil/2.0}test_action_ref': {'class': 'TestActionRefType'},
-            '{http://scap.nist.gov/schema/ocil/2.0}artifact_refs': {'class': 'ArtifactRefsType'},
+            '{http://scap.nist.gov/schema/asset-reporting-format/1.1}asset': {'append': 'assets', 'class': 'AssetElement'},
         },
     }

@@ -19,11 +19,9 @@ from scap.Model import Model
 import logging
 
 logger = logging.getLogger(__name__)
-class TestActionConditionType(Model):
+class TestActionResultsType(Model):
     MODEL_MAP = {
         'elements': {
-            '{http://scap.nist.gov/schema/ocil/2.0}result': {'class': 'ResultType'},
-            '{http://scap.nist.gov/schema/ocil/2.0}test_action_ref': {'class': 'TestActionRefType'},
-            '{http://scap.nist.gov/schema/ocil/2.0}artifact_refs': {'class': 'ArtifactRefsType'},
-        },
+            '{http://scap.nist.gov/schema/ocil/2.0}test_action_result': {'append': 'test_action_results', 'class': 'TestActionResultType'},
+        }
     }

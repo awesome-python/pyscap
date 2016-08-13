@@ -25,12 +25,7 @@ class CompoundTestActionType(ItemBaseType):
         'elements': {
             '{http://scap.nist.gov/schema/ocil/2.0}title': {'class': 'TextType'},
             '{http://scap.nist.gov/schema/ocil/2.0}description': {'class': 'TextType'},
-            '{http://scap.nist.gov/schema/ocil/2.0}references': {
-                'list': 'references',
-                'classes': {
-                    '{http://scap.nist.gov/schema/ocil/2.0}reference': 'ReferenceType',
-                }
-            },
+            '{http://scap.nist.gov/schema/ocil/2.0}references': {'class': 'ReferencesType'},
             '{http://scap.nist.gov/schema/ocil/2.0}actions': {'class': 'OperationType'},
         },
         'attributes': {

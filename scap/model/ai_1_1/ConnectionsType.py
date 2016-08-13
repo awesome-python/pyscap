@@ -15,22 +15,16 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.model.ai_1_1.ITAssetType import ITAssetType
+from scap.Model import Model
 import logging
 import xml.etree.ElementTree as ET
 
 logger = logging.getLogger(__name__)
-class ComputingDeviceType(ITAssetType):
+class ConnectionsType(Model):
     MODEL_MAP = {
         'xml_namespace': 'http://scap.nist.gov/schema/asset-identification/1.1',
-        'tag_name': 'computing-device',
+        'tag_name': 'connections',
         'elements': {
-            '{http://scap.nist.gov/schema/asset-identification/1.1}distinguished-name': {'class': 'DistinguishedNameType'},
-            '{http://scap.nist.gov/schema/asset-identification/1.1}cpe': {'append': 'cpes', 'class': 'CPEType'},
-            '{http://scap.nist.gov/schema/asset-identification/1.1}connections': {'class': 'ConnectionsType'},
-            '{http://scap.nist.gov/schema/asset-identification/1.1}fqdn': {'class': 'FQDNType'},
-            '{http://scap.nist.gov/schema/asset-identification/1.1}hostname': {'class': 'ComputingDeviceHostnameType'},
-            '{http://scap.nist.gov/schema/asset-identification/1.1}motherboard-guid': {'class': 'MotherboardGUIDType'},
+            '{http://scap.nist.gov/schema/asset-identification/1.1}connection': {'append': 'connections', 'class': 'NetworkInterfaceType'},
         },
     }
-    #TODO: cpes as fs_string

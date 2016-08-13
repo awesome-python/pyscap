@@ -17,13 +17,14 @@
 
 from scap.Model import Model
 import logging
+import xml.etree.ElementTree as ET
 
 logger = logging.getLogger(__name__)
-class TestActionConditionType(Model):
+class RelationshipsType(Model):
+    # abstract
     MODEL_MAP = {
+        'xml_namespace': 'http://scap.nist.gov/schema/reporting-core/1.1',
         'elements': {
-            '{http://scap.nist.gov/schema/ocil/2.0}result': {'class': 'ResultType'},
-            '{http://scap.nist.gov/schema/ocil/2.0}test_action_ref': {'class': 'TestActionRefType'},
-            '{http://scap.nist.gov/schema/ocil/2.0}artifact_refs': {'class': 'ArtifactRefsType'},
+            '{http://scap.nist.gov/schema/reporting-core/1.1}relationship': {'append': 'relationships', 'class': 'RelationshipType'},
         },
     }

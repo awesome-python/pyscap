@@ -25,30 +25,10 @@ class AssetReportCollectionElement(RelationshipsContainerType):
         'xml_namespace': 'http://scap.nist.gov/schema/asset-reporting-format/1.1',
         'tag_name': 'asset-report-collection',
         'elements': {
-            '{http://scap.nist.gov/schema/asset-reporting-format/1.1}report-requests': {
-                'list': 'report_requests',
-                'classes': {
-                    '{http://scap.nist.gov/schema/asset-reporting-format/1.1}report-request': 'ReportRequestType',
-                }
-            },
-            '{http://scap.nist.gov/schema/asset-reporting-format/1.1}assets': {
-                'list': 'assets',
-                'classes': {
-                    '{http://scap.nist.gov/schema/asset-reporting-format/1.1}asset': 'AssetElement',
-                }
-            },
-            '{http://scap.nist.gov/schema/asset-reporting-format/1.1}reports': {
-                'list': 'reports',
-                'classes': {
-                    '{http://scap.nist.gov/schema/asset-reporting-format/1.1}report': 'ReportType',
-                }
-            },
-            '{http://scap.nist.gov/schema/asset-reporting-format/1.1}extended-infos': {
-                'list': 'extended_infos',
-                'classes': {
-                    '{http://scap.nist.gov/schema/asset-reporting-format/1.1}extended-info': 'ExtendedInfoElement',
-                }
-            },
+            '{http://scap.nist.gov/schema/asset-reporting-format/1.1}report-requests': {'class': 'ReportRequestsType'},
+            '{http://scap.nist.gov/schema/asset-reporting-format/1.1}assets': {'class': 'AssetsType'},
+            '{http://scap.nist.gov/schema/asset-reporting-format/1.1}reports': {'class': 'ReportsType'},
+            '{http://scap.nist.gov/schema/asset-reporting-format/1.1}extended-infos': {'class': 'ExtendedInfosType'},
         },
         'attributes': {
             'id': {'type': 'NCName', 'required': True},

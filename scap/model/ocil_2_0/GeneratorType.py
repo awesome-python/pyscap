@@ -29,11 +29,6 @@ class GeneratorType(Model):
             '{http://scap.nist.gov/schema/ocil/2.0}author': {'append': 'authors', 'class': 'UserType'},
             '{http://scap.nist.gov/schema/ocil/2.0}schema_version': {'type': 'Decimal', 'required': True},
             '{http://scap.nist.gov/schema/ocil/2.0}timestamp': {'type': 'DateTime', 'required': True},
-            '{http://scap.nist.gov/schema/ocil/2.0}additional_data': {
-                'list': 'additional_data',
-                'classes': {
-                    '*': None,
-                },
-            },
+            '{http://scap.nist.gov/schema/ocil/2.0}additional_data': {'class': 'AdditionalDataType'},
         }
     }
