@@ -24,7 +24,7 @@ class DocumentType(Model):
         'xml_namespace': 'http://scap.nist.gov/schema/ocil/2.0',
         'tag_name': 'document',
         'elements': {
-            '{http://scap.nist.gov/schema/ocil/2.0}title': {'type': 'NormalizedString', 'required': True},
+            '{http://scap.nist.gov/schema/ocil/2.0}title': {'type': 'NormalizedString', 'min': 1, 'max': 1},
             '{http://scap.nist.gov/schema/ocil/2.0}description': {'append': 'descriptions', 'type': 'NormalizedString'},
             '{http://scap.nist.gov/schema/ocil/2.0}notice': {'append': 'notices', 'type': 'String'},
         }

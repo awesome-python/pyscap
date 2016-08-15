@@ -22,7 +22,7 @@ logger = logging.getLogger(__name__)
 class ChoiceGroupType(Model):
     MODEL_MAP = {
         'elements': {
-            '{http://scap.nist.gov/schema/ocil/2.0}choice': {'append': 'choices', 'class': 'ChoiceType', 'required': True},
+            '{http://scap.nist.gov/schema/ocil/2.0}choice': {'append': 'choices', 'class': 'ChoiceType', 'min': 1},
         },
         'attributes': {
             'id': {'type': 'ChoiceGroupIDPattern', 'required': True},

@@ -22,7 +22,7 @@ logger = logging.getLogger(__name__)
 class EqualsTestActionConditionType(TestActionConditionType):
     MODEL_MAP = {
         'elements': {
-            '{http://scap.nist.gov/schema/ocil/2.0}value': {'append': 'values', 'type': 'Decimal', 'required': True},
+            '{http://scap.nist.gov/schema/ocil/2.0}value': {'append': 'values', 'type': 'Decimal', 'min': 1},
         },
         'attributes': {
             'var_ref': {'type': 'VariableIDPattern'},

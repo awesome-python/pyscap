@@ -1,4 +1,4 @@
 Model
-- add min/max vs. required
+- add min/max on attributes that were skipped in < oval defs schemas
 - lots & lots of tests
 - flesh out xs simple types

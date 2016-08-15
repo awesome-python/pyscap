@@ -26,9 +26,8 @@ class ArtifactResultType(Model):
             '{http://scap.nist.gov/schema/ocil/2.0}text_artifact_value': {'class': 'TextArtifactValueElement'},
             '{http://scap.nist.gov/schema/ocil/2.0}binary_artifact_value': {'class': 'BinaryArtifactValueElement'},
             '{http://scap.nist.gov/schema/ocil/2.0}reference_artifact_value': {'class': 'ReferenceArtifactValueElement'},
-
-            '{http://scap.nist.gov/schema/ocil/2.0}provider': {'type': 'ProviderValuePattern', 'required': True},
-            '{http://scap.nist.gov/schema/ocil/2.0}submitter': {'class': 'UserType', 'required': True},
+            '{http://scap.nist.gov/schema/ocil/2.0}provider': {'type': 'ProviderValuePattern', 'min': 1, 'max': 1},
+            '{http://scap.nist.gov/schema/ocil/2.0}submitter': {'class': 'UserType', 'min': 1, 'max': 1},
         },
         'attributes': {
             'artifact_ref': {'type': 'ArtifactIDPattern', 'required': True},

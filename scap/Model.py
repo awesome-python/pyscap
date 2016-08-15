@@ -235,8 +235,12 @@ class Model(object):
 
         for tag in self.model_map['elements']:
             tag_map = self.model_map['elements'][tag]
-            if 'minCount' in tag_map and (tag not in sub_el_counts or sub_el_counts[tag] < tag_map['minCount']):
-                logger.critical(el.tag + ' does not contain a required sub element: ' + tag)
+            if 'min' in tag_map and (tag not in sub_el_counts or tag_map['min'] > sub_el_counts[tag]):
+                logger.critical(self.__class__.__name__ + ' must have at least ' + tag_map['min'] + ' ' + tag + ' elements')
+                import sys
+                sys.exit()
+            if 'max' in tag_map and tag_map['max'] <= sub_el_counts[tag]:
+                logger.critical(self.__class__.__name__ + ' must have at most ' + tag_map['max'] + ' ' + tag + ' elements')
                 import sys
                 sys.exit()
 
@@ -424,6 +428,14 @@ class Model(object):
         tag_map = self.model_map['elements'][tag]
         if 'append' in tag_map:
             lst = getattr(self, tag_map['append'])
+            if 'min' in tag_map and tag_map['min'] > len(lst):
+                logger.critical(self.__class__.__name__ + ' must have at least ' + tag_map['min'] + ' ' + tag + ' elements')
+                import sys
+                sys.exit()
+            if 'max' in tag_map and tag_map['max'] <= len(lst):
+                logger.critical(self.__class__.__name__ + ' must have at most ' + tag_map['max'] + ' ' + tag + ' elements')
+                import sys
+                sys.exit()
             for i in lst:
                 logger.debug('Creating ' + tag + ' for value ' + i)
                 el = ET.Element(tag)
@@ -431,6 +443,14 @@ class Model(object):
                 sub_els.append(el)
         elif 'map' in tag_map:
             dic = getattr(self, tag_map['map'])
+            if 'min' in tag_map and tag_map['min'] > len(dic):
+                logger.critical(self.__class__.__name__ + ' must have at least ' + tag_map['min'] + ' ' + tag + ' elements')
+                import sys
+                sys.exit()
+            if 'max' in tag_map and tag_map['max'] <= len(dic):
+                logger.critical(self.__class__.__name__ + ' must have at most ' + tag_map['max'] + ' ' + tag + ' elements')
+                import sys
+                sys.exit()
             if 'key' in tag_map:
                 key_name = tag_map['key']
             else:
@@ -451,8 +471,7 @@ class Model(object):
             else:
                 name = tag_name.replace('-', '_')
             sub_els.append(getattr(self, name).to_xml())
-        elif 'type' in tag_map \
-            or 'enum' in tag_map:
+        elif 'type' in tag_map or 'enum' in tag_map:
             if 'in' in tag_map:
                 name = tag_map['in']
             else:
@@ -460,10 +479,6 @@ class Model(object):
             el = ET.Element(tag)
             el.text = getattr(self, name)
             sub_els.append(el)
-        elif 'required' in tag_map and tag_map['required']:
-            logger.critical(self.__class__.__name__ + ' must use the required element ' + tag)
-            import sys
-            sys.exit()
         return sub_els
 
     def to_xml(self):

@@ -22,7 +22,7 @@ logger = logging.getLogger(__name__)
 class BooleanQuestionTestActionType(QuestionTestActionType):
     MODEL_MAP = {
         'elements': {
-            '{http://scap.nist.gov/schema/ocil/2.0}when_true': {'class': 'TestActionConditionType', 'required': True},
-            '{http://scap.nist.gov/schema/ocil/2.0}when_false': {'class': 'TestActionConditionType', 'required': True},
+            '{http://scap.nist.gov/schema/ocil/2.0}when_true': {'class': 'TestActionConditionType', 'min': 1, 'max': 1},
+            '{http://scap.nist.gov/schema/ocil/2.0}when_false': {'class': 'TestActionConditionType', 'min': 1, 'max': 1},
         },
     }

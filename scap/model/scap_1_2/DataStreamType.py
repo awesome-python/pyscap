@@ -23,17 +23,17 @@ import logging
 logger = logging.getLogger(__name__)
 class DataStreamType(Model):
     MODEL_MAP = {
-        'attributes': {
-            'id': {'required': True, 'type': 'DataStreamIDPattern'},
-            'use-case': {'required': True, 'ignore': True, 'enum': USE_CASE_ENUMERATION},
-            'scap-version': {'required': True, 'ignore': True, 'enum': SCAP_VERSION_ENUMERATION},
-            'timestamp': {'required': True, 'ignore': True, 'type': 'DateTime'},
-        },
         'elements': {
             '{http://scap.nist.gov/schema/scap/source/1.2}dictionaries': { 'class': 'RefListType' },
             '{http://scap.nist.gov/schema/scap/source/1.2}checklists': { 'class': 'RefListType' },
             '{http://scap.nist.gov/schema/scap/source/1.2}checks': { 'class': 'RefListType' },
             '{http://scap.nist.gov/schema/scap/source/1.2}extended-components': {'ignore': True},
+        },
+        'attributes': {
+            'id': {'required': True, 'type': 'DataStreamIDPattern'},
+            'use-case': {'required': True, 'ignore': True, 'enum': USE_CASE_ENUMERATION},
+            'scap-version': {'required': True, 'ignore': True, 'enum': SCAP_VERSION_ENUMERATION},
+            'timestamp': {'required': True, 'ignore': True, 'type': 'DateTime'},
         },
     }
     def __init__(self):

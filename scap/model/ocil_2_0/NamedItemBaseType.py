@@ -22,6 +22,6 @@ logger = logging.getLogger(__name__)
 class NamedItemBaseType(ItemBaseType):
     MODEL_MAP = {
         'elements': {
-            '{http://scap.nist.gov/schema/ocil/2.0}name': {'type': 'String', 'required': True},
+            '{http://scap.nist.gov/schema/ocil/2.0}name': {'type': 'String', 'min': 1, 'max': 1},
         },
     }

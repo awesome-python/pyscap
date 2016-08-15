@@ -24,11 +24,11 @@ class GeneratorType(Model):
         'xml_namespace': 'http://scap.nist.gov/schema/ocil/2.0',
         'tag_name': 'generator',
         'elements': {
-            '{http://scap.nist.gov/schema/ocil/2.0}product_name': {'type': 'NormalizedString'},
-            '{http://scap.nist.gov/schema/ocil/2.0}product_version': {'type': 'NormalizedString'},
+            '{http://scap.nist.gov/schema/ocil/2.0}product_name': {'type': 'NormalizedString', 'max': 1},
+            '{http://scap.nist.gov/schema/ocil/2.0}product_version': {'type': 'NormalizedString', 'max': 1},
             '{http://scap.nist.gov/schema/ocil/2.0}author': {'append': 'authors', 'class': 'UserType'},
-            '{http://scap.nist.gov/schema/ocil/2.0}schema_version': {'type': 'Decimal', 'required': True},
-            '{http://scap.nist.gov/schema/ocil/2.0}timestamp': {'type': 'DateTime', 'required': True},
+            '{http://scap.nist.gov/schema/ocil/2.0}schema_version': {'type': 'Decimal', 'min': 1, 'max': 1},
+            '{http://scap.nist.gov/schema/ocil/2.0}timestamp': {'type': 'DateTime', 'min': 1, 'max': 1},
             '{http://scap.nist.gov/schema/ocil/2.0}additional_data': {'class': 'AdditionalDataType'},
         }
     }

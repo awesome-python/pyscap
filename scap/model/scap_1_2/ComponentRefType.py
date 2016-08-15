@@ -21,13 +21,13 @@ import logging
 logger = logging.getLogger(__name__)
 class ComponentRefType(Model):
     MODEL_MAP = {
+        'elements': {
+            '{urn:oasis:names:tc:entity:xmlns:xml:catalog}catalog': {'class': 'Catalog'},
+        },
         'attributes': {
             'id': {'required': True, 'type': 'ComponentRefIDPattern'},
             '{http://www.w3.org/1999/xlink}type': {'enum': ['simple'], 'ignore': True},
             '{http://www.w3.org/1999/xlink}href': {'type': 'String', 'required': True},
-        },
-        'elements': {
-            '{urn:oasis:names:tc:entity:xmlns:xml:catalog}catalog': {'class': 'Catalog'},
         },
     }
     # def __init__(self):
