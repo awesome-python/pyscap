@@ -235,12 +235,18 @@ class Model(object):
 
         for tag in self.model_map['elements']:
             tag_map = self.model_map['elements'][tag]
-            if 'min' in tag_map and (tag not in sub_el_counts or tag_map['min'] > sub_el_counts[tag]):
-                logger.critical(self.__class__.__name__ + ' must have at least ' + tag_map['min'] + ' ' + tag + ' elements')
+            min_ = 1
+            max_ = 1
+            if 'min' in tag_map:
+                min_ = tag_map['min']
+            if 'max' in tag_map:
+                max_ = tag_map['max']
+            if tag not in sub_el_counts or sub_el_counts[tag] < min_:
+                logger.critical(self.__class__.__name__ + ' must have at least ' + min_ + ' ' + tag + ' elements')
                 import sys
                 sys.exit()
-            if 'max' in tag_map and tag_map['max'] <= sub_el_counts[tag]:
-                logger.critical(self.__class__.__name__ + ' must have at most ' + tag_map['max'] + ' ' + tag + ' elements')
+            if tag not in sub_el_counts or sub_el_counts[tag] > max_:
+                logger.critical(self.__class__.__name__ + ' must have at most ' + max_ + ' ' + tag + ' elements')
                 import sys
                 sys.exit()
 
@@ -428,10 +434,12 @@ class Model(object):
         tag_map = self.model_map['elements'][tag]
         if 'append' in tag_map:
             lst = getattr(self, tag_map['append'])
+            # check minimum tag count
             if 'min' in tag_map and tag_map['min'] > len(lst):
                 logger.critical(self.__class__.__name__ + ' must have at least ' + tag_map['min'] + ' ' + tag + ' elements')
                 import sys
                 sys.exit()
+            # check maximum tag count
             if 'max' in tag_map and tag_map['max'] <= len(lst):
                 logger.critical(self.__class__.__name__ + ' must have at most ' + tag_map['max'] + ' ' + tag + ' elements')
                 import sys
@@ -443,10 +451,12 @@ class Model(object):
                 sub_els.append(el)
         elif 'map' in tag_map:
             dic = getattr(self, tag_map['map'])
+            # check minimum tag count
             if 'min' in tag_map and tag_map['min'] > len(dic):
                 logger.critical(self.__class__.__name__ + ' must have at least ' + tag_map['min'] + ' ' + tag + ' elements')
                 import sys
                 sys.exit()
+            # check maximum tag count
             if 'max' in tag_map and tag_map['max'] <= len(dic):
                 logger.critical(self.__class__.__name__ + ' must have at most ' + tag_map['max'] + ' ' + tag + ' elements')
                 import sys
