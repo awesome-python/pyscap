@@ -25,12 +25,12 @@ class ComputingDeviceType(ITAssetType):
         'xml_namespace': 'http://scap.nist.gov/schema/asset-identification/1.1',
         'tag_name': 'computing-device',
         'elements': {
-            '{http://scap.nist.gov/schema/asset-identification/1.1}distinguished-name': {'class': 'DistinguishedNameType'},
-            '{http://scap.nist.gov/schema/asset-identification/1.1}cpe': {'append': 'cpes', 'class': 'CPEType'},
-            '{http://scap.nist.gov/schema/asset-identification/1.1}connections': {'class': 'ConnectionsType'},
-            '{http://scap.nist.gov/schema/asset-identification/1.1}fqdn': {'class': 'FQDNType'},
-            '{http://scap.nist.gov/schema/asset-identification/1.1}hostname': {'class': 'ComputingDeviceHostnameType'},
-            '{http://scap.nist.gov/schema/asset-identification/1.1}motherboard-guid': {'class': 'MotherboardGUIDType'},
+            '{http://scap.nist.gov/schema/asset-identification/1.1}distinguished-name': {'class': 'DistinguishedNameType', 'min': 0},
+            '{http://scap.nist.gov/schema/asset-identification/1.1}cpe': {'append': 'cpes', 'class': 'CPEType', 'min': 0, 'max': None},
+            '{http://scap.nist.gov/schema/asset-identification/1.1}connections': {'class': 'ConnectionsType', 'min': 0},
+            '{http://scap.nist.gov/schema/asset-identification/1.1}fqdn': {'class': 'FQDNType', 'min': 0},
+            '{http://scap.nist.gov/schema/asset-identification/1.1}hostname': {'class': 'ComputingDeviceHostnameType', 'min': 0},
+            '{http://scap.nist.gov/schema/asset-identification/1.1}motherboard-guid': {'class': 'MotherboardGUIDType', 'min': 0},
         },
     }
     #TODO: cpes as fs_string

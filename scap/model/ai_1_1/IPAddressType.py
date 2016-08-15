@@ -26,7 +26,7 @@ class IPAddressType(Model):
         'xml_namespace': 'http://scap.nist.gov/schema/asset-identification/1.1',
         'tag_name': 'ip-address',
         'elements': {
-            'ip-v4': {'class': 'IPAddressIPv4Type'},
-            'ip-v6': {'class': 'IPAddressIPv6Type'},
+            '{http://scap.nist.gov/schema/asset-identification/1.1}ip-v4': {'class': 'IPAddressIPv4Type', 'min': 0},
+            '{http://scap.nist.gov/schema/asset-identification/1.1}ip-v6': {'class': 'IPAddressIPv6Type', 'min': 0},
         }
     }

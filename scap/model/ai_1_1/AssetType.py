@@ -28,9 +28,9 @@ class AssetType(Model):
             'timestamp': {'type': 'Timestamp'}
         },
         'elements': {
-            '{http://scap.nist.gov/schema/asset-identification/1.1}synthetic-id': {'class': 'SyntheticIDType', 'append': 'synthetic_ids'},
-            '{http://scap.nist.gov/schema/asset-identification/1.1}locations': {'class': 'LocationsType'},
-            '{http://scap.nist.gov/schema/asset-identification/1.1}extended-information': {'class': 'ExtendedInformationType'},
-            '*': {'ignore': True},
+            '{http://scap.nist.gov/schema/asset-identification/1.1}synthetic-id': {'class': 'SyntheticIDType', 'append': 'synthetic_ids', 'min': 0, 'max': None},
+            '{http://scap.nist.gov/schema/asset-identification/1.1}locations': {'class': 'LocationsType', 'min': 0},
+            '{http://scap.nist.gov/schema/asset-identification/1.1}extended-information': {'class': 'ExtendedInformationType', 'min': 0},
+            '*': {'ignore': True, 'max': None},
         }
     }

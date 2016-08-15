@@ -25,6 +25,6 @@ class ConnectionsType(Model):
         'xml_namespace': 'http://scap.nist.gov/schema/asset-identification/1.1',
         'tag_name': 'connections',
         'elements': {
-            '{http://scap.nist.gov/schema/asset-identification/1.1}connection': {'append': 'connections', 'class': 'NetworkInterfaceType'},
+            '{http://scap.nist.gov/schema/asset-identification/1.1}connection': {'append': 'connections', 'class': 'NetworkInterfaceType', 'max': None},
         },
     }

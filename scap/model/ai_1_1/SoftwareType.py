@@ -25,8 +25,8 @@ class SoftwareType(ITAssetType):
         'xml_namespace': 'http://scap.nist.gov/schema/asset-identification/1.1',
         'tag_name': 'software',
         'elements': {
-            '{http://scap.nist.gov/schema/asset-identification/1.1}installation-id': {'class': 'InstallationIDType'},
-            '{http://scap.nist.gov/schema/asset-identification/1.1}cpe': {'class': 'CPEType'},
-            '{http://scap.nist.gov/schema/asset-identification/1.1}license': {'class': 'LicenseType'},
+            '{http://scap.nist.gov/schema/asset-identification/1.1}installation-id': {'class': 'InstallationIDType', 'min': 0},
+            '{http://scap.nist.gov/schema/asset-identification/1.1}cpe': {'class': 'CPEType', 'min': 0},
+            '{http://scap.nist.gov/schema/asset-identification/1.1}license': {'class': 'LicenseType', 'min': 0, 'max': None},
         }
     }

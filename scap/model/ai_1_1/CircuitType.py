@@ -25,6 +25,6 @@ class CircuitType(ITAssetType):
         'xml_namespace': 'http://scap.nist.gov/schema/asset-identification/1.1',
         'tag_name': 'circuit',
         'elements': {
-            '{http://scap.nist.gov/schema/asset-identification/1.1}circuit-name': { 'class': 'CircuitNameType'},
+            '{http://scap.nist.gov/schema/asset-identification/1.1}circuit-name': { 'class': 'CircuitNameType', 'min': 0},
         }
     }

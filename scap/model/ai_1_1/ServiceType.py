@@ -25,9 +25,9 @@ class ServiceType(ITAssetType):
         'xml_namespace': 'http://scap.nist.gov/schema/asset-identification/1.1',
         'tag_name': 'service',
         'elements': {
-            '{http://scap.nist.gov/schema/asset-identification/1.1}host': {'class': 'HostType'},
-            '{http://scap.nist.gov/schema/asset-identification/1.1}port': {'append': 'ports', 'class': 'ServicePortType'},
-            '{http://scap.nist.gov/schema/asset-identification/1.1}port-range': {'append': 'port_ranges', 'class': 'PortRangeType'},
-            '{http://scap.nist.gov/schema/asset-identification/1.1}protocol': {'class': 'ProtocolType'},
+            '{http://scap.nist.gov/schema/asset-identification/1.1}host': {'class': 'HostType', 'min': 0},
+            '{http://scap.nist.gov/schema/asset-identification/1.1}port': {'append': 'ports', 'class': 'ServicePortType', 'min': 0, 'max': None},
+            '{http://scap.nist.gov/schema/asset-identification/1.1}port-range': {'append': 'port_ranges', 'class': 'PortRangeType', 'min': 0, 'max': None},
+            '{http://scap.nist.gov/schema/asset-identification/1.1}protocol': {'class': 'ProtocolType', 'min': 0},
         }
     }

@@ -25,7 +25,7 @@ class DatabaseType(ITAssetType):
         'xml_namespace': 'http://scap.nist.gov/schema/asset-identification/1.1',
         'tag_name': 'database',
         'elements': {
-            '{http://scap.nist.gov/schema/asset-identification/1.1}instance-name': {'class': 'InstanceNameType'},
+            '{http://scap.nist.gov/schema/asset-identification/1.1}instance-name': {'class': 'InstanceNameType', 'min': 0},
         }
     }
     def __init__(self):
