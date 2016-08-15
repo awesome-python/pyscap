@@ -15,19 +15,14 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.model.oval_defs_5.Component import Component
+from scap.model.xs.Simple import Simple
+from scap.model.oval_common_5.SimpleDatatypeEnumeration import SIMPLE_DATATYPE_ENUMERATION
 import logging
 
 logger = logging.getLogger(__name__)
-class LiteralComponentType(Component):
-    def __init__(self):
-        super(LiteralComponentType, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5}literal_component
-
-        self.datatype = 'string'
-
-    def parse_attribute(self, name, value):
-        if name == 'datatype':
-            self.datatype = value
-        else:
-            return super(LiteralComponentType, self).parse_attribute(name, value)
-        return True
+class LiteralComponentType(Simple):
+    MODEL_MAP = {
+        'attributes': {
+            'datatype': {'enum': SIMPLE_DATATYPE_ENUMERATION, 'default': 'string'},
+        },
+    }

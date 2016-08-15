@@ -16,18 +16,16 @@
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
 from scap.model.xs.Simple import Simple
+from scap.model.oval_common_5.OperationEnumeration import OPERATION_ENUMERATION
 import logging
 
 logger = logging.getLogger(__name__)
 class RestrictionType(Simple):
-    def __init__(self):
-        super(RestrictionType, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5}restriction
-
-        self.operation = None
-
-    def parse_attribute(self, name, value):
-        if name == 'operation':
-            self.operation = value
-        else:
-            return super(RestrictionType, self).parse_attribute(name, value)
-        return True
+    MODEL_MAP = {
+        'elements': {
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}restriction': {'append': 'restrictions', 'class': 'RestrictionType', 'min': 1, 'max': None},
+        },
+        'attributes': {
+            'operation': {'enum': OPERATION_ENUMERATION, 'required': True},
+        },
+    }

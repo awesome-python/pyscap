@@ -15,22 +15,35 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.model.oval_defs_5.Function import Function
+from scap.Model import Model
+from scap.model.oval_defs_5.DateTimeFormatEnumeration import DATE_TIME_FORMAT_ENUMERATION
 import logging
 
 logger = logging.getLogger(__name__)
-class TimeDifferenceFunctionType(Function):
-    def __init__(self):
-        super(TimeDifferenceFunctionType, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5}time_difference
-
-        self.format_1 = None
-        self.format_2 = None
-
-    def parse_attribute(self, name, value):
-        if name == 'format_1':
-            self.format_1 = value
-        elif name == 'format_2':
-            self.format_2 = value
-        else:
-            return super(TimeDifferenceFunctionType, self).parse_attribute(name, value)
-        return True
+class TimeDifferenceFunctionType(Model):
+    MODEL_MAP = {
+        'elements': {
+            #TODO <xsd:sequence minOccurs="1" maxOccurs="2">
+            # from ComponentGroup
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}object_component': {'append': 'components', 'class': 'ObjectComponentType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}variable_component': {'append': 'components', 'class': 'VariableComponentType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}literal_component': {'append': 'components', 'class': 'LiteralComponentType'},
+            # from ComponentGroup/FunctionGroup
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}arithmetic': {'append': 'components', 'class': 'ArithmeticFunctionType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}begin': {'append': 'components', 'class': 'BeginFunctionType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}concat': {'append': 'components', 'class': 'ConcatFunctionType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}count': {'append': 'components', 'class': 'CountFunctionType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}end': {'append': 'components', 'class': 'EndFunctionType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}escape_regex': {'append': 'components', 'class': 'EscapeRegexFunctionType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}split': {'append': 'components', 'class': 'SplitFunctionType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}substring': {'append': 'components', 'class': 'SubstringFunctionType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}time_difference': {'append': 'components', 'class': 'TimeDifferenceFunctionType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}unique': {'append': 'components', 'class': 'UniqueFunctionType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}regex_capture': {'append': 'components', 'class': 'RegexCaptureFunctionType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}glob_to_regex': {'append': 'components', 'class': 'GlobToRegexFunctionType'},
+        },
+        'attributes': {
+            'format_1': {'enum': DATE_TIME_FORMAT_ENUMERATION, 'default': 'year_month_day'},
+            'format_2': {'enum': DATE_TIME_FORMAT_ENUMERATION, 'default': 'year_month_day'},
+        }
+    }

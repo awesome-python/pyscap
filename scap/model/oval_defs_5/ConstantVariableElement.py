@@ -19,17 +19,11 @@ from scap.model.oval_defs_5.Variable import Variable
 import logging
 
 logger = logging.getLogger(__name__)
-class ConstantVariableType(Variable):
-    def __init__(self):
-        super(ConstantVariableType, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5}constant_variable
-
-        self.children = []
-
-    def parse_element(self, sub_el):
-        if sub_el.tag == '{http://oval.mitre.org/XMLSchema/oval-definitions-5}value':
-            v = Value()
-            v.from_xml(self, sub_el)
-            self.children.append(v)
-        else:
-            return super(ConstantVariableType, self).parse_element(sub_el)
-        return True
+class ConstantVariableElement(Variable):
+    MODEL_MAP = {
+        'xml_namespace': 'http://oval.mitre.org/XMLSchema/oval-definitions-5',
+        'tag_name': 'constant_variable',
+        'elements': {
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}value': {'append': 'values', 'class': 'ValueType', 'min': 1, 'max': None},
+        },
+    }

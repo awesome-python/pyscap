@@ -23,6 +23,7 @@ logger = logging.getLogger(__name__)
 class CriteriaType(Model):
     MODEL_MAP = {
         'elements': {
+            # TODO minOccurs="1" maxOccurs="unbounded" of the following:
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5}criteria': {'append': 'criteria', 'class': 'CriteriaType'},
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5}criterion': {'append': 'criteria', 'class': 'CriterionType'},
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5}extend_definition': {'append': 'criteria', 'class': 'ExtendDefinitionType'},

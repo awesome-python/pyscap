@@ -24,6 +24,6 @@ class DefintionsType(Model):
         'xml_schema': 'http://oval.mitre.org/XMLSchema/oval-definitions-5',
         'tag_name' : 'definitions',
         'elements': {
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}definition': {'map': 'definitions', 'DefinitionElement'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}definition': {'map': 'definitions', 'DefinitionElement', 'min': 1, 'max': None},
         }
     }

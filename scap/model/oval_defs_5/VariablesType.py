@@ -24,8 +24,9 @@ class VariablesType(Model):
         'xml_schema': 'http://oval.mitre.org/XMLSchema/oval-definitions-5',
         'tag_name' : 'variables',
         'elements': {
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}external_variable': {'map': 'variables', 'class': 'ExternalVariableType'},
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}constant_variable': {'map': 'variables', 'class': 'ConstantVariableType'},
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}local_variable': {'map': 'variables', 'class': 'LocalVariableType'},
+            # TODO: minOccurs="1" maxOccurs="unbounded"
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}external_variable': {'map': 'variables', 'class': 'ExternalVariableElement'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}constant_variable': {'map': 'variables', 'class': 'ConstantVariableElement'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}local_variable': {'map': 'variables', 'class': 'LocalVariableElement'},
         }
     }

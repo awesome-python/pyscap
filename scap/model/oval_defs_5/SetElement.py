@@ -22,10 +22,13 @@ import logging
 logger = logging.getLogger(__name__)
 class SetElement(Model):
     MODEL_MAP = {
+        'xml_namespace': 'http://oval.mitre.org/XMLSchema/oval-definitions-5',
+        'tag_name': 'set',
         'elements': {
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}set': {'class': 'SetElement'},
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}object_reference': {'append': 'object_references', 'type': 'ObjectIDPattern'},
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}filter': {'class': 'FilterElement'},
+            # TODO: either set element or object_reference (+ optional filter)
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}set': {'class': 'SetElement', 'min': 0, 'max': 2},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}object_reference': {'append': 'object_references', 'type': 'ObjectIDPattern', 'min': 0, 'max': 2},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}filter': {'class': 'FilterElement', 'min': 0, 'max': None},
         },
         'attributes': {
             'set_operator': {'enum': SET_OPERATOR_ENUMERATION, 'default': 'UNION'},

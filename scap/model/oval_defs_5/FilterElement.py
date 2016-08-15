@@ -15,9 +15,16 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.model.oval_defs_5.ComponentGroupType import ComponentGroupType
+from scap.model.oval_defs_5.StateIDPattern import StateIDPattern
+from scap.model.oval_defs_5.FilterActionEnumeration import FILTER_ACTION_ENUMERATION
 import logging
 
 logger = logging.getLogger(__name__)
-class FunctionType(ComponentGroupType):
-    pass
+class FilterElement(StateIDPattern):
+    MODEL_MAP = {
+        'xml_namespace': 'http://oval.mitre.org/XMLSchema/oval-definitions-5',
+        'tag_name': 'filter',
+        'attributes': {
+            'action': {'enum': FILTER_ACTION_ENUMERATION, 'default': 'exclude'},
+        }
+    }

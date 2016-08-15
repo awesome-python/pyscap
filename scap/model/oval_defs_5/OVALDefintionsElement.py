@@ -25,12 +25,12 @@ class OVALDefintionsType(Model):
         'tag_name' : 'oval_definitions',
         'elements': {
             '{http://oval.mitre.org/XMLSchema/oval-common-5}generator': {'class': 'GeneratorType'},
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}definitions': {'class': 'DefinitionsType'},
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}tests': {'class': 'TestsType'},
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}objects': {'class': 'ObjectsType'},
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}states': {'class': 'StatesType'},
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}variables': {'class': 'VariablesType'},
-            '{http://www.w3.org/2000/09/xmldsig#}Signature': {'ignore': True},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}definitions': {'class': 'DefinitionsType', 'min': 0, 'max': 1},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}tests': {'class': 'TestsType', 'min': 0, 'max': 1},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}objects': {'class': 'ObjectsType', 'min': 0, 'max': 1},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}states': {'class': 'StatesType', 'min': 0, 'max': 1},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}variables': {'class': 'VariablesType', 'min': 0, 'max': 1},
+            '{http://www.w3.org/2000/09/xmldsig#}Signature': {'ignore': True, 'min': 0, 'max': 1},
         }
     }
 

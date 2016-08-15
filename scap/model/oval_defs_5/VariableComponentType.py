@@ -15,19 +15,13 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.model.oval_defs_5.Component import Component
+from scap.Model import Model
 import logging
 
 logger = logging.getLogger(__name__)
-class VariableComponentType(Component):
-    def __init__(self):
-        super(VariableComponentType, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5}variable_component
-
-        self.var_ref = None
-
-    def parse_attribute(self, name, value):
-        if name == 'var_ref':
-            self.var_ref = value
-        else:
-            return super(VariableComponentType, self).parse_attribute(name, value)
-        return True
+class VariableComponentType(Model):
+    MODEL_MAP = {
+        'attributes': {
+            'var_ref': {'type': 'VariableIDPattern', 'required': True},
+        },
+    }

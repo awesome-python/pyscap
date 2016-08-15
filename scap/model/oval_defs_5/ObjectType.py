@@ -22,8 +22,8 @@ logger = logging.getLogger(__name__)
 class ObjectType(Model):
     MODEL_MAP = {
         'elements': {
-            '{http://www.w3.org/2000/09/xmldsig#}Signature': {'ignore': True},
-            '{http://oval.mitre.org/XMLSchema/oval-common-5}notes': {'class': 'NotesType'},
+            '{http://www.w3.org/2000/09/xmldsig#}Signature': {'ignore': True, 'min': 0, 'max': 1},
+            '{http://oval.mitre.org/XMLSchema/oval-common-5}notes': {'class': 'NotesType', 'min': 0, 'max': 1},
         },
         'attributes': {
             'id': {'type': 'ObjectIDPattern', 'required': True},

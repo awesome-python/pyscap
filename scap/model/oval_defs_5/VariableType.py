@@ -16,30 +16,21 @@
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
 from scap.Model import Model
+from scap.model.oval_common_5.SimpleDatatypeEnumeration import SIMPLE_DATATYPE_ENUMERATION
 import logging
 
 logger = logging.getLogger(__name__)
 class VariableType(Model):
-    # abstract
-    def __init__(self):
-        super(VariableType, self).__init__()
-
-        self.datatype = None
-
-        self.ignore_attributes.extend([
-            'version',
-            'comment',
-        ])
-        self.ignore_sub_elements.extend([
-            '{http://www.w3.org/2000/09/xmldsig#}Signature',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}notes',
-        ])
-
-    def parse_attribute(self, name, value):
-        if name == 'deprecated':
-            logger.warning('Using deprecated variable ' + self.id)
-        elif name == 'datatype':
-            self.datatype = value
-        else:
-            return super(VariableType, self).parse_attribute(name, value)
-        return True
+    MODEL_MAP = {
+        'elements': {
+            '{http://www.w3.org/2000/09/xmldsig#}Signature': {'ignore': True, 'min': 0, 'max': 1},
+            '{http://oval.mitre.org/XMLSchema/oval-common-5}notes': {'class': 'NotesType', 'min': 0, 'max': 1},
+        },
+        'attributes': {
+            'id': {'type': 'VariableIDPattern', 'required': True},
+            'version': {'type': 'NonNegativeInteger', 'required': True},
+            'datatype': {'enum': SIMPLE_DATATYPE_ENUMERATION, 'required': True},
+            'comment': {'type': 'oval_common_5.NonEmptyStringType', 'required': True},
+            'deprecated': {'type': 'Boolean', 'default': False},
+        }
+    }

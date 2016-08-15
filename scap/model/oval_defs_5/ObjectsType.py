@@ -24,5 +24,6 @@ class ObjectsType(Model):
         'xml_schema': 'http://oval.mitre.org/XMLSchema/oval-definitions-5',
         'tag_name' : 'objects',
         'elements': {
+            # TODO minOccurs="1" maxOccurs="unbounded"
         }
     }

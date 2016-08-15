@@ -23,8 +23,8 @@ class MetadataType(Model):
     MODEL_MAP = {
         'elements': {
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5}title': {'type': 'String'},
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}affected': {'append': 'affecteds', 'class': 'AffectedType'},
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}reference': {'append': 'references', 'class': 'ReferenceType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}affected': {'append': 'affecteds', 'class': 'AffectedType', 'min': 0, 'max': None},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}reference': {'append': 'references', 'class': 'ReferenceType', 'min': 0, 'max': None},
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5}description': {'type': 'String'},
             '*': {'ignore': True},
         },

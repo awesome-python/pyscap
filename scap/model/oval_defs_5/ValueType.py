@@ -20,5 +20,5 @@ import logging
 
 logger = logging.getLogger(__name__)
 class ValueType(Simple):
-    def __init__(self):
-        super(ValueType, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5}value
+    MODEL_MAP = {
+    }

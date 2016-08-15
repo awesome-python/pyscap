@@ -15,19 +15,34 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.model.oval_defs_5.Function import Function
+from scap.Model import Model
+from scap.model.oval_defs_5.ArithmeticEnumeration import ARITHMETIC_ENUMERATION
 import logging
 
 logger = logging.getLogger(__name__)
-class ArithmeticFunctionType(Function):
-    def __init__(self):
-        super(ArithmeticFunctionType, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5}arithmetic
-
-        self.arithmetic_operation = None
-
-    def parse_attribute(self, name, value):
-        if name == 'arithmetic_operation':
-            self.arithmetic_operation = value
-        else:
-            return super(ArithmeticFunctionType, self).parse_attribute(name, value)
-        return True
+class ArithmeticFunctionType(Model):
+    MODEL_MAP = {
+        'elements': {
+            #TODO <xsd:sequence minOccurs="2" maxOccurs="unbounded">
+            # from ComponentGroup
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}object_component': {'append': 'components', 'class': 'ObjectComponentType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}variable_component': {'append': 'components', 'class': 'VariableComponentType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}literal_component': {'append': 'components', 'class': 'LiteralComponentType'},
+            # from ComponentGroup/FunctionGroup
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}arithmetic': {'append': 'components', 'class': 'ArithmeticFunctionType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}begin': {'append': 'components', 'class': 'BeginFunctionType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}concat': {'append': 'components', 'class': 'ConcatFunctionType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}count': {'append': 'components', 'class': 'CountFunctionType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}end': {'append': 'components', 'class': 'EndFunctionType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}escape_regex': {'append': 'components', 'class': 'EscapeRegexFunctionType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}split': {'append': 'components', 'class': 'SplitFunctionType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}substring': {'append': 'components', 'class': 'SubstringFunctionType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}time_difference': {'append': 'components', 'class': 'TimeDifferenceFunctionType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}unique': {'append': 'components', 'class': 'UniqueFunctionType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}regex_capture': {'append': 'components', 'class': 'RegexCaptureFunctionType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}glob_to_regex': {'append': 'components', 'class': 'GlobToRegexFunctionType'},
+        },
+        'attributes': {
+            'arithmetic_operation': {'enum': ARITHMETIC_ENUMERATION, 'required': True},
+        }
+    }

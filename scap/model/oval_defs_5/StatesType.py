@@ -24,5 +24,6 @@ class StatesType(Model):
         'xml_schema': 'http://oval.mitre.org/XMLSchema/oval-definitions-5',
         'tag_name' : 'states',
         'elements': {
+            # TODO: minOccurs="1" maxOccurs="unbounded"
         }
     }

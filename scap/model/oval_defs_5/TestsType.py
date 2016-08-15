@@ -24,6 +24,6 @@ class TestsType(Model):
         'xml_schema': 'http://oval.mitre.org/XMLSchema/oval-definitions-5',
         'tag_name' : 'tests',
         'elements': {
-            #TODO
+            #TODO minOccurs="1" maxOccurs="unbounded"
         }
     }

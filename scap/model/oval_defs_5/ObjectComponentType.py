@@ -15,25 +15,15 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.model.oval_defs_5.Component import Component
+from scap.Model import Model
 import logging
 
 logger = logging.getLogger(__name__)
-class ObjectComponentType(Component):
-    def __init__(self):
-        super(ObjectComponentType, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5}object_component
-
-        self.object_ref = None
-        self.item_field = None
-        self.record_field = None
-
-    def parse_attribute(self, name, value):
-        if name == 'object_ref':
-            self.object_ref = value
-        elif name == 'item_field':
-            self.item_field = value
-        elif name == 'record_field':
-            self.record_field = value
-        else:
-            return super(ObjectComponentType, self).parse_attribute(name, value)
-        return True
+class ObjectComponentType(Model):
+    MODEL_MAP = {
+        'attributes': {
+            'object_ref': {'type': 'ObjectIDPattern', 'required': True},
+            'item_field': {'type': 'oval_common_5.NonEmptyStringType', 'required': True},
+            'record_field': {'type': 'oval_common_5.NonEmptyStringType'},
+        },
+    }

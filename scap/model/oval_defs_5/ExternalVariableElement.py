@@ -15,21 +15,17 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.Model import Model
+from scap.model.oval_defs_5.VariableType import VariableType
 import logging
 
 logger = logging.getLogger(__name__)
-class FilterType(Model):
-    def __init__(self):
-        super(FilterType, self).__init__()    # {http://oval.mitre.org/XMLSchema/oval-definitions-5}filter
-
-        self.action = 'exclude'
-
-    def parse_attribute(self, name, value):
-        if name == 'action':
-            self.action = value
-        else:
-            return super(FilterType, self).parse_attribute(name, value)
-        return True
-
-    # TODO need to collect more for actual implementation
+class ExternalVariableElement(VariableType):
+    MODEL_MAP = {
+        'xml_namespace': 'http://oval.mitre.org/XMLSchema/oval-definitions-5',
+        'tag_name': 'external_variable',
+        'elements': {
+            # TODO: minOccurs="0" maxOccurs="unbounded"
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}possible_value': {'append': 'possible_values', 'class': 'PossibleValueType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}possible_restriction': {'append': 'possible_restrictions', 'class': 'PossibleRestrictionType'},
+        },
+    }
