@@ -245,7 +245,9 @@ class Model(object):
                 logger.critical(self.__class__.__name__ + ' must have at least ' + min_ + ' ' + tag + ' elements')
                 import sys
                 sys.exit()
-            if tag not in sub_el_counts or sub_el_counts[tag] > max_:
+            if max_ is None:
+                pass
+            elif tag not in sub_el_counts or sub_el_counts[tag] > max_:
                 logger.critical(self.__class__.__name__ + ' must have at most ' + max_ + ' ' + tag + ' elements')
                 import sys
                 sys.exit()
