@@ -25,6 +25,6 @@ class ExtendedInfosType(Model):
         'xml_namespace': 'http://scap.nist.gov/schema/asset-reporting-format/1.1',
         'tag_name': 'extended-infos',
         'elements': {
-            '{http://scap.nist.gov/schema/asset-reporting-format/1.1}extended-info': {'append': 'extended_infos', 'class': 'ExtendedInfoElement'},
+            '{http://scap.nist.gov/schema/asset-reporting-format/1.1}extended-info': {'append': 'extended_infos', 'class': 'ExtendedInfoElement', 'max': None},
         },
     }

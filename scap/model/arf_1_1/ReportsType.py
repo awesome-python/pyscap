@@ -25,6 +25,6 @@ class ReportsType(Model):
         'xml_namespace': 'http://scap.nist.gov/schema/asset-reporting-format/1.1',
         'tag_name': 'reports',
         'elements': {
-            '{http://scap.nist.gov/schema/asset-reporting-format/1.1}report': {'append': 'reports', 'class': 'ReportType'},
+            '{http://scap.nist.gov/schema/asset-reporting-format/1.1}report': {'append': 'reports', 'class': 'ReportType', 'max': None},
         },
     }
