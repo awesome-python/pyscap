@@ -19,11 +19,9 @@ from scap.Model import Model
 import logging
 
 logger = logging.getLogger(__name__)
-class TestsType(Model):
+class ObjectRefType(Model):
     MODEL_MAP = {
-        'xml_schema': 'http://oval.mitre.org/XMLSchema/oval-definitions-5',
-        'tag_name' : 'tests',
-        'elements': {
-            #TODO
+        'attributes': {
+            'object_ref': {'type': 'ObjectIDPattern', 'required': True},
         }
     }

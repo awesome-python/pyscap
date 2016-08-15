@@ -25,7 +25,6 @@ class OVALDefintionsType(Model):
         'tag_name' : 'oval_definitions',
         'elements': {
             '{http://oval.mitre.org/XMLSchema/oval-common-5}generator': {'class': 'GeneratorType'},
-
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5}definitions': {'class': 'DefinitionsType'},
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5}tests': {'class': 'TestsType'},
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5}objects': {'class': 'ObjectsType'},

@@ -16,8 +16,18 @@
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
 from scap.Model import Model
+from scap.model.oval_defs_5.SetOperatorEnumeration import SET_OPERATOR_ENUMERATION
 import logging
 
 logger = logging.getLogger(__name__)
-class ObjectReferenceType(Model):
-    pass
+class SetElement(Model):
+    MODEL_MAP = {
+        'elements': {
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}set': {'class': 'SetElement'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}object_reference': {'append': 'object_references', 'type': 'ObjectIDPattern'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}filter': {'class': 'FilterElement'},
+        },
+        'attributes': {
+            'set_operator': {'enum': SET_OPERATOR_ENUMERATION, 'default': 'UNION'},
+        }
+    }
