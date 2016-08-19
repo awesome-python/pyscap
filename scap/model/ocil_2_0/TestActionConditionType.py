@@ -22,8 +22,9 @@ logger = logging.getLogger(__name__)
 class TestActionConditionType(Model):
     MODEL_MAP = {
         'elements': {
-            '{http://scap.nist.gov/schema/ocil/2.0}result': {'class': 'ResultType'},
-            '{http://scap.nist.gov/schema/ocil/2.0}test_action_ref': {'class': 'TestActionRefType'},
-            '{http://scap.nist.gov/schema/ocil/2.0}artifact_refs': {'class': 'ArtifactRefsType'},
+            # TODO: at least one result or test_action_ref
+            '{http://scap.nist.gov/schema/ocil/2.0}result': {'class': 'ResultType', 'min': 0, 'max': 0},
+            '{http://scap.nist.gov/schema/ocil/2.0}test_action_ref': {'class': 'TestActionRefType', 'min': 0, 'max': 0},
+            '{http://scap.nist.gov/schema/ocil/2.0}artifact_refs': {'class': 'ArtifactRefsType', 'min': 0, 'max': 0},
         },
     }

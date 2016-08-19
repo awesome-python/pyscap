@@ -22,7 +22,7 @@ logger = logging.getLogger(__name__)
 class QuestionnaireResultType(Model):
     MODEL_MAP = {
         'elements': {
-            '{http://scap.nist.gov/schema/ocil/2.0}artifact_results': {'class': 'ArtifactResultsType'},
+            '{http://scap.nist.gov/schema/ocil/2.0}artifact_results': {'class': 'ArtifactResultsType', 'min': 0, 'max': 1},
         },
         'attributes': {
             'questionnaire_ref': {'type': 'QuestionnaireIDPattern', 'required': True},

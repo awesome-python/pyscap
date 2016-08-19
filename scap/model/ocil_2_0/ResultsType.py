@@ -22,12 +22,12 @@ logger = logging.getLogger(__name__)
 class ResultsType(Model):
     MODEL_MAP = {
         'elements': {
-            '{http://scap.nist.gov/schema/ocil/2.0}title': {'class': 'TextType'},
-            '{http://scap.nist.gov/schema/ocil/2.0}questionnaire_results': {'class': 'QuestionnaireResultsType'},
-            '{http://scap.nist.gov/schema/ocil/2.0}test_action_results': {'class': 'TestActionResultsType'},
-            '{http://scap.nist.gov/schema/ocil/2.0}question_results': {'class': 'QuestionResultsType'},
-            '{http://scap.nist.gov/schema/ocil/2.0}artifact_results': {'class': 'ArtifactResultsType'},
-            '{http://scap.nist.gov/schema/ocil/2.0}targets': {'class': 'TargetsType'},
+            '{http://scap.nist.gov/schema/ocil/2.0}title': {'class': 'TextType', 'min': 0, 'max': 1},
+            '{http://scap.nist.gov/schema/ocil/2.0}questionnaire_results': {'class': 'QuestionnaireResultsType', 'min': 0, 'max': 1},
+            '{http://scap.nist.gov/schema/ocil/2.0}test_action_results': {'class': 'TestActionResultsType', 'min': 0, 'max': 1},
+            '{http://scap.nist.gov/schema/ocil/2.0}question_results': {'class': 'QuestionResultsType', 'min': 0, 'max': 1},
+            '{http://scap.nist.gov/schema/ocil/2.0}artifact_results': {'class': 'ArtifactResultsType', 'min': 0, 'max': 1},
+            '{http://scap.nist.gov/schema/ocil/2.0}targets': {'class': 'TargetsType', 'min': 0, 'max': 1},
         },
         'attributes': {
             'start_time': {'type': 'DateTime'},

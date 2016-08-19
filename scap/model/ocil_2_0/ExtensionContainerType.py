@@ -19,9 +19,9 @@ from scap.Model import Model
 import logging
 
 logger = logging.getLogger(__name__)
-class AdditionalDataType(Model):
+class ExtensionContainerType(Model):
     MODEL_MAP = {
         'elements': {
-            '*': {'append': 'additional_data', 'ignore': True},
+            '*': {'append': 'additional_data', 'ignore': True, 'min': 1, 'max': None},
         }
     }

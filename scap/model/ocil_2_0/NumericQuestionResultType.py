@@ -22,6 +22,6 @@ logger = logging.getLogger(__name__)
 class NumericQuestionResultType(QuestionResultType):
     MODEL_MAP = {
         'elements': {
-            '{http://scap.nist.gov/schema/ocil/2.0}answer': {'type': 'Decimal'},
+            '{http://scap.nist.gov/schema/ocil/2.0}answer': {'type': 'Decimal', 'max': 1},
         },
     }

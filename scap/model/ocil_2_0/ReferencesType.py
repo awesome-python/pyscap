@@ -22,6 +22,6 @@ logger = logging.getLogger(__name__)
 class ReferencesType(Model):
     MODEL_MAP = {
         'elements': {
-            '{http://scap.nist.gov/schema/ocil/2.0}reference': {'append': 'references', 'class': 'ReferenceType'},
+            '{http://scap.nist.gov/schema/ocil/2.0}reference': {'append': 'references', 'class': 'ReferenceType', 'min': 1, 'max': None},
         }
     }

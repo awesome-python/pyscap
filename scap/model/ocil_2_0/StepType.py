@@ -22,9 +22,9 @@ logger = logging.getLogger(__name__)
 class StepType(object):
     MODEL_MAP = {
         'elements': {
-            '{http://scap.nist.gov/schema/ocil/2.0}description': {'class': 'TextType'},
-            '{http://scap.nist.gov/schema/ocil/2.0}reference': {'append': 'references', 'class': 'ReferenceType'},
-            '{http://scap.nist.gov/schema/ocil/2.0}step': {'append': 'steps', 'class': 'StepType'},
+            '{http://scap.nist.gov/schema/ocil/2.0}description': {'class': 'TextType', 'min': 0, 'max': 1},
+            '{http://scap.nist.gov/schema/ocil/2.0}reference': {'append': 'references', 'class': 'ReferenceType', 'min': 0, 'max': None},
+            '{http://scap.nist.gov/schema/ocil/2.0}step': {'append': 'steps', 'class': 'StepType', 'min': 0, 'max': None},
         },
         'attributes': {
             'is_done': {'type': 'Boolean', 'default': False},

@@ -22,8 +22,8 @@ logger = logging.getLogger(__name__)
 class UserType(NamedItemBaseType):
     MODEL_MAP = {
         'elements': {
-            '{http://scap.nist.gov/schema/ocil/2.0}organization': {'append': 'organizations', 'type': 'NormalizedString'},
-            '{http://scap.nist.gov/schema/ocil/2.0}position': {'append': 'positions', 'type': 'NormalizedString'},
-            '{http://scap.nist.gov/schema/ocil/2.0}email': {'append': 'emails', 'type': 'Token'},
+            '{http://scap.nist.gov/schema/ocil/2.0}organization': {'append': 'organizations', 'type': 'NormalizedString', 'min': 0, 'max': None},
+            '{http://scap.nist.gov/schema/ocil/2.0}position': {'append': 'positions', 'type': 'NormalizedString', 'min': 0, 'max': None},
+            '{http://scap.nist.gov/schema/ocil/2.0}email': {'append': 'emails', 'type': 'Token', 'min': 0, 'max': None},
         },
     }

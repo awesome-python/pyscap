@@ -22,6 +22,6 @@ logger = logging.getLogger(__name__)
 class QuestionnaireResultsType(Model):
     MODEL_MAP = {
         'elements': {
-            '{http://scap.nist.gov/schema/ocil/2.0}questionnaire_result': {'append': 'questionnaire_results', 'class': 'QuestionnaireResultType'},
+            '{http://scap.nist.gov/schema/ocil/2.0}questionnaire_result': {'append': 'questionnaire_results', 'class': 'QuestionnaireResultType', 'min': 1, 'max': None},
         }
     }

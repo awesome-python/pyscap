@@ -22,8 +22,9 @@ logger = logging.getLogger(__name__)
 class VariablesType(Model):
     MODEL_MAP = {
         'elements': {
-            '{http://scap.nist.gov/schema/ocil/2.0}constant_variable': {'append': 'variables', 'class': 'ConstantVariableElement'},
-            '{http://scap.nist.gov/schema/ocil/2.0}local_variable': {'append': 'variables', 'class': 'LocalVariableElement'},
-            '{http://scap.nist.gov/schema/ocil/2.0}external_variable': {'append': 'variables', 'class': 'ExternalVariableElement'},
+            #TODO: at least one *_variable
+            '{http://scap.nist.gov/schema/ocil/2.0}constant_variable': {'append': 'variables', 'class': 'ConstantVariableElement', 'min': 0, 'max': None},
+            '{http://scap.nist.gov/schema/ocil/2.0}local_variable': {'append': 'variables', 'class': 'LocalVariableElement', 'min': 0, 'max': None},
+            '{http://scap.nist.gov/schema/ocil/2.0}external_variable': {'append': 'variables', 'class': 'ExternalVariableElement', 'min': 0, 'max': None},
         }
     }

@@ -23,6 +23,6 @@ logger = logging.getLogger(__name__)
 class RangeTestActionConditionType(TestActionConditionType):
     MODEL_MAP = {
         'elements': {
-            '{http://scap.nist.gov/schema/ocil/2.0}range': {'append': 'ranges', 'class': 'RangeType', 'min': 1},
+            '{http://scap.nist.gov/schema/ocil/2.0}range': {'append': 'ranges', 'class': 'RangeType', 'min': 1, 'max': None},
         },
     }

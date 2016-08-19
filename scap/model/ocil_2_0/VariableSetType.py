@@ -22,9 +22,10 @@ logger = logging.getLogger(__name__)
 class VariableSetType(Model):
     MODEL_MAP = {
         'elements': {
-            '{http://scap.nist.gov/schema/ocil/2.0}when_pattern': {'append': 'expressions', 'class': 'WhenPatternElement'},
-            '{http://scap.nist.gov/schema/ocil/2.0}when_choice': {'append': 'expressions', 'class': 'WhenChoiceElement'},
-            '{http://scap.nist.gov/schema/ocil/2.0}when_range': {'append': 'expressions', 'class': 'WhenRangeElement'},
-            '{http://scap.nist.gov/schema/ocil/2.0}when_boolean': {'append': 'expressions', 'class': 'WhenBooleanElement'},
+            #TODO: at least one when_*
+            '{http://scap.nist.gov/schema/ocil/2.0}when_pattern': {'append': 'expressions', 'class': 'WhenPatternElement', 'min': 0, 'max': None},
+            '{http://scap.nist.gov/schema/ocil/2.0}when_choice': {'append': 'expressions', 'class': 'WhenChoiceElement', 'min': 0, 'max': None},
+            '{http://scap.nist.gov/schema/ocil/2.0}when_range': {'append': 'expressions', 'class': 'WhenRangeElement', 'min': 0, 'max': None},
+            '{http://scap.nist.gov/schema/ocil/2.0}when_boolean': {'append': 'expressions', 'class': 'WhenBooleanElement', 'min': 0, 'max': None},
         },
     }

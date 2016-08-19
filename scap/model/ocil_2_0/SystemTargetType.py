@@ -22,8 +22,8 @@ logger = logging.getLogger(__name__)
 class SystemTargetType(NamedItemBaseType):
     MODEL_MAP = {
         'elements': {
-            '{http://scap.nist.gov/schema/ocil/2.0}organization': {'type': 'String'},
-            '{http://scap.nist.gov/schema/ocil/2.0}ipaddress': {'append': 'ipaddresses', 'type': 'String'},
-            '{http://scap.nist.gov/schema/ocil/2.0}description': {'class': 'TextType'},
+            '{http://scap.nist.gov/schema/ocil/2.0}organization': {'type': 'String', 'min': 0, 'max': 1},
+            '{http://scap.nist.gov/schema/ocil/2.0}ipaddress': {'append': 'ipaddresses', 'type': 'String', 'min': 0, 'max': None},
+            '{http://scap.nist.gov/schema/ocil/2.0}description': {'class': 'TextType', 'min': 0, 'max': 1},
         },
     }

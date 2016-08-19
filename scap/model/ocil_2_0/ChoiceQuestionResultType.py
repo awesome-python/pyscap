@@ -22,6 +22,6 @@ logger = logging.getLogger(__name__)
 class ChoiceQuestionResultType(QuestionResultType):
     MODEL_MAP = {
         'elements': {
-            '{http://scap.nist.gov/schema/ocil/2.0}answer': {'class': 'ChoiceAnswerType'},
+            '{http://scap.nist.gov/schema/ocil/2.0}answer': {'class': 'ChoiceAnswerType', 'max': 1},
         },
     }

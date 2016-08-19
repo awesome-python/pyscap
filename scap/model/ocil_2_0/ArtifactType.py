@@ -22,8 +22,8 @@ logger = logging.getLogger(__name__)
 class ArtifactType(ItemBaseType):
     MODEL_MAP = {
         'elements': {
-            '{http://scap.nist.gov/schema/ocil/2.0}title': {'class': 'TextType'},
-            '{http://scap.nist.gov/schema/ocil/2.0}description': {'class': 'TextType'},
+            '{http://scap.nist.gov/schema/ocil/2.0}title': {'class': 'TextType', 'min': 1, 'max': 1},
+            '{http://scap.nist.gov/schema/ocil/2.0}description': {'class': 'TextType', 'min': 1, 'max': 1},
         },
         'attributes': {
             'id': {'type': 'ArtifactIDPattern', 'required': True},

@@ -22,9 +22,10 @@ logger = logging.getLogger(__name__)
 class TestActionsType(Model):
     MODEL_MAP = {
         'elements': {
-            '{http://scap.nist.gov/schema/ocil/2.0}boolean_question_test_action': {'append': 'test_actions', 'class': 'BooleanQuestionTestActionElement'},
-            '{http://scap.nist.gov/schema/ocil/2.0}choice_question_test_action': {'append': 'test_actions', 'class': 'ChoiceQuestionTestActionElement'},
-            '{http://scap.nist.gov/schema/ocil/2.0}numeric_question_test_action': {'append': 'test_actions', 'class': 'NumericQuestionTestActionElement'},
-            '{http://scap.nist.gov/schema/ocil/2.0}string_question_test_action': {'append': 'test_actions', 'class': 'StringQuestionTestActionElement'},
+            # TODO: min 1 of test_actions
+            '{http://scap.nist.gov/schema/ocil/2.0}boolean_question_test_action': {'append': 'test_actions', 'class': 'BooleanQuestionTestActionElement', 'min': 0, 'max': None},
+            '{http://scap.nist.gov/schema/ocil/2.0}choice_question_test_action': {'append': 'test_actions', 'class': 'ChoiceQuestionTestActionElement', 'min': 0, 'max': None},
+            '{http://scap.nist.gov/schema/ocil/2.0}numeric_question_test_action': {'append': 'test_actions', 'class': 'NumericQuestionTestActionElement', 'min': 0, 'max': None},
+            '{http://scap.nist.gov/schema/ocil/2.0}string_question_test_action': {'append': 'test_actions', 'class': 'StringQuestionTestActionElement', 'min': 0, 'max': None},
         }
     }

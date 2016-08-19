@@ -23,10 +23,10 @@ logger = logging.getLogger(__name__)
 class CompoundTestActionType(ItemBaseType):
     MODEL_MAP = {
         'elements': {
-            '{http://scap.nist.gov/schema/ocil/2.0}title': {'class': 'TextType'},
-            '{http://scap.nist.gov/schema/ocil/2.0}description': {'class': 'TextType'},
-            '{http://scap.nist.gov/schema/ocil/2.0}references': {'class': 'ReferencesType'},
-            '{http://scap.nist.gov/schema/ocil/2.0}actions': {'class': 'OperationType'},
+            '{http://scap.nist.gov/schema/ocil/2.0}title': {'class': 'TextType', 'min': 0, 'max': 1},
+            '{http://scap.nist.gov/schema/ocil/2.0}description': {'class': 'TextType', 'min': 0, 'max': 1},
+            '{http://scap.nist.gov/schema/ocil/2.0}references': {'class': 'ReferencesType', 'min': 0, 'max': 1},
+            '{http://scap.nist.gov/schema/ocil/2.0}actions': {'class': 'OperationType', 'min': 1, 'max': 1},
         },
         'attributes': {
             'question_ref': {'type': 'QuestionIDPattern', 'required': True},

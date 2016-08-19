@@ -22,7 +22,7 @@ logger = logging.getLogger(__name__)
 class TestActionResultType(Model):
     MODEL_MAP = {
         'elements': {
-            '{http://scap.nist.gov/schema/ocil/2.0}artifact_results': {'class': 'ArtifactRefsType'},
+            '{http://scap.nist.gov/schema/ocil/2.0}artifact_results': {'class': 'ArtifactRefsType', 'min': 0, 'max': 1},
         },
         'attributes': {
             'test_action_ref': {'type': 'TestActionRefValuePattern', 'required': True},

@@ -22,6 +22,6 @@ logger = logging.getLogger(__name__)
 class ArtifactResultsType(Model):
     MODEL_MAP = {
         'elements': {
-            '{http://scap.nist.gov/schema/ocil/2.0}artifact_result': {'append': 'artifact_results', 'class': 'ArtifactResultType'},
+            '{http://scap.nist.gov/schema/ocil/2.0}artifact_result': {'append': 'artifact_results', 'class': 'ArtifactResultType', 'min': 1, 'max': None},
         }
     }

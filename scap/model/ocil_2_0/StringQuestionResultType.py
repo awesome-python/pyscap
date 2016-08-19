@@ -22,6 +22,6 @@ logger = logging.getLogger(__name__)
 class StringQuestionResultType(QuestionResultType):
     MODEL_MAP = {
         'elements': {
-            '{http://scap.nist.gov/schema/ocil/2.0}answer': {'type': 'String'},
+            '{http://scap.nist.gov/schema/ocil/2.0}answer': {'type': 'String', 'max': 1},
         },
     }

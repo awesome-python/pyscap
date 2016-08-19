@@ -23,9 +23,11 @@ class ArtifactResultType(Model):
     MODEL_MAP = {
         'elements': {
             # children of artifact_value tag
-            '{http://scap.nist.gov/schema/ocil/2.0}text_artifact_value': {'class': 'TextArtifactValueElement'},
-            '{http://scap.nist.gov/schema/ocil/2.0}binary_artifact_value': {'class': 'BinaryArtifactValueElement'},
-            '{http://scap.nist.gov/schema/ocil/2.0}reference_artifact_value': {'class': 'ReferenceArtifactValueElement'},
+            #TODO: at least one of *_artifact_value
+            '{http://scap.nist.gov/schema/ocil/2.0}text_artifact_value': {'class': 'TextArtifactValueElement', 'min': 0, 'max': 1},
+            '{http://scap.nist.gov/schema/ocil/2.0}binary_artifact_value': {'class': 'BinaryArtifactValueElement', 'min': 0, 'max': 1},
+            '{http://scap.nist.gov/schema/ocil/2.0}reference_artifact_value': {'class': 'ReferenceArtifactValueElement', 'min': 0, 'max': 1},
+
             '{http://scap.nist.gov/schema/ocil/2.0}provider': {'type': 'ProviderValuePattern', 'min': 1, 'max': 1},
             '{http://scap.nist.gov/schema/ocil/2.0}submitter': {'class': 'UserType', 'min': 1, 'max': 1},
         },
