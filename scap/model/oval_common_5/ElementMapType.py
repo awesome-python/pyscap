@@ -22,9 +22,9 @@ logger = logging.getLogger(__name__)
 class ElementMapType(Model):
     MODEL_MAP = {
         'elements': {
-            '{http://oval.mitre.org/XMLSchema/oval-common-5}test': {'class': 'ElementMapItemType'},
-            '{http://oval.mitre.org/XMLSchema/oval-common-5}object': {'class': 'ElementMapItemType'},
-            '{http://oval.mitre.org/XMLSchema/oval-common-5}state': {'class': 'ElementMapItemType'},
-            '{http://oval.mitre.org/XMLSchema/oval-common-5}item': {'class': 'ElementMapItemType'},
+            '{http://oval.mitre.org/XMLSchema/oval-common-5}test': {'class': 'ElementMapItemType', 'min': 1},
+            '{http://oval.mitre.org/XMLSchema/oval-common-5}object': {'class': 'ElementMapItemType', 'min': 0},
+            '{http://oval.mitre.org/XMLSchema/oval-common-5}state': {'class': 'ElementMapItemType', 'min': 0},
+            '{http://oval.mitre.org/XMLSchema/oval-common-5}item': {'class': 'ElementMapItemType', 'min': 0},
         }
     }
