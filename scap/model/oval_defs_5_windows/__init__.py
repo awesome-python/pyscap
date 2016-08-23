@@ -14,7 +14,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
-TAG_MAP = {
+TEST_MAP = {
     '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}accesstoken_test': {'class': 'AccessTokenTestType'},
     '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}activedirectory57_test': {'class': 'ActiveDirectory57TestType'},
     '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}activedirectory_test': {'class': 'ActiveDirectoryTestType'},
@@ -62,7 +62,8 @@ TAG_MAP = {
     '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}wmi57_test': {'class': 'WMI57TestType'},
     '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}wmi_test': {'class': 'WMITestType'},
     '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}wuaupdatesearcher_test': {'class': 'WUAUpdateSearcherTestType'},
-
+}
+OBJECT_MAP = {
     '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}accesstoken_object': {'class': 'AccessTokenObjectType'},
     '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}activedirectory57_object': {'class': 'ActiveDirectory57ObjectType'},
     '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}activedirectory_object': {'class': 'ActiveDirectoryObjectType'},
@@ -110,7 +111,8 @@ TAG_MAP = {
     '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}wmi57_object': {'class': 'WMI57ObjectType'},
     '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}wmi_object': {'class': 'WMIObjectType'},
     '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}wuaupdatesearcher_object': {'class': 'WUAUpdateSearcherObjectType'},
-
+}
+STATE_MAP = {
     '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}accesstoken_state': {'class': 'AccessTokenStateType'},
     '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}activedirectory57_state': {'class': 'ActiveDirectory57StateType'},
     '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}activedirectory_state': {'class': 'ActiveDirectoryStateType'},

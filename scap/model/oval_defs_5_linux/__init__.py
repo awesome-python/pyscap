@@ -14,7 +14,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
-TAG_MAP = {
+TEST_MAP = {
     '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}dpkginfo_test': {'class': 'DPKGInfoTestType'},
     '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}iflisteners_test': {'class': 'IFListenersTestType'},
     '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}inetlisteningservers_test': {'class': 'InetListeningServersTestType'},
@@ -28,7 +28,8 @@ TAG_MAP = {
     '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}slackwarepkginfo_test': {'class': 'SlackwarePkgInfoTestType'},
     '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}systemdunitdependency_test': {'class': 'SystemDUnitDependencyTestType'},
     '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}systemdunitproperty_test': {'class': 'SystemDUnitPropertyTestType'},
-
+}
+OBJECT_MAP = {
     '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}dpkginfo_object': {'class': 'DPKGInfoObjectType'},
     '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}iflisteners_object': {'class': 'IFListenersObjectType'},
     '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}inetlisteningservers_object': {'class': 'InetListeningServersObjectType'},
@@ -42,7 +43,8 @@ TAG_MAP = {
     '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}slackwarepkginfo_object': {'class': 'SlackwarePkgInfoObjectType'},
     '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}systemdunitdependency_object': {'class': 'SystemDUnitDependencyObjectType'},
     '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}systemdunitproperty_object': {'class': 'SystemDUnitPropertyObjectType'},
-
+}
+STATE_MAP = {
     '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}dpkginfo_state': {'class': 'DPKGInfoStateType'},
     '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}iflisteners_state': {'class': 'IFListenersStateType'},
     '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}inetlisteningservers_state': {'class': 'InetListeningServersStateType'},
