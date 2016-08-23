@@ -27,3 +27,9 @@ class TestsType(Model):
             #TODO minOccurs="1" maxOccurs="unbounded"
         }
     }
+    from scap.model.oval_defs_5_independent import TEST_MAP
+    MODEL_MAP['elements'].update(TEST_MAP)
+    from scap.model.oval_defs_5_linux import TEST_MAP
+    MODEL_MAP['elements'].update(TEST_MAP)
+    from scap.model.oval_defs_5_windows import TEST_MAP
+    MODEL_MAP['elements'].update(TEST_MAP)
