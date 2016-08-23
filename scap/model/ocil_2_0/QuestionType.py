@@ -25,7 +25,7 @@ class QuestionType(ItemBaseType):
         'elements': {
             '{http://scap.nist.gov/schema/ocil/2.0}question_text': {'append': 'question_texts', 'class': 'QuestionTextType', 'min': 1, 'max': None},
             '{http://scap.nist.gov/schema/ocil/2.0}instructions': {'class': 'InstructionsType', 'min': 0, 'max': 1},
-        }
+        },
         'attributes': {
             'id': {'type': 'QuestionIDPattern', 'required': True},
         }

@@ -19,7 +19,7 @@ from scap.Model import Model
 import logging
 
 logger = logging.getLogger(__name__)
-class FileBehaviors(Model)
+class FileBehaviors(Model):
     MODEL_MAP = {
         'attributes': {
             'max_depth': {'type': 'Integer', 'default': -1},

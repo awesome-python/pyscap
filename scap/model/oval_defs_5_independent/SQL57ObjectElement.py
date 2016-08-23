@@ -19,7 +19,7 @@ from scap.model.oval_defs_5.ObjectType import ObjectType
 import logging
 
 logger = logging.getLogger(__name__)
-class SQL57ObjectElement(ObjectType)
+class SQL57ObjectElement(ObjectType):
     MODEL_MAP = {
         'xml_namespace': 'http://oval.mitre.org/XMLSchema/oval-definitions-5#independent',
         'tag_name': 'sql57_object',
@@ -28,7 +28,7 @@ class SQL57ObjectElement(ObjectType)
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#independent}engine': {'class': 'EntityObjectEngineType'},
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#independent}version': {'class': 'oval_defs_5.EntityObjectStringType'},
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#independent}connection_string': {'class': 'oval_defs_5.EntityObjectStringType'},
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#independent}sql',
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#independent}sql': {'class': 'oval_defs_5.EntityObjectStringType'},
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5}filter': {'class': 'FilterElement'},
         }
     }

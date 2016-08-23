@@ -32,14 +32,14 @@ class RuleType(Checker):
         self.checker = None
         try:
             self.checker = Checker.load(host, check, args)
-        except ImportError, e:
+        except ImportError as e:
             import traceback
             logger.warning('Could not load checker for check ' + check.__class__.__name__ + ' for rule ' + content.id + ': ' + str(e) + ':\n' + traceback.format_exc())
 
     def check(self):
         try:
             result = self.checker.check()
-        except Exception, e:
+        except Exception as e:
             import traceback
             logger.warning('Unable to perform check for rule ' + self.content.id + ': ' + str(e) + ':\n' + traceback.format_exc())
             result = 'error'

@@ -26,16 +26,16 @@ class DataStreamType(Checker):
         if 'checklist' in args:
             checklist_id = args[checklist]
             if checklist_id not in content.checklists:
-                logger.critical('Specified --checklist, ' + checklist_id + ', not found in content. Available checklists: ' + str(content.checklists.keys()))
+                logger.critical('Specified --checklist, ' + checklist_id + ', not found in content. Available checklists: ' + str(list(content.checklists.keys())))
                 import sys
                 sys.exit()
             else:
                 checklist = content.checklists[checklist_id].resolve()
         else:
             if len(content.checklists) == 1:
-                checklist = content.checklists.values()[0].resolve()
+                checklist = list(content.checklists.values())[0].resolve()
             else:
-                logger.critical('No --checklist specified and unable to implicitly choose one. Available checklists: ' + str(content.checklists.keys()))
+                logger.critical('No --checklist specified and unable to implicitly choose one. Available checklists: ' + str(list(content.checklists.keys())))
                 import sys
                 sys.exit()
         logger.info('Selecting checklist ' + checklist.id)

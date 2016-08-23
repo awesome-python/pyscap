@@ -30,7 +30,7 @@ class PostalCodeType(Model):
             '{urn:oasis:names:tc:ciq:xsdschema:xAL:2.0}PostalCodeNumberExtension': {'append': 'postal_code_number_extensions', 'class': 'PostalCodeNumberExtensionType'},
             '{urn:oasis:names:tc:ciq:xsdschema:xAL:2.0}PostTown': {'in': 'post_town', 'class': 'PostTownType'},
             '*': {'ignore': True},
-        }
+        },
         'attributes': {
             'Type': {},
             '*': {'ignore': True},

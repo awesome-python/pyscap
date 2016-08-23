@@ -19,7 +19,7 @@ from scap.model.oval_defs_5.EntityObjectStringType import EntityObjectStringType
 import logging
 
 logger = logging.getLogger(__name__)
-class EntityObjectHashTypeType(EntityObjectStringType)
+class EntityObjectHashTypeType(EntityObjectStringType):
     MODEL_MAP = {
         #TODO: restrict to HASH_ENUMERATION
     }

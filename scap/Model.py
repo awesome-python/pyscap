@@ -178,11 +178,11 @@ class Model(object):
                     tag_map = self.model_map['elements'][tag]
                     if 'append' in tag_map:
                         # initialze the array if it doesn't exist
-                        if tag_map['append'] not in self.__dict__.keys():
+                        if tag_map['append'] not in list(self.__dict__.keys()):
                             setattr(self, tag_map['append'], [])
                     elif 'map' in tag_map:
                         # initialze the dict if it doesn't exist
-                        if tag_map['map'] not in self.__dict__.keys():
+                        if tag_map['map'] not in list(self.__dict__.keys()):
                             setattr(self, tag_map['map'], {})
 
     def get_tag_name(self):
@@ -216,7 +216,7 @@ class Model(object):
                 import sys
                 sys.exit()
 
-        for name, value in el.attrib.items():
+        for name, value in list(el.attrib.items()):
             if not self.parse_attribute(name, value):
                 logger.critical('Unknown attrib in ' + el.tag + ': ' + name + ' = ' + value)
                 import sys
@@ -467,7 +467,7 @@ class Model(object):
                 key_name = tag_map['key']
             else:
                 key_name = 'id'
-            for k,v in dic.items():
+            for k,v in list(dic.items()):
                 el = ET.Element(tag)
                 el.attrib[key_name] = k
 

@@ -19,7 +19,7 @@ from scap.model.oval_defs_5.TestType import TestType
 import logging
 
 logger = logging.getLogger(__name__)
-class TextFileContentTestElement(TestType)
+class TextFileContentTestElement(TestType):
     MODEL_MAP = {
         'xml_namespace': 'http://oval.mitre.org/XMLSchema/oval-definitions-5#independent',
         'tag_name': 'textfilecontent_test',

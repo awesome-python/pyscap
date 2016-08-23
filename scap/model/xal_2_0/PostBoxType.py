@@ -33,7 +33,7 @@ class PostBoxType(Model):
             '{urn:oasis:names:tc:ciq:xsdschema:xAL:2.0}Firm': {'in': 'firm', 'class': 'FirmType'},
             '{urn:oasis:names:tc:ciq:xsdschema:xAL:2.0}PostalCode': {'in': 'postal_code', 'class': 'PostalCodeType'},
             '*': {'ignore': True},
-        }
+        },
         'attributes': {
             'Type': {},
             'Indicator': {},

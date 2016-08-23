@@ -25,8 +25,8 @@ class TestResultType(Model):
             'id': {'required': True, 'type': 'TestResultIDPattern'},
             'start-time': {'type': 'DateTime'},
             'end-time': {'type': 'DateTime'},
-            'test-system': {'type': 'String'}
-            'version': {'type': 'String'}
+            'test-system': {'type': 'String'},
+            'version': {'type': 'String'},
             'Id': {'ignore': True, 'type': 'ID'},
         },
         'elements': {

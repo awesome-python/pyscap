@@ -29,7 +29,7 @@ class PostTownType(Model):
             '{urn:oasis:names:tc:ciq:xsdschema:xAL:2.0}PostTownName': {'append': 'post_town_names', 'class': 'PostTownType'},
             '{urn:oasis:names:tc:ciq:xsdschema:xAL:2.0}PostTownSuffix': {'in': 'post_town_suffix', 'class': 'PostTownSuffixType'},
             '*': {'ignore': True},
-        }
+        },
         'attributes': {
             'Type': {},
             '*': {'ignore': True},

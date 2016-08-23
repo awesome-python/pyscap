@@ -97,7 +97,7 @@ args = arg_parser.parse_args()
 from scap.Model import Model
 import xml.etree.ElementTree as ET
 from scap.model import NAMESPACES
-for k,v in NAMESPACES.items():
+for k,v in list(NAMESPACES.items()):
     ET.register_namespace(v, k)
 
 # perform the operations
@@ -157,7 +157,7 @@ if args.benchmark:
     else:
         args.output.write(report)
 elif args.list_hosts:
-    print 'Hosts: '
+    print('Hosts: ')
     for t in Target.parse(args):
         t.pretty()
 elif args.test:

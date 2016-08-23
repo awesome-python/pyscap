@@ -19,7 +19,7 @@ from scap.model.oval_defs_5.EntityStateStringType import EntityStateStringType
 import logging
 
 logger = logging.getLogger(__name__)
-class EntityStateLdaptypeType(EntityStateStringType)
+class EntityStateLdaptypeType(EntityStateStringType):
     MODEL_MAP = {
         #TODO: restrict to LDAP_TYPE_ENUMERATION
     }

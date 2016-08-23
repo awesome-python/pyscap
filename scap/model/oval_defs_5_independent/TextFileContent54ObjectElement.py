@@ -19,7 +19,7 @@ from scap.model.oval_defs_5.ObjectType import ObjectType
 import logging
 
 logger = logging.getLogger(__name__)
-class TextFileContent54ObjectElement(ObjectType)
+class TextFileContent54ObjectElement(ObjectType):
     MODEL_MAP = {
         'xml_namespace': 'http://oval.mitre.org/XMLSchema/oval-definitions-5#independent',
         'tag_name': 'textfilecontent54_object',

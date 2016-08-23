@@ -58,7 +58,7 @@ def at_least_one(results):
 
     if true >= 1:
         return 'true'
-    elif true == 0 and false >= 1 and error == 0 and unknown == 0 not_evaluated == 0:
+    elif true == 0 and false >= 1 and error == 0 and unknown == 0 and not_evaluated == 0:
         return 'false'
     elif true == 0 and error >= 1:
         return 'error'

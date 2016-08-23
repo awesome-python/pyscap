@@ -19,7 +19,7 @@ from scap.model.oval_defs_5.ObjectType import ObjectType
 import logging
 
 logger = logging.getLogger(__name__)
-class SQLObjectElement(ObjectType)
+class SQLObjectElement(ObjectType):
     MODEL_MAP = {
         'xml_namespace': 'http://oval.mitre.org/XMLSchema/oval-definitions-5#independent',
         'tag_name': 'sql_object',

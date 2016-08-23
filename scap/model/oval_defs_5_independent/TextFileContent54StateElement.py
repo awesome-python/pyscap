@@ -19,7 +19,7 @@ from scap.model.oval_defs_5.StateType import StateType
 import logging
 
 logger = logging.getLogger(__name__)
-class TextFileContent54StateElement(StateType)
+class TextFileContent54StateElement(StateType):
     MODEL_MAP = {
         'xml_namespace': 'http://oval.mitre.org/XMLSchema/oval-definitions-5#independent',
         'tag_name': 'textfilecontent54_state',

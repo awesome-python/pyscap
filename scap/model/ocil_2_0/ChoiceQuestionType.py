@@ -25,7 +25,7 @@ class ChoiceQuestionType(QuestionType):
             # TODO: at least one of choice or choice_group_ref
             '{http://scap.nist.gov/schema/ocil/2.0}choice': {'append': 'choices', 'class': 'ChoiceType', 'min': 0, 'max': None},
             '{http://scap.nist.gov/schema/ocil/2.0}choice_group_ref': {'append': 'choice_group_refs', 'type': 'ChoiceGroupIDPattern', 'min': 0, 'max': None},
-        }
+        },
         'attributes': {
             'default_answer_ref': {'type': 'ChoiceIDPattern'},
         }

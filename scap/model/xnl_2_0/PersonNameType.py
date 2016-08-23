@@ -25,7 +25,7 @@ class PersonNameType(Model):
         'xml_namespace': 'urn:oasis:names:tc:ciq:xsdschema:xNL:2.0',
         'tag_name': 'PersonName',
         'elements': {
-            '{urn:oasis:names:tc:ciq:xsdschema:xNL:2.0}NameLine': {'append', 'name_lines', 'class': 'NameLineType'},
+            '{urn:oasis:names:tc:ciq:xsdschema:xNL:2.0}NameLine': {'append': 'name_lines', 'class': 'NameLineType'},
             '{urn:oasis:names:tc:ciq:xsdschema:xNL:2.0}PrecedingTitle': {'append': 'preceding_titles', 'class': 'PrecedingTitleElement'},
             '{urn:oasis:names:tc:ciq:xsdschema:xNL:2.0}Title': {'append': 'titles', 'class': 'TitleElement'},
             '{urn:oasis:names:tc:ciq:xsdschema:xNL:2.0}FirstName': {'append': 'first_names', 'class': 'FirstNameElement'},

@@ -32,7 +32,7 @@ class PostOfficeType(Model):
             '{urn:oasis:names:tc:ciq:xsdschema:xAL:2.0}PostBox': {'in': 'post_box', 'class': 'PostBoxType'},
             '{urn:oasis:names:tc:ciq:xsdschema:xAL:2.0}PostalCode': {'in': 'postal_code', 'class': 'PostalCodeType'},
             '*': {'ignore': True},
-        }
+        },
         'attributes': {
             'Type': {},
             'Indicator': {},

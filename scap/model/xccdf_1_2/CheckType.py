@@ -91,7 +91,7 @@ class CheckType(Model):
         content = self.resolve_reference(self.check_content_ref)
         if self.system == 'http://oval.mitre.org/XMLSchema/oval-definitions-5':
             if self.check_content_name is None:
-                return content.definitions.values()
+                return list(content.definitions.values())
             else:
                 # looking for a definition
                 return content.definitions[self.check_content_name]
@@ -107,5 +107,5 @@ class CheckType(Model):
                 else:
                     raise NotImplementedError('Checking of OCIL ' + id_parts[2] + ' content is not implemented')
         else:
-            print str(content)
+            print(str(content))
             raise NotImplementedError('Check system not implemented ' + self.system)

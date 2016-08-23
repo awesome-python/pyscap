@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-import inspect, urlparse, logging
+import inspect, urllib.parse, logging
 from scap.CredentialStore import CredentialStore
 
 logger = logging.getLogger(__name__)
@@ -27,7 +27,7 @@ class Host(object):
     def parse(spec):
         if spec.find('://') == -1:
             spec = Host.DEFAULT_SCHEME + '://' + spec
-        url = urlparse.urlparse(spec)
+        url = urllib.parse.urlparse(spec)
         if url.scheme == 'ssh':
             creds = CredentialStore()
             if creds.has_section(url.hostname):
@@ -92,7 +92,7 @@ class Host(object):
         while i < len(self.fact_collectors):
             try:
                 self.fact_collectors[i].collect()
-            except Exception, e:
+            except Exception as e:
                 import traceback
                 logger.warning('Fact collector ' + self.fact_collectors[i].__class__.__name__ + ' failed: ' + e.__class__.__name__ + ' ' + str(e) + ':\n' + traceback.format_exc())
             i += 1

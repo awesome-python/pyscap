@@ -19,7 +19,7 @@ from scap.model.oval_defs_5.EntityObjectStringType import EntityObjectStringType
 import logging
 
 logger = logging.getLogger(__name__)
-class EntityObjectVariableRefType(EntityObjectStringType)
+class EntityObjectVariableRefType(EntityObjectStringType):
     MODEL_MAP = {
         #TODO: restrict to <xsd:pattern value="(oval:[A-Za-z0-9_\-\.]+:var:[1-9][0-9]*){0,}"/>
     }

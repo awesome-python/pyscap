@@ -32,7 +32,7 @@ class AdministrativeAreaType(Model):
             '{urn:oasis:names:tc:ciq:xsdschema:xAL:2.0}PostOffice': {'in': 'post_office', 'class': 'PostOfficeType'},
             '{urn:oasis:names:tc:ciq:xsdschema:xAL:2.0}PostalCode': {'in': 'postal_code', 'class': 'PostalCodeType'},
             '*': {'ignore': True},
-        }
+        },
         'attributes': {
             'Type': {},
             'UsageType': {},

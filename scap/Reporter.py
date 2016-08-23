@@ -56,7 +56,7 @@ class Reporter(object):
             asset.asset = comp
 
             from scap.model.ai_1_1.connection import connection
-            for dev, net_con in host.facts['network_connections'].items():
+            for dev, net_con in list(host.facts['network_connections'].items()):
                 logger.debug('Producing Connection for device ' + dev)
                 for address in net_con['network_addresses']:
                     conn = connection()
@@ -95,7 +95,7 @@ class Reporter(object):
             arc.relationships.append(rel)
 
         arc_et = ET.ElementTree(element=arc.to_xml())
-        from StringIO import StringIO
+        from io import StringIO
         sio = StringIO()
         arc_et.write(sio, encoding='UTF-8', xml_declaration=True)
         sio.write("\n")

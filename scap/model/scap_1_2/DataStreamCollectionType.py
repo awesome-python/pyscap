@@ -51,7 +51,7 @@ class DataStreamCollectionType(Model):
                 return self.data_streams[self.selected_data_stream].resolve_reference('#' + ref)
             else:
                 # we're the top level parent
-                logger.critical('Reference ' + ref + ' not in ' + str(self.components.keys()))
+                logger.critical('Reference ' + ref + ' not in ' + str(list(self.components.keys())))
                 import sys
                 sys.exit()
         else:

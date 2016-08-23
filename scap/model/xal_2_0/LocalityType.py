@@ -36,7 +36,7 @@ class LocalityType(Model):
             '{urn:oasis:names:tc:ciq:xsdschema:xAL:2.0}DependentLocality': {'in': 'premise', 'class': 'DependentLocalityType'},
             '{urn:oasis:names:tc:ciq:xsdschema:xAL:2.0}PostalCode': {'in': 'postal_code', 'class': 'PostalCodeType'},
             '*': {'ignore': True},
-        }
+        },
         'attributes': {
             'Type': {},
             'UsageType': {},

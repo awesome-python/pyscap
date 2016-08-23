@@ -25,7 +25,7 @@ class NameDetailsType(Model):
         'xml_namespace': 'urn:oasis:names:tc:ciq:xsdschema:xNL:2.0',
         'tag_name': 'NameDetails',
         'elements': {
-            '{urn:oasis:names:tc:ciq:xsdschema:xNL:2.0}NameLine': {'append', 'name_lines', 'class': 'NameLineType'},
+            '{urn:oasis:names:tc:ciq:xsdschema:xNL:2.0}NameLine': {'append': 'name_lines', 'class': 'NameLineType'},
             '{urn:oasis:names:tc:ciq:xsdschema:xNL:2.0}PersonName': {'in': 'person_name', 'class': 'PersonNameElement'},
             '{urn:oasis:names:tc:ciq:xsdschema:xNL:2.0}JointPersonName': {'in': 'joint_person_name', 'class': 'JointPersonNameElement'},
             '{urn:oasis:names:tc:ciq:xsdschema:xNL:2.0}OrganisationNameDetails': {'in': 'organisation_name_details', 'class': 'OrganisationNameDetailsElement'},

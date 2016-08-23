@@ -26,7 +26,7 @@ class ReportRequestContentElement(Model):
         'tag_name': 'content',
         'elements': {
             '*': {'ignore': True},
-        }
+        },
         'attributes': {
             '*': {'ignore': True},
         }

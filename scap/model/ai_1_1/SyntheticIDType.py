@@ -25,7 +25,7 @@ class SyntheticIDType(Model):
         'xml_namespace': 'http://scap.nist.gov/schema/asset-identification/1.1',
         'tag_name': 'synthetic-id',
         'attributes': {
-            'resource': {'type': 'AnyURI', True},
-            'id': {'type': 'Token', 'required': True}
+            'resource': {'type': 'AnyURI', 'required': True},
+            'id': {'type': 'Token', 'required': True},
         }
     }

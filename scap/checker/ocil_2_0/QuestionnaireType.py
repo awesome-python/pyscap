@@ -26,6 +26,6 @@ class QuestionnaireType(Checker):
         #self.checker = Checker.load(host, content.criteria, args)
 
     def check(self):
-        print self.content.title
-        print self.content.description
+        print(self.content.title)
+        print(self.content.description)
         return 'NOT_TESTED'

@@ -19,7 +19,7 @@ from scap.model.oval_defs_5_independent.FileBehaviors import FileBehaviors
 import logging
 
 logger = logging.getLogger(__name__)
-class Textfilecontent54Behaviors(FileBehaviors)
+class Textfilecontent54Behaviors(FileBehaviors):
     MODEL_MAP = {
         'attributes': {
             'ignore_case': {'type': 'Boolean', 'default': False},

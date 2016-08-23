@@ -99,7 +99,7 @@ class CPE(object):
             '*': '\\*',
             '?': '\\?',
         }
-        WFN_UNQUOTE_MAP = {v: k for k, v in WFN_QUOTE_MAP.items()}
+        WFN_UNQUOTE_MAP = {v: k for k, v in list(WFN_QUOTE_MAP.items())}
         WFN_UNQUOTE_MAP['\\\\'] = '\\'
         WFN_QUOTE_MAP[' '] = '_'
 
@@ -112,7 +112,7 @@ class CPE(object):
 
             # replace special chars
             value = self.middle
-            for k,v in self.WFN_QUOTE_MAP.items():
+            for k,v in list(self.WFN_QUOTE_MAP.items()):
                 value = value.replace(k, v)
 
             # attach the wildcards
@@ -155,7 +155,7 @@ class CPE(object):
                 value = value[:-1]
 
             # convert escaped chars
-            for k,v in self.WFN_UNQUOTE_MAP.items():
+            for k,v in list(self.WFN_UNQUOTE_MAP.items()):
                 value = value.replace(k,v)
 
             self.middle = value
@@ -193,7 +193,7 @@ class CPE(object):
             '~': '%7e',
             '%': '%25',
         }
-        URI_UNQUOTE_MAP = {v: k for k, v in URI_QUOTE_MAP.items()}
+        URI_UNQUOTE_MAP = {v: k for k, v in list(URI_QUOTE_MAP.items())}
         URI_QUOTE_MAP[' '] = '_'
 
         def to_uri(self):
@@ -205,7 +205,7 @@ class CPE(object):
 
             # replace special chars
             value = self.middle
-            for k,v in self.URI_QUOTE_MAP.items():
+            for k,v in list(self.URI_QUOTE_MAP.items()):
                 value = value.replace(k, v)
 
             # attach the wildcards
@@ -290,7 +290,7 @@ class CPE(object):
             '*': '\\*',
             '?': '\\?',
         }
-        FS_UNQUOTE_MAP = {v: k for k, v in FS_QUOTE_MAP.items()}
+        FS_UNQUOTE_MAP = {v: k for k, v in list(FS_QUOTE_MAP.items())}
         # don't want to unquote ' '
         FS_QUOTE_MAP[' '] = '_'
 
@@ -305,7 +305,7 @@ class CPE(object):
             value = self.middle
             # do \ first so we don't double escape the other replacements
             value = self.middle.replace('\\', '\\\\')
-            for k,v in self.FS_QUOTE_MAP.items():
+            for k,v in list(self.FS_QUOTE_MAP.items()):
                 value = value.replace(k, v)
 
             # attach the wildcards
@@ -344,7 +344,7 @@ class CPE(object):
                 value = value[:-1]
 
             # convert escaped chars
-            for k,v in self.FS_UNQUOTE_MAP.items():
+            for k,v in list(self.FS_UNQUOTE_MAP.items()):
                 value = value.replace(k, v)
 
             self.middle = value
@@ -473,7 +473,7 @@ class CPE(object):
         for k in self.INDEX:
             self.values[k] = CPE.Value()
 
-        if isinstance(s, basestring):
+        if isinstance(s, str):
             if s.startswith('wfn:'):
                 self.from_wfn_string(s)
             elif s.startswith('cpe:2.3:'):

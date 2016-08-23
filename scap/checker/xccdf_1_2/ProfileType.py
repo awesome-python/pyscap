@@ -25,15 +25,15 @@ class ProfileType(Checker):
 
         # expand values
         values = {}
-        for value_id, value in self.content.parent.values.items():
+        for value_id, value in list(self.content.parent.values.items()):
             values[value_id] = {}
             if value_id in self.content.value_selections:
                 values[value_id]['value'] = value.selectors[self.content.value_selections[value_id]]
             else:
                 if None in value.selectors:
                     values[value_id]['value'] = value.selectors[None]
-                elif len(value.selectors.values()) > 0:
-                    values[value_id]['value'] = value.selectors.values()[0]
+                elif len(list(value.selectors.values())) > 0:
+                    values[value_id]['value'] = list(value.selectors.values())[0]
             if 'value' not in values[value_id] or values[value_id]['value'] is None:
                 logger.critical('Valid value not selected for ' + value_id + ': ' + str(value.selectors))
                 import sys
@@ -53,6 +53,6 @@ class ProfileType(Checker):
 
     def check(self):
         results = {'rule_results': {}}
-        for rule_id, rule_checker in self.rule_checkers.items():
+        for rule_id, rule_checker in list(self.rule_checkers.items()):
             results['rule_results'][rule_id] = rule_checker.check()
         return results

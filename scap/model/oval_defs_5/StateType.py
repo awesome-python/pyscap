@@ -25,7 +25,7 @@ class StateType(Model):
         'elements': {
             '{http://www.w3.org/2000/09/xmldsig#}Signature': {'ignore': True, 'min': 0, 'max': 1},
             '{http://oval.mitre.org/XMLSchema/oval-common-5}notes': {'class': 'NotesType', 'min': 0, 'max': 1},
-        }
+        },
         'attributes': {
             'id': {'type': 'StateIDPattern', 'required': True},
             'version': {'type': 'NonNegativeInteger', 'required': True},

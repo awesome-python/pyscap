@@ -26,7 +26,7 @@ class ReportContentElement(Model):
         'tag_name': 'content',
         'elements': {
             '*': {'ignore': True},
-        }
+        },
         'attributes': {
             'data-valid-start-date': {'type': 'Date'},
             'data-valid-end-date': {'type': 'Date'},

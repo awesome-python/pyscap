@@ -23,7 +23,7 @@ logger = logging.getLogger(__name__)
 class SSHHost(Host):
     class AskHostKeyPolicy(paramiko.client.MissingHostKeyPolicy):
         def missing_host_key(self, client, hostname, key):
-            response = raw_input('Accept key ' + binascii.hexlify(key.get_fingerprint()) + ' for host ' + hostname + ' (Y/n)? ')
+            response = input('Accept key ' + binascii.hexlify(key.get_fingerprint()) + ' for host ' + hostname + ' (Y/n)? ')
             if response == '' or response.lower()[0] == 'y':
                 logger.debug('Adding key for host ' + hostname)
                 host_keys = client.get_host_keys()

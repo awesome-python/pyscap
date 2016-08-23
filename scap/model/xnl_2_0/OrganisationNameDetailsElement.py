@@ -25,7 +25,7 @@ class OrganisationNameDetailsElement(OrganisationNameDetailsType):
         'xml_namespace': 'urn:oasis:names:tc:ciq:xsdschema:xNL:2.0',
         'tag_name': 'OrganisationNameDetails',
         'elements': {
-            '{urn:oasis:names:tc:ciq:xsdschema:xNL:2.0}OrganisationFormerName': {'append', 'organisation_former_names', 'class': 'OrganisationFormerNameElement'},
+            '{urn:oasis:names:tc:ciq:xsdschema:xNL:2.0}OrganisationFormerName': {'append': 'organisation_former_names', 'class': 'OrganisationFormerNameElement'},
             '{urn:oasis:names:tc:ciq:xsdschema:xNL:2.0}OrganisationKnownAs': {'append': 'organisation_known_as', 'class': 'OrganisationKnownAsElement'},
         },
     }

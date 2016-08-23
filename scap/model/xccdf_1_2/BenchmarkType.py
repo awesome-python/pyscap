@@ -93,7 +93,7 @@ class BenchmarkType(Model):
     def from_xml(self, parent, el):
         super(BenchmarkType, self).from_xml(parent, el)
 
-        for notice in self.notices.values():
+        for notice in list(self.notices.values()):
             logger.info('Notice: \n' + notice.value)
 
         for profile_id in self.profiles:

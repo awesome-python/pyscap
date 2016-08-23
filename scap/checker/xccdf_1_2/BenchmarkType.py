@@ -26,16 +26,16 @@ class BenchmarkType(Checker):
         if 'profile' in args:
             profile_id = args['profile']
             if profile_id not in content.profiles:
-                logger.critical('Specified --profile, ' + profile_id + ', not found in content. Available profiles: ' + str(content.profiles.keys()))
+                logger.critical('Specified --profile, ' + profile_id + ', not found in content. Available profiles: ' + str(list(content.profiles.keys())))
                 import sys
                 sys.exit()
             else:
                 profile = content.profiles[profile_id]
         else:
             if len(content.profiles) == 1:
-                profile = content.profiles.values()[0]
+                profile = list(content.profiles.values())[0]
             else:
-                logger.critical('No --profile specified and unable to implicitly choose one. Available profiles: ' + str(content.profiles.keys()))
+                logger.critical('No --profile specified and unable to implicitly choose one. Available profiles: ' + str(list(content.profiles.keys())))
                 import sys
                 sys.exit()
         logger.info('Selecting profile ' + profile.id)

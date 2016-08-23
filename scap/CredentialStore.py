@@ -15,11 +15,11 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-import logging, ConfigParser, sys
+import logging, configparser, sys
 
 logger = logging.getLogger(__name__)
 class CredentialStore(object):
-    class __OnlyOne(ConfigParser.SafeConfigParser):
+    class __OnlyOne(configparser.SafeConfigParser):
         pass
 
     instance = None
