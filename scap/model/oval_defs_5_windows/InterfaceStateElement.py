@@ -24,13 +24,13 @@ class InterfaceStateElement(StateType):
         'xml_namespace': 'http://oval.mitre.org/XMLSchema/oval-definitions-5#windows',
         'tag_name': 'interface_state',
         'elements': {
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}name',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}index',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}type',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}hardware_addr',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}inet_addr',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}broadcast_addr',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}netmask',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}addr_type',
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}name': {'class': 'oval_defs_5.EntityStateStringType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}index': {'class': 'oval_defs_5.EntityStateStringType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}type': {'class': 'oval_defs_5.EntityStateStringType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}hardware_addr': {'class': 'oval_defs_5.EntityStateStringType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}inet_addr': {'class': 'oval_defs_5.EntityStateStringType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}broadcast_addr': {'class': 'oval_defs_5.EntityStateStringType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}netmask': {'class': 'oval_defs_5.EntityStateStringType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}addr_type': {'class': 'oval_defs_5.EntityStateStringType'},
         }
     }

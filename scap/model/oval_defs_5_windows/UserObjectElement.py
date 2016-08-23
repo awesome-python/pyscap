@@ -24,6 +24,6 @@ class UserObjectElement(ObjectType):
         'xml_namespace': 'http://oval.mitre.org/XMLSchema/oval-definitions-5#windows',
         'tag_name': 'user_object',
         'elements': {
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}user',
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}user': {'class': 'oval_defs_5.EntityObjectStringType'},
         }
     }

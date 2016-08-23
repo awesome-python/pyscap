@@ -24,8 +24,8 @@ class GroupStateElement(StateType):
         'xml_namespace': 'http://oval.mitre.org/XMLSchema/oval-definitions-5#windows',
         'tag_name': 'group_state',
         'elements': {
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}group',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}user',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}subgroup',
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}group': {'class': 'oval_defs_5.EntityStateStringType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}user': {'class': 'oval_defs_5.EntityStateStringType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}subgroup': {'class': 'oval_defs_5.EntityStateStringType'},
         }
     }

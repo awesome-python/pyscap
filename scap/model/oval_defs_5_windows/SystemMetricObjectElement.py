@@ -24,6 +24,6 @@ class SystemMetricObjectElement(ObjectType):
         'xml_namespace': 'http://oval.mitre.org/XMLSchema/oval-definitions-5#windows',
         'tag_name': 'systemmetric_object',
         'elements': {
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}index',
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}index': {'class': 'oval_defs_5.EntityObjectStringType'},
         }
     }

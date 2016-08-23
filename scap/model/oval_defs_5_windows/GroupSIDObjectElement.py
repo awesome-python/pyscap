@@ -24,6 +24,6 @@ class GroupSIDObjectElement(ObjectType):
         'xml_namespace': 'http://oval.mitre.org/XMLSchema/oval-definitions-5#windows',
         'tag_name': 'group_sid_object',
         'elements': {
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}group_sid',
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}group_sid': {'class': 'oval_defs_5.EntityObjectStringType'},
         }
     }

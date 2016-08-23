@@ -24,8 +24,8 @@ class WMIStateElement(StateType):
         'xml_namespace': 'http://oval.mitre.org/XMLSchema/oval-definitions-5#windows',
         'tag_name': 'wmi_state',
         'elements': {
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}namespace',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}wql',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}result',
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}namespace': {'class': 'oval_defs_5.EntityStateStringType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}wql': {'class': 'oval_defs_5.EntityStateStringType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}result': {'class': 'oval_defs_5.EntityStateStringType'},
         }
     }

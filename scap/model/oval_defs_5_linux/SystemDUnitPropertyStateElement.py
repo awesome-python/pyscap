@@ -24,8 +24,8 @@ class SystemDUnitPropertyStateElement(StateType):
         'xml_namespace': 'http://oval.mitre.org/XMLSchema/oval-definitions-5#linux',
         'tag_name': 'systemdunitproperty_state',
         'elements': {
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}unit',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}property',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}value',
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}unit': {'class': 'oval_defs_5.EntityStateStringType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}property': {'class': 'oval_defs_5.EntityStateStringType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}value': {'class': 'oval_defs_5.EntityStateStringType'},
         }
     }

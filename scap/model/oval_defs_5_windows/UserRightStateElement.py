@@ -24,7 +24,7 @@ class UserRightStateElement(StateType):
         'xml_namespace': 'http://oval.mitre.org/XMLSchema/oval-definitions-5#windows',
         'tag_name': 'userright_state',
         'elements': {
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}userright',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}trustee_sid',
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}userright': {'class': 'oval_defs_5.EntityStateStringType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}trustee_sid': {'class': 'oval_defs_5.EntityStateStringType'},
         }
     }

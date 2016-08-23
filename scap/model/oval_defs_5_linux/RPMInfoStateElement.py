@@ -24,14 +24,14 @@ class RPMInfoStateElement(StateType):
         'xml_namespace': 'http://oval.mitre.org/XMLSchema/oval-definitions-5#linux',
         'tag_name': 'rpminfo_state',
         'elements': {
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}name',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}arch',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}epoch',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}release',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}version',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}evr',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}signature_keyid',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}extended_name',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}filepath',
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}name': {'class': 'oval_defs_5.EntityStateStringType', 'min': 0, 'max': 1},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}arch': {'class': 'oval_defs_5.EntityStateStringType', 'min': 0, 'max': 1},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}epoch': {'class': 'EpochElement', 'min': 0, 'max': 1},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}release': {'class': 'ReleaseElement', 'min': 0, 'max': 1},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}version': {'class': 'VersionElement', 'min': 0, 'max': 1},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}evr': {'class': 'oval_defs_5.EntityStateEVRStringType', 'min': 0, 'max': 1},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}signature_keyid': {'class': 'oval_defs_5.EntityStateStringType', 'min': 0, 'max': 1},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}extended_name': {'class': 'oval_defs_5.EntityStateStringType', 'min': 0, 'max': 1},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}filepath': {'class': 'oval_defs_5.EntityStateStringType', 'min': 0, 'max': 1},
         }
     }

@@ -25,8 +25,8 @@ class RegistryObjectElement(ObjectType)::
         'xml_namespace': 'http://oval.mitre.org/XMLSchema/oval-definitions-5#windows',
         'tag_name': 'registry_object',
         'elements': {
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}hive',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}key',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}name',
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}hive': {'class': 'oval_defs_5.EntityObjectStringType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}key': {'class': 'oval_defs_5.EntityObjectStringType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}name': {'class': 'oval_defs_5.EntityObjectStringType'},
         }
     }

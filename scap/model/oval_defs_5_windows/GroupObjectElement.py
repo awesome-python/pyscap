@@ -24,6 +24,6 @@ class GroupObjectElement(ObjectType):
         'xml_namespace': 'http://oval.mitre.org/XMLSchema/oval-definitions-5#windows',
         'tag_name': 'group_object',
         'elements': {
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}group',
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}group': {'class': 'oval_defs_5.EntityObjectStringType'},
         }
     }

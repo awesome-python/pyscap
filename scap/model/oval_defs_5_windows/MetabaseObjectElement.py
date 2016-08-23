@@ -24,7 +24,7 @@ class MetabaseObjectElement(ObjectType):
         'xml_namespace': 'http://oval.mitre.org/XMLSchema/oval-definitions-5#windows',
         'tag_name': 'metabase_object',
         'elements': {
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}key',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}id',
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}key': {'class': 'oval_defs_5.EntityObjectStringType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}id': {'class': 'oval_defs_5.EntityObjectStringType'},
         }
     }

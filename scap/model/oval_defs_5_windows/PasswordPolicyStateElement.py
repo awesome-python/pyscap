@@ -24,11 +24,11 @@ class PasswordPolicyStateElement(StateType):
         'xml_namespace': 'http://oval.mitre.org/XMLSchema/oval-definitions-5#windows',
         'tag_name': 'passwordpolicy_state',
         'elements': {
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}max_passwd_age',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}min_passwd_age',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}min_passwd_len',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}password_hist_len',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}password_complexity',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}reversible_encryption',
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}max_passwd_age': {'class': 'oval_defs_5.EntityStateStringType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}min_passwd_age': {'class': 'oval_defs_5.EntityStateStringType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}min_passwd_len': {'class': 'oval_defs_5.EntityStateStringType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}password_hist_len': {'class': 'oval_defs_5.EntityStateStringType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}password_complexity': {'class': 'oval_defs_5.EntityStateStringType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}reversible_encryption': {'class': 'oval_defs_5.EntityStateStringType'},
         }
     }

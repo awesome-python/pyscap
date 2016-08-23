@@ -25,11 +25,11 @@ class ActiveDirectory57StateElement(StateType)::
         'xml_namespace': 'http://oval.mitre.org/XMLSchema/oval-definitions-5#windows',
         'tag_name': 'activedirectory57_state',
         'elements': {
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}naming_context',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}relative_dn',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}attribute',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}object_class',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}adstype',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}value',
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}naming_context': {'class': 'oval_defs_5.EntityStateStringType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}relative_dn': {'class': 'oval_defs_5.EntityStateStringType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}attribute': {'class': 'oval_defs_5.EntityStateStringType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}object_class': {'class': 'oval_defs_5.EntityStateStringType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}adstype': {'class': 'oval_defs_5.EntityStateStringType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}value': {'class': 'oval_defs_5.EntityStateStringType'},
         }
     }

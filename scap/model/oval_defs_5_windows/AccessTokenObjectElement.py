@@ -25,7 +25,7 @@ class AccessTokenObjectElement(ObjectType)::
         'xml_namespace': 'http://oval.mitre.org/XMLSchema/oval-definitions-5#windows',
         'tag_name': 'accesstoken_object',
         'elements': {
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}behaviors',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}security_principle',
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}behaviors': {'class': 'oval_defs_5.EntityObjectStringType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}security_principle': {'class': 'oval_defs_5.EntityObjectStringType'},
         }
     }

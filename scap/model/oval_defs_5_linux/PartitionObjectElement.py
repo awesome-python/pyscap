@@ -24,6 +24,8 @@ class PartitionObjectElement(ObjectType):
         'xml_namespace': 'http://oval.mitre.org/XMLSchema/oval-definitions-5#linux',
         'tag_name': 'partition_object',
         'elements': {
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}mount_point',
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}set': {'class': 'SetElement'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}mount_point': {'class': 'oval_defs_5.EntityObjectStringType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}filter': {'class': 'FilterElement', 'min': 0, 'max': None},
         }
     }

@@ -24,11 +24,11 @@ class MetabaseStateElement(StateType):
         'xml_namespace': 'http://oval.mitre.org/XMLSchema/oval-definitions-5#windows',
         'tag_name': 'metabase_state',
         'elements': {
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}key',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}id',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}name',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}user_type',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}data_type',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}data',
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}key': {'class': 'oval_defs_5.EntityStateStringType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}id': {'class': 'oval_defs_5.EntityStateStringType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}name': {'class': 'oval_defs_5.EntityStateStringType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}user_type': {'class': 'oval_defs_5.EntityStateStringType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}data_type': {'class': 'oval_defs_5.EntityStateStringType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}data': {'class': 'oval_defs_5.EntityStateStringType'},
         }
     }

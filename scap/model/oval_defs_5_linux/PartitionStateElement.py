@@ -24,13 +24,13 @@ class PartitionStateElement(StateType):
         'xml_namespace': 'http://oval.mitre.org/XMLSchema/oval-definitions-5#linux',
         'tag_name': 'partition_state',
         'elements': {
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}mount_point',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}device',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}uuid',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}fs_type',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}mount_options',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}total_space',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}space_used',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}space_left',
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}mount_point': {'class': 'oval_defs_5.EntityStateStringType', 'min': 0, 'max': 1},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}device': {'class': 'oval_defs_5.EntityStateStringType', 'min': 0, 'max': 1},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}uuid': {'class': 'oval_defs_5.EntityStateStringType', 'min': 0, 'max': 1},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}fs_type': {'class': 'oval_defs_5.EntityStateStringType', 'min': 0, 'max': 1},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}mount_options': {'class': 'oval_defs_5.EntityStateStringType', 'min': 0, 'max': 1},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}total_space': {'class': 'oval_defs_5.EntityStateIntType', 'min': 0, 'max': 1},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}space_used': {'class': 'oval_defs_5.EntityStateIntType', 'min': 0, 'max': 1},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}space_left': {'class': 'oval_defs_5.EntityStateIntType', 'min': 0, 'max': 1},
         }
     }

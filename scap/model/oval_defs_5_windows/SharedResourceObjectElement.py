@@ -24,6 +24,6 @@ class SharedResourceObjectElement(ObjectType):
         'xml_namespace': 'http://oval.mitre.org/XMLSchema/oval-definitions-5#windows',
         'tag_name': 'sharedresource_object',
         'elements': {
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}netname',
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}netname': {'class': 'oval_defs_5.EntityObjectStringType'},
         }
     }

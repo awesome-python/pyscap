@@ -24,6 +24,6 @@ class SELinuxBooleanObjectElement(ObjectType):
         'xml_namespace': 'http://oval.mitre.org/XMLSchema/oval-definitions-5#linux',
         'tag_name': 'selinuxboolean_object',
         'elements': {
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}name',
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}name': {'class': 'oval_defs_5.EntityObjectStringType'},
         }
     }

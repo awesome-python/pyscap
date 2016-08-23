@@ -25,14 +25,14 @@ class AuditEventPolicyStateElement(StateType)::
         'xml_namespace': 'http://oval.mitre.org/XMLSchema/oval-definitions-5#windows',
         'tag_name': 'auditeventpolicy_state',
         'elements': {
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}account_logon',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}account_management',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}detailed_tracking',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}directory_service_access',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}logon',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}object_access',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}policy_change',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}privilege_use',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}system',
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}account_logon': {'class': 'oval_defs_5.EntityStateStringType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}account_management': {'class': 'oval_defs_5.EntityStateStringType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}detailed_tracking': {'class': 'oval_defs_5.EntityStateStringType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}directory_service_access': {'class': 'oval_defs_5.EntityStateStringType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}logon': {'class': 'oval_defs_5.EntityStateStringType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}object_access': {'class': 'oval_defs_5.EntityStateStringType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}policy_change': {'class': 'oval_defs_5.EntityStateStringType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}privilege_use': {'class': 'oval_defs_5.EntityStateStringType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}system': {'class': 'oval_defs_5.EntityStateStringType'},
         }
     }

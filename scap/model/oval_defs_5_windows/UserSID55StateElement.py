@@ -24,9 +24,9 @@ class UserSID55StateElement(StateType):
         'xml_namespace': 'http://oval.mitre.org/XMLSchema/oval-definitions-5#windows',
         'tag_name': 'user_sid55_state',
         'elements': {
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}user_sid',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}enabled',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}group_sid',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}last_logon',
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}user_sid': {'class': 'oval_defs_5.EntityStateStringType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}enabled': {'class': 'oval_defs_5.EntityStateStringType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}group_sid': {'class': 'oval_defs_5.EntityStateStringType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}last_logon': {'class': 'oval_defs_5.EntityStateStringType'},
         }
     }

@@ -24,11 +24,11 @@ class IFListenersStateElement(StateType):
         'xml_namespace': 'http://oval.mitre.org/XMLSchema/oval-definitions-5#linux',
         'tag_name': 'iflisteners_state',
         'elements': {
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}interface_name',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}protocol',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}hw_address',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}program_name',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}pid',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}user_id',
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}interface_name': {'class': 'oval_defs_5.EntityStateStringType', 'min': 0, 'max': 1},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}protocol': {'class': 'EntityStateProtocolType', 'min': 0, 'max': 1},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}hw_address': {'class': 'oval_defs_5.EntityStateStringType', 'min': 0, 'max': 1},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}program_name': {'class': 'oval_defs_5.EntityStateStringType', 'min': 0, 'max': 1},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}pid': {'class': 'oval_defs_5.EntityStateIntType', 'min': 0, 'max': 1},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}user_id': {'class': 'oval_defs_5.EntityStateIntType', 'min': 0, 'max': 1},
         }
     }

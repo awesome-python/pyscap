@@ -24,10 +24,10 @@ class FileEffectiveRights53ObjectElement(ObjectType):
         'xml_namespace': 'http://oval.mitre.org/XMLSchema/oval-definitions-5#windows',
         'tag_name': 'fileeffectiverights53_object',
         'elements': {
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}behaviors',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}filepath',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}path',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}filename',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}trustee_sid',
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}behaviors': {'class': 'oval_defs_5.EntityObjectStringType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}filepath': {'class': 'oval_defs_5.EntityObjectStringType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}path': {'class': 'oval_defs_5.EntityObjectStringType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}filename': {'class': 'oval_defs_5.EntityObjectStringType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}trustee_sid': {'class': 'oval_defs_5.EntityObjectStringType'},
         }
     }

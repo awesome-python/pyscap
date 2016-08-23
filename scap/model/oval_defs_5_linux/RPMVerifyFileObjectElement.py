@@ -24,12 +24,12 @@ class RPMVerifyFileObjectElement(ObjectType):
         'xml_namespace': 'http://oval.mitre.org/XMLSchema/oval-definitions-5#linux',
         'tag_name': 'rpmverifyfile_object',
         'elements': {
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}behaviors',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}name',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}epoch',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}version',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}release',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}arch',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}filepath',
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}behaviors': {'class': 'oval_defs_5.EntityObjectStringType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}name': {'class': 'oval_defs_5.EntityObjectStringType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}epoch': {'class': 'oval_defs_5.EntityObjectStringType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}version': {'class': 'oval_defs_5.EntityObjectStringType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}release': {'class': 'oval_defs_5.EntityObjectStringType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}arch': {'class': 'oval_defs_5.EntityObjectStringType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}filepath': {'class': 'oval_defs_5.EntityObjectStringType'},
         }
     }

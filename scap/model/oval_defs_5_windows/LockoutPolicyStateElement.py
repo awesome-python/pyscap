@@ -24,9 +24,9 @@ class LockoutPolicyStateElement(StateType):
         'xml_namespace': 'http://oval.mitre.org/XMLSchema/oval-definitions-5#windows',
         'tag_name': 'lockoutpolicy_state',
         'elements': {
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}force_logoff',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}lockout_duration',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}lockout_observation_window',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}lockout_threshold',
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}force_logoff': {'class': 'oval_defs_5.EntityStateStringType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}lockout_duration': {'class': 'oval_defs_5.EntityStateStringType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}lockout_observation_window': {'class': 'oval_defs_5.EntityStateStringType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}lockout_threshold': {'class': 'oval_defs_5.EntityStateStringType'},
         }
     }

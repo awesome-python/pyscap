@@ -24,7 +24,7 @@ class SystemDUnitDependencyStateElement(StateType):
         'xml_namespace': 'http://oval.mitre.org/XMLSchema/oval-definitions-5#linux',
         'tag_name': 'systemdunitdependency_state',
         'elements': {
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}unit',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}dependency',
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}unit': {'class': 'oval_defs_5.EntityStateStringType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}dependency': {'class': 'oval_defs_5.EntityStateStringType'},
         }
     }

@@ -15,17 +15,15 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.model.oval_defs_5.ObjectType import ObjectType
+from scap.model.oval_defs_5.EntityStateAnySimpleType import EntityStateAnySimpleType
 import logging
 
 logger = logging.getLogger(__name__)
-class PrinterEffectiveRightsObjectElement(ObjectType):
+class EpochElement(EntityStateAnySimpleType):
     MODEL_MAP = {
-        'xml_namespace': 'http://oval.mitre.org/XMLSchema/oval-definitions-5#windows',
-        'tag_name': 'printereffectiverights_object',
-        'elements': {
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}behaviors': {'class': 'oval_defs_5.EntityObjectStringType'},
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}printer_name': {'class': 'oval_defs_5.EntityObjectStringType'},
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}trustee_sid': {'class': 'oval_defs_5.EntityObjectStringType'},
+        'xml_namespace': 'http://oval.mitre.org/XMLSchema/oval-definitions-5#linux',
+        'tag_name': 'epoch',
+        'attributes': {
+            'datatype': {'enum': ['string', 'int'], 'default': 'string'},
         }
     }

@@ -24,11 +24,11 @@ class PortStateElement(StateType):
         'xml_namespace': 'http://oval.mitre.org/XMLSchema/oval-definitions-5#windows',
         'tag_name': 'port_state',
         'elements': {
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}local_address',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}local_port',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}protocol',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}pid',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}foreign_address',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}foreign_port',
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}local_address': {'class': 'oval_defs_5.EntityStateStringType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}local_port': {'class': 'oval_defs_5.EntityStateStringType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}protocol': {'class': 'oval_defs_5.EntityStateStringType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}pid': {'class': 'oval_defs_5.EntityStateStringType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}foreign_address': {'class': 'oval_defs_5.EntityStateStringType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}foreign_port': {'class': 'oval_defs_5.EntityStateStringType'},
         }
     }

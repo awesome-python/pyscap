@@ -24,11 +24,11 @@ class DPKGInfoStateElement(StateType):
         'xml_namespace': 'http://oval.mitre.org/XMLSchema/oval-definitions-5#linux',
         'tag_name': 'dpkginfo_state',
         'elements': {
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}name',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}arch',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}epoch',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}release',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}version',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}evr',
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}name': {'class': 'oval_defs_5.EntityStateStringType', 'min': 0, 'max': None},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}arch': {'class': 'oval_defs_5.EntityStateStringType', 'min': 0, 'max': None},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}epoch': {'class': 'EpochElement', 'min': 0, 'max': None},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}release': {'class': 'ReleaseElement', 'min': 0, 'max': None},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}version': {'class': 'VersionElement', 'min': 0, 'max': None},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}evr': {'class': 'DPKGInfoStateEvrElement', 'min': 0, 'max': None},
         }
     }

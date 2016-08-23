@@ -25,12 +25,12 @@ class CmdletObjectElement(ObjectType)::
         'xml_namespace': 'http://oval.mitre.org/XMLSchema/oval-definitions-5#windows',
         'tag_name': 'cmdlet_object',
         'elements': {
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}module_name',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}module_id',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}module_version',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}verb',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}noun',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}parameters',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}select',
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}module_name': {'class': 'oval_defs_5.EntityObjectStringType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}module_id': {'class': 'oval_defs_5.EntityObjectStringType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}module_version': {'class': 'oval_defs_5.EntityObjectStringType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}verb': {'class': 'oval_defs_5.EntityObjectStringType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}noun': {'class': 'oval_defs_5.EntityObjectStringType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}parameters': {'class': 'oval_defs_5.EntityObjectStringType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}select': {'class': 'oval_defs_5.EntityObjectStringType'},
         }
     }

@@ -24,8 +24,8 @@ class DNSCacheStateElement(StateType):
         'xml_namespace': 'http://oval.mitre.org/XMLSchema/oval-definitions-5#windows',
         'tag_name': 'dnscache_state',
         'elements': {
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}domain_name',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}ttl',
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}ip_address',
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}domain_name': {'class': 'oval_defs_5.EntityStateStringType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}ttl': {'class': 'oval_defs_5.EntityStateStringType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}ip_address': {'class': 'oval_defs_5.EntityStateStringType'},
         }
     }
