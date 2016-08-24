@@ -15,18 +15,16 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.model.oval_defs_5.ObjectType import ObjectType
+from scap.model.oval_defs_5.TestType import TestType
 import logging
 
 logger = logging.getLogger(__name__)
-class RPMInfoObjectElement(ObjectType):
+class RpmInfoTestElement(TestType):
     MODEL_MAP = {
-        'xml_namespace': 'http://oval.mitre.org/XMLSchema/oval-definitions-5#linux',
-        'tag_name': 'rpminfo_object',
+        'xml_schema': 'http://oval.mitre.org/XMLSchema/oval-definitions-5#linux',
+        'tag_name': 'rpminfo_test',
         'elements': {
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}set': {'class': 'SetElement'},
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}behaviors': {'class': 'RpmInfoBehaviors', 'min': 0, 'max': 1},
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}name': {'class': 'oval_defs_5.EntityObjectStringType'},
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}filter': {'class': 'FilterElement', 'min': 0, 'max': None},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}object': {'class': 'oval_defs_5.ObjectRefType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}state': {'class': 'oval_defs_5.StateRefType', 'min': 0, 'max': None},
         }
     }

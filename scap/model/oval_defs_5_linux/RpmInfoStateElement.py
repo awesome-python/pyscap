@@ -19,20 +19,19 @@ from scap.model.oval_defs_5.StateType import StateType
 import logging
 
 logger = logging.getLogger(__name__)
-class RPMVerifyPackageStateElement(StateType):
+class RpmInfoStateElement(StateType):
     MODEL_MAP = {
         'xml_namespace': 'http://oval.mitre.org/XMLSchema/oval-definitions-5#linux',
-        'tag_name': 'rpmverifypackage_state',
+        'tag_name': 'rpminfo_state',
         'elements': {
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}name': {'class': 'oval_defs_5.EntityStateStringType', 'min': 0, 'max': 1},
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}epoch': {'class': 'EpochElement', 'min': 0, 'max': 1},
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}version': {'class': 'VersionElement', 'min': 0, 'max': 1},
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}release': {'class': 'ReleaseElement', 'min': 0, 'max': 1},
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}arch': {'class': 'oval_defs_5.EntityStateStringType', 'min': 0, 'max': 1},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}epoch': {'class': 'EpochElement', 'min': 0, 'max': 1},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}release': {'class': 'ReleaseElement', 'min': 0, 'max': 1},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}version': {'class': 'VersionElement', 'min': 0, 'max': 1},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}evr': {'class': 'oval_defs_5.EntityStateEVRStringType', 'min': 0, 'max': 1},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}signature_keyid': {'class': 'oval_defs_5.EntityStateStringType', 'min': 0, 'max': 1},
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}extended_name': {'class': 'oval_defs_5.EntityStateStringType', 'min': 0, 'max': 1},
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}dependency_check_passed': {'class': 'oval_defs_5.EntityStateBoolType', 'min': 0, 'max': 1},
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}digest_check_passed': {'class': 'oval_defs_5.EntityStateBoolType', 'min': 0, 'max': 1},
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}verification_script_successful': {'class': 'oval_defs_5.EntityStateBoolType', 'min': 0, 'max': 1},
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}signature_check_passed': {'class': 'oval_defs_5.EntityStateBoolType', 'min': 0, 'max': 1},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}filepath': {'class': 'oval_defs_5.EntityStateStringType', 'min': 0, 'max': 1},
         }
     }

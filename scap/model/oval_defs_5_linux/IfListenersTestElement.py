@@ -19,10 +19,10 @@ from scap.model.oval_defs_5.TestType import TestType
 import logging
 
 logger = logging.getLogger(__name__)
-class RPMVerifyPackageTestElement(TestType):
+class IfListenersTestElement(TestType):
     MODEL_MAP = {
         'xml_schema': 'http://oval.mitre.org/XMLSchema/oval-definitions-5#linux',
-        'tag_name': 'rpmverifypackage_test',
+        'tag_name': 'iflisteners_test',
         'elements': {
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}object': {'class': 'oval_defs_5.ObjectRefType'},
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}state': {'class': 'oval_defs_5.StateRefType', 'min': 0, 'max': None},

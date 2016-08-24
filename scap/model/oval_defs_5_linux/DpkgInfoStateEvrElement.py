@@ -15,19 +15,15 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.model.oval_defs_5.ObjectType import ObjectType
+from scap.model.oval_defs_5.EntityStateAnySimpleType import EntityStateAnySimpleType
 import logging
 
 logger = logging.getLogger(__name__)
-class SELinuxSecurityContextObjectElement(ObjectType):
+class DpkgInfoStateEvrElement(EntityStateAnySimpleType):
     MODEL_MAP = {
         'xml_namespace': 'http://oval.mitre.org/XMLSchema/oval-definitions-5#linux',
-        'tag_name': 'selinuxsecuritycontext_object',
-        'elements': {
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}behaviors': {'class': 'oval_defs_5.EntityObjectStringType'},
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}filepath': {'class': 'oval_defs_5.EntityObjectStringType'},
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}path': {'class': 'oval_defs_5.EntityObjectStringType'},
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}filename': {'class': 'oval_defs_5.EntityObjectStringType'},
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}pid': {'class': 'oval_defs_5.EntityObjectStringType'},
+        'tag_name': 'evr',
+        'attributes': {
+            'datatype': {'enum': ['evr_string', 'debian_evr_string'], 'required': True},
         }
     }

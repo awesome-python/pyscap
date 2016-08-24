@@ -19,7 +19,7 @@ from scap.model.oval_defs_5.StateType import StateType
 import logging
 
 logger = logging.getLogger(__name__)
-class DPKGInfoStateElement(StateType):
+class DpkgInfoStateElement(StateType):
     MODEL_MAP = {
         'xml_namespace': 'http://oval.mitre.org/XMLSchema/oval-definitions-5#linux',
         'tag_name': 'dpkginfo_state',
@@ -29,6 +29,6 @@ class DPKGInfoStateElement(StateType):
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}epoch': {'class': 'EpochElement', 'min': 0, 'max': None},
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}release': {'class': 'ReleaseElement', 'min': 0, 'max': None},
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}version': {'class': 'VersionElement', 'min': 0, 'max': None},
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}evr': {'class': 'DPKGInfoStateEvrElement', 'min': 0, 'max': None},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}evr': {'class': 'DpkgInfoStateEvrElement', 'min': 0, 'max': None},
         }
     }

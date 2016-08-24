@@ -19,7 +19,7 @@ from scap.model.oval_defs_5.TestType import TestType
 import logging
 
 logger = logging.getLogger(__name__)
-class SELinuxBooleanTestElement(TestType):
+class SeLinuxBooleanTestElement(TestType):
     MODEL_MAP = {
         'xml_schema': 'http://oval.mitre.org/XMLSchema/oval-definitions-5#linux',
         'tag_name': 'selinuxboolean_test',
