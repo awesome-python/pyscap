@@ -24,10 +24,12 @@ class FileAuditedPermissions53ObjectElement(ObjectType):
         'xml_namespace': 'http://oval.mitre.org/XMLSchema/oval-definitions-5#windows',
         'tag_name': 'fileauditedpermissions53_object',
         'elements': {
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}behaviors': {'class': 'oval_defs_5.EntityObjectStringType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}set': {'class': 'oval_defs_5.SetElement'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}behaviors': {'class': 'FileAuditPermissions53Behaviors', 'min': 0},
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}filepath': {'class': 'oval_defs_5.EntityObjectStringType'},
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}path': {'class': 'oval_defs_5.EntityObjectStringType'},
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}filename': {'class': 'oval_defs_5.EntityObjectStringType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}filename': {'class': 'oval_defs_5.EntityObjectStringType', 'nillable': True},
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}trustee_sid': {'class': 'oval_defs_5.EntityObjectStringType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}filter': {'class': 'oval_defs_5.FilterElement', 'min': 0, 'max': None},
         }
     }

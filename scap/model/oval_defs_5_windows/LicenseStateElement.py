@@ -24,8 +24,8 @@ class LicenseStateElement(StateType):
         'xml_namespace': 'http://oval.mitre.org/XMLSchema/oval-definitions-5#windows',
         'tag_name': 'license_state',
         'elements': {
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}name': {'class': 'oval_defs_5.EntityStateStringType'},
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}type': {'class': 'oval_defs_5.EntityStateStringType'},
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}value': {'class': 'oval_defs_5.EntityStateStringType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}name': {'class': 'oval_defs_5.EntityStateStringType', 'min': 0},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}type': {'class': 'EntityStateRegistryTypeType', 'min': 0},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}value': {'class': 'oval_defs_5.EntityStateAnySimpleType', 'min': 0},
         }
     }

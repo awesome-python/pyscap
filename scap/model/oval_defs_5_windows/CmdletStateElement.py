@@ -25,13 +25,13 @@ class CmdletStateElement(StateType)::
         'xml_namespace': 'http://oval.mitre.org/XMLSchema/oval-definitions-5#windows',
         'tag_name': 'cmdlet_state',
         'elements': {
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}module_name': {'class': 'oval_defs_5.EntityStateStringType'},
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}module_id': {'class': 'oval_defs_5.EntityStateStringType'},
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}module_version': {'class': 'oval_defs_5.EntityStateStringType'},
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}verb': {'class': 'oval_defs_5.EntityStateStringType'},
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}noun': {'class': 'oval_defs_5.EntityStateStringType'},
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}parameters': {'class': 'oval_defs_5.EntityStateStringType'},
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}select': {'class': 'oval_defs_5.EntityStateStringType'},
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}value': {'class': 'oval_defs_5.EntityStateStringType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}module_name': {'class': 'oval_defs_5.EntityStateStringType', 'min': 0, 'max': 1},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}module_id': {'class': 'EntityStateGUIDType', 'min': 0, 'max': 1},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}module_version': {'class': 'oval_defs_5.EntityStateVersionType', 'min': 0, 'max': 1},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}verb': {'class': 'EntityStateCmdletVerbType', 'min': 0, 'max': 1},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}noun': {'class': 'oval_defs_5.EntityStateStringType', 'min': 0, 'max': 1},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}parameters': {'class': 'oval_defs_5.EntityStateRecordType', 'min': 0, 'max': 1},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}select': {'class': 'oval_defs_5.EntityStateRecordType', 'min': 0, 'max': 1},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}value': {'class': 'oval_defs_5.EntityStateRecordType', 'min': 0, 'max': 1},
         }
     }

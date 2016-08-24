@@ -15,17 +15,17 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.model.oval_defs_5.StateType import StateType
+from scap.model.oval_defs_5_windows.FileBehaviors import FileBehaviors
 import logging
 
 logger = logging.getLogger(__name__)
-class GroupStateElement(StateType):
+
+class FileEffectiveRightsBehaviors(FileBehaviors):
     MODEL_MAP = {
-        'xml_namespace': 'http://oval.mitre.org/XMLSchema/oval-definitions-5#windows',
-        'tag_name': 'group_state',
-        'elements': {
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}group': {'class': 'oval_defs_5.EntityStateStringType', 'min': 0},
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}user': {'class': 'oval_defs_5.EntityStateStringType', 'min': 0},
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}subgroup': {'class': 'oval_defs_5.EntityStateStringType', 'min': 0},
+        'attributes': {
+            'include_default': {'type': 'Boolean', 'default': False},
+            'max_depth': {'type': 'Integer', 'default': -1},
+            'recurse_direction': {'enum': ['none', 'up', 'down'], 'default': 'none'},
+            'windows_view': {'enum': ['32_bit', '64_bit'], 'default': '64_bit'},
         }
     }
