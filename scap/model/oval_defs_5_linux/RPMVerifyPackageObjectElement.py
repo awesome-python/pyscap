@@ -24,11 +24,13 @@ class RPMVerifyPackageObjectElement(ObjectType):
         'xml_namespace': 'http://oval.mitre.org/XMLSchema/oval-definitions-5#linux',
         'tag_name': 'rpmverifypackage_object',
         'elements': {
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}behaviors': {'class': 'oval_defs_5.EntityObjectStringType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}set': {'class': 'SetElement'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}behaviors': {'class': 'RpmVerifyPackageBehaviors', 'min': 0, 'max': 1},
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}name': {'class': 'oval_defs_5.EntityObjectStringType'},
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}epoch': {'class': 'oval_defs_5.EntityObjectStringType'},
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}version': {'class': 'oval_defs_5.EntityObjectStringType'},
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}release': {'class': 'oval_defs_5.EntityObjectStringType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}epoch': {'class': 'EpochElement'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}version': {'class': 'VersionElement'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}release': {'class': 'ReleaseElement'},
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}arch': {'class': 'oval_defs_5.EntityObjectStringType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}filter': {'class': 'FilterElement', 'min': 0, 'max': None},
         }
     }
