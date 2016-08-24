@@ -15,16 +15,16 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.model.oval_defs_5.StateType import StateType
+from scap.Model import Model
 import logging
 
 logger = logging.getLogger(__name__)
-class SystemDUnitDependencyStateElement(StateType):
+class RpmInfoBehaviors(Model):
     MODEL_MAP = {
-        'xml_namespace': 'http://oval.mitre.org/XMLSchema/oval-definitions-5#linux',
-        'tag_name': 'systemdunitdependency_state',
-        'elements': {
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}unit': {'class': 'oval_defs_5.EntityStateStringType', 'min': 0, 'max': 1},
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}dependency': {'class': 'oval_defs_5.EntityStateStringType', 'min': 0, 'max': 1},
+        'attributes': {
+            'max_depth': {'type': 'Integer', 'default': -1},
+            'recurse': {'enum': ['directories', 'symlinks', 'symlinks and directories'], 'default': 'symlinks and directories'},
+            'recurse': {'enum': ['none', 'up', 'down'], 'default': 'none'},
+            'recurse_file_system': {'enum': ['all', 'local', 'defined'], 'default': 'all'},
         }
     }

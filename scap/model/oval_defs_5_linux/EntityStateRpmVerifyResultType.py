@@ -15,16 +15,11 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.model.oval_defs_5.StateType import StateType
+from scap.model.oval_defs_5.EntityStateStringType import EntityStateStringType
 import logging
 
 logger = logging.getLogger(__name__)
-class SystemDUnitDependencyStateElement(StateType):
+class EntityStateRpmVerifyResultType(EntityStateStringType):
     MODEL_MAP = {
-        'xml_namespace': 'http://oval.mitre.org/XMLSchema/oval-definitions-5#linux',
-        'tag_name': 'systemdunitdependency_state',
-        'elements': {
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}unit': {'class': 'oval_defs_5.EntityStateStringType', 'min': 0, 'max': 1},
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}dependency': {'class': 'oval_defs_5.EntityStateStringType', 'min': 0, 'max': 1},
-        }
+        #TODO: ensure value in RPM_VERIFY_RESULT_ENUMERATION
     }

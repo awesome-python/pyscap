@@ -24,10 +24,12 @@ class SeLinuxSecurityContextObjectElement(ObjectType):
         'xml_namespace': 'http://oval.mitre.org/XMLSchema/oval-definitions-5#linux',
         'tag_name': 'selinuxsecuritycontext_object',
         'elements': {
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}behaviors': {'class': 'oval_defs_5.EntityObjectStringType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}set': {'class': 'SetElement'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}behaviors': {'class': 'FileBehaviors', 'min': 0},
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}filepath': {'class': 'oval_defs_5.EntityObjectStringType'},
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}path': {'class': 'oval_defs_5.EntityObjectStringType'},
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}filename': {'class': 'oval_defs_5.EntityObjectStringType'},
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}pid': {'class': 'oval_defs_5.EntityObjectStringType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}filename': {'class': 'oval_defs_5.EntityObjectStringType', 'nillable': True},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}pid': {'class': 'oval_defs_5.EntityObjectIntType', 'nillable': True},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}filter': {'class': 'FilterElement', 'min': 0, 'max': None},
         }
     }
