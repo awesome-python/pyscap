@@ -15,17 +15,20 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.model.oval_defs_5.StateType import StateType
-import logging
-
-logger = logging.getLogger(__name__)
-
-class WuaUpdateSearcherStateElement(StateType):
-    MODEL_MAP = {
-        'xml_namespace': 'http://oval.mitre.org/XMLSchema/oval-definitions-5#windows',
-        'tag_name': 'wuaupdatesearcher_state',
-        'elements': {
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}search_criteria': {'class': 'oval_defs_5.EntityStateStringType', 'min': 0},
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}update_id': {'class': 'oval_defs_5.EntityStateStringType', 'min': 0},
-        }
-    }
+REGISTRY_TYPE_ENUMERATION = [
+    'reg_binary',
+    'reg_dword',
+    'reg_dword_little_endian',
+    'reg_dword_big_endian',
+    'reg_expand_sz',
+    'reg_link',
+    'reg_multi_sz',
+    'reg_none',
+    'reg_qword',
+    'reg_qword_little_endian',
+    'reg_sz',
+    'reg_resource_list',
+    'reg_full_resource_descriptor',
+    'reg_resource_requirements_list',
+    '',
+]

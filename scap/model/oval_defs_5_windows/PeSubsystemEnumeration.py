@@ -15,17 +15,19 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.model.oval_defs_5.StateType import StateType
-import logging
-
-logger = logging.getLogger(__name__)
-
-class WuaUpdateSearcherStateElement(StateType):
-    MODEL_MAP = {
-        'xml_namespace': 'http://oval.mitre.org/XMLSchema/oval-definitions-5#windows',
-        'tag_name': 'wuaupdatesearcher_state',
-        'elements': {
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}search_criteria': {'class': 'oval_defs_5.EntityStateStringType', 'min': 0},
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}update_id': {'class': 'oval_defs_5.EntityStateStringType', 'min': 0},
-        }
-    }
+PE_SUBSYSTEM_ENUMERATION = [
+    'IMAGE_SUBSYSTEM_UNKNOWN',
+    'IMAGE_SUBSYSTEM_NATIVE',
+    'IMAGE_SUBSYSTEM_WINDOWS_GUI',
+    'IMAGE_SUBSYSTEM_WINDOWS_CUI',
+    'IMAGE_SUBSYSTEM_OS2_CUI',
+    'IMAGE_SUBSYSTEM_POSIX_CUI',
+    'IMAGE_SUBSYSTEM_WINDOWS_CE_GUI',
+    'IMAGE_SUBSYSTEM_EFI_APPLICATION',
+    'IMAGE_SUBSYSTEM_EFI_BOOT_SERVICE_DRIVER',
+    'IMAGE_SUBSYSTEM_EFI_RUNTIME_DRIVER',
+    'IMAGE_SUBSYSTEM_EFI_ROM',
+    'IMAGE_SUBSYSTEM_XBOX',
+    'IMAGE_SUBSYSTEM_WINDOWS_BOOT_APPLICATION',
+    '',
+]

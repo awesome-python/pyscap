@@ -15,17 +15,24 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.model.oval_defs_5.StateType import StateType
-import logging
-
-logger = logging.getLogger(__name__)
-
-class WuaUpdateSearcherStateElement(StateType):
-    MODEL_MAP = {
-        'xml_namespace': 'http://oval.mitre.org/XMLSchema/oval-definitions-5#windows',
-        'tag_name': 'wuaupdatesearcher_state',
-        'elements': {
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}search_criteria': {'class': 'oval_defs_5.EntityStateStringType', 'min': 0},
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}update_id': {'class': 'oval_defs_5.EntityStateStringType', 'min': 0},
-        }
-    }
+SHARED_RESOURCE_TYPE_ENUMERATION = [
+    'STYPE_DISKTREE',
+    'STYPE_DISKTREE_SPECIAL',
+    'STYPE_DISKTREE_TEMPORARY',
+    'STYPE_DISKTREE_SPECIAL_TEMPORARY',
+    'STYPE_PRINTQ',
+    'STYPE_PRINTQ_SPECIAL',
+    'STYPE_PRINTQ_TEMPORARY',
+    'STYPE_PRINTQ_SPECIAL_TEMPORARY',
+    'STYPE_DEVICE',
+    'STYPE_DEVICE_SPECIAL',
+    'STYPE_DEVICE_TEMPORARY',
+    'STYPE_DEVICE_SPECIAL_TEMPORARY',
+    'STYPE_IPC',
+    'STYPE_IPC_SPECIAL',
+    'STYPE_IPC_TEMPORARY',
+    'STYPE_IPC_SPECIAL_TEMPORARY',
+    'STYPE_SPECIAL',
+    'STYPE_TEMPORARY',
+    '',
+]

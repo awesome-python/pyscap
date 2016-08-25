@@ -15,17 +15,12 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.model.oval_defs_5.StateType import StateType
+from scap.model.oval_defs_5.EntityObjectStringType import EntityObjectStringType
 import logging
 
 logger = logging.getLogger(__name__)
 
-class WuaUpdateSearcherStateElement(StateType):
+class EntityObjectGUIDType(EntityObjectStringType):
     MODEL_MAP = {
-        'xml_namespace': 'http://oval.mitre.org/XMLSchema/oval-definitions-5#windows',
-        'tag_name': 'wuaupdatesearcher_state',
-        'elements': {
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}search_criteria': {'class': 'oval_defs_5.EntityStateStringType', 'min': 0},
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}update_id': {'class': 'oval_defs_5.EntityStateStringType', 'min': 0},
-        }
+        #TODO <xsd:pattern value="(\{[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}\}){0,}"/>
     }

@@ -25,6 +25,9 @@ class WuaUpdateSearcherObjectElement(ObjectType):
         'xml_namespace': 'http://oval.mitre.org/XMLSchema/oval-definitions-5#windows',
         'tag_name': 'wuaupdatesearcher_object',
         'elements': {
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}search_criteria'
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}set': {'class': 'oval_defs_5.SetElement'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}behaviors': {'class': 'WuaUpdateSearcherBehaviors', 'min': 0},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}search_criteria': {'class': 'EntityObjectStringType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}filter': {'class': 'oval_defs_5.FilterElement', 'min': 0, 'max': None},
         }
     }
