@@ -24,6 +24,7 @@ class ProcessObjectElement(ObjectType):
         'xml_namespace': 'http://oval.mitre.org/XMLSchema/oval-definitions-5#windows',
         'tag_name': 'process_object',
         'elements': {
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}set': {'class': 'oval_defs_5.SetElement'},
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}command_line': {'class': 'oval_defs_5.EntityObjectStringType'},
         }
     }

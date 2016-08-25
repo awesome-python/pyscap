@@ -24,14 +24,14 @@ class UacStateElement(StateType):
         'xml_namespace': 'http://oval.mitre.org/XMLSchema/oval-definitions-5#windows',
         'tag_name': 'uac_state',
         'elements': {
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}admin_approval_mode': {'class': 'oval_defs_5.EntityStateStringType'},
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}elevation_prompt_admin': {'class': 'oval_defs_5.EntityStateStringType'},
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}elevation_prompt_standard': {'class': 'oval_defs_5.EntityStateStringType'},
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}detect_installations': {'class': 'oval_defs_5.EntityStateStringType'},
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}elevate_signed_executables': {'class': 'oval_defs_5.EntityStateStringType'},
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}elevate_uiaccess': {'class': 'oval_defs_5.EntityStateStringType'},
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}run_admins_aam': {'class': 'oval_defs_5.EntityStateStringType'},
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}secure_desktop': {'class': 'oval_defs_5.EntityStateStringType'},
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}virtualize_write_failures': {'class': 'oval_defs_5.EntityStateStringType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}admin_approval_mode': {'class': 'oval_defs_5.EntityStateBoolType', 'min': 0},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}elevation_prompt_admin': {'class': 'oval_defs_5.EntityStateStringType', 'min': 0},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}elevation_prompt_standard': {'class': 'oval_defs_5.EntityStateStringType', 'min': 0},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}detect_installations': {'class': 'oval_defs_5.EntityStateBoolType', 'min': 0},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}elevate_signed_executables': {'class': 'oval_defs_5.EntityStateBoolType', 'min': 0},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}elevate_uiaccess': {'class': 'oval_defs_5.EntityStateBoolType', 'min': 0},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}run_admins_aam': {'class': 'oval_defs_5.EntityStateBoolType', 'min': 0},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}secure_desktop': {'class': 'oval_defs_5.EntityStateBoolType', 'min': 0},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}virtualize_write_failures': {'class': 'oval_defs_5.EntityStateBoolType', 'min': 0},
         }
     }

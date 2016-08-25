@@ -15,17 +15,14 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.model.oval_defs_5.TestType import TestType
+from scap.Model import Model
 import logging
 
 logger = logging.getLogger(__name__)
 
-class RegistryTestElement(TestType):
+class SharedResourceAuditedPermissionsBehaviors(Model):
     MODEL_MAP = {
-        'xml_schema': 'http://oval.mitre.org/XMLSchema/oval-definitions-5#windows',
-        'tag_name': 'registry_test',
-        'elements': {
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}object': {'class': 'oval_defs_5.ObjectRefType'},
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}state': {'class': 'oval_defs_5.StateRefType', 'min': 0, 'max': None},
+        'attributes': {
+            'include_group': {'type': 'Boolean', 'default': True},
         }
     }

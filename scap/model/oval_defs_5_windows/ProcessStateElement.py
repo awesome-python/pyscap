@@ -24,11 +24,11 @@ class ProcessStateElement(StateType):
         'xml_namespace': 'http://oval.mitre.org/XMLSchema/oval-definitions-5#windows',
         'tag_name': 'process_state',
         'elements': {
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}command_line': {'class': 'oval_defs_5.EntityStateStringType'},
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}pid': {'class': 'oval_defs_5.EntityStateStringType'},
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}ppid': {'class': 'oval_defs_5.EntityStateStringType'},
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}priority': {'class': 'oval_defs_5.EntityStateStringType'},
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}image_path': {'class': 'oval_defs_5.EntityStateStringType'},
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}current_dir': {'class': 'oval_defs_5.EntityStateStringType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}command_line': {'class': 'oval_defs_5.EntityStateStringType', 'min': 0},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}pid': {'class': 'oval_defs_5.EntityStateIntType', 'min': 0},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}ppid': {'class': 'oval_defs_5.EntityStateIntType', 'min': 0},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}priority': {'class': 'oval_defs_5.EntityStateStringType', 'min': 0},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}image_path': {'class': 'oval_defs_5.EntityStateStringType', 'min': 0},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}current_dir': {'class': 'oval_defs_5.EntityStateStringType', 'min': 0},
         }
     }

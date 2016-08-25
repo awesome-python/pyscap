@@ -20,7 +20,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-class CmdletObjectElement(ObjectType)::
+class CmdletObjectElement(ObjectType):
     MODEL_MAP = {
         'xml_namespace': 'http://oval.mitre.org/XMLSchema/oval-definitions-5#windows',
         'tag_name': 'cmdlet_object',

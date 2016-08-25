@@ -20,7 +20,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-class AuditEventPolicySubcategoriesTestElement(TestType)::
+class AuditEventPolicySubcategoriesTestElement(TestType):
     MODEL_MAP = {
         'xml_schema': 'http://oval.mitre.org/XMLSchema/oval-definitions-5#windows',
         'tag_name': 'auditeventpolicysubcategories_test',
