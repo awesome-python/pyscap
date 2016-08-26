@@ -46,6 +46,7 @@ arg_parser.add_argument('--version', action='version', version='%(prog)s 1.0')
 arg_parser.add_argument('--verbose', '-v', action='count')
 
 group = arg_parser.add_mutually_exclusive_group()
+group.add_argument('--connect', help='try to connect to the host', action='store_true')
 group.add_argument('--benchmark', help='benchmark hosts', action='store_true')
 group.add_argument('--list-hosts', help='outputs a list of the hosts', action='store_true')
 # group.add_argument('--test', help='perform a test on the selected hosts', nargs='+')
@@ -66,11 +67,14 @@ elif(args[0].verbose >= 3):
     logger.debug('Set console logging level to NOTSET')
 
 # set up the modes
-if args[0].benchmark:
-    logger.info("Benchmark operation")
-    arg_parser.add_argument('--credentials', nargs='+')
+if args[0].connect:
+    logger.info("Connect operation")
+    arg_parser.add_argument('--inventory', nargs='+')
     arg_parser.add_argument('--host', nargs='+')
-    arg_parser.add_argument('--hosts', nargs='+')
+elif args[0].benchmark:
+    logger.info("Benchmark operation")
+    arg_parser.add_argument('--inventory', nargs='+')
+    arg_parser.add_argument('--host', nargs='+')
     arg_parser.add_argument('--content', required=True, nargs=1, type=argparse.FileType('r'))
     arg_parser.add_argument('--data_stream', nargs=1)
     arg_parser.add_argument('--checklist', nargs=1)
@@ -79,7 +83,6 @@ if args[0].benchmark:
     arg_parser.add_argument('--pretty', action='store_true')
 elif args[0].list_hosts:
     arg_parser.add_argument('--host', nargs='+')
-    arg_parser.add_argument('--hosts', nargs='+')
 # elif args[0].test:
 #     logger.info("Test operation")
 #     arg_parser.add_argument('--host', required=True, nargs='+')
@@ -102,30 +105,54 @@ for k,v in list(NAMESPACES.items()):
 
 # perform the operations
 from scap.Host import Host
-from scap.CredentialStore import CredentialStore
+from scap.Inventory import Inventory
 
-if args.benchmark:
-    if args.credentials:
-        for filename in args.credentials:
+if args.connect or args.benchmark or args.list_hosts:
+    if args.inventory:
+        for filename in args.inventory:
             try:
                 with open(filename, 'r') as fp:
-                    logger.debug('Loading credentials from ' + filename)
-                    CredentialStore().readfp(fp)
+                    logger.debug('Loading inventory from ' + filename)
+                    Inventory().readfp(fp)
             except IOError:
-                logger.error('Could not read from file ' + filename)
-    if not args.host and not args.hosts:
-        logger.critical('Either --host <host> or --hosts <file> must be supplied')
+                logger.error('Could not read from inventory file ' + filename)
+    if not args.host:
+        logger.critical('--host <host> must be supplied')
         import sys
         sys.exit()
     hosts = []
+    inventory = Inventory()
     if args.host:
-        for t in args.host:
-            hosts.append(Host.parse(t))
-    if args.hosts:
-        for filename in args.hosts:
-            with open(filename, 'r') as f:
-                for line in f:
-                    hosts.append(Host.parse(line))
+        for hostname in args.host:
+            if not inventory.has_section(hostname):
+                logger.critical('Host not found in inventory file: ' + hostname)
+                sys.exit()
+            if not inventory.has_option(hostname, 'connection'):
+                connection = 'ssh'
+                #TODO do some kind of auto detection
+            else:
+                connection = inventory.get(hostname, 'connection')
+            if connection == 'ssh':
+                from scap.host.SSHHost import SSHHost
+                host = SSHHost(hostname)
+            elif connection == 'smb':
+                from scap.host.SMBHost import SMBHost
+                host = SMBHost(hostname)
+            elif connection == 'winrm':
+                from scap.host.WinRMHost import WinRMHost
+                host = WinRMHost(hostname)
+            else:
+                logger.critical('Unsupported host connection type: ' + connection)
+                sys.exit()
+            hosts.append(host)
+
+if args.connect:
+    for host in hosts:
+        host.connect()
+        host.collect_facts()
+        print(str(host.facts))
+        host.disconnect()
+elif args.benchmark:
 
     content = Model.load(None, ET.parse(args.content[0]).getroot())
 
@@ -137,14 +164,12 @@ if args.benchmark:
         checker_args['checklist'] = args.checklist[0]
     if args.profile:
         checker_args['profile'] = args.profile[0]
+
     for host in hosts:
         host.connect()
-
         host.collect_facts()
         #TODO cache facts
-
         host.benchmark(content, checker_args)
-
         host.disconnect()
 
     from scap.Reporter import Reporter

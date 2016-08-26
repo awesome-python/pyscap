@@ -16,39 +16,12 @@
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
 import inspect, urllib.parse, logging
-from scap.CredentialStore import CredentialStore
+from scap.Inventory import Inventory
 
 logger = logging.getLogger(__name__)
 class Host(object):
-    # TODO should be in a config file
-    DEFAULT_SCHEME = 'ssh'
-
-    @staticmethod
-    def parse(spec):
-        if spec.find('://') == -1:
-            spec = Host.DEFAULT_SCHEME + '://' + spec
-        url = urllib.parse.urlparse(spec)
-        if url.scheme == 'ssh':
-            creds = CredentialStore()
-            if creds.has_section(url.hostname):
-                if url.username:
-                    creds.set(url.hostname, 'ssh_username', url.username)
-                if url.password:
-                    creds.set(url.hostname, 'ssh_password', url.password)
-            from scap.host.SSHHost import SSHHost
-            t = SSHHost(url.hostname, port=(url.port if url.port else 22))
-        elif url.scheme == 'winrm':
-            from scap.host.winrm_host import WinRMHost
-            #t = winrm_host.WinRMHost(url.hostname, port=(url.port if url.port else 0))
-            raise NotImplementedError('winrm hosts are not implemented')
-        else:
-            logger.critical('Unsupported host scheme: ' + url.scheme)
-            sys.exit()
-        return t
-
-    def __init__(self, hostname, port):
+    def __init__(self, hostname):
         self.hostname = hostname
-        self.port = port
         self.fact_collectors = []
 
     def get_hostname(self):

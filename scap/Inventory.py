@@ -18,16 +18,16 @@
 import logging, configparser, sys
 
 logger = logging.getLogger(__name__)
-class CredentialStore(object):
+class Inventory(object):
     class __OnlyOne(configparser.SafeConfigParser):
         pass
 
     instance = None
     def __init__(self):
-        if not CredentialStore.instance:
-            CredentialStore.instance = CredentialStore.__OnlyOne()
+        if not Inventory.instance:
+            Inventory.instance = Inventory.__OnlyOne()
 
     def __getattr__(self, name):
-        if not CredentialStore.instance:
-            CredentialStore.instance = CredentialStore.__OnlyOne()
+        if not Inventory.instance:
+            Inventory.instance = Inventory.__OnlyOne()
         return getattr(self.instance, name)

@@ -90,3 +90,4 @@ ENV/
 
 pip-selfcheck.json
 .~lock*
+*.exe

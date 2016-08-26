@@ -17,7 +17,7 @@
 
 from scap.Host import Host
 import paramiko.client, logging, sys, binascii, os
-from scap.CredentialStore import CredentialStore
+from scap.Inventory import Inventory
 
 logger = logging.getLogger(__name__)
 class SSHHost(Host):
@@ -44,16 +44,11 @@ class SSHHost(Host):
             else:
                 raise RuntimeError('Key for ' + hostname + ' not accepted')
 
-    def __init__(self, hostname, port):
-        super(SSHHost, self).__init__(hostname, port)
+    def __init__(self, hostname):
+        super(SSHHost, self).__init__(hostname)
 
         from scap.fact_collector.UNameCollector import UNameCollector
         self.fact_collectors.append(UNameCollector(self))
-
-        creds = CredentialStore()
-        if not creds.has_section(hostname):
-            logger.critical('No credentials defined for host ' + hostname)
-            sys.exit()
 
     def connect(self):
         self.client = paramiko.client.SSHClient()
@@ -64,17 +59,17 @@ class SSHHost(Host):
         except:
             logger.warning("Couldn't read ssh host keys")
         self.client.set_missing_host_key_policy(self.AskHostKeyPolicy())
-        creds = CredentialStore()
-        if creds.has_option(self.hostname, 'ssh_private_key'):
+        inventory = Inventory()
+        if inventory.has_option(self.hostname, 'ssh_private_key'):
             self.client.connect(self.hostname, port=self.port,
-                pkey=creds.get(self.hostname, 'ssh_private_key'))
-        elif creds.has_option(self.hostname, 'ssh_username') and creds.has_option(self.hostname, 'ssh_password'):
+                pkey=inventory.get(self.hostname, 'ssh_private_key'))
+        elif inventory.has_option(self.hostname, 'username') and inventory.has_option(self.hostname, 'password'):
             self.client.connect(self.hostname, port=self.port,
-                username=creds.get(self.hostname, 'ssh_username'),
-                password=creds.get(self.hostname, 'ssh_password'))
-        elif creds.has_option(self.hostname, 'ssh_private_key_filename'):
+                username=inventory.get(self.hostname, 'username'),
+                password=inventory.get(self.hostname, 'password'))
+        elif inventory.has_option(self.hostname, 'ssh_private_key_filename'):
             self.client.connect(self.hostname, port=self.port,
-                key_filename=creds.get(self.hostname, 'ssh_private_key_filename'))
+                key_filename=inventory.get(self.hostname, 'ssh_private_key_filename'))
         else:
             raise RuntimeError('No method of authenticating with host ' + self.hostname + ' found')
 
@@ -88,18 +83,18 @@ class SSHHost(Host):
         return stdout
 
     def can_privileged_command(self):
-        creds = CredentialStore()
-        return creds.has_option(self.hostname, 'sudo_password')
+        inventory = Inventory()
+        return inventory.has_option(self.hostname, 'sudo_password')
 
     def exec_privileged_command(self, cmd):
-        creds = CredentialStore()
-        if not creds.has_option(self.hostname, 'sudo_password'):
+        inventory = Inventory()
+        if not inventory.has_option(self.hostname, 'sudo_password'):
             raise RuntimeError("Can't run privileged command without sudo_password defined in credentials")
         logger.debug("Sending command: " + 'sudo -S -- sh -c "' + cmd.replace('"', r'\"') + '"')
         stdin, stdout, stderr = self.client.exec_command('sudo -S -- sh -c "' + cmd.replace('"', r'\"') + '"')
 
         logger.debug("Sending sudo_password...")
-        stdin.write(creds.get(self.hostname, 'sudo_password') + "\n")
+        stdin.write(inventory.get(self.hostname, 'sudo_password') + "\n")
         # eat the prompt
         stderr.readline()
 
