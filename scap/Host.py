@@ -27,31 +27,11 @@ class Host(object):
     def get_hostname(self):
         return self.hostname
 
-    def line_from_command(self, cmd):
-        return self.exec_command(cmd).readline()
-
-    def lines_from_command(self, cmd):
-        return self.exec_command(cmd).readlines()
-
-    def line_from_priv_command(self, cmd):
-        return self.exec_privileged_command(cmd).readline()
-
-    def lines_from_priv_command(self, cmd):
-        return self.exec_privileged_command(cmd).readlines()
-
     def connect(self):
         import inspect
         raise NotImplementedError(inspect.stack()[0][3] + '() has not been implemented in subclass: ' + self.__class__.__name__)
+
     def disconnect(self):
-        import inspect
-        raise NotImplementedError(inspect.stack()[0][3] + '() has not been implemented in subclass: ' + self.__class__.__name__)
-    def exec_command(self, cmd):
-        import inspect
-        raise NotImplementedError(inspect.stack()[0][3] + '() has not been implemented in subclass: ' + self.__class__.__name__)
-    def can_privileged_command(self):
-        import inspect
-        raise NotImplementedError(inspect.stack()[0][3] + '() has not been implemented in subclass: ' + self.__class__.__name__)
-    def exec_privileged_command(self):
         import inspect
         raise NotImplementedError(inspect.stack()[0][3] + '() has not been implemented in subclass: ' + self.__class__.__name__)
 

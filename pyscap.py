@@ -135,6 +135,9 @@ if args.connect or args.benchmark or args.list_hosts:
             if connection == 'ssh':
                 from scap.host.SSHHost import SSHHost
                 host = SSHHost(hostname)
+            elif connection == 'impacket':
+                from scap.host.IMPacketHost import IMPacketHost
+                host = IMPacketHost(hostname)
             elif connection == 'smb':
                 from scap.host.SMBHost import SMBHost
                 host = SMBHost(hostname)

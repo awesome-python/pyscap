@@ -15,23 +15,13 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.Host import Host
-from scap.Inventory import Inventory
-import string, random, socket, logging
+from scap.FactCollector import FactCollector
 
-logger = logging.getLogger(__name__)
-class PSExecHost(Host):
-    def __init__(self, hostname):
-        super(PSExecHost, self).__init__(hostname)
-
-        # TODO initialize collectors
-
-    def connect(self):
-        inventory = Inventory()
-        address = self.hostname
-        if inventory.has_option(self.hostname, 'address'):
-            address = inventory.get(self.hostname, 'address')
-        # TODO
-
-    def disconnect(self):
-        pass
+class WinRMCollector(FactCollector):
+    def collect(self):
+        ver = self.host.exec_command('ver', [])
+        self.host.facts['ver'] = ver
+        if uname.startswith('Microsoft Windows'):
+            self.host.facts['oval_family'] = 'windows'
+        else:
+            raise NotImplementedError('Host discovery has not been implemented for winrm ver: ' + ver)

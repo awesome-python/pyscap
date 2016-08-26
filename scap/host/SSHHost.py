@@ -103,5 +103,17 @@ class SSHHost(Host):
             raise RuntimeError(err)
         return stdout
 
+    def line_from_command(self, cmd):
+        return self.exec_command(cmd).readline()
+
+    def lines_from_command(self, cmd):
+        return self.exec_command(cmd).readlines()
+
+    def line_from_priv_command(self, cmd):
+        return self.exec_privileged_command(cmd).readline()
+
+    def lines_from_priv_command(self, cmd):
+        return self.exec_privileged_command(cmd).readlines()
+
     def disconnect(self):
         self.client.close()
