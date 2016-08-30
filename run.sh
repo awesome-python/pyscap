@@ -21,7 +21,7 @@ die() { echo "$0: $@ at ${BASH_SOURCE[1]}:${FUNCNAME[1]} line ${BASH_LINENO[0]}.
 warn() { echo "$0: $@ at ${BASH_SOURCE[1]}:${FUNCNAME[1]} line ${BASH_LINENO[0]}." >& 2; }
 
 #./pyscap.py -vvv --inventory ~/pyscap_inventory.ini --host localhost --benchmark --content sample_content/USGCB-Windows/scap_gov.nist_USGCB-ie8.xml --pretty
-./pyscap.py -vvv --inventory ~/pyscap_inventory.ini --host iago_8_1_winrm --connect
-#./pyscap.py -vvv --inventory ~/pyscap_inventory.ini --host iago_8_1_winrm --benchmark --content sample_content/USGCB-Windows/scap_gov.nist_USGCB-ie8.xml --pretty
+#./pyscap.py -vvv --inventory ~/pyscap_inventory.ini --host iago_8_1_winrm --connect
+./pyscap.py -vvv --inventory ~/pyscap_inventory.ini --host iago_8_1_winrm --benchmark --content sample_content/USGCB-Windows/scap_gov.nist_USGCB-ie8.xml --pretty
 #./pyscap.py -vvv --inventory ~/pyscap_inventory.ini --host iago_8_1_smb --connect
 #./pyscap.py -vvv --inventory ~/pyscap_inventory.ini --host iago_8_1_smb --benchmark --content sample_content/USGCB-Windows/scap_gov.nist_USGCB-ie8.xml --pretty
