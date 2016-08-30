@@ -153,7 +153,6 @@ class WinRMHost(Host):
                 cert_key_pem=cert_key_pem,
                 server_cert_validation=server_cert_validation)
 
-
     def connect(self):
         inventory = Inventory()
 
@@ -214,3 +213,9 @@ class WinRMHost(Host):
             raise RuntimeError('Command returned std_err: ' + std_err)
 
         return std_out.decode()
+
+    def line_from_command(self, cmd, args):
+        return self.exec_command(cmd, args).strip('\r\n')
+
+    def lines_from_command(self, cmd, args):
+        return self.exec_command(cmd, args).splitlines()

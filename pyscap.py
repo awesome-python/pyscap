@@ -153,7 +153,9 @@ if args.connect:
     for host in hosts:
         host.connect()
         host.collect_facts()
-        print(str(host.facts))
+        import pprint
+        pp = pprint.PrettyPrinter(width=132)
+        pp.pprint(host.facts)
         host.disconnect()
 elif args.benchmark:
 
