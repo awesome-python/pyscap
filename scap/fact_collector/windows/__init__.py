@@ -14,10 +14,3 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
-
-from scap.FactCollector import FactCollector
-
-class AppleCollector(FactCollector):
-    pass
-#/usr/sbin/system_profiler SPHardwareDataType | fgrep 'Serial' | awk '{print $NF}'
-#ioreg -l | awk '/IOPlatformSerialNumber/ { print $4 }' | sed s/\"//g

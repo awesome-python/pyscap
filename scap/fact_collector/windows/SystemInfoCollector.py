@@ -16,6 +16,9 @@
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
 from scap.FactCollector import FactCollector
+import logging
 
-class VMWareCollector(FactCollector):
-    pass
+logger = logging.getLogger(__name__)
+class SystemInfoCollector(FactCollector):
+    def collect(self):
+        pass

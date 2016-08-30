@@ -16,22 +16,63 @@
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
 from scap.FactCollector import FactCollector
+from scap.model.cpe_2_3.CPE import CPE
+import re, logging
 
+logger = logging.getLogger(__name__)
 class UNameCollector(FactCollector):
     def collect(self):
         uname = self.host.line_from_command('uname -a')
         self.host.facts['uname'] = uname
         if uname.startswith('Linux'):
-            from scap.fact_collector.LinuxCollector import LinuxCollector
-            self.host.fact_collectors.append(LinuxCollector(self.host))
             self.host.facts['oval_family'] = 'unix'
+            # TODO lsb_release -a
+
+            from scap.fact_collector.linux.RootFSUUIDCollector import RootFSUUIDCollector
+            self.host.fact_collectors.append(RootFSUUIDCollector(self.host))
+            #from scap.fact_collector.linux.LSHWCollector import LSHWCollector
+            #self.host.fact_collectors.append(LSHWCollector(self.host))
+
+            # TODO ai.circuit
+            # TODO ai.network?; this would likely be  used on routers, switches & other net devices
+
+            # OS CPE
+            cpe = CPE()
+            cpe.set_value('part', 'o')
+            cpe.set_value('vendor', 'linux')
+            cpe.set_value('product', 'linux_kernel')
+
+            m = re.match(r'^Linux \S+ ([0-9.]+)-(\S+)', self.host.facts['uname'])
+            if m:
+                cpe.set_value('version', m.group(1))
+                cpe.set_value('update', m.group(2))
+            self.host.facts['o_cpe'] = cpe
+
+            from scap.fact_collector.linux.HostnameAllFQDNsCollector import HostnameAllFQDNsCollector
+            self.host.fact_collectors.append(HostnameAllFQDNsCollector(self.host))
+
+            from scap.fact_collector.linux.HostnameCollector import HostnameCollector
+            self.host.fact_collectors.append(HostnameCollector(self.host))
+
+            from scap.fact_collector.linux.IPAddrCollector import IPAddrCollector
+            self.host.fact_collectors.append(IPAddrCollector(self.host))
+
+            from scap.fact_collector.linux.IPRouteCollector import IPRouteCollector
+            self.host.fact_collectors.append(IPRouteCollector(self.host))
+
+            from scap.fact_collector.linux.NetstatCollector import NetstatCollector
+            self.host.fact_collectors.append(NetstatCollector(self.host))
+
+            # TODO ai.database
+            # TODO ai.software
+                # TODO application CPEs
+            # TODO ai.website
         elif uname.startswith('Darwin'):
-            from scap.fact_collector.AppleCollector import AppleCollector
-            self.host.fact_collectors.append(AppleCollector(self.host))
             self.host.facts['oval_family'] = 'macos'
+            #/usr/sbin/system_profiler SPHardwareDataType | fgrep 'Serial' | awk '{print $NF}'
+            #ioreg -l | awk '/IOPlatformSerialNumber/ { print $4 }' | sed s/\"//g
         elif uname.startswith('Windows NT'):
-            from scap.fact_collector.MicrosoftCollector import MicrosoftCollector
-            self.host.fact_collectors.append(MicrosoftCollector(self.host))
+            #key “MachineGuid” in: HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Cryptography
             self.host.facts['oval_family'] = 'windows'
         else:
             raise NotImplementedError('Host discovery has not been implemented for uname: ' + uname)

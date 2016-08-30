@@ -23,6 +23,10 @@ class Host(object):
     def __init__(self, hostname):
         self.hostname = hostname
         self.fact_collectors = []
+        self.facts = {
+            'oval_family': 'undefined',
+        }
+
 
     def get_hostname(self):
         return self.hostname
@@ -36,10 +40,6 @@ class Host(object):
         raise NotImplementedError(inspect.stack()[0][3] + '() has not been implemented in subclass: ' + self.__class__.__name__)
 
     def collect_facts(self):
-        self.facts = {
-            'oval_family': 'undefined',
-        }
-
         # have to use while vs. for loop so collectors can add other collectors
         i = 0
         while i < len(self.fact_collectors):

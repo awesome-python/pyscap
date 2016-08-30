@@ -16,12 +16,9 @@
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
 from scap.FactCollector import FactCollector
+import logging
 
-class WinRMCollector(FactCollector):
+logger = logging.getLogger(__name__)
+class PowerShellCollector(FactCollector):
     def collect(self):
-        ver = self.host.exec_command('ver', [])
-        self.host.facts['ver'] = ver
-        if uname.startswith('Microsoft Windows'):
-            self.host.facts['oval_family'] = 'windows'
-        else:
-            raise NotImplementedError('Host discovery has not been implemented for winrm ver: ' + ver)
+        pass
