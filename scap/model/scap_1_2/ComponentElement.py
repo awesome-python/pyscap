@@ -19,18 +19,18 @@ from scap.Model import Model
 import logging
 
 logger = logging.getLogger(__name__)
-class ComponentType(Model):
+class ComponentElement(Model):
     MODEL_MAP = {
         'attributes': {
             'id': {'required': True, 'type': 'ComponentIDPattern'},
             'timestamp': {'ignore': True, 'type': 'DateTime'},
         },
         'elements': {
-            '{http://checklists.nist.gov/xccdf/1.2}Benchmark': { 'class': 'BenchmarkType', 'in': 'model'},
-            '{http://scap.nist.gov/schema/ocil/2.0}ocil': {'class': 'OCILType', 'in': 'model'},
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}oval_definitions': {'class': 'OVALDefintionsType', 'in': 'model'},
-            '{http://cpe.mitre.org/dictionary/2.0}cpe-list': {'ignore': True, 'in': 'model'},
-            '{http://checklists.nist.gov/xccdf/1.2}Tailoring': {'ignore': True, 'in': 'model'},
+            '{http://checklists.nist.gov/xccdf/1.2}Benchmark': { 'class': 'BenchmarkType', 'in': 'model', 'min': 0},
+            '{http://scap.nist.gov/schema/ocil/2.0}ocil': {'class': 'OCILType', 'in': 'model', 'min': 0},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}oval_definitions': {'class': 'OVALDefintionsType', 'in': 'model', 'min': 0},
+            '{http://cpe.mitre.org/dictionary/2.0}cpe-list': {'ignore': True, 'in': 'model', 'min': 0},
+            '{http://checklists.nist.gov/xccdf/1.2}Tailoring': {'ignore': True, 'in': 'model', 'min': 0},
         },
     }
     # def __init__(self):

@@ -19,10 +19,10 @@ from scap.Model import Model
 import logging
 
 logger = logging.getLogger(__name__)
-class ComponentRefType(Model):
+class ComponentRefElement(Model):
     MODEL_MAP = {
         'elements': {
-            '{urn:oasis:names:tc:entity:xmlns:xml:catalog}catalog': {'class': 'Catalog'},
+            '{urn:oasis:names:tc:entity:xmlns:xml:catalog}catalog': {'class': 'Catalog', 'min': 0},
         },
         'attributes': {
             'id': {'required': True, 'type': 'ComponentRefIDPattern'},
@@ -54,7 +54,7 @@ class ComponentRefType(Model):
     #     return True
     #
     def from_xml(self, parent, sub_el):
-        super(ComponentRefType, self).from_xml(parent, sub_el)
+        super(ComponentRefElement, self).from_xml(parent, sub_el)
 
         try:
             self.set_ref_mapping(self.catalog.to_dict())

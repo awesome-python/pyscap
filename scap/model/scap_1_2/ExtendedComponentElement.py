@@ -19,7 +19,7 @@ from scap.Model import Model
 import logging
 
 logger = logging.getLogger(__name__)
-class ExtendedComponentType(Model):
+class ExtendedComponentElement(Model):
     MODEL_MAP = {
         'attributes': {
             'id': {'required': True, 'type': 'ExtendedComponentIDPattern'},

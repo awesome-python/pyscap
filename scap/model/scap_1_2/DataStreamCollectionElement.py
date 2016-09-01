@@ -19,13 +19,15 @@ from scap.Model import Model
 import logging
 
 logger = logging.getLogger(__name__)
-class DataStreamCollectionType(Model):
+class DataStreamCollectionElement(Model):
     MODEL_MAP = {
+        'xml_namespace': 'http://scap.nist.gov/schema/scap/source/1.2',
+        'tag_name': 'data-stream-collection',
         'elements': {
-            '{http://scap.nist.gov/schema/scap/source/1.2}data-stream': { 'class': 'DataStreamType', 'map': 'data_streams' },
-            '{http://scap.nist.gov/schema/scap/source/1.2}component': { 'class': 'ComponentType', 'map': 'components' },
-            '{http://scap.nist.gov/schema/scap/source/1.2}extended-component': { 'class': 'ExtendedComponentType', 'map': 'extended_components' },
-            '{http://www.w3.org/2000/09/xmldsig#}Signature': {'ignore': True},
+            '{http://scap.nist.gov/schema/scap/source/1.2}data-stream': {'max': None, 'class': 'DataStreamElement', 'map': 'data_streams'},
+            '{http://scap.nist.gov/schema/scap/source/1.2}component': {'max': None, 'class': 'ComponentElement', 'map': 'components' },
+            '{http://scap.nist.gov/schema/scap/source/1.2}extended-component': {'max': None, 'min': 0, 'class': 'ExtendedComponentElement', 'map': 'extended_components' },
+            '{http://www.w3.org/2000/09/xmldsig#}Signature': {'max': None, 'min': 0, 'ignore': True},
         },
         'attributes': {
             'id': {'required': True, 'type': 'DataStreamCollectionIDPattern'},
@@ -33,7 +35,7 @@ class DataStreamCollectionType(Model):
         },
     }
     def __init__(self):
-        super(DataStreamCollectionType, self).__init__()    # {http://scap.nist.gov/schema/scap/source/1.2}data-stream-collection
+        super(DataStreamCollectionElement, self).__init__()    # {http://scap.nist.gov/schema/scap/source/1.2}data-stream-collection
 
         # self.components = {}
         # self.data_streams = {}

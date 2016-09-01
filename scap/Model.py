@@ -141,6 +141,13 @@ class Model(object):
                     el_map = super_elmap
                 except KeyError:
                     logger.debug('Class ' + class_.__name__ + ' does not have MODEL_MAP[elements] defined')
+            if xml_namespace is None:
+                # try to auto detect from module name
+                NAMESPACES_reverse = {v: k for k, v in NAMESPACES.items()}
+                module_parts = self.__class__.__module__.split('.')
+                if module_parts[0] == 'scap' and module_parts[1] == 'model' and module_parts[2] in NAMESPACES_reverse:
+                    logger.debug('Found xml namespace ' + NAMESPACES_reverse[module_parts[2]] + ' for model namespace ' + module_parts[2])
+                    xml_namespace = NAMESPACES_reverse[module_parts[2]]
 
             Model.model_maps[self.__class__.__name__] = {
                 'xml_namespace': xml_namespace,
@@ -150,9 +157,10 @@ class Model(object):
             }
         self.model_map = Model.model_maps[self.__class__.__name__]
 
-        if 'xml_namespace' in self.model_map:
-            if self.model_map['xml_namespace'] not in NAMESPACES:
-                raise ValueError('Unknown namespace: ' + self.model_map['xml_namespace'])
+        if 'xml_namespace' not in self.model_map or self.model_map['xml_namespace'] is None:
+            raise ValueError('No xml_namespace defined for ' + self.__class__.__name__ + ' & could not detect')
+        if self.model_map['xml_namespace'] not in NAMESPACES:
+            raise ValueError('Unknown namespace: ' + self.model_map['xml_namespace'])
         if 'tag_name' in self.model_map:
             self.tag_name = self.model_map['tag_name']
 
@@ -235,20 +243,28 @@ class Model(object):
 
         for tag in self.model_map['elements']:
             tag_map = self.model_map['elements'][tag]
+            if 'ignore' in tag_map and tag_map['ignore']:
+                continue
             min_ = 1
-            max_ = 1
+            if 'map' in tag_map or 'append' in tag_map:
+                # maps and appends default to no max
+                max_ = None
+            else:
+                max_ = 1
             if 'min' in tag_map:
                 min_ = tag_map['min']
             if 'max' in tag_map:
                 max_ = tag_map['max']
-            if tag not in sub_el_counts or sub_el_counts[tag] < min_:
-                logger.critical(self.__class__.__name__ + ' must have at least ' + min_ + ' ' + tag + ' elements')
+            if min_ == 0:
+                pass
+            elif tag not in sub_el_counts or sub_el_counts[tag] < min_:
+                logger.critical(self.__class__.__name__ + ' must have at least ' + str(min_) + ' ' + tag + ' elements')
                 import sys
                 sys.exit()
             if max_ is None:
                 pass
-            elif tag not in sub_el_counts or sub_el_counts[tag] > max_:
-                logger.critical(self.__class__.__name__ + ' must have at most ' + max_ + ' ' + tag + ' elements')
+            elif tag in sub_el_counts and sub_el_counts[tag] > max_:
+                logger.critical(self.__class__.__name__ + ' must have at most ' + str(max_) + ' ' + tag + ' elements')
                 import sys
                 sys.exit()
 

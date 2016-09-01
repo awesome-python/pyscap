@@ -21,23 +21,25 @@ from scap.model.scap_1_2.SCAPVersionEnumeration import SCAP_VERSION_ENUMERATION
 import logging
 
 logger = logging.getLogger(__name__)
-class DataStreamType(Model):
+class DataStreamElement(Model):
     MODEL_MAP = {
+        'xml_namespace': 'http://scap.nist.gov/schema/scap/source/1.2',
+        'tag_name': 'data-stream',
         'elements': {
-            '{http://scap.nist.gov/schema/scap/source/1.2}dictionaries': { 'class': 'RefListType' },
-            '{http://scap.nist.gov/schema/scap/source/1.2}checklists': { 'class': 'RefListType' },
+            '{http://scap.nist.gov/schema/scap/source/1.2}dictionaries': { 'class': 'RefListType', 'min': 0 },
+            '{http://scap.nist.gov/schema/scap/source/1.2}checklists': { 'class': 'RefListType', 'min': 0 },
             '{http://scap.nist.gov/schema/scap/source/1.2}checks': { 'class': 'RefListType' },
-            '{http://scap.nist.gov/schema/scap/source/1.2}extended-components': {'ignore': True},
+            '{http://scap.nist.gov/schema/scap/source/1.2}extended-components': {'min': 0, 'class': 'RefListType' },
         },
         'attributes': {
             'id': {'required': True, 'type': 'DataStreamIDPattern'},
-            'use-case': {'required': True, 'ignore': True, 'enum': USE_CASE_ENUMERATION},
-            'scap-version': {'required': True, 'ignore': True, 'enum': SCAP_VERSION_ENUMERATION},
+            'use-case': {'required': True, 'enum': USE_CASE_ENUMERATION}, # TODO: spec also allows Token
+            'scap-version': {'required': True, 'enum': SCAP_VERSION_ENUMERATION}, # TODO: spec also allows Token
             'timestamp': {'required': True, 'ignore': True, 'type': 'DateTime'},
         },
     }
     def __init__(self):
-        super(DataStreamType, self).__init__()    # {http://checklists.nist.gov/xccdf/1.2}data-stream
+        super(DataStreamElement, self).__init__()    # {http://checklists.nist.gov/xccdf/1.2}data-stream
 
         self.selected_checklist = None
 

@@ -15,5 +15,5 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 TAG_MAP = {
-    '{http://scap.nist.gov/schema/scap/source/1.2}data-stream-collection': { 'class': 'DataStreamCollectionType' }
+    '{http://scap.nist.gov/schema/scap/source/1.2}data-stream-collection': { 'class': 'DataStreamCollectionElement' }
 }
