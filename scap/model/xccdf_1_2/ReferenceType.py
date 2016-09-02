@@ -26,6 +26,6 @@ class ReferenceType(String):
             'override': {'type': 'Boolean'},
         },
         'elements': {
-            '{http://purl.org/dc/elements/1.1/}*': {'ignore': True},
+            '{http://purl.org/dc/elements/1.1/}*': {'ignore': True, 'min': 0, 'max': None},
         },
     }

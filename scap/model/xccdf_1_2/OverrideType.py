@@ -27,8 +27,8 @@ class OverrideType(Decimal):
             'authority': {'type': 'String', 'required': True},
         },
         'elements': {
-            '{http://checklists.nist.gov/xccdf/1.2}old-result': {'enum': RESULT_ENUMERATION},
-            '{http://checklists.nist.gov/xccdf/1.2}new-result': {'enum': RESULT_ENUMERATION},
-            '{http://checklists.nist.gov/xccdf/1.2}remark': {'class': 'TextType'},
+            '{http://checklists.nist.gov/xccdf/1.2}old-result': {'enum': RESULT_ENUMERATION, 'min': 1, 'max': 1},
+            '{http://checklists.nist.gov/xccdf/1.2}new-result': {'enum': RESULT_ENUMERATION, 'min': 1, 'max': 1},
+            '{http://checklists.nist.gov/xccdf/1.2}remark': {'class': 'TextType', 'min': 1, 'max': 1},
         },
     }

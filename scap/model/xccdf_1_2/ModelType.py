@@ -25,6 +25,6 @@ class ModelType(Model):
             'system': {'required': True, 'type': 'AnyURI'},
         },
         'elements': {
-            '{http://checklists.nist.gov/xccdf/1.2}param': {'class': 'ParamType', 'map': 'params', 'key': 'name'},
+            '{http://checklists.nist.gov/xccdf/1.2}param': {'class': 'ParamType', 'map': 'params', 'key': 'name', 'min': 0, 'max': None},
         }
     }

@@ -27,8 +27,9 @@ class ComplexCheckType(Model):
             'negate': {'type': 'Boolean', 'default': False},
         },
         'elements': {
-            '{http://checklists.nist.gov/xccdf/1.2}check': {'class': 'CheckType', 'append': 'checks'},
-            '{http://checklists.nist.gov/xccdf/1.2}complex-check': {'class': 'ComplexCheckType', 'append': 'checks'},
+            # TODO: ensure checks has at least 1
+            '{http://checklists.nist.gov/xccdf/1.2}check': {'class': 'CheckType', 'min': 0, 'max': None, 'append': 'checks'},
+            '{http://checklists.nist.gov/xccdf/1.2}complex-check': {'class': 'ComplexCheckType', 'min': 0, 'max': None, 'append': 'checks'},
         },
     }
 

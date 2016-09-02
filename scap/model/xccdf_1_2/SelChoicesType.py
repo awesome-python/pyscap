@@ -26,7 +26,8 @@ class SelChoicesType(Model):
             'selector': {'type': 'String', 'default': ''},
         },
         'elements': {
-            '{http://checklists.nist.gov/xccdf/1.2}choice': {'class': 'scap.model.xs.String', 'append': 'choices'},
-            '{http://checklists.nist.gov/xccdf/1.2}complex-choice': {'class': 'ComplexValueType'},
+            # TODO at least one choice/complex-choice
+            '{http://checklists.nist.gov/xccdf/1.2}choice': {'class': 'scap.model.xs.String', 'append': 'choices', 'min': 0, 'max': None},
+            '{http://checklists.nist.gov/xccdf/1.2}complex-choice': {'class': 'ComplexValueType', 'min': 0, 'max': 1},
         },
     }

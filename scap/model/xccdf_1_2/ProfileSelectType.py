@@ -26,7 +26,7 @@ class ProfileSelectType(Model):
             'selected': {'type': 'Boolean', 'required': True},
         },
         'elements': {
-            '{http://checklists.nist.gov/xccdf/1.2}remark': {'ignore': True, 'class': 'TextType', 'append': 'remarks'},
+            '{http://checklists.nist.gov/xccdf/1.2}remark': {'ignore': True, 'class': 'TextType', 'append': 'remarks', 'min': 0, 'max': None},
         },
     }
     # def __init__(self):

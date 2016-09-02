@@ -31,14 +31,14 @@ class RuleType(SelectableItemType):
             'multiple': {'type': 'Boolean', 'default': False},
         },
         'elements': {
-            '{http://checklists.nist.gov/xccdf/1.2}ident': {'ignore': True, 'class': 'IdentType'},
-            '{http://checklists.nist.gov/xccdf/1.2}impact-metric': {'ignore': True, 'type': 'String'},
-            '{http://checklists.nist.gov/xccdf/1.2}profile-note': {'ignore': True, 'class': 'ProfileNoteType'},
-            '{http://checklists.nist.gov/xccdf/1.2}fix': {'class': 'FixType', 'append': 'fixes'},
-            '{http://checklists.nist.gov/xccdf/1.2}fixtext': {'class': 'FixtextType', 'append': 'fixtexts'},
-            '{http://checklists.nist.gov/xccdf/1.2}check': {'class': 'CheckType', 'map': 'checks', 'key': 'selector'},
-            '{http://checklists.nist.gov/xccdf/1.2}complex-check': {'class': 'ComplexCheckType', 'map': 'complex_checks', 'key': 'selector'},
-            '{http://checklists.nist.gov/xccdf/1.2}signature': {'ignore': True, 'class': 'SignatureType'},
+            '{http://checklists.nist.gov/xccdf/1.2}ident': {'append': 'idents', 'ignore': True, 'min': 0, 'max': None, 'class': 'IdentType'},
+            '{http://checklists.nist.gov/xccdf/1.2}impact-metric': {'ignore': True, 'min': 0, 'max': 1, 'type': 'String'},
+            '{http://checklists.nist.gov/xccdf/1.2}profile-note': {'append': 'profile_notes', 'ignore': True, 'min': 0, 'max': None, 'class': 'ProfileNoteType'},
+            '{http://checklists.nist.gov/xccdf/1.2}fix': {'class': 'FixType', 'min': 0, 'max': None, 'append': 'fixes'},
+            '{http://checklists.nist.gov/xccdf/1.2}fixtext': {'class': 'FixtextType', 'min': 0, 'max': None, 'append': 'fixtexts'},
+            '{http://checklists.nist.gov/xccdf/1.2}check': {'class': 'CheckType', 'min': 0, 'max': None, 'map': 'checks', 'key': 'selector'},
+            '{http://checklists.nist.gov/xccdf/1.2}complex-check': {'class': 'ComplexCheckType', 'min': 0, 'max': 1},
+            '{http://checklists.nist.gov/xccdf/1.2}signature': {'ignore': True, 'class': 'SignatureType', 'min': 0, 'max': 1},
         },
     }
 

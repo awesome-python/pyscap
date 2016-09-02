@@ -22,6 +22,6 @@ logger = logging.getLogger(__name__)
 class CheckContentType(Model):
     MODEL_MAP = {
         'elements': {
-            '*': {'ignore': True}
+            '*': {'ignore': True, 'min': 0, 'max': None}
         },
     }

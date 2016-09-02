@@ -22,6 +22,6 @@ logger = logging.getLogger(__name__)
 class HTMLTextType(Model):
     MODEL_MAP = {
         'attributes': {
-            'override': {'type': 'Boolean', 'default': False},
+            'override': {'type': 'Boolean', 'default': False, 'min': 0, 'max': None},
         },
     }

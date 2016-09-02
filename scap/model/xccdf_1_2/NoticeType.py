@@ -25,6 +25,6 @@ class NoticeType(String):
             'id': {'required': True, 'type': 'NCName'},
         },
         'elements': {
-            '{http://www.w3.org/1999/xhtml}*': {'ignore': True},
+            '{http://www.w3.org/1999/xhtml}*': {'ignore': True, 'min': 0, 'max': None},
         },
     }

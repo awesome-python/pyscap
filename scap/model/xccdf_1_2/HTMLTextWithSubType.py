@@ -25,7 +25,7 @@ class HTMLTextWithSubType(Model):
             'override': {'type': 'Boolean', 'default': False},
         },
         'elements': {
-            '{http://checklists.nist.gov/xccdf/1.2}sub': {'class': 'SubType', 'append': 'subs'},
-            '{http://www.w3.org/1999/xhtml}*': {'ignore': True},
+            '{http://checklists.nist.gov/xccdf/1.2}sub': {'class': 'SubType', 'append': 'subs', 'min': 0, 'max': None},
+            '{http://www.w3.org/1999/xhtml}*': {'ignore': True, 'min': 0, 'max': None},
         },
     }

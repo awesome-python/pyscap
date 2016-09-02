@@ -32,16 +32,19 @@ class ValueType(ItemType):
             'interfaceHint': {'ignore': True, 'enum': INTERFACE_HINT_ENUMERATION},
         },
         'elements': {
-            '{http://checklists.nist.gov/xccdf/1.2}value': {'class': 'SelStringType', 'map': 'values', 'key': 'selector'},
-            '{http://checklists.nist.gov/xccdf/1.2}complex-value': {'class': 'SelComplexValueType'},
-            '{http://checklists.nist.gov/xccdf/1.2}default': {'class': 'SelStringType'},
-            '{http://checklists.nist.gov/xccdf/1.2}complex-default': {'class': 'SelComplexValueType'},
-            '{http://checklists.nist.gov/xccdf/1.2}match': {'class': 'SelStringType', 'map': 'matches', 'key': 'selector'},
-            '{http://checklists.nist.gov/xccdf/1.2}lower-bound': {'class': 'SelNumType', 'map': 'lower_bounds', 'key': 'selector'},
-            '{http://checklists.nist.gov/xccdf/1.2}upper-bound': {'class': 'SelNumType', 'map': 'upper_bounds', 'key': 'selector'},
-            '{http://checklists.nist.gov/xccdf/1.2}choices': {'class': 'SelChoicesType', 'map': 'choices', 'key': 'selector'},
-            '{http://checklists.nist.gov/xccdf/1.2}source': {'class': 'URIRefType', 'append': 'sources'},
-            '{http://checklists.nist.gov/xccdf/1.2}signature': {'ignore': True, 'class': 'SignatureType'},
+            # TODO: at least one value
+            '{http://checklists.nist.gov/xccdf/1.2}value': {'class': 'SelStringType', 'map': 'values', 'key': 'selector', 'min': 0, 'max': None},
+            '{http://checklists.nist.gov/xccdf/1.2}complex-value': {'class': 'SelComplexValueType', 'map': 'values', 'key': 'selector', 'min': 0, 'max': None},
+            # choice of below
+            '{http://checklists.nist.gov/xccdf/1.2}default': {'class': 'SelStringType', 'min': 0, 'max': None, 'map': 'defaults', 'key': 'selector'},
+            '{http://checklists.nist.gov/xccdf/1.2}complex-default': {'class': 'SelComplexValueType', 'min': 0, 'max': None, 'map': 'defaults', 'key': 'selector'},
+
+            '{http://checklists.nist.gov/xccdf/1.2}match': {'class': 'SelStringType', 'map': 'matches', 'key': 'selector', 'min': 0, 'max': None},
+            '{http://checklists.nist.gov/xccdf/1.2}lower-bound': {'class': 'SelNumType', 'map': 'lower_bounds', 'key': 'selector', 'min': 0, 'max': None},
+            '{http://checklists.nist.gov/xccdf/1.2}upper-bound': {'class': 'SelNumType', 'map': 'upper_bounds', 'key': 'selector', 'min': 0, 'max': None},
+            '{http://checklists.nist.gov/xccdf/1.2}choices': {'class': 'SelChoicesType', 'map': 'choices', 'key': 'selector', 'min': 0, 'max': None},
+            '{http://checklists.nist.gov/xccdf/1.2}source': {'class': 'URIRefType', 'append': 'sources', 'min': 0, 'max': None},
+            '{http://checklists.nist.gov/xccdf/1.2}signature': {'ignore': True, 'class': 'SignatureType', 'min': 0, 'max': None},
         },
     }
     # def __init__(self):
