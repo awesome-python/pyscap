@@ -92,7 +92,8 @@ class Model(object):
 
     @staticmethod
     def _get_model_map(model_class):
-        if model_class.__name__ not in Model.model_maps:
+        fq_model_class_name = model_class.__module__ + '.' + model_class.__name__
+        if fq_model_class_name not in Model.model_maps:
             at_map = {}
             el_map = {}
             xml_namespace = None
@@ -101,21 +102,23 @@ class Model(object):
                 if class_ == object:
                     break
 
+                fq_class_name = class_.__module__ + '.' + class_.__name__
+
                 try:
                     class_.MODEL_MAP
                 except AttributeError:
-                    logger.critical('Class ' + class_.__name__ + ' does not define MODEL_MAP')
+                    logger.critical('Class ' + fq_class_name + ' does not define MODEL_MAP')
                     sys.exit()
 
                 # overwrite the super class' ns & tag with what we've already loaded
                 try:
                     xml_namespace = class_.MODEL_MAP['xml_namespace']
                 except KeyError:
-                    logger.debug('Class ' + class_.__name__ + ' does not have MODEL_MAP[xml_namespace] defined')
+                    logger.debug('Class ' + fq_class_name + ' does not have MODEL_MAP[xml_namespace] defined')
                 try:
                     tag_name = class_.MODEL_MAP['tag_name']
                 except KeyError:
-                    logger.debug('Class ' + class_.__name__ + ' does not have MODEL_MAP[tag_name] defined')
+                    logger.debug('Class ' + fq_class_name + ' does not have MODEL_MAP[tag_name] defined')
 
                 # update the super class' attribute map with subclass
                 try:
@@ -123,7 +126,7 @@ class Model(object):
                     super_atmap.update(at_map)
                     at_map = super_atmap
                 except KeyError:
-                    logger.debug('Class ' + class_.__name__ + ' does not have MODEL_MAP[attributes] defined')
+                    logger.debug('Class ' + fq_class_name + ' does not have MODEL_MAP[attributes] defined')
 
                 # update the super class' element map with subclass
                 try:
@@ -131,7 +134,7 @@ class Model(object):
                     super_elmap.update(el_map)
                     el_map = super_elmap
                 except KeyError:
-                    logger.debug('Class ' + class_.__name__ + ' does not have MODEL_MAP[elements] defined')
+                    logger.debug('Class ' + fq_class_name + ' does not have MODEL_MAP[elements] defined')
 
             if xml_namespace is None:
                 # try to auto detect from module name
@@ -141,13 +144,13 @@ class Model(object):
                     logger.debug('Found xml namespace ' + NAMESPACES_reverse[module_parts[2]] + ' for model namespace ' + module_parts[2])
                     xml_namespace = NAMESPACES_reverse[module_parts[2]]
 
-            Model.model_maps[model_class.__name__] = {
+            Model.model_maps[fq_model_class_name] = {
                 'xml_namespace': xml_namespace,
                 'tag_name': tag_name,
                 'attributes': at_map,
                 'elements': el_map,
             }
-        return Model.model_maps[model_class.__name__]
+        return Model.model_maps[fq_model_class_name]
 
     def __init__(self):
         self.parent = None
@@ -215,7 +218,7 @@ class Model(object):
         self.parent = parent
         self.element = el
 
-        logger.debug('Parsing ' + el.tag + ' element into ' + self.__class__.__name__ + ' class')
+        logger.debug('Parsing ' + el.tag + ' element into ' + self.__class__.__module__ + '.' + self.__class__.__name__ + ' class')
 
         for attrib in self.model_map['attributes']:
             if 'required' in self.model_map['attributes'][attrib] and self.model_map['attributes'][attrib]['required'] and attrib not in self.element.attrib:
@@ -230,6 +233,7 @@ class Model(object):
         sub_el_counts = {}
         for sub_el in el:
             if not self.parse_element(sub_el):
+                print(str(self.model_map['elements']))
                 logger.critical('Unknown element in ' + el.tag + ': ' + sub_el.tag)
                 sys.exit()
             if sub_el.tag not in sub_el_counts:
