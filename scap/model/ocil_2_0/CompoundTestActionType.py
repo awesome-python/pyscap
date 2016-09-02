@@ -28,7 +28,4 @@ class CompoundTestActionType(ItemBaseType):
             '{http://scap.nist.gov/schema/ocil/2.0}references': {'class': 'ReferencesType', 'min': 0, 'max': 1},
             '{http://scap.nist.gov/schema/ocil/2.0}actions': {'class': 'OperationType', 'min': 1, 'max': 1},
         },
-        'attributes': {
-            'question_ref': {'type': 'QuestionIDPattern', 'required': True},
-        }
     }

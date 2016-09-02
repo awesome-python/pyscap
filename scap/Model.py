@@ -16,6 +16,8 @@
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
 import logging
+import importlib
+import sys
 import xml.etree.ElementTree as ET
 from scap.model import NAMESPACES
 
@@ -42,7 +44,6 @@ class Model(object):
 
         if xml_namespace not in NAMESPACES:
             logger.critical('Unsupported ' + tag_name + ' tag with namespace: ' + xml_namespace)
-            import sys
             sys.exit()
 
         return xml_namespace, tag_name
@@ -56,29 +57,23 @@ class Model(object):
         model_namespace = NAMESPACES[xml_namespace]
 
         # try to load the tag's module
-        import sys, importlib
         if parent is None:
             # look up from __init__ file
             pkg_mod = importlib.import_module('scap.model.' + model_namespace)
             try:
                 module_name = pkg_mod.TAG_MAP[child_el.tag]['class']
             except AttributeError:
-                sys.exit(pkg_mod.__name__ + ' does not define TAG_MAP')
+                logger.critical(pkg_mod.__name__ + ' does not define TAG_MAP; cannot load ' + child_el.tag)
+                sys.exit()
             except KeyError:
-                sys.exit(pkg_mod.__name__ + ' does not define mapping for ' + child_el.tag + ' tag')
+                logger.critical(pkg_mod.__name__ + ' does not define mapping for ' + child_el.tag + ' tag')
+                sys.exit()
         else:
-            try:
-                mmap = parent.__class__.MODEL_MAP
-            except AttributeError:
-                sys.exit(parent.__class__.__name__ + ' does not define MODEL_MAP')
-            try:
-                elmap = mmap['elements']
-            except KeyError:
-                sys.exit(parent.__class__.__name__ + ' does not define mapping for elements')
-            try:
-                module_name = elmap[child_el.tag]['class']
-            except KeyError:
-                sys.exit(parent.__class__.__name__ + ' does not define mapping for ' + child_el.tag + ' tag')
+            mmap = Model._get_model_map(parent.__class__)
+            if child_el.tag not in mmap['elements'] or 'class' not in mmap['elements'][child_el.tag]:
+                logger.critical(parent.__class__.__name__ + ' does not define mapping for ' + child_el.tag + ' tag')
+                sys.exit()
+            module_name = mmap['elements'][child_el.tag]['class']
 
         model_module = 'scap.model.' + model_namespace + '.' + module_name
         if model_module not in sys.modules:
@@ -95,17 +90,14 @@ class Model(object):
 
         return inst
 
-    def __init__(self):
-        self.parent = None
-        self.element = None
-        self.ref_mapping = {}
-
-        if self.__class__.__name__ not in Model.model_maps:
+    @staticmethod
+    def _get_model_map(model_class):
+        if model_class.__name__ not in Model.model_maps:
             at_map = {}
             el_map = {}
             xml_namespace = None
             tag_name = None
-            for class_ in self.__class__.__mro__:
+            for class_ in model_class.__mro__:
                 if class_ == object:
                     break
 
@@ -113,7 +105,6 @@ class Model(object):
                     class_.MODEL_MAP
                 except AttributeError:
                     logger.critical('Class ' + class_.__name__ + ' does not define MODEL_MAP')
-                    import sys
                     sys.exit()
 
                 # overwrite the super class' ns & tag with what we've already loaded
@@ -126,7 +117,7 @@ class Model(object):
                 except KeyError:
                     logger.debug('Class ' + class_.__name__ + ' does not have MODEL_MAP[tag_name] defined')
 
-                # overwrite the super class' attribute map with what we've already loaded
+                # update the super class' attribute map with subclass
                 try:
                     super_atmap = class_.MODEL_MAP['attributes'].copy()
                     super_atmap.update(at_map)
@@ -134,28 +125,36 @@ class Model(object):
                 except KeyError:
                     logger.debug('Class ' + class_.__name__ + ' does not have MODEL_MAP[attributes] defined')
 
-                # overwrite the super class' element map with what we've already loaded
+                # update the super class' element map with subclass
                 try:
                     super_elmap = class_.MODEL_MAP['elements'].copy()
                     super_elmap.update(el_map)
                     el_map = super_elmap
                 except KeyError:
                     logger.debug('Class ' + class_.__name__ + ' does not have MODEL_MAP[elements] defined')
+
             if xml_namespace is None:
                 # try to auto detect from module name
                 NAMESPACES_reverse = {v: k for k, v in NAMESPACES.items()}
-                module_parts = self.__class__.__module__.split('.')
+                module_parts = model_class.__module__.split('.')
                 if module_parts[0] == 'scap' and module_parts[1] == 'model' and module_parts[2] in NAMESPACES_reverse:
                     logger.debug('Found xml namespace ' + NAMESPACES_reverse[module_parts[2]] + ' for model namespace ' + module_parts[2])
                     xml_namespace = NAMESPACES_reverse[module_parts[2]]
 
-            Model.model_maps[self.__class__.__name__] = {
+            Model.model_maps[model_class.__name__] = {
                 'xml_namespace': xml_namespace,
                 'tag_name': tag_name,
                 'attributes': at_map,
                 'elements': el_map,
             }
-        self.model_map = Model.model_maps[self.__class__.__name__]
+        return Model.model_maps[model_class.__name__]
+
+    def __init__(self):
+        self.parent = None
+        self.element = None
+        self.ref_mapping = {}
+
+        self.model_map = Model._get_model_map(self.__class__)
 
         if 'xml_namespace' not in self.model_map or self.model_map['xml_namespace'] is None:
             raise ValueError('No xml_namespace defined for ' + self.__class__.__name__ + ' & could not detect')
@@ -221,20 +220,17 @@ class Model(object):
         for attrib in self.model_map['attributes']:
             if 'required' in self.model_map['attributes'][attrib] and self.model_map['attributes'][attrib]['required'] and attrib not in self.element.attrib:
                 logger.critical(el.tag + ' must define ' + attrib + ' attribute')
-                import sys
                 sys.exit()
 
         for name, value in list(el.attrib.items()):
             if not self.parse_attribute(name, value):
                 logger.critical('Unknown attrib in ' + el.tag + ': ' + name + ' = ' + value)
-                import sys
                 sys.exit()
 
         sub_el_counts = {}
         for sub_el in el:
             if not self.parse_element(sub_el):
                 logger.critical('Unknown element in ' + el.tag + ': ' + sub_el.tag)
-                import sys
                 sys.exit()
             if sub_el.tag not in sub_el_counts:
                 sub_el_counts[sub_el.tag] = 1
@@ -259,13 +255,11 @@ class Model(object):
                 pass
             elif tag not in sub_el_counts or sub_el_counts[tag] < min_:
                 logger.critical(self.__class__.__name__ + ' must have at least ' + str(min_) + ' ' + tag + ' elements')
-                import sys
                 sys.exit()
             if max_ is None:
                 pass
             elif tag in sub_el_counts and sub_el_counts[tag] > max_:
                 logger.critical(self.__class__.__name__ + ' must have at most ' + str(max_) + ' ' + tag + ' elements')
-                import sys
                 sys.exit()
 
     def _parse_value_as_type(self, value, type_):
@@ -297,7 +291,7 @@ class Model(object):
             attr_map = self.model_map['attributes'][name]
             if name in self.model_map['attributes']:
                 if 'ignore' in attr_map and attr_map['ignore']:
-                    logger.debug('Ignoring attribute ' + name + ' = ' + value)
+                    logger.debug('Ignoring attribute ' + name + ' = ' + str(value))
                     return True
 
                 if 'notImplemented' in attr_map and attr_map['notImplemented']:
@@ -342,7 +336,7 @@ class Model(object):
                     if 'type' in tag_map:
                         value = self._parse_value_as_type(el.text, tag_map['type'])
                         lst.append(value)
-                        logger.debug('Appended "' + value + '" to ' + tag_map['append'])
+                        logger.debug('Appended "' + str(value) + '" to ' + tag_map['append'])
                     else:
                         lst.append(Model.load(self, el))
                         logger.debug('Appended ' + el.tag + ' to ' + tag_map['append'])
@@ -374,7 +368,7 @@ class Model(object):
                             logger.debug('Mapped ' + str(key) + ' to ' + str(value) + ' in ' + tag_map['map'])
                         else:
                             dic[key] = Model.load(self, el)
-                            logger.debug('Mapped ' + str(key) + ' to ' + el.tag + ' in ' + tag_map['map'])
+                            logger.debug('Mapped ' + str(key) + ' to ' + el.tag + ' element in ' + tag_map['map'])
                 elif 'class' in tag_map:
                     if 'in' in tag_map:
                         name = tag_map['in']
@@ -435,7 +429,6 @@ class Model(object):
         except AttributeError:
             if 'required' in attr_map and attr_map['required']:
                 logger.critical(self.__class__.__name__ + ' must assign required attribute ' + attrib)
-                import sys
                 sys.exit()
             else:
                 logger.debug('Skipping attribute ' + name)
@@ -455,12 +448,10 @@ class Model(object):
             # check minimum tag count
             if 'min' in tag_map and tag_map['min'] > len(lst):
                 logger.critical(self.__class__.__name__ + ' must have at least ' + tag_map['min'] + ' ' + tag + ' elements')
-                import sys
                 sys.exit()
             # check maximum tag count
             if 'max' in tag_map and tag_map['max'] <= len(lst):
                 logger.critical(self.__class__.__name__ + ' must have at most ' + tag_map['max'] + ' ' + tag + ' elements')
-                import sys
                 sys.exit()
             for i in lst:
                 logger.debug('Creating ' + tag + ' for value ' + i)
@@ -472,12 +463,10 @@ class Model(object):
             # check minimum tag count
             if 'min' in tag_map and tag_map['min'] > len(dic):
                 logger.critical(self.__class__.__name__ + ' must have at least ' + tag_map['min'] + ' ' + tag + ' elements')
-                import sys
                 sys.exit()
             # check maximum tag count
             if 'max' in tag_map and tag_map['max'] <= len(dic):
                 logger.critical(self.__class__.__name__ + ' must have at most ' + tag_map['max'] + ' ' + tag + ' elements')
-                import sys
                 sys.exit()
             if 'key' in tag_map:
                 key_name = tag_map['key']

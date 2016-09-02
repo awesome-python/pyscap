@@ -28,7 +28,7 @@ class ComponentElement(Model):
         'elements': {
             '{http://checklists.nist.gov/xccdf/1.2}Benchmark': { 'class': 'BenchmarkType', 'in': 'model', 'min': 0},
             '{http://scap.nist.gov/schema/ocil/2.0}ocil': {'class': 'OCILType', 'in': 'model', 'min': 0},
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}oval_definitions': {'class': 'OVALDefintionsType', 'in': 'model', 'min': 0},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}oval_definitions': {'class': 'OVALDefinitionsElement', 'in': 'model', 'min': 0},
             '{http://cpe.mitre.org/dictionary/2.0}cpe-list': {'ignore': True, 'in': 'model', 'min': 0},
             '{http://checklists.nist.gov/xccdf/1.2}Tailoring': {'ignore': True, 'in': 'model', 'min': 0},
         },
