@@ -32,6 +32,6 @@ class CriteriaType(Model):
             'applicability_check': {'type': 'Boolean'},
             'operator': {'enum': OPERATOR_ENUMERATION, 'default': 'AND'},
             'negate': {'type': 'Boolean', 'default': False},
-            'comment': {'type': 'oval_common_5.NonEmptyStringType'},
+            'comment': {'type': 'oval_common_5.NonEmptyString'},
         }
     }

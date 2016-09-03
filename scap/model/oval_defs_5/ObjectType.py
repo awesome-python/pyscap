@@ -28,7 +28,7 @@ class ObjectType(Model):
         'attributes': {
             'id': {'type': 'ObjectIDPattern', 'required': True},
             'version': {'type': 'NonNegativeInteger', 'required': True},
-            'comment': {'type': 'oval_common_5.NonEmptyStringType', 'required': True},
+            'comment': {'type': 'oval_common_5.NonEmptyString', 'required': True},
             'deprecated': {'type': 'Boolean', 'default': False},
         }
     }

@@ -23,7 +23,7 @@ class ObjectComponentType(Model):
     MODEL_MAP = {
         'attributes': {
             'object_ref': {'type': 'ObjectIDPattern', 'required': True},
-            'item_field': {'type': 'oval_common_5.NonEmptyStringType', 'required': True},
-            'record_field': {'type': 'oval_common_5.NonEmptyStringType'},
+            'item_field': {'type': 'oval_common_5.NonEmptyString', 'required': True},
+            'record_field': {'type': 'oval_common_5.NonEmptyString'},
         },
     }

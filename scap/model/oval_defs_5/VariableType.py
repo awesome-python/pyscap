@@ -30,7 +30,7 @@ class VariableType(Model):
             'id': {'type': 'VariableIDPattern', 'required': True},
             'version': {'type': 'NonNegativeInteger', 'required': True},
             'datatype': {'enum': SIMPLE_DATATYPE_ENUMERATION, 'required': True},
-            'comment': {'type': 'oval_common_5.NonEmptyStringType', 'required': True},
+            'comment': {'type': 'oval_common_5.NonEmptyString', 'required': True},
             'deprecated': {'type': 'Boolean', 'default': False},
         }
     }

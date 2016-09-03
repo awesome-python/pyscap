@@ -35,7 +35,7 @@ class TestType(Model):
             'check_existence': {'enum': EXISTENCE_ENUMERATION, 'default': 'at_least_one_exists'},
             'check': {'enum': CHECK_ENUMERATION, 'required': True},
             'state_operator': {'enum': OPERATOR_ENUMERATION, 'default': 'AND'},
-            'comment': {'type': 'oval_common_5.NonEmptyStringType', 'required': True},
+            'comment': {'type': 'oval_common_5.NonEmptyString', 'required': True},
             'deprecated': {'type': 'Boolean', 'default': False},
         }
     }

@@ -30,7 +30,7 @@ class StateType(Model):
             'id': {'type': 'StateIDPattern', 'required': True},
             'version': {'type': 'NonNegativeInteger', 'required': True},
             'operator': {'enum': OPERATOR_ENUMERATION, 'default': 'AND'},
-            'comment': {'type': 'oval_common_5.NonEmptyStringType', 'required': True},
+            'comment': {'type': 'oval_common_5.NonEmptyString', 'required': True},
             'deprecated': {'type': 'Boolean', 'default': False},
         }
     }

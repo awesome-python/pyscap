@@ -25,7 +25,7 @@ class CriterionType(Model):
             'applicability_check': {'type': 'Boolean'},
             'test_ref': {'type': 'TestIDPattern', 'required': True},
             'negate': {'type': 'Boolean', 'default': False},
-            'comment': {'type': 'oval_common_5.NonEmptyStringType'},
+            'comment': {'type': 'oval_common_5.NonEmptyString'},
         }
     }
 
