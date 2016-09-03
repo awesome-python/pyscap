@@ -16,7 +16,7 @@
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
 from scap.Model import Model
-from scap.oval_common_5.ClassEnumeration import CLASS_ENUMERATION
+from scap.model.oval_common_5.ClassEnumeration import CLASS_ENUMERATION
 import logging
 
 logger = logging.getLogger(__name__)
@@ -29,7 +29,7 @@ class DefinitionType(Model):
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5}criteria': {'class': 'CriteriaType', 'min': 0, 'max': 1},
         },
         'attributes': {
-            'id': {'type': 'DefinitionIDPattern', 'required': True},
+            'id': {'type': 'oval_common_5.DefinitionIDPattern', 'required': True},
             'version': {'type': 'NonNegativeInteger', 'required': True},
             'class': {'enum': CLASS_ENUMERATION, 'required': True},
             'deprecated': {'type': 'Boolean', 'default': False},
