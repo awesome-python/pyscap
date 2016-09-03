@@ -16,7 +16,7 @@
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
 from scap.Model import Model
-from scap.model.oval_defs_5.OperatorEnumeration import OPERATOR_ENUMERATION
+from scap.model.oval_common_5.OperatorEnumeration import OPERATOR_ENUMERATION
 import logging
 
 logger = logging.getLogger(__name__)
