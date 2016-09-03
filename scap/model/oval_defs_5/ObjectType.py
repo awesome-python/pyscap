@@ -26,7 +26,7 @@ class ObjectType(Model):
             '{http://oval.mitre.org/XMLSchema/oval-common-5}notes': {'class': 'NotesType', 'min': 0, 'max': 1},
         },
         'attributes': {
-            'id': {'type': 'ObjectIDPattern', 'required': True},
+            'id': {'type': 'oval_common_5.ObjectIDPattern', 'required': True},
             'version': {'type': 'NonNegativeInteger', 'required': True},
             'comment': {'type': 'oval_common_5.NonEmptyString', 'required': True},
             'deprecated': {'type': 'Boolean', 'default': False},

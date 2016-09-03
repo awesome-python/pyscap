@@ -27,7 +27,7 @@ class StateType(Model):
             '{http://oval.mitre.org/XMLSchema/oval-common-5}notes': {'class': 'NotesType', 'min': 0, 'max': 1},
         },
         'attributes': {
-            'id': {'type': 'StateIDPattern', 'required': True},
+            'id': {'type': 'oval_common_5.StateIDPattern', 'required': True},
             'version': {'type': 'NonNegativeInteger', 'required': True},
             'operator': {'enum': OPERATOR_ENUMERATION, 'default': 'AND'},
             'comment': {'type': 'oval_common_5.NonEmptyString', 'required': True},

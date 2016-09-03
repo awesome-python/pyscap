@@ -23,7 +23,7 @@ class CriterionType(Model):
     MODEL_MAP = {
         'attributes': {
             'applicability_check': {'type': 'Boolean'},
-            'test_ref': {'type': 'TestIDPattern', 'required': True},
+            'test_ref': {'type': 'oval_common_5.TestIDPattern', 'required': True},
             'negate': {'type': 'Boolean', 'default': False},
             'comment': {'type': 'oval_common_5.NonEmptyString'},
         }

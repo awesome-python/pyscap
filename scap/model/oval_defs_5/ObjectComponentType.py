@@ -22,7 +22,7 @@ logger = logging.getLogger(__name__)
 class ObjectComponentType(Model):
     MODEL_MAP = {
         'attributes': {
-            'object_ref': {'type': 'ObjectIDPattern', 'required': True},
+            'object_ref': {'type': 'oval_common_5.ObjectIDPattern', 'required': True},
             'item_field': {'type': 'oval_common_5.NonEmptyString', 'required': True},
             'record_field': {'type': 'oval_common_5.NonEmptyString'},
         },

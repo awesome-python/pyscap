@@ -29,7 +29,7 @@ class EntityComplexBaseType(Model):
             'datatype': {'enum': DATATYPE_ENUMERATION, 'default': 'string'},
             'operation': {'enum': OPERATION_ENUMERATION, 'default': 'equals'},
             'mask': {'type': 'Boolean', 'default': False},
-            'var_ref': {'type': 'VariableIDPattern'},
+            'var_ref': {'type': 'oval_common_5.VariableIDPattern'},
             'var_check': {'enum': CHECK_ENUMERATION},
         }
     }

@@ -22,6 +22,6 @@ logger = logging.getLogger(__name__)
 class VariableComponentType(Model):
     MODEL_MAP = {
         'attributes': {
-            'var_ref': {'type': 'VariableIDPattern', 'required': True},
+            'var_ref': {'type': 'oval_common_5.VariableIDPattern', 'required': True},
         },
     }

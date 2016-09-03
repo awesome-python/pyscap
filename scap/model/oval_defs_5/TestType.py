@@ -30,7 +30,7 @@ class TestType(Model):
             '{http://oval.mitre.org/XMLSchema/oval-common-5}notes': {'class': 'NotesType', 'min': 0, 'max': 1},
         },
         'attributes': {
-            'id': {'type': 'TestIDPattern', 'required': True},
+            'id': {'type': 'oval_common_5.TestIDPattern', 'required': True},
             'version': {'type': 'NonNegativeInteger', 'required': True},
             'check_existence': {'enum': EXISTENCE_ENUMERATION, 'default': 'at_least_one_exists'},
             'check': {'enum': CHECK_ENUMERATION, 'required': True},

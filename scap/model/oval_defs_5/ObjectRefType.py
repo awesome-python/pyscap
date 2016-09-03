@@ -22,6 +22,6 @@ logger = logging.getLogger(__name__)
 class ObjectRefType(Model):
     MODEL_MAP = {
         'attributes': {
-            'object_ref': {'type': 'ObjectIDPattern', 'required': True},
+            'object_ref': {'type': 'oval_common_5.ObjectIDPattern', 'required': True},
         }
     }
