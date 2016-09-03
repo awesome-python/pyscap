@@ -23,6 +23,6 @@ class EntityStateBoolType(EntityStateSimpleBaseType):
     MODEL_MAP = {
         # TODO <xsd:union memberTypes="xsd:boolean oval:EmptyStringType"/>
         'attributes': {
-            'datatype': {'enum': ['boolean'], 'required': True},
+            'datatype': {'enum': ['boolean'], 'required': True, 'default': 'boolean'},
         }
     }

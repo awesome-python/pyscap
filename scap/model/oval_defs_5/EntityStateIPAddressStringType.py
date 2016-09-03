@@ -23,6 +23,6 @@ class EntityStateIPAddressStringType(EntityStateSimpleBaseType):
     MODEL_MAP = {
         # TODO <xsd:restriction base="xsd:string"/>
         'attributes': {
-            'datatype': {'enum': ['ipv4_address', 'ipv6_address', 'string'], 'required': True},
+            'datatype': {'enum': ['ipv4_address', 'ipv6_address', 'string'], 'required': True, 'default': 'string'},
         }
     }

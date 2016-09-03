@@ -226,7 +226,10 @@ class Model(object):
         logger.debug('Parsing ' + el.tag + ' element into ' + self.__class__.__module__ + '.' + self.__class__.__name__ + ' class')
 
         for attrib in self.model_map['attributes']:
-            if 'required' in self.model_map['attributes'][attrib] and self.model_map['attributes'][attrib]['required'] and attrib not in self.element.attrib:
+            if 'required' in self.model_map['attributes'][attrib] \
+                and self.model_map['attributes'][attrib]['required'] \
+                and attrib not in el.attrib \
+                and 'default' not in self.model_map['attributes'][attrib]:
                 logger.critical(el.tag + ' must define ' + attrib + ' attribute')
                 sys.exit()
 

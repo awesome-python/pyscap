@@ -23,6 +23,6 @@ class EntityStateBinaryType(EntityStateSimpleBaseType):
     MODEL_MAP = {
         # TODO <xsd:union memberTypes="xsd:hexBinary oval:EmptyStringType"/>
         'attributes': {
-            'datatype': {'enum': ['binary'], 'required': True},
+            'datatype': {'enum': ['binary'], 'required': True, 'default': 'binary'},
         }
     }

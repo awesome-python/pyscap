@@ -23,6 +23,6 @@ class EntityStateIOSVersionType(EntityStateSimpleBaseType):
     MODEL_MAP = {
         # TODO <xsd:restriction base="xsd:string"/>
         'attributes': {
-            'datatype': {'enum': ['ios_version', 'string'], 'required': True},
+            'datatype': {'enum': ['ios_version', 'string'], 'required': True, 'default': 'string'},
         }
     }

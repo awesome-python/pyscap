@@ -23,6 +23,6 @@ class EntityStateVersionType(EntityStateSimpleBaseType):
     MODEL_MAP = {
         # TODO <xsd:restriction base="xsd:string"/>
         'attributes': {
-            'datatype': {'enum': ['version'], 'required': True},
+            'datatype': {'enum': ['version'], 'required': True, 'default': 'version'},
         }
     }

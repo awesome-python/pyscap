@@ -23,6 +23,6 @@ class EntityStateStringType(EntityStateSimpleBaseType):
     MODEL_MAP = {
         # TODO <xsd:union memberTypes="xsd:boolean oval:EmptyStringType"/>
         'attributes': {
-            'datatype': {'enum': ['string'], 'required': True},
+            'datatype': {'enum': ['string'], 'required': True, 'default': 'string'},
         }
     }

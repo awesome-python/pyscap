@@ -23,6 +23,6 @@ class EntityObjectFloatType(EntitySimpleBaseType):
     MODEL_MAP = {
         # TODO <xsd:union memberTypes="xsd:float oval:EmptyStringType"/>
         'attributes': {
-            'datatype': {'enum': ['float'], 'required': True},
+            'datatype': {'enum': ['float'], 'required': True, 'default': 'float'},
         }
     }

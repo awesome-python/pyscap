@@ -23,6 +23,6 @@ class EntityStateDebianEVRStringType(EntityStateSimpleBaseType):
     MODEL_MAP = {
         # TODO <xsd:restriction base="xsd:string"/>
         'attributes': {
-            'datatype': {'enum': ['debian_evr_string'], 'required': True},
+            'datatype': {'enum': ['debian_evr_string'], 'required': True, 'default': 'debian_evr_string'},
         }
     }

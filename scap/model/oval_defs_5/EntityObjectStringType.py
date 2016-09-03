@@ -23,6 +23,6 @@ class EntityObjectStringType(EntitySimpleBaseType):
     MODEL_MAP = {
         # TODO <xsd:restriction base="xsd:string"/>
         'attributes': {
-            'datatype': {'enum': ['string'], 'required': True},
+            'datatype': {'enum': ['string'], 'required': True, 'default': 'string'},
         }
     }

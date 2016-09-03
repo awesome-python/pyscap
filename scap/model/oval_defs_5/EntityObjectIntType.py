@@ -23,6 +23,6 @@ class EntityObjectIntType(EntitySimpleBaseType):
     MODEL_MAP = {
         # TODO <xsd:union memberTypes="xsd:integer oval:EmptyStringType"/>
         'attributes': {
-            'datatype': {'enum': ['int'], 'required': True},
+            'datatype': {'enum': ['int'], 'required': True, 'default': 'int'},
         }
     }

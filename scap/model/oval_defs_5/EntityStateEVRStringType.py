@@ -23,6 +23,6 @@ class EntityStateEVRStringType(EntityStateSimpleBaseType):
     MODEL_MAP = {
         # TODO <xsd:restriction base="xsd:string"/>
         'attributes': {
-            'datatype': {'enum': ['evr_string'], 'required': True},
+            'datatype': {'enum': ['evr_string'], 'required': True, 'default': 'evr_string'},
         }
     }

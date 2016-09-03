@@ -23,6 +23,6 @@ class EntityStateFileSetRevisionType(EntityStateSimpleBaseType):
     MODEL_MAP = {
         # TODO <xsd:restriction base="xsd:string"/>
         'attributes': {
-            'datatype': {'enum': ['fileset_revision'], 'required': True},
+            'datatype': {'enum': ['fileset_revision'], 'required': True, 'default': 'fileset_revision'},
         }
     }
