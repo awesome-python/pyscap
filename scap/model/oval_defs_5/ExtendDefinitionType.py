@@ -23,7 +23,7 @@ class ExtendDefinitionType(Model):
     MODEL_MAP = {
         'attributes': {
             'applicability_check': {'type': 'Boolean'},
-            'definition_ref': {'type': 'DefinitionIDPattern', 'required': True},
+            'definition_ref': {'type': 'oval_common_5.DefinitionIDPattern', 'required': True},
             'negate': {'type': 'Boolean', 'default': False},
             'comment': {'type': 'oval_common_5.NonEmptyString'},
         }
