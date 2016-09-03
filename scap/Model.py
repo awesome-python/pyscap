@@ -75,7 +75,12 @@ class Model(object):
                 sys.exit()
             module_name = mmap['elements'][child_el.tag]['class']
 
-        model_module = 'scap.model.' + model_namespace + '.' + module_name
+        if '.' in module_name:
+            model_module = 'scap.model.' + module_name
+            module_name = module_name.partition('.')[2]
+        else:
+            model_module = 'scap.model.' + model_namespace + '.' + module_name
+
         if model_module not in sys.modules:
             logger.debug('Loading module ' + model_module)
 
@@ -271,8 +276,7 @@ class Model(object):
         if '.' in type_:
             try:
                 mod = importlib.import_module('scap.model.' + type_)
-                type_ = type_.partition('.')
-                type_ = type_[2]
+                type_ = type_.partition('.')[2]
             except ImportError:
                 raise NotImplementedError('Type value scap.model.' + type_ + ' was not found')
         else:
