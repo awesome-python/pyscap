@@ -22,6 +22,6 @@ logger = logging.getLogger(__name__)
 class StateRefType(Model):
     MODEL_MAP = {
         'attributes': {
-            'state_ref': {'type': 'StateIDPattern', 'required': True},
+            'state_ref': {'type': 'oval_common_5.StateIDPattern', 'required': True},
         }
     }
