@@ -271,6 +271,8 @@ class Model(object):
         if '.' in type_:
             try:
                 mod = importlib.import_module('scap.model.' + type_)
+                type_ = type_.partition('.')
+                type_ = type_[2]
             except ImportError:
                 raise NotImplementedError('Type value scap.model.' + type_ + ' was not found')
         else:
