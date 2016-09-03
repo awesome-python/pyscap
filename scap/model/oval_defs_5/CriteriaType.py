@@ -24,9 +24,9 @@ class CriteriaType(Model):
     MODEL_MAP = {
         'elements': {
             # TODO minOccurs="1" maxOccurs="unbounded" of the following:
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}criteria': {'append': 'criteria', 'class': 'CriteriaType'},
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}criterion': {'append': 'criteria', 'class': 'CriterionType'},
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}extend_definition': {'append': 'criteria', 'class': 'ExtendDefinitionType'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}criteria': {'append': 'criteria', 'class': 'CriteriaType', 'min': 0, 'max': None},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}criterion': {'append': 'criteria', 'class': 'CriterionType', 'min': 0, 'max': None},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}extend_definition': {'append': 'criteria', 'class': 'ExtendDefinitionType', 'min': 0, 'max': None},
         },
         'attributes': {
             'applicability_check': {'type': 'Boolean'},
