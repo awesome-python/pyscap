@@ -16,7 +16,7 @@
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
 from scap.Model import Model
-from scap.oval_common_5.FamilyEnumeration import FAMILY_ENUMERATION
+from scap.model.oval_common_5.FamilyEnumeration import FAMILY_ENUMERATION
 import logging
 
 logger = logging.getLogger(__name__)
