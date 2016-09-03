@@ -25,7 +25,7 @@ class ActiveDirectoryObjectElement(ObjectType):
         'xml_namespace': 'http://oval.mitre.org/XMLSchema/oval-definitions-5#windows',
         'tag_name': 'activedirectory_object',
         'elements': {
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}set': {'class': 'oval_defs_5.SetElement'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}set': {'class': 'oval_defs_5.SetElement', 'min': 0},
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}naming_context': {'class': 'EntityObjectNamingContextType'},
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}relative_dn': {'class': 'oval_defs_5.EntityObjectStringType', 'nillable': True},
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}attribute': {'class': 'oval_defs_5.EntityObjectStringType', 'nillable': True},

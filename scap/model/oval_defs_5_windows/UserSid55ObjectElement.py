@@ -24,7 +24,7 @@ class UserSid55ObjectElement(ObjectType):
         'xml_namespace': 'http://oval.mitre.org/XMLSchema/oval-definitions-5#windows',
         'tag_name': 'user_sid55_object',
         'elements': {
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}set': {'class': 'oval_defs_5.SetElement'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}set': {'class': 'oval_defs_5.SetElement', 'min': 0},
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}user_sid': {'class': 'oval_defs_5.EntityObjectStringType'},
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5}filter': {'class': 'oval_defs_5.FilterElement', 'min': 0, 'max': None},
         }

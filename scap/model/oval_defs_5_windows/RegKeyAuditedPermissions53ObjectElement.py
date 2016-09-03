@@ -24,7 +24,7 @@ class RegKeyAuditedPermissions53ObjectElement(ObjectType):
         'xml_namespace': 'http://oval.mitre.org/XMLSchema/oval-definitions-5#windows',
         'tag_name': 'regkeyauditedpermissions53_object',
         'elements': {
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}set': {'class': 'oval_defs_5.SetElement'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}set': {'class': 'oval_defs_5.SetElement', 'min': 0},
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}behaviors': {'class': 'RegkeyAuditPermissions53Behaviors', 'min': 0},
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}hive': {'class': 'EntityObjectRegistryHiveType'},
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}key': {'class': 'oval_defs_5.EntityObjectStringType', 'nillable': True},

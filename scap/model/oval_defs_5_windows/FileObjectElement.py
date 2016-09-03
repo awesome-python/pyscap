@@ -24,7 +24,7 @@ class FileObjectElement(ObjectType):
         'xml_namespace': 'http://oval.mitre.org/XMLSchema/oval-definitions-5#windows',
         'tag_name': 'file_object',
         'elements': {
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}set': {'class': 'oval_defs_5.SetElement'},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}set': {'class': 'oval_defs_5.SetElement', 'min': 0},
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}behaviors': {'class': 'FileBehaviors', 'min': 0},
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}filepath': {'class': 'oval_defs_5.EntityObjectStringType'},
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}path': {'class': 'oval_defs_5.EntityObjectStringType'},
