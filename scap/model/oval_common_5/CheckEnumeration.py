@@ -16,6 +16,14 @@
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
 CHECK_ENUMERATION = [
+    'all',
+    'at least one',
+    'none exist',
+    'none satisfy',
+    'only one',
+]
+
+CHECK_RESULT_ENUMERATION = [
     'true',
     'false',
     'error',
@@ -25,14 +33,9 @@ CHECK_ENUMERATION = [
 ]
 
 def count_results(results):
-    counts = {
-        'true': 0,
-        'false': 0,
-        'error': 0,
-        'unknown': 0,
-        'not evaluated': 0,
-        'not applicable': 0,
-    }
+    counts = {}
+    for i in CHECK_RESULT_ENUMERATION:
+        counts[i] = 0
     for r in results:
         counts[r] += 1
     return counts['true'], counts['false'], counts['error'], counts['unknown'], counts['not evaluated'], counts['not applicable']

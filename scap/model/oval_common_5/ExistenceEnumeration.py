@@ -16,6 +16,14 @@
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
 EXISTENCE_ENUMERATION = [
+    'all_exist',
+    'any_exist',
+    'at_least_one_exists',
+    'none_exist',
+    'only_one_exists',
+]
+
+EXISTENCE_RESULT_ENUMERATION = [
     'exists',
     'does not exist',
     'error',
