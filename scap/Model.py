@@ -304,7 +304,7 @@ class Model(object):
                     raise NotImplementedError(name + ' attribute support is not implemented')
 
                 if 'enum' in attr_map and value not in attr_map['enum']:
-                    raise ValueError(name + ' attribute must be one of ' + str(attr_map['enum']))
+                    raise ValueError(name + ' attribute must be one of ' + str(attr_map['enum']) + ': ' + str(value))
 
                 # convert value
                 if 'type' in attr_map:
