@@ -47,7 +47,23 @@ class Checker(object):
         self.content = content
         self.parent = parent
         self.args = args
+        self.ref_mapping = {}
 
     def check(self):
         import inspect
         raise NotImplementedError(inspect.stack()[0][3] + '() has not been implemented in subclass: ' + self.__class__.__name__)
+
+    def resolve_reference(self, ref):
+        if ref in self.ref_mapping:
+            logger.debug('Mapping reference ' + ref + ' to ' + self.ref_mapping[ref])
+            ref = self.ref_mapping[ref]
+
+        if not self.parent:
+            raise RuntimeError("Got to null parent without resolving reference")
+
+        logger.debug('Reference ' + ref + ' not in ' + self.__class__.__name__ + ' continuing to parent ' + self.parent.__class__.__name__)
+        return self.parent.resolve_reference(ref)
+
+    def set_ref_mapping(self, mapping):
+        logger.debug('Updating reference mapping with ' + str(mapping))
+        self.ref_mapping.update(mapping)
