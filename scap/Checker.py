@@ -21,7 +21,8 @@ logger = logging.getLogger(__name__)
 class Checker(object):
     @staticmethod
     def load(host, content, args=None):
-        collector_module = 'scap.checker.' + content.model_namespace + '.' + content.__class__.__name__
+        model_namespace = content.__class__.__module__.split('.')[2]
+        collector_module = 'scap.checker.' + model_namespace + '.' + content.__class__.__name__
         # try to load the collector's module
         import sys, importlib
         if collector_module not in sys.modules:
