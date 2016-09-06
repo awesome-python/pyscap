@@ -19,9 +19,9 @@ from scap.Checker import Checker
 import logging
 
 logger = logging.getLogger(__name__)
-class DataStreamCollectionType(Checker):
+class DataStreamCollectionElement(Checker):
     def __init__(self, host, content, args=None):
-        super(DataStreamCollectionType, self).__init__(host, content, args)
+        super(DataStreamCollectionElement, self).__init__(host, content, args)
 
         if 'data_stream' in args:
             ds_name = args['data_stream']
