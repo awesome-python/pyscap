@@ -20,8 +20,8 @@ import logging
 
 logger = logging.getLogger(__name__)
 class ProfileType(Checker):
-    def __init__(self, host, content, args=None):
-        super(ProfileType, self).__init__(host, content, args)
+    def __init__(self, host, content, parent, args=None):
+        super(ProfileType, self).__init__(host, content, parent, args)
 
         # expand values
         values = {}
@@ -49,7 +49,7 @@ class ProfileType(Checker):
         for rule_id in self.content.selected_rules:
             rule = self.content.parent.rules[rule_id]
             args['check_selector'] = self.content.rule_check_selections[rule_id]
-            self.rule_checkers[rule_id] = Checker.load(self.host, rule, args)
+            self.rule_checkers[rule_id] = Checker.load(self.host, rule, self, args)
 
     def check(self):
         results = {'rule_results': {}}

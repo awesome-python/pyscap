@@ -20,8 +20,8 @@ import logging
 
 logger = logging.getLogger(__name__)
 class BenchmarkType(Checker):
-    def __init__(self, host, content, args=None):
-        super(BenchmarkType, self).__init__(host, content, args)
+    def __init__(self, host, content, parent, args=None):
+        super(BenchmarkType, self).__init__(host, content, parent, args)
 
         if 'profile' in args:
             profile_id = args['profile']
@@ -40,7 +40,7 @@ class BenchmarkType(Checker):
                 sys.exit()
         logger.info('Selecting profile ' + profile.id)
 
-        self.profile_checker = Checker.load(host, profile, args)
+        self.profile_checker = Checker.load(host, profile, self, args)
 
     def check(self):
         return self.profile_checker.check()

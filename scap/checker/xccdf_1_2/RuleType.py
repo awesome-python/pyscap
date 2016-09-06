@@ -20,8 +20,8 @@ import logging
 
 logger = logging.getLogger(__name__)
 class RuleType(Checker):
-    def __init__(self, host, content, args=None):
-        super(RuleType, self).__init__(host, content, args)
+    def __init__(self, host, content, parent, args=None):
+        super(RuleType, self).__init__(host, content, parent, args)
 
         if args['check_selector'] not in content.checks:
             logger.critical('Check selector ' + args['check_selector'] + ' not found for rule ' + content.id)
@@ -31,7 +31,7 @@ class RuleType(Checker):
 
         self.checker = None
         try:
-            self.checker = Checker.load(host, check, args)
+            self.checker = Checker.load(host, check, self, args)
         except ImportError as e:
             import traceback
             logger.warning('Could not load checker for check ' + check.__class__.__name__ + ' for rule ' + content.id + ': ' + str(e) + ':\n' + traceback.format_exc())

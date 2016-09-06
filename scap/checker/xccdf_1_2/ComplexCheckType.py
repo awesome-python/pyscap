@@ -20,12 +20,12 @@ import logging
 
 logger = logging.getLogger(__name__)
 class ComplexCheckType(Checker):
-    def __init__(self, host, content, args=None):
-        super(ComplexCheckType, self).__init__(host, content, args)
+    def __init__(self, host, content, parent, args=None):
+        super(ComplexCheckType, self).__init__(host, content, parent, args)
 
         self.checkers = []
         for check in content.checks:
-            self.checkers.append(Checker.load(host, check, args))
+            self.checkers.append(Checker.load(host, check, self, args))
 
     def check(self):
         from scap.model.xccdf_1_2 import CheckOperatorEnumeration

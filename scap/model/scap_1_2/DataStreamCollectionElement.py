@@ -34,29 +34,3 @@ class DataStreamCollectionElement(Model):
             'schematron-version':{'type': 'Token', 'required': True, 'ignore': True},
         },
     }
-    def __init__(self):
-        super(DataStreamCollectionElement, self).__init__()    # {http://scap.nist.gov/schema/scap/source/1.2}data-stream-collection
-
-        # self.components = {}
-        # self.data_streams = {}
-        # self.extended_components = {}
-        #
-        self.selected_data_stream = None
-
-    def resolve_reference(self, ref):
-        if ref[0] == '#':
-            ref = ref[1:]
-            if ref in self.components:
-                return self.components[ref]
-            elif self.selected_data_stream:
-                logger.debug('Reference ' + ref + ' not in components; checking selected data stream')
-                return self.data_streams[self.selected_data_stream].resolve_reference('#' + ref)
-            else:
-                # we're the top level parent
-                logger.critical('Reference ' + ref + ' not in ' + str(list(self.components.keys())))
-                import sys
-                sys.exit()
-        else:
-            logger.critical('only local references are supported: ' + ref)
-            import sys
-            sys.exit()

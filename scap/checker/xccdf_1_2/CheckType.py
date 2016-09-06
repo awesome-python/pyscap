@@ -20,16 +20,16 @@ import logging
 
 logger = logging.getLogger(__name__)
 class CheckType(Checker):
-    def __init__(self, host, content, args=None):
-        super(CheckType, self).__init__(host, content, args)
+    def __init__(self, host, content, parent, args=None):
+        super(CheckType, self).__init__(host, content, parent, args)
 
         self.checkers = []
         content = self.content.resolve()
         if isinstance(content, list):
             for defn in content:
-                self.checkers.append(Checker.load(host, defn, args))
+                self.checkers.append(Checker.load(host, defn, self, args))
         else:
-            self.checkers.append(Checker.load(host, content, args))
+            self.checkers.append(Checker.load(host, content, self, args))
 
     def check(self):
         # TODO: multi-check

@@ -20,12 +20,12 @@ import logging
 
 logger = logging.getLogger(__name__)
 class CriteriaType(Checker):
-    def __init__(self, host, content, args=None):
-        super(CriteriaType, self).__init__(host, content, args)
+    def __init__(self, host, content, parent, args=None):
+        super(CriteriaType, self).__init__(host, content, parent, args)
 
         self.checkers = []
         for crit in content.criteria:
-            self.checkers.append(Checker.load(host, crit, args))
+            self.checkers.append(Checker.load(host, crit, self, args))
 
     def check(self):
         result = None

@@ -205,6 +205,9 @@ class Model(object):
                         if tag_map['map'] not in list(self.__dict__.keys()):
                             setattr(self, tag_map['map'], {})
 
+    def accept(self, visitor):
+        visitor.visit(self)
+
     def get_tag_name(self):
         if 'tag_name' not in self.model_map:
             raise NotImplementedError('Subclass ' + self.__class__.__name__ + ' does not define tag_name')

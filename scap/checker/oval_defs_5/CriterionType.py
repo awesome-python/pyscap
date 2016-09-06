@@ -20,12 +20,12 @@ import logging
 
 logger = logging.getLogger(__name__)
 class CriterionType(Checker):
-    def __init__(self, host, content, args=None):
-        super(CriterionType, self).__init__(host, content, args)
+    def __init__(self, host, content, parent, args=None):
+        super(CriterionType, self).__init__(host, content, parent, args)
 
         test = content.resolve()
         try:
-            self.checker = Checker.load(host, test, args)
+            self.checker = Checker.load(host, test, self, args)
         except ImportError:
             raise NotImplementedError('Test checker type scap.checker.' + test.model_namespace + '.' \
                 + test.__class__.__name__ + ' has not been implemented')

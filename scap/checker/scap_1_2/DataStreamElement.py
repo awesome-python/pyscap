@@ -20,8 +20,10 @@ import logging
 
 logger = logging.getLogger(__name__)
 class DataStreamElement(Checker):
-    def __init__(self, host, content, args=None):
-        super(DataStreamElement, self).__init__(host, content, args)
+    def __init__(self, host, content, parent, args=None):
+        super(DataStreamElement, self).__init__(host, content, parent, args)
+
+        self.selected_checklist = None
 
         if 'checklist' in args:
             checklist_id = args[checklist]
@@ -40,7 +42,31 @@ class DataStreamElement(Checker):
                 sys.exit()
         logger.info('Selecting checklist ' + checklist.id)
 
-        self.checklist_checker = Checker.load(host, checklist, args)
+        self.checklist_checker = Checker.load(host, checklist, self, args)
 
     def check(self):
         return self.checklist_checker.check()
+
+    # def resolve_reference(self, ref):
+    #     if ref in self.ref_mapping:
+    #         logger.debug('Mapping reference ' + ref + ' to ' + self.ref_mapping[ref])
+    #         ref = self.ref_mapping[ref]
+    #
+    #     if ref[0] == '#':
+    #         ref = ref[1:]
+    #         if ref in self.dictionaries:
+    #             logger.debug('Resolving ' + ref + ' as component reference to ' + self.dictionaries[ref].href)
+    #             return self.dictionaries[ref].resolve()
+    #         elif ref in self.checklists:
+    #             logger.debug('Resolving ' + ref + ' as component reference to ' + self.checklists[ref].href)
+    #             return self.checklists[ref].resolve()
+    #         elif ref in self.checks:
+    #             logger.debug('Resolving ' + ref + ' as component reference to ' + self.checks[ref].href)
+    #             return self.checks[ref].resolve()
+    #         else:
+    #             logger.debug('Reference ' + ref + ' not in ' + self.__class__.__name__ + ' continuing to parent ' + self.parent.__class__.__name__)
+    #             return self.parent.resolve_reference('#' + ref)
+    #     else:
+    #         logger.critical('only local references are supported: ' + ref)
+    #         import sys
+    #         sys.exit()

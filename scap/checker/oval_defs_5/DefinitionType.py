@@ -20,10 +20,10 @@ import logging
 
 logger = logging.getLogger(__name__)
 class DefinitionType(Checker):
-    def __init__(self, host, content, args=None):
-        super(DefinitionType, self).__init__(host, content, args)
+    def __init__(self, host, content, parent, args=None):
+        super(DefinitionType, self).__init__(host, content, parent, args)
 
-        self.checker = Checker.load(host, content.criteria, args)
+        self.checker = Checker.load(host, content.criteria, self, args)
 
     def check(self):
         return self.checker.check()

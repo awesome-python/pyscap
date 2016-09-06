@@ -20,10 +20,10 @@ import logging
 
 logger = logging.getLogger(__name__)
 class ExtendDefinitionType(Checker):
-    def __init__(self, host, content, args=None):
-        super(ExtendDefinitionType, self).__init__(host, content, args)
+    def __init__(self, host, content, parent, args=None):
+        super(ExtendDefinitionType, self).__init__(host, content, parent, args)
 
-        self.checker = Checker.load(host, content.resolve(), args)
+        self.checker = Checker.load(host, content.resolve(), self, args)
 
     def check(self):
         # TODO applicability_check?

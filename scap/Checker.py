@@ -20,7 +20,7 @@ import logging
 logger = logging.getLogger(__name__)
 class Checker(object):
     @staticmethod
-    def load(host, content, args=None):
+    def load(host, content, parent, args=None):
         model_namespace = content.__class__.__module__.split('.')[2]
         collector_module = 'scap.checker.' + model_namespace + '.' + content.__class__.__name__
         # try to load the collector's module
@@ -38,13 +38,14 @@ class Checker(object):
 
         # instantiate an instance of the class & load it
         class_ = getattr(mod, content.__class__.__name__)
-        inst = class_(host, content, args)
+        inst = class_(host, content, parent, args)
 
         return inst
 
-    def __init__(self, host, content, args=None):
+    def __init__(self, host, content, parent, args=None):
         self.host = host
         self.content = content
+        self.parent = parent
         self.args = args
 
     def check(self):

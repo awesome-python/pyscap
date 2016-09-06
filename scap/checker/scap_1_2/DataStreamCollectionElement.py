@@ -20,8 +20,8 @@ import logging
 
 logger = logging.getLogger(__name__)
 class DataStreamCollectionElement(Checker):
-    def __init__(self, host, content, args=None):
-        super(DataStreamCollectionElement, self).__init__(host, content, args)
+    def __init__(self, host, content, parent, args=None):
+        super(DataStreamCollectionElement, self).__init__(host, content, parent, args)
 
         if 'data_stream' in args:
             ds_name = args['data_stream']
@@ -40,10 +40,27 @@ class DataStreamCollectionElement(Checker):
                 sys.exit()
         logger.info('Selecting data stream ' + ds.id)
 
-        # have to set the selected data stream so references resolve properly
-        content.selected_data_stream = ds.id
+        self.selected_data_stream = ds.id
 
-        self.ds_checker = Checker.load(host, ds, args)
+        self.ds_checker = Checker.load(host, ds, self, args)
 
     def check(self):
         return self.ds_checker.check()
+
+    # def resolve_reference(self, ref):
+    #     if ref[0] == '#':
+    #         ref = ref[1:]
+    #         if ref in self.components:
+    #             return self.components[ref]
+    #         elif self.selected_data_stream:
+    #             logger.debug('Reference ' + ref + ' not in components; checking selected data stream')
+    #             return self.data_streams[self.selected_data_stream].resolve_reference('#' + ref)
+    #         else:
+    #             # we're the top level parent
+    #             logger.critical('Reference ' + ref + ' not in ' + str(list(self.components.keys())))
+    #             import sys
+    #             sys.exit()
+    #     else:
+    #         logger.critical('only local references are supported: ' + ref)
+    #         import sys
+    #         sys.exit()

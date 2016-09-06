@@ -20,8 +20,8 @@ import logging
 
 logger = logging.getLogger(__name__)
 class TestType(Checker):
-    def __init__(self, host, content, args=None):
-        super(TestType, self).__init__(host, content, args)
+    def __init__(self, host, content, parent, args=None):
+        super(TestType, self).__init__(host, content, parent, args)
 
         self.object = content.resolve_object()
         self.states = content.resolve_states()
