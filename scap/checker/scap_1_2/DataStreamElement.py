@@ -19,9 +19,9 @@ from scap.Checker import Checker
 import logging
 
 logger = logging.getLogger(__name__)
-class DataStreamType(Checker):
+class DataStreamElement(Checker):
     def __init__(self, host, content, args=None):
-        super(DataStreamType, self).__init__(host, content, args)
+        super(DataStreamElement, self).__init__(host, content, args)
 
         if 'checklist' in args:
             checklist_id = args[checklist]

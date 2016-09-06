@@ -19,10 +19,11 @@ import logging
 import importlib
 import sys
 import xml.etree.ElementTree as ET
+
 from scap.model import NAMESPACES
 
 logger = logging.getLogger(__name__)
-#logger.setLevel(logging.INFO)
+logger.setLevel(logging.INFO)
 class Model(object):
     MODEL_MAP = {
         'attributes': {
@@ -106,6 +107,10 @@ class Model(object):
             for class_ in model_class.__mro__:
                 if class_ == object:
                     break
+
+                if class_.__module__.startswith('collections.'):
+                    # skip collection classes
+                    continue
 
                 fq_class_name = class_.__module__ + '.' + class_.__name__
 

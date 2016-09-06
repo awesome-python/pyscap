@@ -15,13 +15,33 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.Model import Model
 import logging
+import collections.abc
+
+from scap.Model import Model
 
 logger = logging.getLogger(__name__)
-class RefListType(Model):
+class RefListType(Model, collections.abc.MutableMapping):
     MODEL_MAP = {
         'elements': {
             '{http://scap.nist.gov/schema/scap/source/1.2}component-ref': {'map': 'component_refs', 'class': 'ComponentRefElement'},
         },
     }
+
+    def __delitem__(self, ):
+        del self.component_refs[key]
+
+    def __getitem__(self, key):
+        return self.component_refs[key]
+
+    def __setitem__(self, key, value):
+        self.component_refs[key] = value
+
+    def __contains__(self, item):
+        return item in self.component_refs
+
+    def __len__(self):
+        return len(self.component_refs)
+
+    def __iter__(self):
+        return iter(self.component_refs.keys())
