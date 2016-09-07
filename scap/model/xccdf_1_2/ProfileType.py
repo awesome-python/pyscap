@@ -38,81 +38,13 @@ class ProfileType(Model):
             '{http://checklists.nist.gov/xccdf/1.2}reference': {'ignore': True, 'class': 'ReferenceType', 'append': 'references', 'min': 0, 'max': None},
             '{http://checklists.nist.gov/xccdf/1.2}platform': {'ignore': True, 'class': 'OverrideableCPE2IDRefType', 'append': 'platforms', 'min': 0, 'max': None},
 
-            '{http://checklists.nist.gov/xccdf/1.2}select': {'class': 'ProfileSelectType', 'map': 'refinements', 'key': 'idref', 'min': 0, 'max': None},
-            '{http://checklists.nist.gov/xccdf/1.2}set-complex-value': {'class': 'ProfileSetComplexValueType', 'map': 'refinements', 'key': 'idref', 'min': 0, 'max': None},
-            '{http://checklists.nist.gov/xccdf/1.2}set-value': {'class': 'ProfileSetValueType', 'map': 'refinements', 'key': 'idref', 'min': 0, 'max': None},
-            '{http://checklists.nist.gov/xccdf/1.2}refine-value': {'class': 'ProfileRefineValueType', 'map': 'refinements', 'key': 'idref', 'min': 0, 'max': None},
-            '{http://checklists.nist.gov/xccdf/1.2}refine-rule': {'class': 'ProfileRefineRuleType', 'map': 'refinements', 'key': 'idref', 'min': 0, 'max': None},
+            '{http://checklists.nist.gov/xccdf/1.2}select': {'class': 'ProfileSelectType', 'map': 'selects', 'key': 'idref', 'min': 0, 'max': None},
+            '{http://checklists.nist.gov/xccdf/1.2}set-complex-value': {'class': 'ProfileSetComplexValueType', 'map': 'set_complex_values', 'key': 'idref', 'min': 0, 'max': None},
+            '{http://checklists.nist.gov/xccdf/1.2}set-value': {'class': 'ProfileSetValueType', 'map': 'set_values', 'key': 'idref', 'min': 0, 'max': None},
+            '{http://checklists.nist.gov/xccdf/1.2}refine-value': {'class': 'ProfileRefineValueType', 'map': 'refine_values', 'key': 'idref', 'min': 0, 'max': None},
+            '{http://checklists.nist.gov/xccdf/1.2}refine-rule': {'class': 'ProfileRefineRuleType', 'map': 'refine_rules', 'key': 'idref', 'min': 0, 'max': None},
 
             '{http://checklists.nist.gov/xccdf/1.2}metadata': {'ignore': True, 'class': 'MetadataType', 'append': 'metadata', 'min': 0, 'max': None},
             '{http://checklists.nist.gov/xccdf/1.2}signature': {'ignore': True, 'class': 'SignatureType', 'min': 0, 'max': 1},
         },
     }
-    # def __init__(self):
-    #     super(ProfileType, self).__init__()
-    #
-    #     self.extends = None
-    #
-    #     self.selects = {}
-    #     self.set_complex_values = {}
-    #     self.set_values = {}
-    #     self.refine_values = {}
-    #     self.refine_rules = {}
-
-    # def parse_attribute(self, name, value):
-    #     if name == 'extends':
-    #         logger.critical('Profiles with @extends are not supported')
-    #         import sys
-    #         sys.exit()
-    #     else:
-    #         return super(ProfileType, self).parse_attribute(name, value)
-    #     return True
-    #
-    # def parse_element(self, sub_el):
-    #     if sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}select':
-    #         if sub_el.attrib['idref'] not in self.parent.rules:
-    #             logger.critical('Rule idref in Profile not found: ' + sub_el.attrib['idref'])
-    #             import sys
-    #             sys.exit()
-    #         r = self.parent.rules[sub_el.attrib['idref']]
-    #         if sub_el.attrib['selected'] == 'true':
-    #             logger.debug('Rule ' + sub_el.attrib['idref'] + ' selected by profile ' + self.id)
-    #             self.selected_rules.append(sub_el.attrib['idref'])
-    #
-    #             if sub_el.attrib['idref'] not in self.rule_check_selections:
-    #                 self.rule_check_selections[sub_el.attrib['idref']] = None
-    #         else:
-    #             try:
-    #                 logger.debug('Rule ' + sub_el.attrib['idref'] + ' un-selected by profile ' + self.id)
-    #                 self.selected_rules.remove(sub_el.attrib['idref'])
-    #             except KeyError:
-    #                 logger.warning('Rule ' + sub_el.attrib['idref'] + ' was not previously selected by profile ' + self.id)
-    #     elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}refine-value':
-    #         if sub_el.attrib['idref'] not in self.parent.values:
-    #             logger.critical('Value idref in Profile not found: ' + sub_el.attrib['idref'])
-    #             import sys
-    #             sys.exit()
-    #         v = self.parent.values[sub_el.attrib['idref']]
-    #         if sub_el.attrib['selector'] not in v.selectors:
-    #             logger.critical('Selector in Value not found: ' + sub_el.attrib['selector'])
-    #             import sys
-    #             sys.exit()
-    #         logger.info('Using selector ' + sub_el.attrib['selector'] + ' for value ' + v.id + ' in profile ' + self.id)
-    #         self.value_selections[v.id] = sub_el.attrib['selector']
-    #     elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}refine-rule':
-    #         if sub_el.attrib['idref'] not in self.parent.rules:
-    #             logger.critical('Rule idref in Profile not found: ' + sub_el.attrib['idref'])
-    #             import sys
-    #             sys.exit()
-    #         logger.info('Using check selector ' + sub_el.attrib['selector'] + ' for rule ' + sub_el.attrib['idref'] + ' in profile ' + self.id)
-    #         self.rule_check_selections[sub_el.attrib['idref']] = sub_el.attrib['selector']
-    #     else:
-    #         return super(ProfileType, self).parse_element(sub_el)
-    #     return True
-
-    # def from_xml(self, parent, el):
-    #     # copy in the rules that are selected by default
-    #     for rule_id in parent.selected_rules:
-    #         self.selected_rules[rule_id] = parent.rules[rule_id]
-    #
-    #     super(ProfileType, self).from_xml(parent, el)

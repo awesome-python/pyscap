@@ -227,6 +227,12 @@ class Model(object):
     def get_tag(self):
         return '{' + self.get_xml_namespace() + '}' + self.get_tag_name()
 
+    def get_text(self):
+        return self.element.text
+
+    def get_tail(self):
+        return self.element.tail
+
     def from_xml(self, parent, el):
         self.parent = parent
         self.element = el

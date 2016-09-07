@@ -30,7 +30,7 @@ class CheckType(Model):
             'system': {'enum': SYSTEM_ENUMERATION, 'required': True},
             'negate': {'type': 'Boolean', 'default': False},
             'id': {'type': 'NCName'},
-            'selector': {'default': '', 'type': 'String'},
+            'selector': {'default': None, 'type': 'String'},
             'multi-check': {'type': 'Boolean', 'default': False},
         },
         'elements': {
@@ -40,3 +40,18 @@ class CheckType(Model):
             '{http://checklists.nist.gov/xccdf/1.2}check-content': {'class': 'CheckContentType', 'min': 0, 'max': 1},
         },
     }
+
+    def __str__(self):
+        if self.system == 'http://oval.mitre.org/XMLSchema/oval-definitions-5':
+            s = 'oval-definitions-5:'
+        elif self.system == 'http://scap.nist.gov/schema/ocil/2.0':
+            s = 'ocil-2.0:'
+        elif self.system == 'http://scap.nist.gov/schema/ocil/2':
+            s = 'ocil-2:'
+
+        if hasattr(self, 'id'):
+            s += self.id + ':'
+
+        if len(self.check_content_refs) > 0:
+            s += str([ref.href + ('' if not hasattr(ref, 'name') else '#' + ref.name) for ref in self.check_content_refs])
+        return s

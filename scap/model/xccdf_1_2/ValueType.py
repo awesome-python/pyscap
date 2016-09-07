@@ -33,11 +33,12 @@ class ValueType(ItemType):
         },
         'elements': {
             # TODO: at least one value
+            # TODO: since order matters in xml (and for values) we might need a list vs. dict here
             '{http://checklists.nist.gov/xccdf/1.2}value': {'class': 'SelStringType', 'map': 'values', 'key': 'selector', 'min': 0, 'max': None},
-            '{http://checklists.nist.gov/xccdf/1.2}complex-value': {'class': 'SelComplexValueType', 'map': 'values', 'key': 'selector', 'min': 0, 'max': None},
+            '{http://checklists.nist.gov/xccdf/1.2}complex-value': {'class': 'SelComplexValueType', 'map': 'complex_values', 'key': 'selector', 'min': 0, 'max': None},
             # choice of below
             '{http://checklists.nist.gov/xccdf/1.2}default': {'class': 'SelStringType', 'min': 0, 'max': None, 'map': 'defaults', 'key': 'selector'},
-            '{http://checklists.nist.gov/xccdf/1.2}complex-default': {'class': 'SelComplexValueType', 'min': 0, 'max': None, 'map': 'defaults', 'key': 'selector'},
+            '{http://checklists.nist.gov/xccdf/1.2}complex-default': {'class': 'SelComplexValueType', 'min': 0, 'max': None, 'map': 'complex_defaults', 'key': 'selector'},
 
             '{http://checklists.nist.gov/xccdf/1.2}match': {'class': 'SelStringType', 'map': 'matches', 'key': 'selector', 'min': 0, 'max': None},
             '{http://checklists.nist.gov/xccdf/1.2}lower-bound': {'class': 'SelNumType', 'map': 'lower_bounds', 'key': 'selector', 'min': 0, 'max': None},
@@ -47,35 +48,3 @@ class ValueType(ItemType):
             '{http://checklists.nist.gov/xccdf/1.2}signature': {'ignore': True, 'class': 'SignatureType', 'min': 0, 'max': None},
         },
     }
-    # def __init__(self):
-    #     super(ValueType, self).__init__()
-    #     self.values = {}
-    #     self.type = 'string'
-    #     self.operator = 'equals'
-
-    # def parse_attribute(self, name, value):
-    #     if name == 'type':
-    #         self.type = value
-    #     elif name == 'operator':
-    #         self.operator = value
-    #     else:
-    #         return super(ValueType, self).parse_attribute(name, value)
-    #     return True
-    #
-    # def parse_element(self, sub_el):
-    #     if sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}value':
-    #         if 'selector' in sub_el.attrib:
-    #             logger.debug('Selector value of ' + self.id + ' ' + sub_el.attrib['selector'] + ' = ' + str(sub_el.text))
-    #             if sub_el.text is None:
-    #                 self.selectors[sub_el.attrib['selector']] = ''
-    #             else:
-    #                 self.selectors[sub_el.attrib['selector']] = sub_el.text
-    #         else:
-    #             logger.debug('Default value of ' + self.id + ' is ' + str(sub_el.text))
-    #             if sub_el.text is None:
-    #                 self.selectors[None] = ''
-    #             else:
-    #                 self.selectors[None] = sub_el.text
-    #     else:
-    #         return super(ValueType, self).parse_element(sub_el)
-    #     return True

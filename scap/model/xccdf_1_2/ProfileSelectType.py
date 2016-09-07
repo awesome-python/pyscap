@@ -29,8 +29,3 @@ class ProfileSelectType(Model):
             '{http://checklists.nist.gov/xccdf/1.2}remark': {'ignore': True, 'class': 'TextType', 'append': 'remarks', 'min': 0, 'max': None},
         },
     }
-    # def __init__(self):
-    #     super(ProfileSelectType, self).__init__()
-    #
-    #     self.idref = None
-    #     self.selected = None
