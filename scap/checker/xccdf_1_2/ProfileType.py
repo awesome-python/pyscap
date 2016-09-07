@@ -155,6 +155,6 @@ class ProfileType(Checker):
 
     def check(self):
         results = {'rule_results': {}}
-        for rule_id, rule_checker in list(self.rule_checkers.items()):
-            results['rule_results'][rule_id] = rule_checker.check()
+        for rule_id in self.checkers:
+            results['rule_results'][rule_id] = self.checkers[rule_id].check()
         return results
