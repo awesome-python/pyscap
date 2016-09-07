@@ -24,7 +24,7 @@ class CheckType(Checker):
         super(CheckType, self).__init__(host, content, parent, args)
 
         self.checkers = []
-        content = self.content.resolve()
+        content = self.resolve()
         if isinstance(content, list):
             for defn in content:
                 self.checkers.append(Checker.load(host, defn, self, args))
@@ -50,3 +50,26 @@ class CheckType(Checker):
             return CheckOperatorEnumeration.negate(result)
         else:
             return result
+
+    # def resolve(self):
+    #     content = self.resolve_reference(self.check_content_ref)
+    #     if self.system == 'http://oval.mitre.org/XMLSchema/oval-definitions-5':
+    #         if self.check_content_name is None:
+    #             return list(content.definitions.values())
+    #         else:
+    #             # looking for a definition
+    #             return content.definitions[self.check_content_name]
+    #     elif self.system == 'http://scap.nist.gov/schema/ocil/2' or self.system == 'http://scap.nist.gov/schema/ocil/2.0':
+    #         if self.check_content_name is None:
+    #             return content
+    #         else:
+    #             logger.debug('Looking in ocil content "' + content.document.title + '" for ' + self.check_content_name)
+    #             id_parts = self.check_content_name.split(':')
+    #             if id_parts[2] == 'questionnaire':
+    #                 # looking for a questionnaire
+    #                 return content.questionnaires[self.check_content_name]
+    #             else:
+    #                 raise NotImplementedError('Checking of OCIL ' + id_parts[2] + ' content is not implemented')
+    #     else:
+    #         print(str(content))
+    #         raise NotImplementedError('Check system not implemented ' + self.system)

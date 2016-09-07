@@ -36,31 +36,3 @@ class OVALDefinitionsElement(Model):
             '{http://www.w3.org/2000/09/xmldsig#}Signature': {'ignore': True, 'min': 0, 'max': 1},
         }
     }
-
-    def resolve_reference(self, ref):
-        if ref in self.ref_mapping:
-            logger.debug('Mapping reference ' + ref + ' to ' + self.ref_mapping[ref])
-            ref = self.ref_mapping[ref]
-
-        if ref.startswith('oval:'):
-            ref_type = ref.split(':')[2]
-            if ref_type == 'def' and ref in self.definitions:
-                #logger.debug('Found OVAL definition ' + ref)
-                return self.definitions[ref]
-            elif ref_type == 'obj' and ref in self.objects:
-                #logger.debug('Found OVAL object ' + ref)
-                return self.objects[ref]
-            elif ref_type == 'ste' and ref in self.states:
-                #logger.debug('Found OVAL state ' + ref)
-                return self.states[ref]
-            elif ref_type == 'tst' and ref in self.tests:
-                #logger.debug('Found OVAL test ' + ref)
-                return self.tests[ref]
-            elif ref_type == 'var' and ref in self.variables:
-                #logger.debug('Found OVAL variable ' + ref)
-                return self.variables[ref]
-            else:
-                #logger.debug('Reference ' + ref + ' not in ' + self.__class__.__name__ + ' continuing to parent ' + self.parent.__class__.__name__)
-                return self.parent.resolve_reference('#' + ref)
-        else:
-            return self.parent.resolve_reference(ref)

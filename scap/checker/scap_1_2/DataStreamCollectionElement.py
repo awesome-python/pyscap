@@ -40,27 +40,20 @@ class DataStreamCollectionElement(Checker):
                 sys.exit()
         logger.info('Selecting data stream ' + ds.id)
 
-        self.selected_data_stream = ds.id
-
         self.ds_checker = Checker.load(host, ds, self, args)
 
     def check(self):
         return self.ds_checker.check()
 
-    # def resolve_reference(self, ref):
-    #     if ref[0] == '#':
-    #         ref = ref[1:]
-    #         if ref in self.components:
-    #             return self.components[ref]
-    #         elif self.selected_data_stream:
-    #             logger.debug('Reference ' + ref + ' not in components; checking selected data stream')
-    #             return self.data_streams[self.selected_data_stream].resolve_reference('#' + ref)
-    #         else:
-    #             # we're the top level parent
-    #             logger.critical('Reference ' + ref + ' not in ' + str(list(self.components.keys())))
-    #             import sys
-    #             sys.exit()
-    #     else:
-    #         logger.critical('only local references are supported: ' + ref)
-    #         import sys
-    #         sys.exit()
+    def resolve_reference(self, ref):
+        if ref[0] == '#':
+            ref = ref[1:]
+            if ref in self.content.components:
+                return self.content.components[ref]
+
+            logger.debug('Reference ' + ref + ' not in components; checking selected data stream')
+            return self.ds_checker.resolve_reference('#' + ref)
+        else:
+            logger.critical('only local references are supported: ' + ref)
+            import sys
+            sys.exit()

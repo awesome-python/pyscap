@@ -28,6 +28,3 @@ class CriterionType(Model):
             'comment': {'type': 'oval_common_5.NonEmptyString'},
         }
     }
-
-    def resolve(self):
-        return self.resolve_reference(self.test_ref)

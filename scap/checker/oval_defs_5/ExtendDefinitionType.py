@@ -23,7 +23,7 @@ class ExtendDefinitionType(Checker):
     def __init__(self, host, content, parent, args=None):
         super(ExtendDefinitionType, self).__init__(host, content, parent, args)
 
-        self.checker = Checker.load(host, content.resolve(), self, args)
+        self.checker = Checker.load(host, self.resolve_reference(content.definition_ref), self, args)
 
     def check(self):
         # TODO applicability_check?

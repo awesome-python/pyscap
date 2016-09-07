@@ -23,8 +23,6 @@ class DataStreamElement(Checker):
     def __init__(self, host, content, parent, args=None):
         super(DataStreamElement, self).__init__(host, content, parent, args)
 
-        self.selected_checklist = None
-
         if 'checklist' in args:
             checklist_id = args[checklist]
             if checklist_id not in content.checklists:
@@ -32,10 +30,12 @@ class DataStreamElement(Checker):
                 import sys
                 sys.exit()
             else:
-                checklist = content.checklists[checklist_id].resolve()
+                comp_ref = content.checklists[checklist_id]
+                checklist = self.resolve_reference(comp_ref.href).model
         else:
             if len(content.checklists) == 1:
-                checklist = list(content.checklists.values())[0].resolve()
+                comp_ref = list(content.checklists.values())[0]
+                checklist = self.resolve_reference(comp_ref.href).model
             else:
                 logger.critical('No --checklist specified and unable to implicitly choose one. Available checklists: ' + str(list(content.checklists.keys())))
                 import sys
@@ -43,30 +43,31 @@ class DataStreamElement(Checker):
         logger.info('Selecting checklist ' + checklist.id)
 
         self.checklist_checker = Checker.load(host, checklist, self, args)
+        self.checklist_checker.ref_mapping = comp_ref.catalog.to_dict()
 
     def check(self):
         return self.checklist_checker.check()
 
-    # def resolve_reference(self, ref):
-    #     if ref in self.ref_mapping:
-    #         logger.debug('Mapping reference ' + ref + ' to ' + self.ref_mapping[ref])
-    #         ref = self.ref_mapping[ref]
-    #
-    #     if ref[0] == '#':
-    #         ref = ref[1:]
-    #         if ref in self.dictionaries:
-    #             logger.debug('Resolving ' + ref + ' as component reference to ' + self.dictionaries[ref].href)
-    #             return self.dictionaries[ref].resolve()
-    #         elif ref in self.checklists:
-    #             logger.debug('Resolving ' + ref + ' as component reference to ' + self.checklists[ref].href)
-    #             return self.checklists[ref].resolve()
-    #         elif ref in self.checks:
-    #             logger.debug('Resolving ' + ref + ' as component reference to ' + self.checks[ref].href)
-    #             return self.checks[ref].resolve()
-    #         else:
-    #             logger.debug('Reference ' + ref + ' not in ' + self.__class__.__name__ + ' continuing to parent ' + self.parent.__class__.__name__)
-    #             return self.parent.resolve_reference('#' + ref)
-    #     else:
-    #         logger.critical('only local references are supported: ' + ref)
-    #         import sys
-    #         sys.exit()
+    def resolve_reference(self, ref):
+        if ref in self.ref_mapping:
+            logger.debug('Mapping reference ' + ref + ' to ' + self.ref_mapping[ref])
+            ref = self.ref_mapping[ref]
+
+        if ref[0] == '#':
+            ref = ref[1:]
+            if ref in self.content.dictionaries:
+                logger.debug('Resolving ' + ref + ' as component reference to ' + self.content.dictionaries[ref].href)
+                return self.content.dictionaries[ref].resolve()
+            elif ref in self.content.checklists:
+                logger.debug('Resolving ' + ref + ' as component reference to ' + self.content.checklists[ref].href)
+                return self.content.checklists[ref].resolve()
+            elif ref in self.content.checks:
+                logger.debug('Resolving ' + ref + ' as component reference to ' + self.content.checks[ref].href)
+                return self.content.checks[ref].resolve()
+            else:
+                logger.debug('Reference ' + ref + ' not in ' + self.content.__class__.__name__ + ' continuing to parent ' + self.parent.__class__.__name__)
+                return self.parent.resolve_reference('#' + ref)
+        else:
+            logger.critical('only local references are supported: ' + ref)
+            import sys
+            sys.exit()

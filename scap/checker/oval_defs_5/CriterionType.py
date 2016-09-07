@@ -23,7 +23,7 @@ class CriterionType(Checker):
     def __init__(self, host, content, parent, args=None):
         super(CriterionType, self).__init__(host, content, parent, args)
 
-        test = content.resolve()
+        test = self.resolve_reference(content.test_ref)
         try:
             self.checker = Checker.load(host, test, self, args)
         except ImportError:

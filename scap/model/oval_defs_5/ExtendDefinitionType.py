@@ -28,6 +28,3 @@ class ExtendDefinitionType(Model):
             'comment': {'type': 'oval_common_5.NonEmptyString'},
         }
     }
-
-    def resolve(self):
-        return self.resolve_reference(self.definition_ref)
