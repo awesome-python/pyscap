@@ -39,6 +39,7 @@ class ProfileType(Checker):
         self.value_setting = {}
 
         self.rule_content = {}
+        self.rule_selected = []
         self.rule_weight = {}
         self.rule_severity = {}
         self.rule_role = {}
@@ -52,7 +53,7 @@ class ProfileType(Checker):
             group.accept(self)
 
         self.checkers = {}
-        for rule_id in self.rule_content:
+        for rule_id in self.rule_selected:
             if hasattr(self.rule_content[rule_id], 'multiple') and self.rule_content[rule_id].multiple:
                 raise NotImplementedError('@multiple not implemented')
             check = self.rule_check[rule_id]
@@ -138,12 +139,12 @@ class ProfileType(Checker):
 
         elif isinstance(content, RuleType):
             rule_id = content.id
+            self.rule_content[rule_id] = content
             if rule_id in self.content.selects and self.content.selects[rule_id].selected:
-                self.rule_content[rule_id] = content
+                self.rule_selected.append(rule_id)
                 logger.debug('Selecting rule ' + rule_id)
             else:
                 logger.debug('Not selecting rule ' + rule_id)
-                return
 
             # set rule defaults
             self.rule_weight[rule_id] = content.weight
@@ -196,25 +197,32 @@ class ProfileType(Checker):
 
     def check(self):
         results = []
-        for rule_id in self.checkers:
+        for rule_id in self.rule_content:
             metadata = self.rule_content[rule_id].metadata.copy()
             #TODO: add our metadata
-            check_result = self.checkers[rule_id].check()
-            if len(check_result) == 0:
-                raise ValueError('Did not get a check result for rule ' + rule_id)
-            elif len(check_result) == 1:
-                # TODO: if the rule failed and we got a fix, apply the fix & check again before appending
-                results.append(self._package_result(rule_id, metadata, check_result[0]))
-            else:
-                if hasattr(self.rule_content[rule_id], 'multiple') and self.rule_content[rule_id].multiple:
-                    for cr in check_result:
-                        # TODO: if the rule failed and we got a fix, apply the fix & check again before appending
-                        results.append(self._package_result(rule_id, metadata, cr))
-                else:
-                    # AND the results if there are more than one
-                    result = CheckOperatorEnumeration.AND([cr['result'] for cr in check_result])
-                    messages = [cr['messages'] for cr in check_result]
-                    instances = [cr['instances'] for cr in check_result]
+            if rule_id in self.checkers:
+                check_result = self.checkers[rule_id].check()
+                if len(check_result) == 0:
+                    raise ValueError('Did not get a check result for rule ' + rule_id)
+                elif len(check_result) == 1:
                     # TODO: if the rule failed and we got a fix, apply the fix & check again before appending
-                    results.append(self._package_result(rule_id, metadata, {'result': result, 'messages': messages, 'instances': instances}))
+                    results.append(self._package_result(rule_id, metadata, check_result[0]))
+                else:
+                    if hasattr(self.rule_content[rule_id], 'multiple') and self.rule_content[rule_id].multiple:
+                        for cr in check_result:
+                            # TODO: if the rule failed and we got a fix, apply the fix & check again before appending
+                            results.append(self._package_result(rule_id, metadata, cr))
+                    else:
+                        # AND the results if there are more than one
+                        result = CheckOperatorEnumeration.AND([cr['result'] for cr in check_result])
+                        messages = [cr['messages'] for cr in check_result]
+                        instances = [cr['instances'] for cr in check_result]
+                        # TODO: if the rule failed and we got a fix, apply the fix & check again before appending
+                        results.append(self._package_result(rule_id, metadata, {'result': result, 'messages': messages, 'instances': instances}))
+            else:
+                results.append(self._package_result(rule_id, metadata, {
+                    'result': 'notselected',
+                    'messages': [],
+                    'instances': [],
+                }))
         return results
