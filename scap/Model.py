@@ -165,7 +165,6 @@ class Model(object):
     def __init__(self):
         self.parent = None
         self.element = None
-        self.ref_mapping = {}
 
         self.model_map = Model._get_model_map(self.__class__)
 
