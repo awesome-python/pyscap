@@ -23,8 +23,8 @@ class TestType(Checker):
     def __init__(self, host, content, parent, args=None):
         super(TestType, self).__init__(host, content, parent, args)
 
-        self.object = content.resolve_object()
-        self.states = content.resolve_states()
+        self.object = self.resolve_object()
+        self.states = self.resolve_states()
 
     def check(self):
         # collect items matching obj
