@@ -36,7 +36,8 @@ class CheckType(Checker):
             for ref in content.check_content_refs:
                 try:
                     self.checker = Checker.load(host, ref, self, args)
-                except:
+                except Exception as e:
+                    logger.warning('Could not load checker for ' + str(ref) + ': ' + str(e))
                     pass
                 else:
                     # we got a checker, so break out of the for loop
@@ -44,6 +45,7 @@ class CheckType(Checker):
 
     def check(self):
         if self.checker is None:
+            logger.debug('Never found a checker')
             return [{
                 'result': 'notchecked',
                 'messages': [],
@@ -56,6 +58,7 @@ class CheckType(Checker):
             pass
         else:
             result = CheckOperatorEnumeration.AND([cr['result'] for cr in results])
+            logger.debug('Combined results into ' + result + ' result')
             messages = [cr['messages'] for cr in results]
             instances = [cr['instances'] for cr in results]
             # TODO: if the rule failed and we got a fix, apply the fix & check again before appending
@@ -73,6 +76,8 @@ class CheckType(Checker):
                     'messages': r['messages'],
                     'instances': r['instances'],
                 })
+            logger.debug('Negated final results: ' + str(negated))
             return negated
         else:
+            logger.debug('Check final results: ' + str(negated))
             return results
