@@ -21,12 +21,6 @@ from scap.Checker import Checker
 
 logger = logging.getLogger(__name__)
 class TestType(Checker):
-    def __init__(self, host, content, parent, args=None):
-        super(TestType, self).__init__(host, content, parent, args)
-
-        self.object = self.resolve_object()
-        self.states = self.resolve_states()
-
     def check(self):
         # collect items matching obj
         items, existence_results = self.collect_object_items()
@@ -47,7 +41,7 @@ class TestType(Checker):
             raise ValueError('Test ' + self.content.id + ' check_existence value is unknown: ' + self.content.check_existence)
 
         # if no oval states, return true
-        if len(self.states) == 0:
+        if len(self.content.states) == 0:
             return 'true'
 
         # for each item
@@ -56,7 +50,7 @@ class TestType(Checker):
         for item in items:
             # for each state, compare item with state
             item_state_results = []
-            for state in self.states:
+            for state in self.content.states:
                 item_state_results.append(self.eval_item_state(item, state))
 
             # combine results with state_operator
@@ -89,6 +83,7 @@ class TestType(Checker):
     def collect_object_items(self):
         import inspect
         raise NotImplementedError(inspect.stack()[0][3] + '() has not been implemented in subclass: ' + self.__class__.__name__)
+
     def eval_item_state(self, item, state):
         import inspect
         raise NotImplementedError(inspect.stack()[0][3] + '() has not been implemented in subclass: ' + self.__class__.__name__)
