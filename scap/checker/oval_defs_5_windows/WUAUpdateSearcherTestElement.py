@@ -19,5 +19,5 @@ from scap.checker.oval_defs_5_windows.TestType import TestType
 import logging
 
 logger = logging.getLogger(__name__)
-class RegistryTestType(TestType):
+class WUAUpdateSearcherTestElement(TestType):
     pass

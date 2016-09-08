@@ -20,6 +20,7 @@ import logging
 import sys
 
 logger = logging.getLogger(__name__)
+#logger.setLevel(logging.INFO)
 class Checker(object):
     @staticmethod
     def load(host, content, parent, args=None):
