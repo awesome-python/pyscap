@@ -25,7 +25,7 @@ class RegistryObjectElement(ObjectType):
         'xml_namespace': 'http://oval.mitre.org/XMLSchema/oval-definitions-5#windows',
         'tag_name': 'registry_object',
         'elements': {
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}set': {'class': 'oval_defs_5.SetElement', 'min': 0, 'min': 0},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5}set': {'class': 'oval_defs_5.SetElement', 'min': 0, 'max': 1},
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}behaviors': {'class': 'RegistryBehaviors', 'min': 0},
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}hive': {'class': 'EntityObjectRegistryHiveType'},
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}key': {'class': 'oval_defs_5.EntityObjectStringType', 'nillable': True},

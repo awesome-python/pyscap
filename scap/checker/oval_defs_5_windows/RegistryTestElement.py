@@ -30,32 +30,51 @@ class RegistryTestElement(TestType):
     #     'HKEY_USERS': 'HKU',
     # }
 
-    def collect_object_items(self):
-        if hasattr(self.content, 'set'):
-            raise NotImplementedError('Sets are not implemented')
-        if hasattr(self.content, 'behaviors'):
-            raise NotImplementedError('RegistryBehaviors are not implemented')
-
-        obj = self.resolve_reference(self.content.object.object_ref)
-
-        fullkey = obj.hive.get_text() + '\\' + obj.key.get_text()
-        args = ['QUERY', '"' + fullkey + '"']
-        if not obj.name is None:
-            args.extend(['/v', '"' + obj.name.get_text() + '"'])
-        for line in self.host.lines_from_command('REG', tuple(args)):
+    def _parse_reg(self, lines):
+        item = {}
+        for line in lines:
             line = line.strip('\r\n')
             if line == '':
                 continue
             #logger.debug(line)
 
-            if re.match('\s+', line):
+            if re.match('ERROR: The system was unable to find', line):
+                return {}, 'does not exist'
+            elif re.match('\s+', line):
                 # value line: name, type, value
-                value = re.split('\s+', line)
-                logger.debug(str())
+                line = re.split('\s+', line)
+                item['name'] = line[1]
+                item['type'] = line[2]
+                item['value'] = line[3]
+                return item, 'exists'
             else:
-                # path line
-                logger.debug(str(line.split('\\')))
+                # hk, path line
+                line = line.split('\\')
+                item['hive'] = line[0]
+                item['key'] = '\\'.join(line[1:])
 
+    def collect_object_items(self):
+        items = []
+        existence = []
+
+        obj = self.resolve_reference(self.content.object.object_ref)
+        if hasattr(obj, 'set'):
+            raise NotImplementedError('Sets are not implemented')
+        if hasattr(obj, 'behaviors'):
+            raise NotImplementedError('RegistryBehaviors are not implemented')
+
+        fullkey = obj.hive.get_text() + '\\' + obj.key.get_text()
+        args = ['QUERY', '"' + fullkey + '"']
+        if obj.name is not None:
+            args.extend(['/v', '"' + obj.name.get_text() + '"'])
+
+        lines = self.host.lines_from_command('REG', tuple(args))
+        item, exists = self._parse_reg(lines)
+        logger.debug('Found object item: ' + str(item) + ' (' + exists + ')')
+        items.append(item)
+        existence.append(exists)
+
+        return items, existence
 
 
     def eval_item_state(self, item, state):
