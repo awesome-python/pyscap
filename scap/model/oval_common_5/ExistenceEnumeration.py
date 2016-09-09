@@ -32,7 +32,7 @@ EXISTENCE_RESULT_ENUMERATION = [
 
 def count_item_status_values(item_status_values):
     counts = {}
-    for i in EXISTENCE_ENUMERATION:
+    for i in EXISTENCE_RESULT_ENUMERATION:
         counts[i] = 0
 
     for v in item_status_values:
