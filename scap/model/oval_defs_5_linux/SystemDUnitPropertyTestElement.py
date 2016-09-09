@@ -25,6 +25,6 @@ class SystemDUnitPropertyTestElement(TestType):
         'tag_name': 'systemdunitproperty_test',
         'elements': {
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}object': {'class': 'oval_defs_5.ObjectRefType'},
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}state': {'class': 'oval_defs_5.StateRefType', 'min': 0, 'max': None},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#linux}state': {'append': 'states', 'class': 'oval_defs_5.StateRefType', 'min': 0, 'max': None},
         }
     }
