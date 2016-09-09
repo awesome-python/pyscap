@@ -22,57 +22,69 @@ from scap.checker.oval_defs_5_windows.TestType import TestType
 
 logger = logging.getLogger(__name__)
 class RegistryTestElement(TestType):
-    # HIVE_XLATE = {
-    #     'HKEY_CLASSES_ROOT': 'HKCR',
-    #     'HKEY_CURRENT_CONFIG': 'HKCC',
-    #     'HKEY_CURRENT_USER': 'HKCU',
-    #     'HKEY_LOCAL_MACHINE': 'HKLM',
-    #     'HKEY_USERS': 'HKU',
-    # }
+    def collect_object_items(self):
+        obj = self.resolve_reference(self.content.object.object_ref)
+        if hasattr(obj, 'set'):
+            raise NotImplementedError('Sets are not implemented')
 
-    def _parse_reg(self, lines):
-        item = {}
+        fullkey = obj.hive.get_text()
+
+        if obj.key is not None:
+            fullkey += '\\' + obj.key.get_text()
+
+        args = ['QUERY', '"' + fullkey + '"']
+
+        if obj.name is None:
+            args.extend(['/ve'])
+        else:
+            args.extend(['/v', '"' + obj.name.get_text() + '"'])
+
+        if hasattr(obj, 'behaviors'):
+            #TODO: max_depth registry behavior cannot be implemented using reg.exe
+            if obj.behaviors.max_depth != -1:
+                logger.warning('max_depth registry behavior cannot be implemented using reg.exe')
+
+            #TODO: recurse_direction registry behavior cannot be implemented using reg.exe
+            if obj.behaviors.recurse_direction != 'none':
+                logger.warning('recurse_direction registry behavior cannot be implemented using reg.exe')
+
+            if obj.behaviors.windows_view == '32_bit':
+                args.extend(['/reg:32'])
+            elif obj.behaviors.windows_view == '64_bit':
+                args.extend(['/reg:64'])
+            else:
+                raise ValueError("Unknown windows view: " + obj.behaviors.windows_view)
+
+        lines = self.host.lines_from_command('REG', tuple(args))
+
+        items = []
+        existence = []
         for line in lines:
             line = line.strip('\r\n')
             if line == '':
                 continue
-            #logger.debug(line)
 
             if re.match('ERROR: The system was unable to find', line):
-                return {}, 'does not exist'
+                return [{}], ['does not exist']
+
             elif re.match('\s+', line):
                 # value line: name, type, value
                 line = re.split('\s+', line)
                 item['name'] = line[1]
                 item['type'] = line[2]
                 item['value'] = line[3]
-                return item, 'exists'
+                items.append(item)
+                existence.append('exists')
+
             else:
                 # hk, path line
                 line = line.split('\\')
-                item['hive'] = line[0]
-                item['key'] = '\\'.join(line[1:])
+                item = {
+                    'hive': line[0],
+                    'key': '\\'.join(line[1:]),
+                }
 
-    def collect_object_items(self):
-        items = []
-        existence = []
-
-        obj = self.resolve_reference(self.content.object.object_ref)
-        if hasattr(obj, 'set'):
-            raise NotImplementedError('Sets are not implemented')
-        if hasattr(obj, 'behaviors'):
-            raise NotImplementedError('RegistryBehaviors are not implemented')
-
-        fullkey = obj.hive.get_text() + '\\' + obj.key.get_text()
-        args = ['QUERY', '"' + fullkey + '"']
-        if obj.name is not None:
-            args.extend(['/v', '"' + obj.name.get_text() + '"'])
-
-        lines = self.host.lines_from_command('REG', tuple(args))
-        item, exists = self._parse_reg(lines)
-        logger.debug('Found object item: ' + str(item) + ' (' + exists + ')')
-        items.append(item)
-        existence.append(exists)
+        logger.debug('Found object items: ' + str(items) + ' (' + str(existence) + ')')
 
         return items, existence
 
