@@ -257,6 +257,7 @@ class Model(object):
                 print(str(self.model_map['elements']))
                 logger.critical('Unknown element in ' + el.tag + ': ' + sub_el.tag)
                 sys.exit()
+
             if sub_el.tag not in sub_el_counts:
                 sub_el_counts[sub_el.tag] = 1
             else:
@@ -359,7 +360,14 @@ class Model(object):
 
                 if 'append' in tag_map:
                     lst = getattr(self, tag_map['append'])
-                    if 'type' in tag_map:
+                    if '{http://www.w3.org/2001/XMLSchema-instance}nil' in el.attrib \
+                        and el.attrib['{http://www.w3.org/2001/XMLSchema-instance}nil'] == 'true':
+                        # check if we can accept nil
+                        if 'nillable' in tag_map and tag_map['nillable']:
+                            lst.append(None)
+                        else:
+                            raise ValueError(el.tag + ' is nil, but not expecting nil value')
+                    elif 'type' in tag_map:
                         value = self._parse_value_as_type(el.text, tag_map['type'])
                         lst.append(value)
                         logger.debug('Appended "' + str(value) + '" to ' + tag_map['append'])
@@ -368,6 +376,7 @@ class Model(object):
                         logger.debug('Appended ' + el.tag + ' to ' + tag_map['append'])
                 elif 'map' in tag_map:
                     dic = getattr(self, tag_map['map'])
+
                     if 'key' in tag_map:
                         try:
                             key = el.attrib[tag_map['key']]
@@ -377,33 +386,56 @@ class Model(object):
                     else:
                         key = el.attrib['id']
 
-                    if 'value' in tag_map:
+                    if '{http://www.w3.org/2001/XMLSchema-instance}nil' in el.attrib \
+                        and el.attrib['{http://www.w3.org/2001/XMLSchema-instance}nil'] == 'true':
+                        # check if we can accept nil
+                        if 'nillable' in tag_map and tag_map['nillable']:
+                            value = None
+                        else:
+                            raise ValueError(el.tag + ' is nil, but not expecting nil value')
+                    elif 'value' in tag_map:
                         try:
-                            value = el.attrib[tag_map['value']]
                             if 'type' in tag_map:
                                 value = self._parse_value_as_type(value, tag_map['type'])
+                            else:
+                                value = el.attrib[tag_map['value']]
                         except KeyError:
                             value = None
-                        dic[key] = value
-                        logger.debug('Mapped ' + str(key) + ' to ' + str(value) + ' in ' + tag_map['map'])
                     # TODO: implement valueElement? as well
                     else:
                         if 'type' in tag_map:
                             value = self._parse_value_as_type(el.text, tag_map['type'])
-                            dic[key] = value
-                            logger.debug('Mapped ' + str(key) + ' to ' + str(value) + ' in ' + tag_map['map'])
                         else:
-                            dic[key] = Model.load(self, el)
-                            logger.debug('Mapped ' + str(key) + ' to ' + el.tag + ' element in ' + tag_map['map'])
+                            value = Model.load(self, el)
+                    dic[key] = value
+                    logger.debug('Mapped ' + str(key) + ' to ' + str(value) + ' in ' + tag_map['map'])
                 elif 'class' in tag_map:
+                    if '{http://www.w3.org/2001/XMLSchema-instance}nil' in el.attrib \
+                        and el.attrib['{http://www.w3.org/2001/XMLSchema-instance}nil'] == 'true':
+                        # check if we can accept nil
+                        if 'nillable' in tag_map and tag_map['nillable']:
+                            val = None
+                        else:
+                            raise ValueError(el.tag + ' is nil, but not expecting nil value')
+                    else:
+                        val = Model.load(self, el)
+
                     if 'in' in tag_map:
                         name = tag_map['in']
-                        setattr(self, name, Model.load(self, el))
+                        setattr(self, name, val)
                     else:
                         name = tag_name.replace('-', '_')
-                        setattr(self, name, Model.load(self, el))
+                        setattr(self, name, val)
                 elif 'type' in tag_map:
-                    value = self._parse_value_as_type(el.text, tag_map['type'])
+                    if '{http://www.w3.org/2001/XMLSchema-instance}nil' in el.attrib \
+                        and el.attrib['{http://www.w3.org/2001/XMLSchema-instance}nil'] == 'true':
+                        # check if we can accept nil
+                        if 'nillable' in tag_map and tag_map['nillable']:
+                            value = None
+                        else:
+                            raise ValueError(el.tag + ' is nil, but not expecting nil value')
+                    else:
+                        value = self._parse_value_as_type(el.text, tag_map['type'])
                     if 'in' in tag_map:
                         name = tag_map['in']
                         setattr(self, name, value)

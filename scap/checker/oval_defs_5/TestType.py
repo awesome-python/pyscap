@@ -41,9 +41,11 @@ class TestType(Checker):
             existence_result = ExistenceEnumeration.only_one_exists(existence_results)
         else:
             raise ValueError('Test ' + self.content.id + ' check_existence value is unknown: ' + self.content.check_existence)
+        logger.debug('Computed existence result: ' + existence_result)
 
         # if no oval states, return true
         if len(self.content.states) == 0:
+            logger.debug('No states to compare; test is true')
             return 'true'
 
         # for each item
