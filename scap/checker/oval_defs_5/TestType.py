@@ -54,7 +54,7 @@ class TestType(Checker):
             # for each state, compare item with state
             item_state_results = []
             for state in self.content.states:
-                item_state_results.append(self.eval_item_state(item, state))
+                item_state_results.append(self.compare_item_state(item, state))
 
             # combine results with state_operator
             if self.content.state_operator == 'AND':
@@ -86,6 +86,6 @@ class TestType(Checker):
         import inspect
         raise NotImplementedError(inspect.stack()[0][3] + '() has not been implemented in subclass: ' + self.__class__.__name__)
 
-    def eval_item_state(self, item, state):
+    def compare_item_state(self, item, state):
         import inspect
         raise NotImplementedError(inspect.stack()[0][3] + '() has not been implemented in subclass: ' + self.__class__.__name__)
