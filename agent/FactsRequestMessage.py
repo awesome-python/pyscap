@@ -144,6 +144,7 @@ class FactsRequestMessage(Message):
         # Availability: Windows
         if sys.platform.startswith('win') or sys.platform.startswith('cygwin'):
             facts['os.getlogin'] = os.getlogin()
+            facts['os.getpid'] = os.getpid()
             facts['os.getppid'] = os.getppid()
 
             winver = sys.getwindowsversion()
@@ -171,6 +172,7 @@ class FactsRequestMessage(Message):
         #     facts['os.getlogin'] = os.getlogin()
         #     facts['os.getpgid'] = os.getpgid()
         #     facts['os.getpgrp'] = os.getpgrp()
+        #     facts['os.getpid'] = os.getpid()
         #     facts['os.getppid'] = os.getppid()
         #     facts['os.getpriority'] = os.getpriority()
         #     facts['os.getresuid'] = os.getresuid()
