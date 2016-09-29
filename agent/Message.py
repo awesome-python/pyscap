@@ -32,64 +32,56 @@ class Message():
         'ExceptionMessage',
         'PingMessage',
         'PongMessage',
+        'FactsRequestMessage',
+        'FactsResponseMessage',
     ]
+    REVERSE_TYPES = None
 
-    def __init__(self, type_, payload):
-        self._type = type_
+    def __init__(self, payload):
+        if Message.REVERSE_TYPES is None:
+            Message.REVERSE_TYPES = {Message.TYPES[n]: n for n in range(len(Message.TYPES))}
+
+        try:
+            self._type = Message.REVERSE_TYPES[self.__class__.__name__]
+        except NameError as e:
+            raise RuntimeError('Unregistered Message type: ' + self.__class__.__name__)
         self._payload = payload
 
     def send_via(self, sock):
-        totalsent = 0
+        msg = b''
+
         # send magic
-        logger.debug('Sending magic value ' + str(Message.MAGIC) + ', size: ' + str(len(Message.MAGIC)))
-        while totalsent < len(Message.MAGIC):
-            sent = sock.send(Message.MAGIC[totalsent:])
-            logger.debug('Sent ' + str(sent) + ' bytes')
-            if sent == 0:
-                raise RuntimeError("No data sent, assuming socket connection broken")
-            totalsent += sent
+        logger.debug('Adding magic value ' + str(Message.MAGIC))
+        msg += Message.MAGIC
 
-        totalsent = 0
         # send version
-        logger.debug('Sending version: ' + str(Message.VERSION))
         vers = Message.VERSION.to_bytes(4, byteorder='big')
-        while totalsent < len(vers):
-            sent = sock.send(vers[totalsent:])
-            logger.debug('Sent ' + str(sent) + ' bytes')
-            if sent == 0:
-                raise RuntimeError("No data sent, assuming socket connection broken")
-            totalsent += sent
+        logger.debug('Adding version: ' + str(Message.VERSION) + '(' + str(vers) + ')')
+        msg += vers
 
-        totalsent = 0
         # send size
-        payload = pickle.dumps(self._payload)
-        selfsize = len(payload)
-        logger.debug('Sending size: ' + str(selfsize))
-        nselfsize = selfsize.to_bytes(4, byteorder='big')
-        while totalsent < len(nselfsize):
-            sent = sock.send(nselfsize[totalsent:])
-            logger.debug('Sent ' + str(sent) + ' bytes')
-            if sent == 0:
-                raise RuntimeError("No data sent, assuming socket connection broken")
-            totalsent += sent
+        bpayload = pickle.dumps(self._payload)
+        selfsize = len(bpayload)
+        bselfsize = selfsize.to_bytes(4, byteorder='big')
+        logger.debug('Adding payload size: ' + str(selfsize) + '(' + str(bselfsize) + ')')
+        msg += bselfsize
 
-        totalsent = 0
         # send type
-        logger.debug('Sending type: ' + str(self._type))
-        type_ = self._type.to_bytes(4, byteorder='big')
-        while totalsent < len(type_):
-            sent = sock.send(type_[totalsent:])
-            logger.debug('Sent ' + str(sent) + ' bytes')
-            if sent == 0:
-                raise RuntimeError("No data sent, assuming socket connection broken")
-            totalsent += sent
+        btype = self._type.to_bytes(4, byteorder='big')
+        logger.debug('Adding type: ' + str(self._type) + '(' + str(btype) + ')')
+        msg += btype
 
-        totalsent = 0
         # send payload
-        logger.debug('Sending payload: ' + str(self._payload))
-        while totalsent < len(payload):
-            sent = sock.send(payload[totalsent:])
-            logger.debug('Sent ' + str(sent) + ' bytes')
+        logger.debug('Adding payload...')
+        #logger.debug('Adding payload: ' + str(self._payload) + '(' + str(bpayload) + ')')
+        msg += bpayload
+
+        # send the whole message atomicly
+        logger.debug('Sending message...')
+        totalsent = 0
+        while totalsent < len(msg):
+            sent = sock.send(msg[totalsent:])
+            logger.debug('Sent ' + str(sent) + ' bytes of message')
             if sent == 0:
                 raise RuntimeError("No data sent, assuming socket connection broken")
             totalsent += sent
@@ -97,13 +89,13 @@ class Message():
         logger.debug('Send complete.')
 
     def __str__(self):
-        return 'Message[type=' + str(self._type) + ', payload=' + str(self._payload) + ']'
+        return self.__class__.__name__ + '[type=' + str(self._type) + ', payload=' + str(self._payload) + ']'
 
     @staticmethod
     def recv_via(sock):
         data = b''
         totalrecv = 0
-        logger.debug('Reading magic value...')
+        logger.debug('Receiving magic value...')
         while totalrecv < len(Message.MAGIC):
             chunk = sock.recv(len(Message.MAGIC) - totalrecv)
             if chunk == b'':
@@ -111,14 +103,13 @@ class Message():
             data += chunk
             totalrecv += len(chunk)
 
-        logger.debug('Testing received magic value ' + str(data) + ' against ' + str(Message.MAGIC) + '...')
+        logger.debug('Magic: ' + str(data))
         if data != Message.MAGIC:
             raise RuntimeError("Invalid magic value")
-        logger.debug('Valid magic value')
 
         data = b''
         totalrecv = 0
-        logger.debug('Reading version...')
+        logger.debug('Receiving version...')
         while totalrecv < 4:
             chunk = sock.recv(4 - totalrecv)
             if chunk == b'':
@@ -127,14 +118,13 @@ class Message():
             totalrecv += len(chunk)
 
         vers = int.from_bytes(data, byteorder='big')
-        logger.debug('Received version ' + str(vers) + '...')
+        logger.debug('Version: ' + str(data) + '(' + str(vers) + ')...')
         if vers != Message.VERSION:
             raise RuntimeError("Invalid version")
-        logger.debug('Valid version')
 
         data = b''
         totalrecv = 0
-        logger.debug('Reading size...')
+        logger.debug('Receiving payload size...')
         while totalrecv < 4:
             chunk = sock.recv(4 - totalrecv)
             if chunk == b'':
@@ -143,11 +133,11 @@ class Message():
             totalrecv += len(chunk)
 
         selfsize = int.from_bytes(data, byteorder='big')
-        logger.debug('Will read message of size: ' + str(selfsize))
+        logger.debug('Payload size: ' + str(data) + '(' + str(selfsize) + ')')
 
         data = b''
         totalrecv = 0
-        logger.debug('Reading type...')
+        logger.debug('Receiving type...')
         while totalrecv < 4:
             chunk = sock.recv(4 - totalrecv)
             if chunk == b'':
@@ -156,11 +146,13 @@ class Message():
             totalrecv += len(chunk)
 
         type_ = int.from_bytes(data, byteorder='big')
-        logger.debug('Message type: ' + str(type_))
+        logger.debug('Message type: ' + str(data) + '(' + str(type_) + ')')
+        if type_ < 0 or type_ >= len(Message.TYPES):
+            raise RuntimeError('Unknown type code: ' + str(type_))
 
         data = b''
         totalrecv = 0
-        logger.debug('Reading payload...')
+        logger.debug('Receiving payload...')
         while totalrecv < selfsize:
             chunk = sock.recv(selfsize - totalrecv)
             if chunk == b'':
@@ -168,10 +160,11 @@ class Message():
             data += chunk
             totalrecv += len(chunk)
 
-        if type_ == 0:
-            return ExceptionMessage
+        payload = pickle.loads(data)
+        #logger.debug('Payload: ' + str(data) + '(' + str(payload) + ')')
+        logger.debug('Received payload.')
 
         mod = importlib.import_module(Message.TYPES[type_])
         class_ = getattr(mod, Message.TYPES[type_])
-        inst = class_(pickle.loads(data))
+        inst = class_(payload)
         return inst

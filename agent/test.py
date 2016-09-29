@@ -19,9 +19,12 @@
 
 import logging
 import socket
+import sys
 
 from Message import Message
 from PingMessage import PingMessage
+from FactsRequestMessage import FactsRequestMessage
+from ExceptionMessage import ExceptionMessage
 
 HOST = 'localhost'
 PORT = 9001
@@ -39,17 +42,34 @@ logger = logging.getLogger(__name__)
 # create an INET, STREAMing socket
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     s.connect((HOST, PORT))
+
+    # test Ping/Pong Messages
     req = PingMessage()
     try:
         req.send_via(s)
         resp = Message.recv_via(s)
-        logger.info('Response: ' + str(resp))
-        if req._payload != resp._payload:
-            logger.warning('Request payload does not match response')
+        if isinstance(resp, ExceptionMessage):
+            logger.error(str(resp._payload['exception']) + resp._payload['traceback'])
         else:
-            logger.info('Request payload matches response')
+            logger.info('Response: ' + str(resp))
+            if req._payload != resp._payload:
+                logger.warning('Request payload does not match response')
+            else:
+                logger.info('Request payload matches response')
     except OSError as e:
         logger.warning('Socket connection broken')
-    else:
-        logger.info('Closing connection...')
-        s.shutdown(socket.SHUT_RDWR)
+
+    # test Fact Req/Resp Messages
+    req = FactsRequestMessage()
+    try:
+        req.send_via(s)
+        resp = Message.recv_via(s)
+        if isinstance(resp, ExceptionMessage):
+            logger.error(str(resp._payload['exception']) + resp._payload['traceback'])
+        else:
+            logger.info('Response: ' + str(resp))
+    except OSError as e:
+        logger.warning('Socket connection broken')
+
+    logger.info('Closing connection cleanly...')
+    s.shutdown(socket.SHUT_RDWR)

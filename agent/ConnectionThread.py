@@ -20,6 +20,8 @@
 import logging
 import socket
 from threading import Thread
+import sys
+import traceback
 
 from Message import Message
 from PingMessage import PingMessage
@@ -41,12 +43,16 @@ class ConnectionThread(Thread):
                     try:
                         req = Message.recv_via(self._socket)
                         logger.info('Received message: ' + str(req))
-                        if isinstance(req, PingMessage):
+                        if isinstance(req, Message):
                             req.respond_via(self._socket)
                         else:
-                            raise RuntimeError('Unknown message type: ' + req._type)
-                    except RuntimeError as e:
-                        resp = ExceptionMessage(e)
+                            raise RuntimeError('Unknown message type: ' + str(req._type))
+                    except OSError as e:
+                        # let OSErrors through
+                        raise
+                    except Exception as e:
+                        # catch everything else
+                        resp = ExceptionMessage({'exception': e, 'traceback': ''.join(traceback.format_tb(sys.exc_info()[2]))})
                         resp.send_via(self._socket)
             except OSError as e:
                 logger.info('Socket connection broken with ' + str(self._address) + ' due to ' + str(e))

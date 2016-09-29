@@ -25,7 +25,5 @@ from Message import Message
 
 logger = logging.getLogger(__name__)
 class PongMessage(Message):
-    TYPE = 2
-
     def __init__(self, payload = None):
-        super().__init__(self.TYPE, payload)
+        super().__init__(payload)
