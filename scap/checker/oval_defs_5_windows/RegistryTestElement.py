@@ -88,6 +88,7 @@ class RegistryTestElement(TestType):
 
         return items, existence
 
-    def eval_item_state(self, item, state):
+    def compare_item_state(self, item, state):
+        #TODO no way to validate windows_view
         import inspect
         raise NotImplementedError(inspect.stack()[0][3] + '() has not been implemented in subclass: ' + self.__class__.__name__)
