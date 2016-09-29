@@ -25,6 +25,6 @@ class LockoutPolicyTestElement(TestType):
         'tag_name': 'lockoutpolicy_test',
         'elements': {
             '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}object': {'class': 'oval_defs_5.ObjectRefType'},
-            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}state': {'class': 'oval_defs_5.StateRefType', 'min': 0, 'max': None},
+            '{http://oval.mitre.org/XMLSchema/oval-definitions-5#windows}state': {'append': 'states', 'class': 'oval_defs_5.StateRefType', 'min': 0, 'max': None},
         }
     }

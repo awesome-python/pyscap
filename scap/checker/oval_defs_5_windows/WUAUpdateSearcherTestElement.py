@@ -19,5 +19,11 @@ from scap.checker.oval_defs_5_windows.TestType import TestType
 import logging
 
 logger = logging.getLogger(__name__)
-class WUAUpdateSearcherTestType(TestType):
-    pass
+class WUAUpdateSearcherTestElement(TestType):
+    def collect_object_items(self):
+        import inspect
+        raise NotImplementedError(inspect.stack()[0][3] + '() has not been implemented in subclass: ' + self.__class__.__name__)
+
+    def eval_item_state(self, item, state):
+        import inspect
+        raise NotImplementedError(inspect.stack()[0][3] + '() has not been implemented in subclass: ' + self.__class__.__name__)

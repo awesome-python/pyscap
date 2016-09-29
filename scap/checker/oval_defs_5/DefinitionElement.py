@@ -15,9 +15,17 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.checker.oval_defs_5_windows.TestType import TestType
+from scap.Checker import Checker
 import logging
 
 logger = logging.getLogger(__name__)
-class RegistryTestType(TestType):
-    pass
+class DefinitionElement(Checker):
+    def __init__(self, host, content, parent, args=None):
+        super(DefinitionElement, self).__init__(host, content, parent, args)
+
+        self.checker = Checker.load(host, content.criteria, self, args)
+
+    def check(self):
+        result = self.checker.check()
+        logger.debug('Definition ' + self.content.id + ' checker got ' + result)
+        return result

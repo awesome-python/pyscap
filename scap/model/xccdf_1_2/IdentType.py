@@ -22,7 +22,7 @@ logger = logging.getLogger(__name__)
 class IdentType(String):
     MODEL_MAP = {
         'attributes': {
-            'authenticated': {'type': 'Boolean', 'required': True},
-            'privileged': {'type': 'Boolean', 'required': True},
+            'system': {'type': 'AnyURI', 'required': True},
+            '*': {'ignore': True},
         }
     }

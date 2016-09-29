@@ -15,8 +15,9 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-import scap.checker.oval_defs_5.TestType
 import logging
+
+import scap.checker.oval_defs_5.TestType
 
 logger = logging.getLogger(__name__)
 class TestType(scap.checker.oval_defs_5.TestType.TestType):

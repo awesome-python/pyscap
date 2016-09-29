@@ -31,39 +31,33 @@ class DataStreamElement(Checker):
                 sys.exit()
             else:
                 comp_ref = content.checklists[checklist_id]
-                checklist = self.resolve_reference(comp_ref.href).model
         else:
             if len(content.checklists) == 1:
                 comp_ref = list(content.checklists.values())[0]
-                checklist = self.resolve_reference(comp_ref.href).model
             else:
                 logger.critical('No --checklist specified and unable to implicitly choose one. Available checklists: ' + str(list(content.checklists.keys())))
                 import sys
                 sys.exit()
-        logger.info('Selecting checklist ' + checklist.id)
+            checklist_id = comp_ref.id
+        logger.info('Selecting checklist ' + checklist_id)
 
-        self.checklist_checker = Checker.load(host, checklist, self, args)
-        self.checklist_checker.ref_mapping = comp_ref.catalog.to_dict()
+        self.checker = Checker.load(host, comp_ref, self, args)
 
     def check(self):
-        return self.checklist_checker.check()
+        return self.checker.check()
 
     def resolve_reference(self, ref):
-        if ref in self.ref_mapping:
-            logger.debug('Mapping reference ' + ref + ' to ' + self.ref_mapping[ref])
-            ref = self.ref_mapping[ref]
-
         if ref[0] == '#':
             ref = ref[1:]
             if ref in self.content.dictionaries:
                 logger.debug('Resolving ' + ref + ' as component reference to ' + self.content.dictionaries[ref].href)
-                return self.content.dictionaries[ref].resolve()
+                return self.parent.resolve_reference(self.content.dictionaries[ref].href).model
             elif ref in self.content.checklists:
                 logger.debug('Resolving ' + ref + ' as component reference to ' + self.content.checklists[ref].href)
-                return self.content.checklists[ref].resolve()
+                return self.parent.resolve_reference(self.content.checklists[ref].href).model
             elif ref in self.content.checks:
                 logger.debug('Resolving ' + ref + ' as component reference to ' + self.content.checks[ref].href)
-                return self.content.checks[ref].resolve()
+                return self.parent.resolve_reference(self.content.checks[ref].href).model
             else:
                 logger.debug('Reference ' + ref + ' not in ' + self.content.__class__.__name__ + ' continuing to parent ' + self.parent.__class__.__name__)
                 return self.parent.resolve_reference('#' + ref)
