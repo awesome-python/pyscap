@@ -18,8 +18,6 @@
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
 import logging
-import random
-import sys
 
 from Message import Message
 
