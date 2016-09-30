@@ -103,7 +103,7 @@ agent_key = rsa.generate_private_key(
 
 # Write our key to disk for safe keeping
 with open("agent_key.pem", "wb") as f:
-    f.write(ca_key.private_bytes(
+    f.write(agent_key.private_bytes(
         encoding=serialization.Encoding.PEM,
         format=serialization.PrivateFormat.TraditionalOpenSSL,
         encryption_algorithm=serialization.NoEncryption(),
