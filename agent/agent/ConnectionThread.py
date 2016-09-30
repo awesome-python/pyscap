@@ -39,6 +39,7 @@ class ConnectionThread(Thread):
         with self._socket:
             try:
                 while True:
+                    req = None
                     try:
                         req = Message.recv_via(self._socket)
                         logger.info('Received message: ' + str(req))
