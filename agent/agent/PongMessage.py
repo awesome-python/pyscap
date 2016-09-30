@@ -18,27 +18,10 @@
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
 import logging
-import os
-import sys
 
-from Message import Message
-from PongMessage import PongMessage
+from agent.Message import Message
 
 logger = logging.getLogger(__name__)
-class PingMessage(Message):
+class PongMessage(Message):
     def __init__(self, payload = None):
-        if payload is None:
-            try:
-                payload = os.urandom(4)
-            except:
-            # avoid pulling in random lib; most OSs support os.urandom
-            #     import random
-            #     random.seed()
-            #     payload = random.randint(0, sys.maxsize)
-            # else:
-                payload = Message.MAGIC
         super().__init__(payload)
-
-    def respond_via(self, sock):
-        resp = PongMessage(self._payload)
-        resp.send_via(sock)

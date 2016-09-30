@@ -34,6 +34,8 @@ class Message():
         'PongMessage',
         'FactsRequestMessage',
         'FactsResponseMessage',
+        'RunProcessMessage',
+        'CompletedProcessMessage',
     ]
     REVERSE_TYPES = None
 
@@ -42,10 +44,10 @@ class Message():
             Message.REVERSE_TYPES = {Message.TYPES[n]: n for n in range(len(Message.TYPES))}
 
         try:
-            self._type = Message.REVERSE_TYPES[self.__class__.__name__]
+            self.type = Message.REVERSE_TYPES[self.__class__.__name__]
         except NameError as e:
             raise RuntimeError('Unregistered Message type: ' + self.__class__.__name__)
-        self._payload = payload
+        self.payload = payload
 
     def send_via(self, sock):
         msg = b''
@@ -60,20 +62,20 @@ class Message():
         msg += vers
 
         # send size
-        bpayload = pickle.dumps(self._payload)
+        bpayload = pickle.dumps(self.payload)
         selfsize = len(bpayload)
         bselfsize = selfsize.to_bytes(4, byteorder='big')
         logger.debug('Adding payload size: ' + str(selfsize) + '(' + str(bselfsize) + ')')
         msg += bselfsize
 
         # send type
-        btype = self._type.to_bytes(4, byteorder='big')
-        logger.debug('Adding type: ' + str(self._type) + '(' + str(btype) + ')')
+        btype = self.type.to_bytes(4, byteorder='big')
+        logger.debug('Adding type: ' + str(self.type) + '(' + str(btype) + ', ' + Message.TYPES[self.type] + ')')
         msg += btype
 
         # send payload
         logger.debug('Adding payload...')
-        #logger.debug('Adding payload: ' + str(self._payload) + '(' + str(bpayload) + ')')
+        #logger.debug('Adding payload: ' + str(self.payload) + '(' + str(bpayload) + ')')
         msg += bpayload
 
         # send the whole message atomicly
@@ -89,7 +91,7 @@ class Message():
         logger.debug('Send complete.')
 
     def __str__(self):
-        return self.__class__.__name__ + '[type=' + str(self._type) + ', payload=' + str(self._payload) + ']'
+        return self.__class__.__name__ + '[type=' + str(self.type) + ', payload=' + str(self.payload) + ']'
 
     @staticmethod
     def recv_via(sock):
@@ -146,7 +148,7 @@ class Message():
             totalrecv += len(chunk)
 
         type_ = int.from_bytes(data, byteorder='big')
-        logger.debug('Message type: ' + str(data) + '(' + str(type_) + ')')
+        logger.debug('Message type: ' + str(data) + '(' + str(type_) + ', ' + Message.TYPES[type_] + ')')
         if type_ < 0 or type_ >= len(Message.TYPES):
             raise RuntimeError('Unknown type code: ' + str(type_))
 
@@ -164,7 +166,7 @@ class Message():
         #logger.debug('Payload: ' + str(data) + '(' + str(payload) + ')')
         logger.debug('Received payload.')
 
-        mod = importlib.import_module(Message.TYPES[type_])
+        mod = importlib.import_module('agent.' + Message.TYPES[type_])
         class_ = getattr(mod, Message.TYPES[type_])
         inst = class_(payload)
         return inst

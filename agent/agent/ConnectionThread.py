@@ -23,9 +23,8 @@ from threading import Thread
 import sys
 import traceback
 
-from Message import Message
-from PingMessage import PingMessage
-from ExceptionMessage import ExceptionMessage
+from agent.Message import Message
+from agent.ExceptionMessage import ExceptionMessage
 
 logger = logging.getLogger(__name__)
 class ConnectionThread(Thread):
@@ -46,13 +45,15 @@ class ConnectionThread(Thread):
                         if isinstance(req, Message):
                             req.respond_via(self._socket)
                         else:
-                            raise RuntimeError('Unknown message type: ' + str(req._type))
+                            raise RuntimeError('Unknown message type: ' + str(req.type))
                     except OSError as e:
                         # let OSErrors through
                         raise
                     except Exception as e:
                         # catch everything else
-                        resp = ExceptionMessage({'exception': e, 'traceback': ''.join(traceback.format_tb(sys.exc_info()[2]))})
+                        tb = ''.join(traceback.format_tb(sys.exc_info()[2]))
+                        logger.warning('Message ' + str(req) + ' execution produced exception: ' + str(e) + tb)
+                        resp = ExceptionMessage({'exception': e, 'traceback': tb})
                         resp.send_via(self._socket)
             except OSError as e:
                 logger.info('Socket connection broken with ' + str(self._address) + ' due to ' + str(e))

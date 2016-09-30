@@ -1,8 +1,22 @@
+subprocess Messages
+  - RunProcess
+    - CompletedProcess
+  - ProcessOpen
+    - ProcessStdOut
+    - ProcessStdErr
+  - ProcessStdIn
+  - ProcessPoll
+  - ProcessWait
+  - ProcessTerminate
+  - ProcessKill
 encrypt traffic
-  - certs
-  - embedded agent cert; signed agent package
-install wrapped exe as service
+  - gen scanner key
+  - gen agent key
+  - embed agent key in agent package
+  - sign agent package
+install exe as service
+  - option to install in permanent location (C:\WINDOWS?)
+  - typically extracting & running out of TEMP
 delete self after timeout
   - service
   - files
-option to install in permanent location (C:\WINDOWS?) vs. extracting running out of TEMP

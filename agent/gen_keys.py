@@ -39,11 +39,13 @@ rootLogger.addHandler(ch)
 
 logger = logging.getLogger(__name__)
 
-hostname = socket.gethostname()
-fqdn = socket.gethostbyaddr(socket.gethostname())[0]
+ca_hostname = socket.gethostname()
+ca_fqdn = socket.gethostbyaddr(socket.gethostname())[0]
+agent_hostname = socket.gethostname()
+agent_fqdn = socket.gethostbyaddr(socket.gethostname())[0]
 
 # Generate our key
-private_key = rsa.generate_private_key(
+ca_key = rsa.generate_private_key(
     public_exponent=65537,
     key_size=2048,
     backend=default_backend()
@@ -51,7 +53,7 @@ private_key = rsa.generate_private_key(
 
 # Write our key to disk for safe keeping
 with open("ca_key.pem", "wb") as f:
-    f.write(private_key.private_bytes(
+    f.write(ca_key.private_bytes(
         encoding=serialization.Encoding.PEM,
         format=serialization.PrivateFormat.TraditionalOpenSSL,
         encryption_algorithm=serialization.NoEncryption(),
@@ -67,14 +69,14 @@ subject = issuer = x509.Name([
     x509.NameAttribute(NameOID.STATE_OR_PROVINCE_NAME, "CA"),
     x509.NameAttribute(NameOID.LOCALITY_NAME, "San Francisco"),
     x509.NameAttribute(NameOID.ORGANIZATION_NAME, "My Company"),
-    x509.NameAttribute(NameOID.COMMON_NAME, hostname),
+    x509.NameAttribute(NameOID.COMMON_NAME, ca_hostname),
 ])
-cert = x509.CertificateBuilder().subject_name(
+ca_cert = x509.CertificateBuilder().subject_name(
     subject
 ).issuer_name(
     issuer
 ).public_key(
-    private_key.public_key()
+    ca_key.public_key()
 ).serial_number(
     # x509.random_serial_number()
     random_serial_number()
@@ -84,11 +86,57 @@ cert = x509.CertificateBuilder().subject_name(
     # Our certificate will be valid for 10 days
     datetime.datetime.utcnow() + datetime.timedelta(days=10)
 ).add_extension(
-    x509.SubjectAlternativeName([x509.DNSName(fqdn)]),
+    x509.SubjectAlternativeName([x509.DNSName(ca_fqdn)]),
     critical=False,
 # Sign our certificate with our private key
-).sign(private_key, hashes.SHA256(), default_backend())
+).sign(ca_key, hashes.SHA256(), default_backend())
 
 # Write our certificate out to disk.
 with open("ca_cert.pem", "wb") as f:
-    f.write(cert.public_bytes(serialization.Encoding.PEM))
+    f.write(ca_cert.public_bytes(serialization.Encoding.PEM))
+
+# Generate our agent key
+agent_key = rsa.generate_private_key(
+    public_exponent=65537,
+    key_size=2048,
+    backend=default_backend()
+)
+
+# Write our key to disk for safe keeping
+with open("agent_key.pem", "wb") as f:
+    f.write(ca_key.private_bytes(
+        encoding=serialization.Encoding.PEM,
+        format=serialization.PrivateFormat.TraditionalOpenSSL,
+        encryption_algorithm=serialization.NoEncryption(),
+    ))
+
+subject = x509.Name([
+    x509.NameAttribute(NameOID.COUNTRY_NAME, "US"),
+    x509.NameAttribute(NameOID.STATE_OR_PROVINCE_NAME, "CA"),
+    x509.NameAttribute(NameOID.LOCALITY_NAME, "San Francisco"),
+    x509.NameAttribute(NameOID.ORGANIZATION_NAME, "My Company"),
+    x509.NameAttribute(NameOID.COMMON_NAME, agent_hostname),
+])
+
+agent_cert = x509.CertificateBuilder().subject_name(
+    subject
+).issuer_name(
+    issuer
+).public_key(
+    agent_key.public_key()
+).serial_number(
+    # x509.random_serial_number()
+    random_serial_number()
+).not_valid_before(
+    datetime.datetime.utcnow()
+).not_valid_after(
+    # Our certificate will be valid for 10 days
+    datetime.datetime.utcnow() + datetime.timedelta(days=10)
+).add_extension(
+    x509.SubjectAlternativeName([x509.DNSName(agent_fqdn)]),
+    critical=False,
+# Sign our certificate with our private key
+).sign(agent_key, hashes.SHA256(), default_backend())
+
+with open("agent_cert.pem", "wb") as f:
+    f.write(agent_cert.public_bytes(serialization.Encoding.PEM))

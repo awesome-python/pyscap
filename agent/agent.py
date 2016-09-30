@@ -19,8 +19,9 @@
 
 import logging
 import socket
+import ssl
 
-from ConnectionThread import ConnectionThread
+from agent.ConnectionThread import ConnectionThread
 
 BIND_ADDRESS = ''
 BIND_PORT = 9001
@@ -40,6 +41,8 @@ rootLogger.addHandler(fh)
 
 logger = logging.getLogger(__name__)
 
+# ctx = ssl.create_default_context(purpose=ssl.Purpose.CLIENT_AUTH)
+#
 # create an INET, STREAMing socket
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as ss:
     # bind the socket to a public host, and a well-known port

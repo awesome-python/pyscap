@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 # Copyright 2016 Casey Jaymes
 
 # This file is part of PySCAP.
@@ -16,12 +14,3 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
-
-import logging
-
-from Message import Message
-
-logger = logging.getLogger(__name__)
-class PongMessage(Message):
-    def __init__(self, payload = None):
-        super().__init__(payload)
