@@ -87,19 +87,6 @@ ca_cert = x509.CertificateBuilder().subject_name(
 ).add_extension(
     x509.BasicConstraints(ca=True, path_length=None),
     critical=True,
-).add_extension(
-    x509.KeyUsage(
-        False, # digital_signature
-        False, # content_commitment
-        False, # key_encipherment
-        False, # data_encipherment
-        False, # key_agreement
-        True, # key_cert_sign
-        False, # crl_sign
-        False, # encipher_only
-        False, # decipher_only
-    ),
-    critical=False,
 # Sign our certificate with our private key
 ).sign(ca_key, hashes.SHA256(), default_backend())
 
