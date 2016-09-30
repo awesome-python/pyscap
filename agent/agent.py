@@ -41,8 +41,15 @@ rootLogger.addHandler(fh)
 
 logger = logging.getLogger(__name__)
 
-# ctx = ssl.create_default_context(purpose=ssl.Purpose.CLIENT_AUTH)
-#
+# ctx = ssl.SSLContext(ssl.PROTOCOL_TLS) # can't use option before 3.5.3
+ctx = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
+ctx.options |= ssl.OP_NO_SSLv2
+ctx.options |= ssl.OP_NO_SSLv3
+ctx.load_verify_locations(cafile='ca_cert.pem')
+ctx.verify_mode = ssl.CERT_REQUIRED
+ctx.load_cert_chain('agent_cert.pem', keyfile='agent_key.pem')
+print(str(ctx.cert_store_stats()))
+
 # create an INET, STREAMing socket
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as ss:
     # bind the socket to a public host, and a well-known port
@@ -54,5 +61,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as ss:
     while True:
         # accept connections from outside
         (conn, address) = ss.accept()
-        ct = ConnectionThread(conn, address)
+        s = ctx.wrap_socket(conn, server_side=True)
+        print(str(s.getpeercert()))
+        ct = ConnectionThread(s, address)
         ct.start()

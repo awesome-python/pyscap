@@ -23,33 +23,32 @@ import pytest
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)) + "/..")
 
 from agent.Message import Message
-from agent.FactsRequestMessage import FactsRequestMessage
-from agent.FactsResponseMessage import FactsResponseMessage
+from agent.PingMessage import PingMessage
+from agent.PongMessage import PongMessage
 
 HOST = 'localhost'
 PORT = 9001
 
 ctx = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
 ctx.load_verify_locations(cafile='ca_cert.pem')
-#ctx.verify_mode = ssl.CERT_REQUIRED
-#ctx.check_hostname = True
+ctx.verify_mode = ssl.CERT_REQUIRED
+ctx.check_hostname = True
 ctx.load_cert_chain('scanner_cert.pem', keyfile='scanner_key.pem')
-ctx.set_ciphers('ECDH+AESGCM')
+print(str(ctx.cert_store_stats()))
 
 @pytest.fixture(scope="module")
 def s(request):
     with ctx.wrap_socket(
         socket.socket(socket.AF_INET, socket.SOCK_STREAM),
-        server_hostname=HOST
+        server_hostname=socket.gethostbyaddr(HOST)[0]
     ) as s:
         s.connect((HOST, PORT))
+        print(str(s.getpeercert()))
         yield s
         s.shutdown(socket.SHUT_RDWR)
 
-def test_facts(s):
-        req = FactsRequestMessage()
-        req.send_via(s)
-        resp = Message.recv_via(s)
-        assert(isinstance(resp, FactsResponseMessage))
-        assert(isinstance(resp.payload, dict))
-        assert('os.name' in resp.payload)
+def test(s):
+    req = PingMessage()
+    req.send_via(s)
+    resp = Message.recv_via(s)
+    assert(False)
