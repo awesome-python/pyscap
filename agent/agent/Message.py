@@ -49,6 +49,9 @@ class Message():
             raise RuntimeError('Unregistered Message type: ' + self.__class__.__name__)
         self.payload = payload
 
+    def process(self):
+        pass
+
     def send_via(self, sock):
         msg = b''
 

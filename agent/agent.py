@@ -45,10 +45,10 @@ logger = logging.getLogger(__name__)
 ctx = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
 ctx.options |= ssl.OP_NO_SSLv2
 ctx.options |= ssl.OP_NO_SSLv3
-# ctx.load_verify_locations(cafile='ca_cert.pem')
-# ctx.verify_mode = ssl.CERT_REQUIRED
+ctx.load_verify_locations(cafile='ca_cert.pem')
+ctx.verify_mode = ssl.CERT_REQUIRED
 ctx.load_cert_chain('ca_cert.pem', keyfile='ca_key.pem')
-print(str(ctx.cert_store_stats()))
+logger.info('Cert Store: ' + str(ctx.cert_store_stats()))
 
 # create an INET, STREAMing socket
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as ss:
@@ -62,6 +62,5 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as ss:
         # accept connections from outside
         (conn, address) = ss.accept()
         s = ctx.wrap_socket(conn, server_side=True)
-        print(str(s.getpeercert()))
         ct = ConnectionThread(s, address)
         ct.start()

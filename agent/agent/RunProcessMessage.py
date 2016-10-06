@@ -32,7 +32,10 @@ class RunProcessMessage(Message):
             raise RuntimeError('Invalid arguments specified for run')
         super().__init__(payload)
 
-        args = payload['args']
+        self.completed_process = None
+
+    def process(self):
+        args = self.payload['args']
 
         # we don't supply stdin pip; ProcessOpenMessage can be used for that
         stdin = None
@@ -41,16 +44,16 @@ class RunProcessMessage(Message):
         stderr = subprocess.PIPE
 
         input_ = None
-        if 'input' in payload:
-            input_ = payload['input']
+        if 'input' in self.payload:
+            input_ = self.payload['input']
 
         shell = False
-        if 'shell' in payload and payload['shell']:
+        if 'shell' in self.payload and self.payload['shell']:
             shell = True
 
         timeout = None
-        if 'timeout' in payload:
-            timeout = payload['timeout']
+        if 'timeout' in self.payload:
+            timeout = self.payload['timeout']
 
         self.completed_process = subprocess.run(args, stdin=stdin, input=input_, \
             stdout=stdout, stderr=stderr, shell=shell, timeout=timeout)

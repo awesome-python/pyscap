@@ -33,6 +33,10 @@ class ConnectionThread(Thread):
         super().__init__()
 
         logger.info("Connection from " + str(address))
+        (hostname, aliaslist, ipaddrlist) = socket.gethostbyaddr(address[0])
+        logger.info('Peer hostname: ' + hostname + ' aliaslist: ' + str(aliaslist) + ' ipaddrlist: ' + str(ipaddrlist))
+        logger.info('Peer cert: ' + str(conn.getpeercert()))
+
         self._socket = conn
         self._address = address
 
@@ -44,6 +48,7 @@ class ConnectionThread(Thread):
                     try:
                         req = Message.recv_via(self._socket)
                         logger.info('Received message: ' + str(req))
+                        req.process()
                         if isinstance(req, Message):
                             req.respond_via(self._socket)
                         else:
