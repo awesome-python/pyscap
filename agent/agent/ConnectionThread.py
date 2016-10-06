@@ -21,6 +21,7 @@ import logging
 import socket
 from threading import Thread
 import sys
+import ssl
 import traceback
 
 from agent.Message import Message
@@ -47,8 +48,8 @@ class ConnectionThread(Thread):
                             req.respond_via(self._socket)
                         else:
                             raise RuntimeError('Unknown message type: ' + str(req.type))
-                    except OSError as e:
-                        # let OSErrors through
+                    except (OSError, BrokenPipeError, ssl.SSLError) as e:
+                        # pass up
                         raise
                     except Exception as e:
                         # catch everything else
@@ -56,7 +57,10 @@ class ConnectionThread(Thread):
                         logger.warning('Message ' + str(req) + ' execution produced exception: ' + str(e) + tb)
                         resp = ExceptionMessage({'exception': e, 'traceback': tb})
                         resp.send_via(self._socket)
-            except OSError as e:
+            except (ssl.SSLError) as e:
+                logger.info('Unable to secure connection to ' + str(self._address) + ', closing...' + str(e))
+                self._socket.shutdown(socket.SHUT_RDWR)
+            except (OSError, BrokenPipeError) as e:
                 logger.info('Socket connection broken with ' + str(self._address) + ' due to ' + str(e))
             else:
                 logger.info('Connection to ' + str(self._address) + ' closing...')

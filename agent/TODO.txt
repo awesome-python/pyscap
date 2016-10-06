@@ -1,6 +1,4 @@
 subprocess Messages
-  - RunProcess
-    - CompletedProcess
   - ProcessOpen
     - ProcessStdOut
     - ProcessStdErr

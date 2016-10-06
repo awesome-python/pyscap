@@ -18,6 +18,7 @@
 import socket
 import sys
 import os
+import ssl
 import pytest
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)) + "/..")
 
@@ -29,9 +30,18 @@ from agent.ExceptionMessage import ExceptionMessage
 HOST = 'localhost'
 PORT = 9001
 
+ctx = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
+ctx.load_verify_locations(cafile='ca_cert.pem')
+ctx.verify_mode = ssl.CERT_REQUIRED
+ctx.check_hostname = True
+ctx.load_cert_chain('scanner_cert.pem', keyfile='scanner_key.pem')
+
 @pytest.fixture(scope="module")
 def s(request):
-    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+    with ctx.wrap_socket(
+        socket.socket(socket.AF_INET, socket.SOCK_STREAM),
+        server_hostname=socket.gethostbyaddr(HOST)[0]
+    ) as s:
         s.connect((HOST, PORT))
         yield s
         s.shutdown(socket.SHUT_RDWR)

@@ -85,7 +85,7 @@ class Message():
             sent = sock.send(msg[totalsent:])
             logger.debug('Sent ' + str(sent) + ' bytes of message')
             if sent == 0:
-                raise RuntimeError("No data sent, assuming socket connection broken")
+                raise BrokenPipeError("No data sent, assuming socket connection broken")
             totalsent += sent
 
         logger.debug('Send complete.')
@@ -101,7 +101,7 @@ class Message():
         while totalrecv < len(Message.MAGIC):
             chunk = sock.recv(len(Message.MAGIC) - totalrecv)
             if chunk == b'':
-                raise RuntimeError("No data received, assuming socket connection broken")
+                raise BrokenPipeError("No data received, assuming socket connection broken")
             data += chunk
             totalrecv += len(chunk)
 
@@ -115,7 +115,7 @@ class Message():
         while totalrecv < 4:
             chunk = sock.recv(4 - totalrecv)
             if chunk == b'':
-                raise RuntimeError("No data received, assuming socket connection broken")
+                raise BrokenPipeError("No data received, assuming socket connection broken")
             data += chunk
             totalrecv += len(chunk)
 
@@ -130,7 +130,7 @@ class Message():
         while totalrecv < 4:
             chunk = sock.recv(4 - totalrecv)
             if chunk == b'':
-                raise RuntimeError("No data received, assuming socket connection broken")
+                raise BrokenPipeError("No data received, assuming socket connection broken")
             data += chunk
             totalrecv += len(chunk)
 
@@ -143,7 +143,7 @@ class Message():
         while totalrecv < 4:
             chunk = sock.recv(4 - totalrecv)
             if chunk == b'':
-                raise RuntimeError("No data received, assuming socket connection broken")
+                raise BrokenPipeError("No data received, assuming socket connection broken")
             data += chunk
             totalrecv += len(chunk)
 
@@ -158,7 +158,7 @@ class Message():
         while totalrecv < selfsize:
             chunk = sock.recv(selfsize - totalrecv)
             if chunk == b'':
-                raise RuntimeError("No data received, assuming socket connection broken")
+                raise BrokenPipeError("No data received, assuming socket connection broken")
             data += chunk
             totalrecv += len(chunk)
 

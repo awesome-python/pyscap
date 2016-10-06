@@ -36,19 +36,21 @@ ctx.check_hostname = True
 ctx.load_cert_chain('scanner_cert.pem', keyfile='scanner_key.pem')
 print(str(ctx.cert_store_stats()))
 
-@pytest.fixture(scope="module")
-def s(request):
-    with ctx.wrap_socket(
-        socket.socket(socket.AF_INET, socket.SOCK_STREAM),
-        server_hostname=socket.gethostbyaddr(HOST)[0]
-    ) as s:
-        s.connect((HOST, PORT))
-        print(str(s.getpeercert()))
-        yield s
-        s.shutdown(socket.SHUT_RDWR)
+def test_valid():
+    try:
+        with ctx.wrap_socket(
+            socket.socket(socket.AF_INET, socket.SOCK_STREAM),
+            server_hostname=socket.gethostbyaddr(HOST)[0]
+        ) as s:
+            s.connect((HOST, PORT))
+            print(str(s.getpeercert()))
+            req = PingMessage()
+            req.send_via(s)
+            resp = Message.recv_via(s)
+            assert(isinstance(resp, PongMessage))
+            assert(req.payload == resp.payload)
+            s.shutdown(socket.SHUT_RDWR)
+    except CertificateError:
+        assert(False)
 
-def test(s):
-    req = PingMessage()
-    req.send_via(s)
-    resp = Message.recv_via(s)
-    assert(False)
+# TODO invalid cert
