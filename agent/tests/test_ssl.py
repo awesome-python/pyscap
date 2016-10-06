@@ -26,7 +26,7 @@ from agent.Message import Message
 from agent.PingMessage import PingMessage
 from agent.PongMessage import PongMessage
 
-HOST = 'localhost'
+HOST = socket.gethostbyaddr(socket.gethostname())[0]
 PORT = 9001
 
 ctx = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
@@ -34,7 +34,6 @@ ctx.load_verify_locations(cafile='ca_cert.pem')
 ctx.verify_mode = ssl.CERT_REQUIRED
 ctx.check_hostname = True
 ctx.load_cert_chain('scanner_cert.pem', keyfile='scanner_key.pem')
-print(str(ctx.cert_store_stats()))
 
 def test_valid():
     try:
