@@ -96,6 +96,7 @@ def sign_cert(hostname, issuer, key, ca_key, ca_cert, cert_file_name):
 
 ca_key = gen_key()
 write_key(ca_key, "ca_key.pem")
+write_key(ca_key, "agent/ca_key.pem")
 
 # Various details about who we are. For a self-signed certificate the
 # subject and issuer are always the same.
@@ -137,9 +138,10 @@ ca_cert = x509.CertificateBuilder().subject_name(
 ).sign(ca_key, hashes.SHA256(), default_backend())
 
 write_cert(ca_cert, "ca_cert.pem")
+write_cert(ca_cert, "agent/ca_cert.pem")
 
-write_key(ca_key, "agent_key.pem")
-write_cert(ca_cert, "agent_cert.pem")
+write_key(ca_key, "agent/agent_key.pem")
+write_cert(ca_cert, "agent/agent_cert.pem")
 
 write_key(ca_key, "scanner_key.pem")
 write_cert(ca_cert, "scanner_cert.pem")
