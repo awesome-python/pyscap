@@ -21,7 +21,7 @@ import logging
 import socket
 import ssl
 
-from agent.ConnectionThread import ConnectionThread
+from ConnectionThread import ConnectionThread
 
 BIND_ADDRESS = ''
 BIND_PORT = 9001

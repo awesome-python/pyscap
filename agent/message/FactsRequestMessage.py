@@ -22,8 +22,8 @@ import socket
 import sys
 import os
 
-from agent.Message import Message
-from agent.FactsResponseMessage import FactsResponseMessage
+from message.Message import Message
+from message.FactsResponseMessage import FactsResponseMessage
 
 logger = logging.getLogger(__name__)
 class FactsRequestMessage(Message):

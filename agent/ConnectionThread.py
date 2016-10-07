@@ -24,8 +24,8 @@ import sys
 import ssl
 import traceback
 
-from agent.Message import Message
-from agent.ExceptionMessage import ExceptionMessage
+from message.Message import Message
+from message.ExceptionMessage import ExceptionMessage
 
 logger = logging.getLogger(__name__)
 class ConnectionThread(Thread):

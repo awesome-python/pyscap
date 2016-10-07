@@ -22,9 +22,9 @@ import ssl
 import pytest
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)) + "/..")
 
-from agent.Message import Message
-from agent.FactsRequestMessage import FactsRequestMessage
-from agent.FactsResponseMessage import FactsResponseMessage
+from message.Message import Message
+from message.FactsRequestMessage import FactsRequestMessage
+from message.FactsResponseMessage import FactsResponseMessage
 
 HOST = 'localhost'
 PORT = 9001

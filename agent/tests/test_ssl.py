@@ -22,9 +22,9 @@ import ssl
 import pytest
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)) + "/..")
 
-from agent.Message import Message
-from agent.PingMessage import PingMessage
-from agent.PongMessage import PongMessage
+from message.Message import Message
+from message.PingMessage import PingMessage
+from message.PongMessage import PongMessage
 
 HOST = socket.gethostbyaddr(socket.gethostname())[0]
 PORT = 9001
@@ -49,7 +49,7 @@ def test_valid():
             assert(isinstance(resp, PongMessage))
             assert(req.payload == resp.payload)
             s.shutdown(socket.SHUT_RDWR)
-    except CertificateError:
+    except ssl.CertificateError:
         assert(False)
 
 # TODO invalid cert

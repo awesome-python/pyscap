@@ -20,8 +20,8 @@
 import logging
 import subprocess
 
-from agent.Message import Message
-from agent.CompletedProcessMessage import CompletedProcessMessage
+from message.Message import Message
+from message.CompletedProcessMessage import CompletedProcessMessage
 
 logger = logging.getLogger(__name__)
 class RunProcessMessage(Message):

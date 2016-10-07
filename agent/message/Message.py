@@ -169,7 +169,7 @@ class Message():
         #logger.debug('Payload: ' + str(data) + '(' + str(payload) + ')')
         logger.debug('Received payload.')
 
-        mod = importlib.import_module('agent.' + Message.TYPES[type_])
+        mod = importlib.import_module('message.' + Message.TYPES[type_])
         class_ = getattr(mod, Message.TYPES[type_])
         inst = class_(payload)
         return inst
