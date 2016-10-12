@@ -11,4 +11,4 @@
 # replace '#!c:\program files (x86)\python35-32\python.exe' with
 # '#!"c:\program files (x86)\python35-32\python.exe"' in all the *.py files in
 # C:\Program Files (x86)\Python35-32\Scripts
-pyinstaller -d -y --noupx --hidden-import='message.PingMessage' --hidden-import='message.FactsRequestMessage' --hidden-import='message.RunProcessMessage' agent.py
+pyinstaller -d -y --noupx -F --hidden-import='message.PingMessage' --hidden-import='message.FactsRequestMessage' --hidden-import='message.RunProcessMessage' agent.py
