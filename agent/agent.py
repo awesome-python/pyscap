@@ -44,7 +44,7 @@ logger = logging.getLogger(__name__)
 ctx = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
 ctx.options |= ssl.OP_NO_SSLv2
 ctx.options |= ssl.OP_NO_SSLv3
-ctx.load_verify_locations(cafile='../ca_cert.pem')
+ctx.load_verify_locations(cafile='../scanner_cert.pem')
 ctx.verify_mode = ssl.CERT_REQUIRED
 ctx.load_cert_chain('agent_cert.pem', keyfile='agent_key.pem')
 logger.info('Cert Store: ' + str(ctx.cert_store_stats()))
