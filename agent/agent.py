@@ -31,7 +31,8 @@ LISTEN_BACKLOG = 5
 rootLogger = logging.getLogger()
 rootLogger.setLevel(logging.DEBUG)
 ch = logging.StreamHandler()
-fh = logging.FileHandler(filename="agent.log", mode='w')
+from logging.handlers import RotatingFileHandler
+fh = RotatingFileHandler(filename="agent.log", mode='a', maxBytes=(10*1024*1024), backupCount=1)
 formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 fh.setFormatter(formatter)
 ch.setFormatter(formatter)
