@@ -28,9 +28,8 @@ from cryptography import x509, utils
 from cryptography.x509.oid import NameOID, ExtendedKeyUsageOID
 
 
-CA_HOSTNAME = socket.gethostbyaddr(socket.gethostname())[0]
-AGENT_HOSTNAME = socket.gethostbyaddr(socket.gethostname())[0]
 SCANNER_HOSTNAME = socket.gethostbyaddr(socket.gethostname())[0]
+AGENT_HOSTNAME = socket.gethostbyaddr(socket.gethostname())[0]
 
 def random_serial_number():
     return utils.int_from_bytes(os.urandom(20), "big") >> 1
@@ -58,7 +57,7 @@ def write_cert(cert, file_name):
     with open(file_name, "wb") as f:
         f.write(cert.public_bytes(serialization.Encoding.PEM))
 
-def sign_cert(hostname, issuer, key, ca_key, ca_cert, cert_file_name):
+def sign_cert(hostname, issuer, key, ca_key, ca_cert):
     subject = x509.Name([
         x509.NameAttribute(NameOID.COUNTRY_NAME, "US"),
         x509.NameAttribute(NameOID.STATE_OR_PROVINCE_NAME, "CA"),
@@ -87,16 +86,47 @@ def sign_cert(hostname, issuer, key, ca_key, ca_cert, cert_file_name):
     # Sign our certificate with our private key
     ).sign(ca_key, hashes.SHA256(), default_backend())
 
+    return cert
+
+def selfsign_ca_cert(hostname, issuer, key):
+    cert = x509.CertificateBuilder().subject_name(
+        x509.Name([
+            x509.NameAttribute(NameOID.COUNTRY_NAME, "US"),
+            x509.NameAttribute(NameOID.STATE_OR_PROVINCE_NAME, "CA"),
+            x509.NameAttribute(NameOID.LOCALITY_NAME, "San Francisco"),
+            x509.NameAttribute(NameOID.ORGANIZATION_NAME, "My Company"),
+            x509.NameAttribute(NameOID.COMMON_NAME, hostname),
+        ])
+    ).issuer_name(
+        issuer
+    ).public_key(
+        key.public_key()
+    ).serial_number(
+        # x509.random_serial_number()
+        random_serial_number()
+    ).not_valid_before(
+        datetime.datetime.utcnow()
+    ).not_valid_after(
+        # Our certificate will be valid for 10 days
+        datetime.datetime.utcnow() + datetime.timedelta(days=10)
+    ).add_extension(
+        x509.SubjectAlternativeName([x509.DNSName(hostname)]),
+        critical=False,
+    ).add_extension(
+        x509.BasicConstraints(ca=True, path_length=None),
+        critical=True,
+    # Sign our certificate with our private key
+    ).sign(key, hashes.SHA256(), default_backend())
+    return cert
+
+def write_cert_chain(cert_file_name, cert, ca_cert):
     with open(cert_file_name, "wb") as f:
         f.write(cert.public_bytes(serialization.Encoding.PEM))
         # add ca to cert chain
         f.write(ca_cert.public_bytes(serialization.Encoding.PEM))
 
-    return cert
-
-ca_key = gen_key()
-write_key(ca_key, "ca_key.pem")
-write_key(ca_key, "agent/ca_key.pem")
+scanner_key = gen_key()
+write_key(scanner_key, "scanner_key.pem")
 
 # Various details about who we are. For a self-signed certificate the
 # subject and issuer are always the same.
@@ -105,51 +135,19 @@ issuer = x509.Name([
     x509.NameAttribute(NameOID.STATE_OR_PROVINCE_NAME, "CA"),
     x509.NameAttribute(NameOID.LOCALITY_NAME, "San Francisco"),
     x509.NameAttribute(NameOID.ORGANIZATION_NAME, "My Company"),
-    x509.NameAttribute(NameOID.COMMON_NAME, CA_HOSTNAME),
+    x509.NameAttribute(NameOID.COMMON_NAME, SCANNER_HOSTNAME),
 ])
 
-ca_cert = x509.CertificateBuilder().subject_name(
-    x509.Name([
-        x509.NameAttribute(NameOID.COUNTRY_NAME, "US"),
-        x509.NameAttribute(NameOID.STATE_OR_PROVINCE_NAME, "CA"),
-        x509.NameAttribute(NameOID.LOCALITY_NAME, "San Francisco"),
-        x509.NameAttribute(NameOID.ORGANIZATION_NAME, "My Company"),
-        x509.NameAttribute(NameOID.COMMON_NAME, CA_HOSTNAME),
-    ])
-).issuer_name(
-    issuer
-).public_key(
-    ca_key.public_key()
-).serial_number(
-    # x509.random_serial_number()
-    random_serial_number()
-).not_valid_before(
-    datetime.datetime.utcnow()
-).not_valid_after(
-    # Our certificate will be valid for 10 days
-    datetime.datetime.utcnow() + datetime.timedelta(days=10)
-).add_extension(
-    x509.SubjectAlternativeName([x509.DNSName(CA_HOSTNAME)]),
-    critical=False,
-).add_extension(
-    x509.BasicConstraints(ca=True, path_length=None),
-    critical=True,
-# Sign our certificate with our private key
-).sign(ca_key, hashes.SHA256(), default_backend())
+scanner_cert = selfsign_ca_cert(SCANNER_HOSTNAME, issuer, scanner_key)
 
-write_cert(ca_cert, "ca_cert.pem")
-write_cert(ca_cert, "agent/ca_cert.pem")
+write_cert(scanner_cert, "scanner_cert.pem")
+write_cert(scanner_cert, "agent/scanner_cert.pem")
 
-write_key(ca_key, "agent/agent_key.pem")
-write_cert(ca_cert, "agent/agent_cert.pem")
+# normal generation; separate scanner/agent
+# agent_key = gen_key_to_file("agent/agent_key.pem")
+# agent_cert = sign_cert(AGENT_HOSTNAME, issuer, agent_key, scanner_key, scanner_cert)
+# write_cert_chain("agent/agent_cert.pem", agent_cert, scanner_cert)
 
-write_key(ca_key, "scanner_key.pem")
-write_cert(ca_cert, "scanner_cert.pem")
-
-# # Generate our agent key
-# agent_key = gen_key_to_file("agent_key.pem")
-# agent_cert = sign_cert(AGENT_HOSTNAME, issuer, agent_key, ca_key, ca_cert, "agent_cert.pem")
-#
-# # Generate our scanner key
-# scanner_key = gen_key_to_file("scanner_key.pem")
-# scanner_cert = sign_cert(SCANNER_HOSTNAME, issuer, scanner_key, ca_key, ca_cert, "scanner_cert.pem")
+# all on localhost; can't generate different keys for same host
+write_key(scanner_key, "agent/agent_key.pem")
+write_cert(scanner_cert, "agent/agent_cert.pem")
