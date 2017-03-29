@@ -21,5 +21,5 @@ from scap.Inventory import Inventory
 
 logger = logging.getLogger(__name__)
 class APIHost(Host):
-    def __init__(self, hostname):
-        super(APIHost, self).__init__(hostname)
+    def __init__(self, connection):
+        super(APIHost, self).__init__(connection)

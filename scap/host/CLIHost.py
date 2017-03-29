@@ -21,8 +21,8 @@ from scap.Inventory import Inventory
 
 logger = logging.getLogger(__name__)
 class CLIHost(Host):
-    def __init__(self, hostname):
-        super(CLIHost, self).__init__(hostname)
+    def __init__(self, connection):
+        super(CLIHost, self).__init__(connection)
 
     def exec_command(self, cmd):
         import inspect

@@ -24,8 +24,8 @@ from scap.Inventory import Inventory
 
 logger = logging.getLogger(__name__)
 class SudoHost(CLIHost):
-    def __init__(self, hostname):
-        super(SudoHost, self).__init__(hostname)
+    def __init__(self, connection):
+        super(SudoHost, self).__init__(connection)
 
     def exec_privileged_command(self, cmd):
         import inspect
