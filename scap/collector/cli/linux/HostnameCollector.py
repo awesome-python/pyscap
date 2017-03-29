@@ -15,11 +15,12 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.FactCollector import FactCollector
-import logging
-from scap.Inventory import Inventory
+from scap.Collector import Collector
+import re, logging
 
 logger = logging.getLogger(__name__)
-class SudoCollector(FactCollector):
+class HostnameCollector(Collector):
     def collect(self):
-        pass
+        hostname = self.host.line_from_command('hostname').strip()
+        logger.debug('hostname: ' + str(hostname))
+        self.host.facts['hostname'] = hostname

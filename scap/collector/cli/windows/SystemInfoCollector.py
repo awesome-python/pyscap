@@ -15,12 +15,12 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.FactCollector import FactCollector
+from scap.Collector import Collector
 import logging
 import re
 
 logger = logging.getLogger(__name__)
-class SystemInfoCollector(FactCollector):
+class SystemInfoCollector(Collector):
     def collect(self):
         systeminfo = self.host.lines_from_command('systeminfo', ())
         #self.host.facts['_systeminfo_lines'] = systeminfo

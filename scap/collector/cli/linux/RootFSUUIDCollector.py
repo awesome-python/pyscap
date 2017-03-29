@@ -15,10 +15,11 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.FactCollector import FactCollector
+from scap.Collector import Collector
 import logging
 
 logger = logging.getLogger(__name__)
-class PowerShellCollector(FactCollector):
+class RootFSUUIDCollector(Collector):
     def collect(self):
-        pass
+        self.host.facts['root_uuid'] = self.host.line_from_priv_command("blkid -o value `mount -l | grep 'on / ' | awk '{print $1}'` | head -n1").strip()
+        logger.debug('Root FS UUID: ' + self.host.facts['root_uuid'])

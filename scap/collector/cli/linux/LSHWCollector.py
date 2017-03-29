@@ -15,12 +15,12 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.FactCollector import FactCollector
+from scap.Collector import Collector
 from scap.model.cpe_2_3.CPE import CPE
 import re, logging, pprint
 
 logger = logging.getLogger(__name__)
-class LSHWCollector(FactCollector):
+class LSHWCollector(Collector):
     def collect(self):
         self.host.facts['hardware'] = {}
         self.host.facts['hw_cpe'] = []

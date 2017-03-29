@@ -47,7 +47,7 @@ class SSHCollector(Collector):
     def __init__(self, hostname):
         super(SSHCollector, self).__init__(hostname)
 
-        from scap.fact_collector.unix.UNameCollector import UNameCollector
+        from scap.collector.unix.UNameCollector import UNameCollector
         self.fact_collectors.append(UNameCollector(self))
 
     def connect(self):

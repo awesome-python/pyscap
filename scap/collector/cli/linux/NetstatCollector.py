@@ -15,20 +15,18 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.FactCollector import FactCollector
+from scap.Collector import Collector
 import re, logging
 
 logger = logging.getLogger(__name__)
-class IPRouteCollector(FactCollector):
+class NetstatCollector(Collector):
     def collect(self):
-        ip_route = self.host.lines_from_command('ip route')
-        logger.debug('ip_route: ' + str(ip_route))
-        for line in ip_route:
-            m = re.match(r'^default via ([0-9.]+) dev\s+([A-Za-z0-9.]+)', line)
+        self.host.facts['network_services'] = []
+        for line in self.host.lines_from_command('netstat -ln --ip'):
+            m = re.match(r'^(tcp|udp)\s+\d+\s+\d+\s+([0-9.]+):([0-9]+)', line)
             if m:
-                logger.debug('default-route: ' + m.group(1) + ' for device ' + m.group(2))
-                if 'network_connections' not in self.host.facts:
-                    self.host.facts['network_connections'] = {}
-                if m.group(2) not in self.host.facts['network_connections']:
-                    self.host.facts['network_connections'][m.group(2)] = {}
-                self.host.facts['network_connections'][m.group(2)]['default_route'] = m.group(1)
+                # NOTE: using tcp|udp as the protocol is in conflict with the ai standard's
+                # intent, but since the port #s would not be unique otherwise and it's
+                # almost impossible to accurately figure out what the port is being used
+                # for, we use tcp & udp instead
+                self.host.facts['network_services'].append({'ip_address': m.group(2), 'port': m.group(3), 'protocol': m.group(1)})

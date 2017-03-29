@@ -15,13 +15,11 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.FactCollector import FactCollector
-import re, logging
+from scap.Collector import Collector
+import logging
+from scap.Inventory import Inventory
 
 logger = logging.getLogger(__name__)
-class HostnameAllFQDNsCollector(FactCollector):
+class CLICollector(Collector):
     def collect(self):
-        # TODO convert to --all-fqdns
-        fqdn = self.host.line_from_command('hostname --fqdn').strip()
-        logger.debug('fqdn: ' + str(fqdn))
-        self.host.facts['fqdn'] = fqdn
+        pass

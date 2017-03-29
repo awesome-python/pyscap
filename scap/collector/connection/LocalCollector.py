@@ -27,11 +27,11 @@ class LocalCollector(Collector):
         super(LocalCollector, self).__init__(hostname)
 
         if sys.platform.startswith('linux') or sys.platform == 'cygwin':
-            from scap.fact_collector.cli.unix.UNameCollector import UNameCollector
+            from scap.collector.cli.unix.UNameCollector import UNameCollector
             self.host.fact_collectors.append(UNameCollector(self.host))
         elif sys.platform == 'win32':
             self.facts['oval_family'] = 'windows'
-            from scap.fact_collector.cli.windows.VerCollector import VerCollector
+            from scap.collector.cli.windows.VerCollector import VerCollector
             self.host.fact_collectors.append(VerCollector(self.host))
 
     def exec_command(self, cmd):

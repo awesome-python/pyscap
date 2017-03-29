@@ -15,11 +15,11 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.FactCollector import FactCollector
+from scap.Collector import Collector
 import logging
 from scap.Inventory import Inventory
 
 logger = logging.getLogger(__name__)
-class CLICollector(FactCollector):
+class EnableCollector(Collector):
     def collect(self):
         pass

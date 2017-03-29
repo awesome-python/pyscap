@@ -42,13 +42,13 @@ class Host(object):
         # TODO SMB?
         # TODO PSExec?
         if connection_type == 'ssh':
-            from scap.fact_collector.connection.SSHCollector import SSHCollector
+            from scap.collector.connection.SSHCollector import SSHCollector
             self.fact_collectors.append(SSHCollector(self))
         elif connection_type == 'winrm':
-            from scap.fact_collector.connection.WinRMCollector import WinRMCollector
+            from scap.collector.connection.WinRMCollector import WinRMCollector
             self.fact_collectors.append(WinRMCollector(self))
         elif connection_type == 'local':
-            from scap.fact_collector.connection.LocalCollector import LocalCollector
+            from scap.collector.connection.LocalCollector import LocalCollector
             self.fact_collectors.append(LocalCollector(self))
         else:
             raise RuntimeError('Unsupported host connection type: ' + connection_type)
