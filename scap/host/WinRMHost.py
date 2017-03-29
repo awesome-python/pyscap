@@ -15,15 +15,15 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.Connection import Connection
+from scap.Host import Host
 from scap.Inventory import Inventory
 from winrm.protocol import Protocol
 import logging
 
 logger = logging.getLogger(__name__)
-class WinRMConnection(Connection):
+class WinRMHost(Host):
     def __init__(self, hostname):
-        super(WinRMConnection, self).__init__(hostname)
+        super(WinRMHost, self).__init__(hostname)
 
         self.facts['oval_family'] = 'windows'
         from scap.fact_collector.windows.VerCollector import VerCollector

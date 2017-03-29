@@ -15,14 +15,14 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.Connection import Connection
+from scap.Host import Host
 from scap.Inventory import Inventory
 import string, random, socket, logging
 
 logger = logging.getLogger(__name__)
-class PSExecConnection(Connection):
+class PSExecHost(Host):
     def __init__(self, hostname):
-        super(PSExecConnection, self).__init__(hostname)
+        super(PSExecHost, self).__init__(hostname)
 
         # TODO initialize collectors
 

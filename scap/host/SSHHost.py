@@ -15,12 +15,12 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.Connection import Connection
+from scap.Host import Host
 import paramiko.client, logging, sys, binascii, os
 from scap.Inventory import Inventory
 
 logger = logging.getLogger(__name__)
-class SSHConnection(Connection):
+class SSHHost(Host):
     class AskHostKeyPolicy(paramiko.client.MissingHostKeyPolicy):
         def missing_host_key(self, client, hostname, key):
             response = input('Accept key ' + binascii.hexlify(key.get_fingerprint()) + ' for host ' + hostname + ' (Y/n)? ')
@@ -45,7 +45,7 @@ class SSHConnection(Connection):
                 raise RuntimeError('Key for ' + hostname + ' not accepted')
 
     def __init__(self, hostname):
-        super(SSHConnection, self).__init__(hostname)
+        super(SSHHost, self).__init__(hostname)
 
         from scap.fact_collector.unix.UNameCollector import UNameCollector
         self.fact_collectors.append(UNameCollector(self))

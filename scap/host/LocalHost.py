@@ -15,18 +15,18 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.Connection import Connection
+from scap.Host import Host
 import logging
 import sys
 import subprocess
 from scap.Inventory import Inventory
 
 logger = logging.getLogger(__name__)
-class LocalConnection(Connection):
+class LocalHost(Host):
     def __init__(self, hostname):
-        super(LocalConnection, self).__init__(hostname)
+        super(LocalHost, self).__init__(hostname)
 
-        if sys.platform.startswith('linux'):
+        if sys.platform.startswith('linux') or sys.platform == 'cygwin':
             from scap.fact_collector.unix.UNameCollector import UNameCollector
             self.fact_collectors.append(UNameCollector(self))
         elif sys.platform == 'win32':

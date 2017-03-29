@@ -15,16 +15,16 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.Connection import Connection
+from scap.Host import Host
 from scap.Inventory import Inventory
-from smb.SMBConnection import SMBConnection
+from smb.SMBHost import SMBHost
 from nmb.NetBIOS import NetBIOS
 import string, random, socket, logging
 
 logger = logging.getLogger(__name__)
-class SMBConnection(Connection):
+class SMBHost(Host):
     def __init__(self, hostname):
-        super(SMBConnection, self).__init__(hostname)
+        super(SMBHost, self).__init__(hostname)
 
         # TODO initialize collectors
 
@@ -66,7 +66,7 @@ class SMBConnection(Connection):
             client_machine_name = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(15))
             logger.debug('Using client name of ' + client_machine_name)
             logger.info('Connecting to ' + nb_name + ' as ' + username + ' for host ' + self.hostname)
-            self.connection = SMBConnection(username, password, client_machine_name, nb_name, use_ntlm_v2 = True, sign_options=SMBConnection.SIGN_WHEN_SUPPORTED)#, is_direct_tcp=True)
+            self.connection = SMBHost(username, password, client_machine_name, nb_name, use_ntlm_v2 = True, sign_options=SMBHost.SIGN_WHEN_SUPPORTED)#, is_direct_tcp=True)
             if not self.connection.connect(ip):
                 raise RuntimeError('Cannot connect to host ' + self.hostname + '; connecting via SMB failed')
         else:
