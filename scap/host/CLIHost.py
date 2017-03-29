@@ -16,22 +16,23 @@
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
 from scap.Host import Host
+import logging
+import sys
+import binascii
+import os
 from scap.Inventory import Inventory
-import string, random, socket, logging
 
 logger = logging.getLogger(__name__)
-class PSExecHost(Host):
+class CLIHost(Host):
     def __init__(self, hostname):
-        super(PSExecHost, self).__init__(hostname)
+        super(CLIHost, self).__init__(hostname)
 
-        # TODO initialize collectors
+    def exec_command(self, cmd):
+        import inspect
+        raise NotImplementedError(inspect.stack()[0][3] + '() has not been implemented in subclass: ' + self.__class__.__name__)
 
-    def connect(self):
-        inventory = Inventory()
-        address = self.hostname
-        if inventory.has_option(self.hostname, 'address'):
-            address = inventory.get(self.hostname, 'address')
-        # TODO
+    def line_from_command(self, cmd):
+        return self.exec_command(cmd).readline()
 
-    def disconnect(self):
-        pass
+    def lines_from_command(self, cmd):
+        return self.exec_command(cmd).readlines()
