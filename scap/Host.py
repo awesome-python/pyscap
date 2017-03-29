@@ -57,7 +57,7 @@ class Host(object):
     def get_hostname(self):
         return self.hostname
 
-    def collect_facts(self):
+    def collect(self):
         # have to use while vs. for loop so collectors can add other collectors
         i = 0
         while i < len(self.collectors):

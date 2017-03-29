@@ -18,14 +18,15 @@
 import importlib
 import logging
 import sys
+from scap.Collector import Collector
 
 logger = logging.getLogger(__name__)
 #logger.setLevel(logging.INFO)
-class Checker(object):
+class Checker(Collector):
     @staticmethod
     def load(host, content, parent, args=None):
         model_namespace = content.__class__.__module__.split('.')[2]
-        collector_module = 'scap.checker.' + model_namespace + '.' + content.__class__.__name__
+        collector_module = 'scap.collector.checker.' + model_namespace + '.' + content.__class__.__name__
         # try to load the collector's module
         if collector_module not in sys.modules:
             logger.debug('Loading module ' + collector_module)
@@ -44,7 +45,7 @@ class Checker(object):
         return inst
 
     def __init__(self, host, content, parent, args=None):
-        self.host = host
+        super(Checker, self).__init__(host)
         self.content = content
         self.parent = parent
         self.args = args

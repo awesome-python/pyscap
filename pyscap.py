@@ -134,11 +134,9 @@ if args.collect or args.benchmark or args.list_hosts:
 
 if args.collect:
     for host in hosts:
-        host.connect()
-        host.collect_facts()
+        host.collect()
         pp = pprint.PrettyPrinter(width=132)
         pp.pprint(host.facts)
-        host.disconnect()
 elif args.benchmark:
     content = Model.load(None, ET.parse(args.content[0]).getroot())
 
@@ -152,11 +150,8 @@ elif args.benchmark:
         checker_args['profile'] = args.profile[0]
 
     for host in hosts:
-        host.connect()
-        host.collect_facts()
-        #TODO cache facts
+        host.collect()
         host.benchmark(content, checker_args)
-        host.disconnect()
 
     from scap.Reporter import Reporter
     report = Reporter(content, hosts).report()
