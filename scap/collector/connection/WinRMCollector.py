@@ -27,7 +27,7 @@ class WinRMHost(Host):
 
         self.facts['oval_family'] = 'windows'
         from scap.collector.windows.VerCollector import VerCollector
-        self.fact_collectors.append(VerCollector(self))
+        self.collectors.append(VerCollector(self))
 
     def _connect_plaintext(self, address, port):
         inventory = Inventory()

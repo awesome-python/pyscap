@@ -22,7 +22,7 @@ logger = logging.getLogger(__name__)
 class Host(object):
     def __init__(self, hostname):
         self.hostname = hostname
-        self.fact_collectors = []
+        self.collectors = []
         self.facts = {
             'oval_family': 'undefined',
         }
@@ -43,13 +43,13 @@ class Host(object):
         # TODO PSExec?
         if connection_type == 'ssh':
             from scap.collector.connection.SSHCollector import SSHCollector
-            self.fact_collectors.append(SSHCollector(self))
+            self.collectors.append(SSHCollector(self))
         elif connection_type == 'winrm':
             from scap.collector.connection.WinRMCollector import WinRMCollector
-            self.fact_collectors.append(WinRMCollector(self))
+            self.collectors.append(WinRMCollector(self))
         elif connection_type == 'local':
             from scap.collector.connection.LocalCollector import LocalCollector
-            self.fact_collectors.append(LocalCollector(self))
+            self.collectors.append(LocalCollector(self))
         else:
             raise RuntimeError('Unsupported host connection type: ' + connection_type)
 
@@ -60,12 +60,12 @@ class Host(object):
     def collect_facts(self):
         # have to use while vs. for loop so collectors can add other collectors
         i = 0
-        while i < len(self.fact_collectors):
+        while i < len(self.collectors):
             try:
-                self.fact_collectors[i].collect()
+                self.collectors[i].collect()
             except Exception as e:
                 import traceback
-                logger.warning('Fact collector ' + self.fact_collectors[i].__class__.__name__ + ' failed: ' + e.__class__.__name__ + ' ' + str(e) + ':\n' + traceback.format_exc())
+                logger.warning('Fact collector ' + self.collectors[i].__class__.__name__ + ' failed: ' + e.__class__.__name__ + ' ' + str(e) + ':\n' + traceback.format_exc())
             i += 1
 
     def benchmark(self, content, args):

@@ -129,7 +129,7 @@ class VerCollector(Collector):
                     logger.info('Host discovery incomplete; best guess "' + self.host.facts['windows_version'] + '" for "' + ver + '"')
 
                 from scap.collector.windows.SystemInfoCollector import SystemInfoCollector
-                self.host.fact_collectors.append(SystemInfoCollector(self.host))
+                self.host.collectors.append(SystemInfoCollector(self.host))
             elif version[1] == '0':
                 self.host.facts['windows_version'] = 'Windows 2000 Professional'
                 if version[2] == '2195':
@@ -155,7 +155,7 @@ class VerCollector(Collector):
                             self.host.facts['windows_version'] = 'Windows XP SP2'
 
                             from scap.collector.windows.PowerShellCollector import PowerShellCollector
-                            self.host.fact_collectors.append(PowerShellCollector(self.host))
+                            self.host.collectors.append(PowerShellCollector(self.host))
                         else:
                             logger.info('Host discovery incomplete; best guess "' + self.host.facts['windows_version'] + '" for "' + ver + '"')
                     else:
@@ -164,7 +164,7 @@ class VerCollector(Collector):
                     logger.info('Host discovery incomplete; best guess "' + self.host.facts['windows_version'] + '" for "' + ver + '"')
 
                 from scap.collector.windows.SystemInfoCollector import SystemInfoCollector
-                self.host.fact_collectors.append(SystemInfoCollector(self.host))
+                self.host.collectors.append(SystemInfoCollector(self.host))
             elif version[1] == '2':
                 self.host.facts['windows_version'] = 'Windows Server 2003'
                 if version[2] == '3541':
@@ -198,9 +198,9 @@ class VerCollector(Collector):
                     logger.info('Host discovery incomplete; best guess "' + self.host.facts['windows_version'] + '" for "' + ver + '"')
 
                 from scap.collector.windows.SystemInfoCollector import SystemInfoCollector
-                self.host.fact_collectors.append(SystemInfoCollector(self.host))
+                self.host.collectors.append(SystemInfoCollector(self.host))
                 from scap.collector.windows.PowerShellCollector import PowerShellCollector
-                self.host.fact_collectors.append(PowerShellCollector(self.host))
+                self.host.collectors.append(PowerShellCollector(self.host))
         elif version[0] == '6':
             self.host.facts['windows_version'] = 'Windows Vista / 7 / Server 2008 R2 / Home Server 2011 / 8 / 8.1 / Server 2012'
             if version[1] == '0':
@@ -342,9 +342,9 @@ class VerCollector(Collector):
                 logger.info('Host discovery incomplete; best guess "' + self.host.facts['windows_version'] + '" for "' + ver + '"')
 
             from scap.collector.windows.SystemInfoCollector import SystemInfoCollector
-            self.host.fact_collectors.append(SystemInfoCollector(self.host))
+            self.host.collectors.append(SystemInfoCollector(self.host))
             from scap.collector.windows.PowerShellCollector import PowerShellCollector
-            self.host.fact_collectors.append(PowerShellCollector(self.host))
+            self.host.collectors.append(PowerShellCollector(self.host))
         elif version[0] == '10':
             self.host.facts['windows_version'] = 'Windows 10'
             if version[1] == '0':
@@ -400,8 +400,8 @@ class VerCollector(Collector):
                 logger.info('Host discovery incomplete; best guess "' + self.host.facts['windows_version'] + '" for "' + ver + '"')
 
             from scap.collector.windows.SystemInfoCollector import SystemInfoCollector
-            self.host.fact_collectors.append(SystemInfoCollector(self.host))
+            self.host.collectors.append(SystemInfoCollector(self.host))
             from scap.collector.windows.PowerShellCollector import PowerShellCollector
-            self.host.fact_collectors.append(PowerShellCollector(self.host))
+            self.host.collectors.append(PowerShellCollector(self.host))
         else:
             logger.info('Host discovery incomplete; best guess "' + self.host.facts['windows_version'] + '" for "' + ver + '"')

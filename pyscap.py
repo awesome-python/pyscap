@@ -113,6 +113,7 @@ for k,v in list(NAMESPACES.items()):
 from scap.Host import Host
 from scap.Inventory import Inventory
 
+# expand the hosts
 if args.collect or args.benchmark or args.list_hosts:
     hosts = []
     inventory = Inventory()
@@ -130,6 +131,7 @@ if args.collect or args.benchmark or args.list_hosts:
             hosts.append(host)
     else:
         arg_parser.error('Host not specified (--host)')
+
 if args.collect:
     for host in hosts:
         host.connect()
@@ -138,7 +140,6 @@ if args.collect:
         pp.pprint(host.facts)
         host.disconnect()
 elif args.benchmark:
-
     content = Model.load(None, ET.parse(args.content[0]).getroot())
 
     # convert args to hash for use by checkers

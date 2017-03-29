@@ -29,9 +29,9 @@ class UNameCollector(Collector):
             # TODO lsb_release -a
 
             from scap.collector.linux.RootFSUUIDCollector import RootFSUUIDCollector
-            self.host.fact_collectors.append(RootFSUUIDCollector(self.host))
+            self.host.collectors.append(RootFSUUIDCollector(self.host))
             #from scap.collector.linux.LSHWCollector import LSHWCollector
-            #self.host.fact_collectors.append(LSHWCollector(self.host))
+            #self.host.collectors.append(LSHWCollector(self.host))
 
             # TODO ai.circuit
             # TODO ai.network?; this would likely be  used on routers, switches & other net devices
@@ -49,19 +49,19 @@ class UNameCollector(Collector):
             self.host.facts['o_cpe'] = cpe
 
             from scap.collector.linux.HostnameAllFQDNsCollector import HostnameAllFQDNsCollector
-            self.host.fact_collectors.append(HostnameAllFQDNsCollector(self.host))
+            self.host.collectors.append(HostnameAllFQDNsCollector(self.host))
 
             from scap.collector.linux.HostnameCollector import HostnameCollector
-            self.host.fact_collectors.append(HostnameCollector(self.host))
+            self.host.collectors.append(HostnameCollector(self.host))
 
             from scap.collector.linux.IPAddrCollector import IPAddrCollector
-            self.host.fact_collectors.append(IPAddrCollector(self.host))
+            self.host.collectors.append(IPAddrCollector(self.host))
 
             from scap.collector.linux.IPRouteCollector import IPRouteCollector
-            self.host.fact_collectors.append(IPRouteCollector(self.host))
+            self.host.collectors.append(IPRouteCollector(self.host))
 
             from scap.collector.linux.NetstatCollector import NetstatCollector
-            self.host.fact_collectors.append(NetstatCollector(self.host))
+            self.host.collectors.append(NetstatCollector(self.host))
 
             # TODO ai.database
             # TODO ai.software

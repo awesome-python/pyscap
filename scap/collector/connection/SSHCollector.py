@@ -48,7 +48,7 @@ class SSHCollector(Collector):
         super(SSHCollector, self).__init__(hostname)
 
         from scap.collector.unix.UNameCollector import UNameCollector
-        self.fact_collectors.append(UNameCollector(self))
+        self.collectors.append(UNameCollector(self))
 
     def connect(self):
         self.client = paramiko.client.SSHClient()
