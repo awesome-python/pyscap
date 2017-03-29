@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.Host import Host
+from scap.host.CLIHost import CLIHost
 import logging
 import sys
 import binascii
@@ -23,7 +23,7 @@ import os
 from scap.Inventory import Inventory
 
 logger = logging.getLogger(__name__)
-class SudoHost(Host):
+class SudoHost(CLIHost):
     def __init__(self, hostname):
         super(SudoHost, self).__init__(hostname)
 
