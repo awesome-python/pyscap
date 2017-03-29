@@ -20,8 +20,8 @@ from scap.Inventory import Inventory
 
 logger = logging.getLogger(__name__)
 class Host(object):
-    def __init__(self, hostname):
-        self.hostname = hostname
+    def __init__(self, connection):
+        self.connection = connection
         self.fact_collectors = []
         self.facts = {
             'oval_family': 'undefined',
@@ -29,15 +29,7 @@ class Host(object):
 
 
     def get_hostname(self):
-        return self.hostname
-
-    def connect(self):
-        import inspect
-        raise NotImplementedError(inspect.stack()[0][3] + '() has not been implemented in subclass: ' + self.__class__.__name__)
-
-    def disconnect(self):
-        import inspect
-        raise NotImplementedError(inspect.stack()[0][3] + '() has not been implemented in subclass: ' + self.__class__.__name__)
+        return self.connection.hostname
 
     def collect_facts(self):
         # have to use while vs. for loop so collectors can add other collectors
