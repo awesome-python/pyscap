@@ -19,6 +19,13 @@
 
 # set up logging
 import logging
+import sys
+import time
+import atexit
+import argparse
+import xml.etree.ElementTree as ET
+import pprint
+
 from scap.ColorFormatter import ColorFormatter
 rootLogger = logging.getLogger()
 rootLogger.setLevel(logging.DEBUG)
@@ -32,7 +39,6 @@ rootLogger.addHandler(ch)
 rootLogger.addHandler(fh)
 
 # report start time & end time
-import time, atexit
 logger = logging.getLogger(__name__)
 logger.debug('Start: ' + time.asctime(time.localtime()))
 def end_func():
@@ -40,7 +46,6 @@ def end_func():
 atexit.register(end_func)
 
 # set up argument parsing
-import argparse
 arg_parser = argparse.ArgumentParser()
 arg_parser.add_argument('--version', action='version', version='%(prog)s 1.0')
 arg_parser.add_argument('--verbose', '-v', action='count')
@@ -54,6 +59,8 @@ group.add_argument('--parse', help='parse the supplied files', nargs='+', type=a
 
 # pre-parse arguments
 args = arg_parser.parse_known_args()
+if len(args) <= 0:
+    sys.exit('No valid operation was given')
 
 # change verbosity
 if(args[0].verbose == 1):
@@ -90,7 +97,6 @@ elif args[0].list_hosts:
 #     arg_parser.add_argument('--object', required=True, nargs='+')
 #     arg_parser.add_argument('--state', required=True, nargs='+')
 else:
-    import sys
     sys.exit('No valid operation was given')
 
 # final argument parsing
@@ -98,7 +104,6 @@ args = arg_parser.parse_args()
 
 # configure ElementTree
 from scap.Model import Model
-import xml.etree.ElementTree as ET
 from scap.model import NAMESPACES
 for k,v in list(NAMESPACES.items()):
     ET.register_namespace(v, k)
@@ -118,7 +123,6 @@ if args.connect or args.benchmark or args.list_hosts:
                 logger.error('Could not read from inventory file ' + filename)
     if not args.host:
         logger.critical('--host <host> must be supplied')
-        import sys
         sys.exit()
     hosts = []
     inventory = Inventory()
@@ -153,7 +157,6 @@ if args.connect:
     for host in hosts:
         host.connect()
         host.collect_facts()
-        import pprint
         pp = pprint.PrettyPrinter(width=132)
         pp.pprint(host.facts)
         host.disconnect()
@@ -191,8 +194,6 @@ elif args.list_hosts:
     for t in Target.parse(args):
         t.pretty()
 elif args.test:
-    import sys
     sys.exit('Unimplemented')
 else:
-    import sys
     sys.exit('No valid operation was given')
