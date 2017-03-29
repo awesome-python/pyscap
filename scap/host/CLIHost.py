@@ -17,9 +17,6 @@
 
 from scap.Host import Host
 import logging
-import sys
-import binascii
-import os
 from scap.Inventory import Inventory
 
 logger = logging.getLogger(__name__)
