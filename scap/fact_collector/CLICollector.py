@@ -15,28 +15,11 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.host.CLIHost import CLIHost
+from scap.FactCollector import FactCollector
 import logging
-import sys
-import binascii
-import os
 from scap.Inventory import Inventory
 
 logger = logging.getLogger(__name__)
-class SudoHost(CLIHost):
-    def __init__(self, connection):
-        super(SudoHost, self).__init__(connection)
-
-    def exec_privileged_command(self, cmd):
-        import inspect
-        raise NotImplementedError(inspect.stack()[0][3] + '() has not been implemented in subclass: ' + self.__class__.__name__)
-
-    def can_privileged_command(self):
-        inventory = Inventory()
-        return inventory.has_option(self.hostname, 'sudo_password')
-
-    def line_from_priv_command(self, cmd):
-        return self.exec_privileged_command(cmd).readline()
-
-    def lines_from_priv_command(self, cmd):
-        return self.exec_privileged_command(cmd).readlines()
+class CLICollector(FactCollector):
+    def collect(self):
+        pass

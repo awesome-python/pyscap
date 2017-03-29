@@ -27,16 +27,35 @@ class Host(object):
             'oval_family': 'undefined',
         }
 
+        inventory = Inventory()
+
+        # TODO better connection detection
+        if not inventory.has_section(hostname) or not inventory.has_option(hostname, 'connection'):
+            if hostname == 'localhost':
+                connection_type = 'local'
+            else:
+                connection_type = 'ssh'
+        else:
+            connection_type = inventory.get(hostname, 'connection')
+
+        # TODO impacket
+        # TODO SMB?
+        # TODO PSExec?
+        if connection_type == 'ssh':
+            from scap.fact_collector.connection.SSHCollector import SSHCollector
+            self.fact_collectors.append(SSHCollector(self))
+        elif connection_type == 'winrm':
+            from scap.fact_collector.connection.WinRMCollector import WinRMCollector
+            self.fact_collectors.append(WinRMCollector(self))
+        elif connection_type == 'local':
+            from scap.fact_collector.connection.LocalCollector import LocalCollector
+            self.fact_collectors.append(LocalCollector(self))
+        else:
+            raise RuntimeError('Unsupported host connection type: ' + connection_type)
+
+
     def get_hostname(self):
         return self.hostname
-
-    def connect(self):
-        import inspect
-        raise NotImplementedError(inspect.stack()[0][3] + '() has not been implemented in subclass: ' + self.__class__.__name__)
-
-    def disconnect(self):
-        import inspect
-        raise NotImplementedError(inspect.stack()[0][3] + '() has not been implemented in subclass: ' + self.__class__.__name__)
 
     def collect_facts(self):
         # have to use while vs. for loop so collectors can add other collectors

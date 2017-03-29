@@ -126,33 +126,7 @@ if args.collect or args.benchmark or args.list_hosts:
                 logger.error('Could not read from inventory file ' + filename)
     if args.host:
         for hostname in args.host:
-            # TODO do some kind of auto connection detection
-            if not inventory.has_section(hostname) or not inventory.has_option(hostname, 'connection'):
-                if hostname == 'localhost':
-                    connection = 'local'
-                else:
-                    connection = 'ssh'
-            else:
-                connection = inventory.get(hostname, 'connection')
-
-            if connection == 'ssh':
-                from scap.host.SSHHost import SSHHost
-                host = SSHHost(hostname)
-            elif connection == 'impacket':
-                from scap.host.IMPacketHost import IMPacketHost
-                host = IMPacketHost(hostname)
-            elif connection == 'smb':
-                from scap.host.SMBHost import SMBHost
-                host = SMBHost(hostname)
-            elif connection == 'winrm':
-                from scap.host.WinRMHost import WinRMHost
-                host = WinRMHost(hostname)
-            elif connection == 'local':
-                if sys.platform.startswith('linux'):
-                    from scap.host.SudoHost import SudoHost
-                    host = SudoHost(hostname)
-            else:
-                arg_parser.error('Unsupported host connection type: ' + connection)
+            host = Host(hostname)
             hosts.append(host)
     else:
         arg_parser.error('Host not specified (--host)')

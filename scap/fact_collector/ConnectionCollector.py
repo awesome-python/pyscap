@@ -15,21 +15,10 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.Host import Host
+from scap.FactCollector import FactCollector
 import logging
-from scap.Inventory import Inventory
 
 logger = logging.getLogger(__name__)
-class CLIHost(Host):
-    def __init__(self, connection):
-        super(CLIHost, self).__init__(connection)
-
-    def exec_command(self, cmd):
-        import inspect
-        raise NotImplementedError(inspect.stack()[0][3] + '() has not been implemented in subclass: ' + self.__class__.__name__)
-
-    def line_from_command(self, cmd):
-        return self.exec_command(cmd).readline()
-
-    def lines_from_command(self, cmd):
-        return self.exec_command(cmd).readlines()
+class ConnectionCollector(FactCollector):
+    def collect(self):
+        pass

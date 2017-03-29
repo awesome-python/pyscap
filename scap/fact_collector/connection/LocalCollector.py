@@ -15,30 +15,24 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.Host import Host
+from scap.Collector import Collector
 import logging
 import sys
 import subprocess
 from scap.Inventory import Inventory
 
 logger = logging.getLogger(__name__)
-class LocalHost(Host):
+class LocalCollector(Collector):
     def __init__(self, hostname):
-        super(LocalHost, self).__init__(hostname)
+        super(LocalCollector, self).__init__(hostname)
 
         if sys.platform.startswith('linux') or sys.platform == 'cygwin':
-            from scap.fact_collector.unix.UNameCollector import UNameCollector
-            self.fact_collectors.append(UNameCollector(self))
+            from scap.fact_collector.cli.unix.UNameCollector import UNameCollector
+            self.host.fact_collectors.append(UNameCollector(self.host))
         elif sys.platform == 'win32':
             self.facts['oval_family'] = 'windows'
-            from scap.fact_collector.windows.VerCollector import VerCollector
-            self.fact_collectors.append(VerCollector(self))
-
-    def connect(self):
-        pass
-
-    def disconnect(self):
-        pass
+            from scap.fact_collector.cli.windows.VerCollector import VerCollector
+            self.host.fact_collectors.append(VerCollector(self.host))
 
     def exec_command(self, cmd):
         logger.debug("Sending command: " + 'sh -c "' + cmd.replace('"', r'\"') + '"')

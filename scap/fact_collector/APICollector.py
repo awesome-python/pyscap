@@ -15,11 +15,11 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.Host import Host
+from scap.FactCollector import FactCollector
 import logging
 from scap.Inventory import Inventory
 
 logger = logging.getLogger(__name__)
-class APIHost(Host):
-    def __init__(self, connection):
-        super(APIHost, self).__init__(connection)
+class APICollector(FactCollector):
+    def collect(self):
+        pass
