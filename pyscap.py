@@ -63,15 +63,16 @@ if len(args) <= 0:
     sys.exit('No valid operation was given')
 
 # change verbosity
-if(args[0].verbose == 1):
-    ch.setLevel(logging.INFO)
-    logger.debug('Set console logging level to INFO')
-elif(args[0].verbose == 2):
-    ch.setLevel(logging.DEBUG)
-    logger.debug('Set console logging level to DEBUG')
-elif(args[0].verbose >= 3):
-    ch.setLevel(logging.NOTSET)
-    logger.debug('Set console logging level to NOTSET')
+if args[0].verbose:
+    if(args[0].verbose == 1):
+        ch.setLevel(logging.INFO)
+        logger.debug('Set console logging level to INFO')
+    elif(args[0].verbose == 2):
+        ch.setLevel(logging.DEBUG)
+        logger.debug('Set console logging level to DEBUG')
+    elif(args[0].verbose >= 3):
+        ch.setLevel(logging.NOTSET)
+        logger.debug('Set console logging level to NOTSET')
 
 # set up the modes
 if args[0].connect:
@@ -97,7 +98,7 @@ elif args[0].list_hosts:
 #     arg_parser.add_argument('--object', required=True, nargs='+')
 #     arg_parser.add_argument('--state', required=True, nargs='+')
 else:
-    sys.exit('No valid operation was given')
+    arg_parser.error('No valid operation was given')
 
 # final argument parsing
 args = arg_parser.parse_args()
@@ -122,15 +123,13 @@ if args.connect or args.benchmark or args.list_hosts:
             except IOError:
                 logger.error('Could not read from inventory file ' + filename)
     if not args.host:
-        logger.critical('--host <host> must be supplied')
-        sys.exit()
+        arg_parser.error('--host <host> must be supplied')
     hosts = []
     inventory = Inventory()
     if args.host:
         for hostname in args.host:
             if not inventory.has_section(hostname):
-                logger.critical('Host not found in inventory file: ' + hostname)
-                sys.exit()
+                arg_parser.error('Host not found in inventory file: ' + hostname)
             if not inventory.has_option(hostname, 'connection'):
                 connection = 'ssh'
                 #TODO do some kind of auto detection
@@ -149,8 +148,7 @@ if args.connect or args.benchmark or args.list_hosts:
                 from scap.host.WinRMHost import WinRMHost
                 host = WinRMHost(hostname)
             else:
-                logger.critical('Unsupported host connection type: ' + connection)
-                sys.exit()
+                arg_parser.error('Unsupported host connection type: ' + connection)
             hosts.append(host)
 
 if args.connect:
@@ -194,6 +192,6 @@ elif args.list_hosts:
     for t in Target.parse(args):
         t.pretty()
 elif args.test:
-    sys.exit('Unimplemented')
+    arg_parser.error('Unimplemented')
 else:
-    sys.exit('No valid operation was given')
+    arg_parser.error('No valid operation was given')
