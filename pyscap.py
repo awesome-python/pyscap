@@ -19,7 +19,6 @@
 
 # set up logging
 import logging
-import sys
 import time
 import atexit
 import argparse
@@ -51,7 +50,7 @@ arg_parser.add_argument('--version', action='version', version='%(prog)s 1.0')
 arg_parser.add_argument('--verbose', '-v', action='count')
 
 group = arg_parser.add_mutually_exclusive_group()
-group.add_argument('--connect', help='try to connect to the host', action='store_true')
+group.add_argument('--collect', help='try to connect and collect facts from the host', action='store_true')
 group.add_argument('--benchmark', help='benchmark hosts', action='store_true')
 group.add_argument('--list-hosts', help='outputs a list of the hosts', action='store_true')
 # group.add_argument('--test', help='perform a test on the selected hosts', nargs='+')
@@ -60,7 +59,7 @@ group.add_argument('--parse', help='parse the supplied files', nargs='+', type=a
 # pre-parse arguments
 args = arg_parser.parse_known_args()
 if len(args) <= 0:
-    sys.exit('No valid operation was given')
+    arg_parser.error('No valid operation was given')
 
 # change verbosity
 if args[0].verbose:
@@ -75,8 +74,8 @@ if args[0].verbose:
         logger.debug('Set console logging level to NOTSET')
 
 # set up the modes
-if args[0].connect:
-    logger.info("Connect operation")
+if args[0].collect:
+    logger.info("Collect operation")
     arg_parser.add_argument('--inventory', nargs='+')
     arg_parser.add_argument('--host', nargs='+')
 elif args[0].benchmark:
@@ -91,6 +90,7 @@ elif args[0].benchmark:
     arg_parser.add_argument('--pretty', action='store_true')
 elif args[0].list_hosts:
     arg_parser.add_argument('--host', nargs='+')
+    arg_parser.add_argument('--inventory', nargs='+')
 # elif args[0].test:
 #     logger.info("Test operation")
 #     arg_parser.add_argument('--host', required=True, nargs='+')
@@ -113,7 +113,9 @@ for k,v in list(NAMESPACES.items()):
 from scap.Host import Host
 from scap.Inventory import Inventory
 
-if args.connect or args.benchmark or args.list_hosts:
+if args.collect or args.benchmark or args.list_hosts:
+    hosts = []
+    inventory = Inventory()
     if args.inventory:
         for filename in args.inventory:
             try:
@@ -122,19 +124,17 @@ if args.connect or args.benchmark or args.list_hosts:
                     Inventory().readfp(fp)
             except IOError:
                 logger.error('Could not read from inventory file ' + filename)
-    if not args.host:
-        arg_parser.error('--host <host> must be supplied')
-    hosts = []
-    inventory = Inventory()
     if args.host:
         for hostname in args.host:
-            if not inventory.has_section(hostname):
-                arg_parser.error('Host not found in inventory file: ' + hostname)
-            if not inventory.has_option(hostname, 'connection'):
-                connection = 'ssh'
-                #TODO do some kind of auto detection
+            # TODO do some kind of auto connection detection
+            if not inventory.has_section(hostname) or not inventory.has_option(hostname, 'connection'):
+                if hostname == 'localhost':
+                    connection = 'local'
+                else:
+                    connection = 'ssh'
             else:
                 connection = inventory.get(hostname, 'connection')
+
             if connection == 'ssh':
                 from scap.host.SSHHost import SSHHost
                 host = SSHHost(hostname)
@@ -147,11 +147,16 @@ if args.connect or args.benchmark or args.list_hosts:
             elif connection == 'winrm':
                 from scap.host.WinRMHost import WinRMHost
                 host = WinRMHost(hostname)
+            elif connection == 'local':
+                if sys.platform.startswith('linux'):
+                    from scap.host.SudoHost import SudoHost
+                    host = SudoHost(hostname)
             else:
                 arg_parser.error('Unsupported host connection type: ' + connection)
             hosts.append(host)
-
-if args.connect:
+    else:
+        arg_parser.error('Host not specified (--host)')
+if args.collect:
     for host in hosts:
         host.connect()
         host.collect_facts()
