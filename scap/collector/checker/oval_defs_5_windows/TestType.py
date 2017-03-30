@@ -17,11 +17,11 @@
 
 import logging
 
-import scap.checker.oval_defs_5.TestType
+import scap.collector.checker.oval_defs_5.TestType
 
 logger = logging.getLogger(__name__)
-class TestType(scap.checker.oval_defs_5.TestType.TestType):
-    def check(self):
+class TestType(scap.collector.checker.oval_defs_5.TestType.TestType):
+    def collect(self):
         if self.host.facts['oval_family'] != 'windows':
             return 'not applicable'
-        return super(TestType, self).check()
+        return super(TestType, self).collect()

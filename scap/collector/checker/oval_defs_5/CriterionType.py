@@ -27,12 +27,12 @@ class CriterionType(Checker):
         try:
             self.checker = Checker.load(host, test, self, args)
         except ImportError:
-            raise NotImplementedError('Test checker type scap.checker.' + test.model_namespace + '.' \
+            raise NotImplementedError('Test checker type scap.collector.checker.' + test.model_namespace + '.' \
                 + test.__class__.__name__ + ' has not been implemented')
 
-    def check(self):
+    def collect(self):
         # TODO applicability_check?
-        result = self.checker.check()
+        result = self.checker.collect()
 
         from scap.model.oval_common_5 import OperatorEnumeration
         if self.content.negate:

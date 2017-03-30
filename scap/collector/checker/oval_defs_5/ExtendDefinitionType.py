@@ -25,10 +25,10 @@ class ExtendDefinitionType(Checker):
 
         self.checker = Checker.load(host, self.resolve_reference(content.definition_ref), self, args)
 
-    def check(self):
+    def collect(self):
         # TODO applicability_check?
 
-        result = self.checker.check()
+        result = self.checker.collect()
         from scap.model.oval_common_5 import OperatorEnumeration
         if self.content.negate:
             return OperatorEnumeration.negate(result)

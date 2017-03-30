@@ -18,7 +18,7 @@
 import logging
 import re
 
-from scap.checker.oval_defs_5_windows.TestType import TestType
+from scap.collector.checker.oval_defs_5_windows.TestType import TestType
 
 logger = logging.getLogger(__name__)
 class RegistryTestElement(TestType):

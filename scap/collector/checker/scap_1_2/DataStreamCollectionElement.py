@@ -42,8 +42,8 @@ class DataStreamCollectionElement(Checker):
 
         self.ds_checker = Checker.load(host, ds, self, args)
 
-    def check(self):
-        return self.ds_checker.check()
+    def collect(self):
+        return self.ds_checker.collect()
 
     def resolve_reference(self, ref):
         if ref[0] == '#':

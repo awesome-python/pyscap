@@ -43,8 +43,8 @@ class DataStreamElement(Checker):
 
         self.checker = Checker.load(host, comp_ref, self, args)
 
-    def check(self):
-        return self.checker.check()
+    def collect(self):
+        return self.checker.collect()
 
     def resolve_reference(self, ref):
         if ref[0] == '#':

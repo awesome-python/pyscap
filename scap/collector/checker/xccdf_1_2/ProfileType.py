@@ -195,13 +195,13 @@ class ProfileType(Checker):
 
             return r
 
-    def check(self):
+    def collect(self):
         results = []
         for rule_id in self.rule_content:
             metadata = self.rule_content[rule_id].metadata.copy()
             #TODO: add our metadata
             if rule_id in self.checkers:
-                check_result = self.checkers[rule_id].check()
+                check_result = self.checkers[rule_id].collect()
                 if len(check_result) == 0:
                     raise ValueError('Did not get a check result for rule ' + rule_id)
                 elif len(check_result) == 1:

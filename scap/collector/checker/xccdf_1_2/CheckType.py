@@ -43,7 +43,7 @@ class CheckType(Checker):
                     # we got a checker, so break out of the for loop
                     break
 
-    def check(self):
+    def collect(self):
         if self.checker is None:
             logger.debug('Never found a checker')
             return [{
@@ -52,7 +52,7 @@ class CheckType(Checker):
                 'instances': [],
             }]
 
-        results = self.checker.check()
+        results = self.checker.collect()
 
         if hasattr(self.content, 'multi_check') and self.content.multi_check:
             pass

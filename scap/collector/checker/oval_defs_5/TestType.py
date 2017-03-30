@@ -24,7 +24,7 @@ from scap.model.oval_common_5 import CheckEnumeration
 
 logger = logging.getLogger(__name__)
 class TestType(Checker):
-    def check(self):
+    def collect(self):
         # collect items matching obj
         items, existence_results = self.collect_object_items()
 

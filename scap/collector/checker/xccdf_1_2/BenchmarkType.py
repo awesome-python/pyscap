@@ -42,5 +42,5 @@ class BenchmarkType(Checker):
 
         self.profile_checker = Checker.load(host, profile, self, args)
 
-    def check(self):
-        return self.profile_checker.check()
+    def collect(self):
+        return self.profile_checker.collect()

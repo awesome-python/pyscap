@@ -25,7 +25,7 @@ class DefinitionElement(Checker):
 
         self.checker = Checker.load(host, content.criteria, self, args)
 
-    def check(self):
-        result = self.checker.check()
+    def collect(self):
+        result = self.checker.collect()
         logger.debug('Definition ' + self.content.id + ' checker got ' + result)
         return result

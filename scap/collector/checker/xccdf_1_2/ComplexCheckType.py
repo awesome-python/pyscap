@@ -27,12 +27,12 @@ class ComplexCheckType(Checker):
         for check in content.checks:
             self.checkers.append(Checker.load(host, check, self, args))
 
-    def check(self):
+    def collect(self):
         from scap.model.xccdf_1_2 import CheckOperatorEnumeration
         results = []
         for checker in self.checkers:
             if checker.content.model_namespace.startswith('oval'):
-                results.append(CheckOperatorEnumeration.oval_translate(checker.check()))
+                results.append(CheckOperatorEnumeration.oval_translate(checker.collect()))
             else:
                 raise NotImplementedError('Unknown model namespace: ' + checker.content.model_namespace)
 

@@ -63,12 +63,12 @@ class CheckContentRefType(Checker):
 
         checker_result = checker.check()
 
-        if checker.__module__.startswith('scap.checker.oval'):
+        if checker.__module__.startswith('scap.collector.checker.oval'):
             check_result['result'] = CheckOperatorEnumeration.oval_translate(checker_result['result'])
             #TODO messages, instances
             check_result['messages'] = []
             check_result['instances'] = []
-        elif checker.__module__.startswith('scap.checker.ocil'):
+        elif checker.__module__.startswith('scap.collector.checker.ocil'):
             check_result['result'] = CheckOperatorEnumeration.oval_translate(checker_result['result'])
             #TODO messages, instances
             check_result['messages'] = []
@@ -76,7 +76,7 @@ class CheckContentRefType(Checker):
 
         return check_result
 
-    def check(self):
+    def collect(self):
         if len(self.checkers) == 0:
             return [{
                 'result': 'notchecked',
