@@ -23,6 +23,7 @@ class Host(object):
     def __init__(self, hostname):
         self.hostname = hostname
         self.collectors = []
+        self.resources = {}
         self.facts = {
             'oval_family': 'undefined',
         }
