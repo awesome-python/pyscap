@@ -22,8 +22,8 @@ import logging
 
 logger = logging.getLogger(__name__)
 class WinRMHost(Host):
-    def __init__(self, hostname):
-        super(WinRMHost, self).__init__(hostname)
+    def __init__(self, hostname, args):
+        super(WinRMHost, self).__init__(hostname, args)
 
         self.facts['oval_family'] = 'windows'
         from scap.collector.windows.VerCollector import VerCollector

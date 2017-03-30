@@ -44,8 +44,8 @@ class SSHCollector(Collector):
             else:
                 raise RuntimeError('Key for ' + hostname + ' not accepted')
 
-    def __init__(self, hostname):
-        super(SSHCollector, self).__init__(hostname)
+    def __init__(self, hostname, args):
+        super(SSHCollector, self).__init__(hostname, args)
 
         from scap.collector.unix.UNameCollector import UNameCollector
         self.collectors.append(UNameCollector(self))

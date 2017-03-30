@@ -21,8 +21,8 @@ import string, random, socket, logging
 
 logger = logging.getLogger(__name__)
 class PSExecHost(Host):
-    def __init__(self, hostname):
-        super(PSExecHost, self).__init__(hostname)
+    def __init__(self, hostname, args):
+        super(PSExecHost, self).__init__(hostname, args)
 
         # TODO initialize collectors
 

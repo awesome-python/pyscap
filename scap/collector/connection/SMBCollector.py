@@ -23,8 +23,8 @@ import string, random, socket, logging
 
 logger = logging.getLogger(__name__)
 class SMBHost(Host):
-    def __init__(self, hostname):
-        super(SMBHost, self).__init__(hostname)
+    def __init__(self, hostname, args):
+        super(SMBHost, self).__init__(hostname, args)
 
         # TODO initialize collectors
 
