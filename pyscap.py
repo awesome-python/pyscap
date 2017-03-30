@@ -149,10 +149,13 @@ elif args.benchmark:
     if args.profile:
         checker_args['profile'] = args.profile[0]
 
+    from scap.Checker import Checker
     for host in hosts:
         host.collect()
-        host.benchmark(content, checker_args)
 
+        chk = Checker.load(self, content, None, checker_args)
+        chk.collect()
+    
     from scap.Reporter import Reporter
     report = Reporter(content, hosts).report()
 

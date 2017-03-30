@@ -27,7 +27,7 @@ class CriteriaType(Checker):
         for crit in content.criteria:
             self.checkers.append(Checker.load(host, crit, self, args))
 
-    def check(self):
+    def collect(self):
         result = None
 
         # TODO applicability_check?

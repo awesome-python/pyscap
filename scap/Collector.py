@@ -16,9 +16,11 @@
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
 class Collector(object):
-    def __init__(self, host):
+    def __init__(self, host, args):
         self.host = host
+        self.args = args
 
     def collect(self):
         import inspect
         raise NotImplementedError(inspect.stack()[0][3] + '() has not been implemented in subclass: ' + self.__class__.__name__)
+        

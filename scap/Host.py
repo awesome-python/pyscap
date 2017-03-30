@@ -26,6 +26,7 @@ class Host(object):
         self.facts = {
             'oval_family': 'undefined',
         }
+        self.results = {}
 
         inventory = Inventory()
 
@@ -67,8 +68,3 @@ class Host(object):
                 import traceback
                 logger.warning('Fact collector ' + self.collectors[i].__class__.__name__ + ' failed: ' + e.__class__.__name__ + ' ' + str(e) + ':\n' + traceback.format_exc())
             i += 1
-
-    def benchmark(self, content, args):
-        from scap.Checker import Checker
-        col = Checker.load(self, content, None, args)
-        self.results = col.check()

@@ -45,15 +45,10 @@ class Checker(Collector):
         return inst
 
     def __init__(self, host, content, parent, args=None):
-        super(Checker, self).__init__(host)
+        super(Checker, self).__init__(host, args)
         self.content = content
         self.parent = parent
-        self.args = args
         self.ref_mapping = {}
-
-    def check(self):
-        import inspect
-        raise NotImplementedError(inspect.stack()[0][3] + '() has not been implemented in subclass: ' + self.__class__.__name__)
 
     def resolve_reference(self, ref):
         if not self.parent:
