@@ -48,6 +48,8 @@ class CheckType(Model):
             s = 'ocil-2.0:'
         elif self.system == 'http://scap.nist.gov/schema/ocil/2':
             s = 'ocil-2:'
+        else:
+            return self.system
 
         if hasattr(self, 'id'):
             s += self.id + ':'
