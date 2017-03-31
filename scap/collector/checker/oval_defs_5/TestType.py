@@ -17,7 +17,7 @@
 
 import logging
 
-from scap.Checker import Checker
+from scap.collector.Checker import Checker
 from scap.model.oval_common_5 import ExistenceEnumeration
 from scap.model.oval_common_5 import OperatorEnumeration
 from scap.model.oval_common_5 import CheckEnumeration

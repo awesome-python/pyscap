@@ -19,7 +19,7 @@ from datetime import datetime, timezone
 import logging
 import sys
 
-from scap.Checker import Checker
+from scap.collector.Checker import Checker
 from scap.model.xccdf_1_2.RuleType import RuleType
 from scap.model.xccdf_1_2.GroupType import GroupType
 from scap.model.xccdf_1_2.ValueType import ValueType

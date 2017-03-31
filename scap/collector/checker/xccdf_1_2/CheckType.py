@@ -16,7 +16,7 @@
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
 import logging
-from scap.Checker import Checker
+from scap.collector.Checker import Checker
 from scap.model.xccdf_1_2 import CheckOperatorEnumeration
 
 logger = logging.getLogger(__name__)

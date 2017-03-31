@@ -153,7 +153,7 @@ elif args.benchmark:
     if args.profile:
         checker_args['profile'] = args.profile[0]
 
-    from scap.Checker import Checker
+    from scap.collector.Checker import Checker
     for host in hosts:
         host.connect()
         host.collect()
