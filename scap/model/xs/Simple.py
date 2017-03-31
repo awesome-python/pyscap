@@ -31,4 +31,7 @@ class Simple(Model):
     def from_xml(self, parent, sub_el):
         super(Simple, self).from_xml(parent, sub_el)
 
-        self.value = sub_el.text
+        if sub_el.text:
+            self.value = sub_el.text
+        else:
+            self.value = ''
