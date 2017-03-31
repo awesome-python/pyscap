@@ -30,7 +30,7 @@ class CheckContentRefType(Checker):
         self.ref_content = self.resolve_reference(content.href)
         #TODO: check that content.system & ref_content.xml_namespace match?
         if args['system'] == 'http://oval.mitre.org/XMLSchema/oval-definitions-5':
-            if not hasattr(content, 'name'):
+            if not content.name:
                 for defn in self.ref_content.definitions.definitions:
                     logger.debug('Adding oval def ' + defn.id + ' checker')
                     self.checkers.append(Checker.load(host, defn, self, args))
@@ -41,7 +41,7 @@ class CheckContentRefType(Checker):
                 logger.debug('Adding oval def ' + defn.id + ' checker')
                 self.checkers.append(Checker.load(host, defn, self, args))
         elif args['system'] in ['http://scap.nist.gov/schema/ocil/2', 'http://scap.nist.gov/schema/ocil/2.0']:
-            if not hasattr(content, 'name'):
+            if content.name:
                 for q in self.ref_content.questionnaires.questionnaires:
                     logger.debug('Adding ocil quesitonnaire ' + q.id + ' checker')
                     self.checkers.append(Checker.load(host, q, self, args))

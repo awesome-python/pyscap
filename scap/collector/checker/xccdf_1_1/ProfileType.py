@@ -54,7 +54,7 @@ class ProfileType(Checker):
 
         self.checkers = {}
         for rule_id in self.rule_selected:
-            if hasattr(self.rule_content[rule_id], 'multiple') and self.rule_content[rule_id].multiple:
+            if self.rule_content[rule_id].multiple:
                 raise NotImplementedError('@multiple not implemented')
             check = self.rule_check[rule_id]
             check_args = {'exports': {}, 'imports': {}}
@@ -66,7 +66,7 @@ class ProfileType(Checker):
                 }
             for var in check.check_imports:
                 check_args['imports'][var.import_name] = {'value': None, 'xpath': None}
-                if hasattr(var, 'import_xpath'):
+                if var.import_xpath:
                     check_args['imports'][var.import_name]['xpath'] = var.import_xpath
             if len(self.rule_content[rule_id].fixes) > 0:
                 check_args['fixes'] = self.rule_content.fixes
@@ -96,22 +96,22 @@ class ProfileType(Checker):
             self.value_operator[value_id] = content.operator
 
             # set the default value
-            if hasattr(content, 'complex_defaults') and len(content.complex_defaults) > 0:
+            if len(content.complex_defaults) > 0:
                 if None in content.complex_defaults:
                     self.value_setting[value_id] = content.complex_defaults[None].get_text()
                 else:
                     self.value_setting[value_id] = list(content.complex_defaults.values())[0].get_text()
-            elif hasattr(content, 'defaults') and len(content.defaults) > 0:
+            elif len(content.defaults) > 0:
                 if None in content.defaults:
                     self.value_setting[value_id] = content.defaults[None].get_text()
                 else:
                     self.value_setting[value_id] = list(content.defaults.values())[0].get_text()
-            elif hasattr(content, 'complex_values') and len(content.complex_values) > 0:
+            elif len(content.complex_values) > 0:
                 if None in content.complex_values:
                     self.value_setting[value_id] = content.complex_values[None].get_text()
                 else:
                     self.value_setting[value_id] = list(content.complex_values.values())[0].get_text()
-            elif hasattr(content, 'values') and len(content.values) > 0:
+            elif len(content.values) > 0:
                 if None in content.values:
                     self.value_setting[value_id] = content.values[None].get_text()
                 else:
@@ -129,9 +129,9 @@ class ProfileType(Checker):
             elif value_id in self.content.refine_values:
                 logger.debug('Refining value: ' + value_id)
                 refine_value = self.content.refine_values[value_id]
-                if hasattr(refine_value, 'operator'):
+                if refine_value.operator:
                     self.value_operator[value_id] = refine_value.operator
-                if hasattr(refine_value, 'selector'):
+                if refine_value.selector:
                     self.value_setting[value_id] = content.values[refine_value.selector].get_text()
             else:
                 return
@@ -150,9 +150,9 @@ class ProfileType(Checker):
             self.rule_weight[rule_id] = content.weight
             self.rule_severity[rule_id] = content.severity
             self.rule_role[rule_id] = content.role
-            if hasattr(content, 'complex_check'):
+            if content.complex_check:
                 self.rule_check[rule_id] = content.complex_check
-            elif hasattr(content, 'checks') and len(content.checks) > 0:
+            elif len(content.checks) > 0:
                 if None in content.checks:
                     self.rule_check[rule_id] = content.checks[None]
                 else:
@@ -164,13 +164,13 @@ class ProfileType(Checker):
             if rule_id in self.content.refine_rules:
                 logger.debug('Refining rule: ' + rule_id)
                 refine_rule = self.content.refine_rules[rule_id]
-                if hasattr(refine_rule, 'weight'):
+                if refine_rule.weight:
                     self.rule_weight[rule_id] = refine_rule.weight
-                if hasattr(refine_rule, 'selector'):
+                if refine_rule.selector:
                     self.rule_check[rule_id] = content.checks[refine_rule.selector]
-                if hasattr(refine_rule, 'severity'):
+                if refine_rule.severity:
                     self.rule_severity[rule_id] = refine_rule.severity
-                if hasattr(refine_rule, 'role'):
+                if refine_rule.role:
                     self.rule_role[rule_id] = refine_rule.role
                 logger.debug('Overridden rule ' + rule_id + ' weight: ' + self.rule_weight[rule_id] + ' severity: ' + self.rule_severity[rule_id] + ' role: ' + self.rule_role[rule_id] + ' check: ' + str(self.rule_check[rule_id]))
 
@@ -190,7 +190,7 @@ class ProfileType(Checker):
                 'weight': self.rule_weight[rule_id],
             }
 
-            if hasattr(self.rule_content[rule_id], 'version'):
+            if self.rule_content[rule_id].version:
                 r['version'] = self.rule_content[rule_id].version.get_text()
 
             return r
@@ -208,7 +208,7 @@ class ProfileType(Checker):
                     # TODO: if the rule failed and we got a fix, apply the fix & check again before appending
                     results.append(self._package_result(rule_id, metadata, check_result[0]))
                 else:
-                    if hasattr(self.rule_content[rule_id], 'multiple') and self.rule_content[rule_id].multiple:
+                    if self.rule_content[rule_id].multiple:
                         for cr in check_result:
                             # TODO: if the rule failed and we got a fix, apply the fix & check again before appending
                             results.append(self._package_result(rule_id, metadata, cr))

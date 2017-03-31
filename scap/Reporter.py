@@ -25,8 +25,8 @@ class Reporter(object):
         self.content = content
 
     def report(self):
-        from scap.model.arf_1_1.AssetReportCollectionType import AssetReportCollectionType
-        arc = AssetReportCollectionType()
+        from scap.model.arf_1_1.AssetReportCollectionElement import AssetReportCollectionElement
+        arc = AssetReportCollectionElement()
 
         from scap.model.arf_1_1.ReportRequestType import ReportRequestType
         import uuid
@@ -34,6 +34,7 @@ class Reporter(object):
         rr.id = 'report-request_' + uuid.uuid4().hex
         #rr.content = self.content.to_xml()
         rr.content = ET.Element('stuff')
+        logger.debug(dir(arc))
         arc.report_requests.append(rr)
 
         for host in self.hosts:

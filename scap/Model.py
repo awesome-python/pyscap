@@ -178,16 +178,19 @@ class Model(object):
         # set default values
         for name in self.model_map['attributes']:
             attr_map = self.model_map['attributes'][name]
+
+            if 'in' in attr_map:
+                attr_name = attr_map['in']
+            else:
+                xml_namespace, attr_name = Model.parse_tag(name)
+                attr_name = attr_name.replace('-', '_')
+
             if 'default' in attr_map:
                 value = attr_map['default']
-                if 'in' in attr_map:
-                    setattr(self, attr_map['in'], value)
-                    logger.debug('Default of attribute ' + attr_map['in'] + ' = ' + str(value))
-                else:
-                    xml_namespace, attr_name = Model.parse_tag(name)
-                    name = attr_name.replace('-', '_')
-                    setattr(self, name, value)
-                    logger.debug('Default of attribute ' + name + ' = ' + str(value))
+                setattr(self, attr_name, value)
+                logger.debug('Default of attribute ' + attr_name + ' = ' + str(value))
+            else:
+                setattr(self, attr_name, None)
 
         # initialize structures
         for t in self.model_map['elements']:
@@ -203,6 +206,9 @@ class Model(object):
                         # initialze the dict if it doesn't exist
                         if tag_map['map'] not in list(self.__dict__.keys()):
                             setattr(self, tag_map['map'], {})
+                    elif 'class' in tag_map or 'type' in tag_map:
+                        name = tag.replace('-', '_')
+                        setattr(self, name, None)
 
     def accept(self, visitor):
         visitor.visit(self)
@@ -474,6 +480,7 @@ class Model(object):
             return True
 
         return False
+
     def produce_attribute(self, name):
         if name.endswith('*'):
             return None

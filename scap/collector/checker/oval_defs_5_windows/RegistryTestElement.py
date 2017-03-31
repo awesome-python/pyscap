@@ -24,7 +24,7 @@ logger = logging.getLogger(__name__)
 class RegistryTestElement(TestType):
     def collect_object_items(self):
         obj = self.resolve_reference(self.content.object.object_ref)
-        if hasattr(obj, 'set'):
+        if obj.set':
             raise NotImplementedError('Sets are not implemented')
 
         fullkey = obj.hive.get_text()
@@ -39,7 +39,7 @@ class RegistryTestElement(TestType):
         else:
             args.extend(['/v', '"' + obj.name.get_text() + '"'])
 
-        if hasattr(obj, 'behaviors'):
+        if obj.behaviors:
             #TODO: max_depth registry behavior cannot be implemented using reg.exe
             if obj.behaviors.max_depth != -1:
                 logger.warning('max_depth registry behavior cannot be implemented using reg.exe')

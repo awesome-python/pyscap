@@ -54,7 +54,7 @@ class CheckType(Checker):
 
         results = self.checker.collect()
 
-        if hasattr(self.content, 'multi_check') and self.content.multi_check:
+        if self.content.multi_check:
             pass
         else:
             result = CheckOperatorEnumeration.AND([cr['result'] for cr in results])
