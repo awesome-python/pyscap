@@ -30,7 +30,7 @@ class ProfileType(Checker):
     def __init__(self, host, content, parent, args=None):
         super(ProfileType, self).__init__(host, content, parent, args)
 
-        if hasattr(content, 'extends'):
+        if content.extends:
             raise NotImplementedError('@extends is not supported for Profile tags')
 
         # visit nodes of the benchmark & accumulate the values & rules
