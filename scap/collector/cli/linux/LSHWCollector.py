@@ -29,7 +29,7 @@ class LSHWCollector(Collector):
         # ai.computing_device.motherboard-guid
         path = [self.host.facts['hardware']]
         indents = [0]
-        lines = self.host.lines_from_priv_command('lshw')
+        lines = self.host.exec_command('lshw', sudo=True)
         for line in lines:
             m = re.match(r'^([ ]+)\*-(\S+)', line)
             if m:
