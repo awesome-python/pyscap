@@ -21,7 +21,7 @@ import logging
 logger = logging.getLogger(__name__)
 class VerCollector(Collector):
     def collect(self):
-        ver = self.host.exec_command('ver')[0]
+        ver = self.host.exec_command('ver')[1]
         self.host.facts['ver'] = ver
         if not ver.startswith('Microsoft Windows'):
             raise NotImplementedError('Unknown windows ver output: ' + ver)
@@ -197,9 +197,9 @@ class VerCollector(Collector):
                 else:
                     logger.info('Host discovery incomplete; best guess "' + self.host.facts['windows_version'] + '" for "' + ver + '"')
 
-                from scap.collector.windows.SystemInfoCollector import SystemInfoCollector
+                from scap.collector.cli.windows.SystemInfoCollector import SystemInfoCollector
                 self.host.collectors.append(SystemInfoCollector(self.host))
-                from scap.collector.windows.PowerShellCollector import PowerShellCollector
+                from scap.collector.cli.windows.PowerShellCollector import PowerShellCollector
                 self.host.collectors.append(PowerShellCollector(self.host))
         elif version[0] == '6':
             self.host.facts['windows_version'] = 'Windows Vista / 7 / Server 2008 R2 / Home Server 2011 / 8 / 8.1 / Server 2012'
@@ -341,9 +341,9 @@ class VerCollector(Collector):
             else:
                 logger.info('Host discovery incomplete; best guess "' + self.host.facts['windows_version'] + '" for "' + ver + '"')
 
-            from scap.collector.windows.SystemInfoCollector import SystemInfoCollector
+            from scap.collector.cli.windows.SystemInfoCollector import SystemInfoCollector
             self.host.collectors.append(SystemInfoCollector(self.host))
-            from scap.collector.windows.PowerShellCollector import PowerShellCollector
+            from scap.collector.cli.windows.PowerShellCollector import PowerShellCollector
             self.host.collectors.append(PowerShellCollector(self.host))
         elif version[0] == '10':
             self.host.facts['windows_version'] = 'Windows 10'
@@ -399,9 +399,9 @@ class VerCollector(Collector):
             else:
                 logger.info('Host discovery incomplete; best guess "' + self.host.facts['windows_version'] + '" for "' + ver + '"')
 
-            from scap.collector.windows.SystemInfoCollector import SystemInfoCollector
+            from scap.collector.cli.windows.SystemInfoCollector import SystemInfoCollector
             self.host.collectors.append(SystemInfoCollector(self.host))
-            from scap.collector.windows.PowerShellCollector import PowerShellCollector
+            from scap.collector.cli.windows.PowerShellCollector import PowerShellCollector
             self.host.collectors.append(PowerShellCollector(self.host))
         else:
             logger.info('Host discovery incomplete; best guess "' + self.host.facts['windows_version'] + '" for "' + ver + '"')

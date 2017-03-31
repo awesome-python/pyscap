@@ -127,16 +127,18 @@ if args.collect or args.benchmark or args.list_hosts:
                 logger.error('Could not read from inventory file ' + filename)
     if args.host:
         for hostname in args.host:
-            host = Host(hostname)
+            host = Host.load(hostname)
             hosts.append(host)
     else:
         arg_parser.error('Host not specified (--host)')
 
 if args.collect:
     for host in hosts:
+        host.connect()
         host.collect()
         pp = pprint.PrettyPrinter(width=132)
         pp.pprint(host.facts)
+        host.disconnect()
 elif args.benchmark:
     content = Model.load(None, ET.parse(args.content[0]).getroot())
 
@@ -151,11 +153,14 @@ elif args.benchmark:
 
     from scap.Checker import Checker
     for host in hosts:
+        host.connect()
         host.collect()
 
         chk = Checker.load(self, content, None, checker_args)
         chk.collect()
-    
+
+        host.disconnect()
+
     from scap.Reporter import Reporter
     report = Reporter(content, hosts).report()
 
@@ -167,8 +172,8 @@ elif args.benchmark:
         args.output.write(report)
 elif args.list_hosts:
     print('Hosts: ')
-    for t in Target.parse(args):
-        t.pretty()
+    for host in hosts:
+        print(host.hostname)
 elif args.test:
     arg_parser.error('Unimplemented')
 else:

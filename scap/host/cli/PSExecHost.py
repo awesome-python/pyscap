@@ -15,11 +15,26 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-class Collector(object):
-    def __init__(self, host, args = {}):
-        self.host = host
-        self.args = args
+from scap.host.CLIHost import CLIHost
+from scap.Inventory import Inventory
+import string
+import random
+import socket
+import logging
 
-    def collect(self):
-        import inspect
-        raise NotImplementedError(inspect.stack()[0][3] + '() has not been implemented in subclass: ' + self.__class__.__name__)
+logger = logging.getLogger(__name__)
+class PSExecHost(CLIHost):
+    def __init__(self, hostname, args = {}):
+        super(PSExecHost, self).__init__(hostname, args)
+
+        # TODO initialize collectors
+
+    def connect(self):
+        inventory = Inventory()
+        address = self.hostname
+        if inventory.has_option(self.hostname, 'address'):
+            address = inventory.get(self.hostname, 'address')
+        # TODO
+
+    def disconnect(self):
+        pass
