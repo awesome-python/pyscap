@@ -22,7 +22,7 @@ import re
 logger = logging.getLogger(__name__)
 class SystemInfoCollector(Collector):
     def collect(self):
-        systeminfo = self.host.lines_from_command('systeminfo', ())
+        systeminfo = self.host.exec_command('systeminfo', ())
         #self.host.facts['_systeminfo_lines'] = systeminfo
 
         self.host.facts['systeminfo'] = {}

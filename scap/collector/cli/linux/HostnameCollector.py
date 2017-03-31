@@ -21,6 +21,6 @@ import re, logging
 logger = logging.getLogger(__name__)
 class HostnameCollector(Collector):
     def collect(self):
-        hostname = self.host.line_from_command('hostname').strip()
+        hostname = self.host.exec_command('hostname')[0].strip()
         logger.debug('hostname: ' + str(hostname))
         self.host.facts['hostname'] = hostname

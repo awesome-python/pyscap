@@ -22,7 +22,7 @@ logger = logging.getLogger(__name__)
 class NetstatCollector(Collector):
     def collect(self):
         self.host.facts['network_services'] = []
-        for line in self.host.lines_from_command('netstat -ln --ip'):
+        for line in self.host.exec_command('netstat -ln --ip'):
             m = re.match(r'^(tcp|udp)\s+\d+\s+\d+\s+([0-9.]+):([0-9]+)', line)
             if m:
                 # NOTE: using tcp|udp as the protocol is in conflict with the ai standard's

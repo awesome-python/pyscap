@@ -22,7 +22,7 @@ import re, logging
 logger = logging.getLogger(__name__)
 class UNameCollector(Collector):
     def collect(self):
-        uname = self.host.line_from_command('uname -a')
+        uname = self.host.exec_command('uname -a')[0]
         self.host.facts['uname'] = uname
         if uname.startswith('Linux'):
             self.host.facts['oval_family'] = 'unix'

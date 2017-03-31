@@ -22,6 +22,6 @@ logger = logging.getLogger(__name__)
 class HostnameAllFQDNsCollector(Collector):
     def collect(self):
         # TODO convert to --all-fqdns
-        fqdn = self.host.line_from_command('hostname --fqdn').strip()
+        fqdn = self.host.exec_command('hostname --fqdn')[0].strip()
         logger.debug('fqdn: ' + str(fqdn))
         self.host.facts['fqdn'] = fqdn

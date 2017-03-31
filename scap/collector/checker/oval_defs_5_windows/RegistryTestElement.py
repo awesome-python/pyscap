@@ -55,7 +55,7 @@ class RegistryTestElement(TestType):
             else:
                 raise ValueError("Unknown windows view: " + obj.behaviors.windows_view)
 
-        lines = self.host.lines_from_command('REG', tuple(args))
+        lines = self.host.exec_command('REG', tuple(args))
 
         items = []
         existence = []

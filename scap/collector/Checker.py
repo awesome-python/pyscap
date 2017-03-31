@@ -24,7 +24,7 @@ logger = logging.getLogger(__name__)
 #logger.setLevel(logging.INFO)
 class Checker(Collector):
     @staticmethod
-    def load(host, content, parent, args=None):
+    def load(host, content, parent, args={}):
         model_namespace = content.__class__.__module__.split('.')[2]
         collector_module = 'scap.collector.checker.' + model_namespace + '.' + content.__class__.__name__
         # try to load the collector's module
@@ -44,7 +44,7 @@ class Checker(Collector):
 
         return inst
 
-    def __init__(self, host, content, parent, args=None):
+    def __init__(self, host, content, parent, args={}):
         super(Checker, self).__init__(host, args)
         self.content = content
         self.parent = parent

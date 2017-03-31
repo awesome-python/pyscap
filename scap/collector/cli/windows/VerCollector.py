@@ -21,7 +21,7 @@ import logging
 logger = logging.getLogger(__name__)
 class VerCollector(Collector):
     def collect(self):
-        ver = self.host.line_from_command('ver', ())
+        ver = self.host.exec_command('ver')[0]
         self.host.facts['ver'] = ver
         if not ver.startswith('Microsoft Windows'):
             raise NotImplementedError('Unknown windows ver output: ' + ver)
