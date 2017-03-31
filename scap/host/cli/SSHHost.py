@@ -16,14 +16,26 @@
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
 from scap.host.CLIHost import CLIHost
-import paramiko.client, logging, sys, binascii, os
+import paramiko.client
+import paramiko.pkey
+from paramiko.ssh_exception import PasswordRequiredException
+import logging
+import sys
+import binascii
+import os
+import getpass
+
 from scap.Inventory import Inventory
 
 logger = logging.getLogger(__name__)
 class SSHHost(CLIHost):
     class AskHostKeyPolicy(paramiko.client.MissingHostKeyPolicy):
         def missing_host_key(self, client, hostname, key):
-            response = input('Accept key ' + binascii.hexlify(key.get_fingerprint()) + ' for host ' + hostname + ' (Y/n)? ')
+            fpt = key.get_fingerprint()
+            logger.debug('Fingerprint: ' + str(fpt))
+            hex_fpt = str(binascii.hexlify(fpt), encoding='utf-8')
+            logger.debug('Hex Fingerprint: ' + hex_fpt)
+            response = input('Accept key ' + hex_fpt + ' for host ' + hostname + ' (Y/n)? ')
             if response == '' or response.lower()[0] == 'y':
                 logger.debug('Adding key for host ' + hostname)
                 host_keys = client.get_host_keys()
@@ -54,25 +66,48 @@ class SSHHost(CLIHost):
         self.client = paramiko.client.SSHClient()
         self.client.load_system_host_keys()
         try:
-            self.client.load_host_keys(os.path.expanduser('~/.pyscap/ssh_host_keys'))
+            # TODO windows/linux home instead of ~
             logger.debug('Read ssh host keys from ~/.pyscap/ssh_host_keys')
+            self.client.load_host_keys(os.path.expanduser('~/.pyscap/ssh_host_keys'))
         except:
             logger.warning("Couldn't read ssh host keys")
         self.client.set_missing_host_key_policy(self.AskHostKeyPolicy())
 
         inventory = Inventory()
-        if inventory.has_option(self.hostname, 'ssh_private_key'):
-            self.client.connect(self.hostname, port=self.port,
-                pkey=inventory.get(self.hostname, 'ssh_private_key'))
-        elif inventory.has_option(self.hostname, 'username') and inventory.has_option(self.hostname, 'password'):
-            self.client.connect(self.hostname, port=self.port,
-                username=inventory.get(self.hostname, 'username'),
-                password=inventory.get(self.hostname, 'password'))
-        elif inventory.has_option(self.hostname, 'ssh_private_key_filename'):
-            self.client.connect(self.hostname, port=self.port,
-                key_filename=inventory.get(self.hostname, 'ssh_private_key_filename'))
+
+        if inventory.has_option(self.hostname, 'ssh_port'):
+            port = inventory.get(self.hostname, 'ssh_port')
         else:
-            raise RuntimeError('No method of authenticating with host ' + self.hostname + ' found')
+            port = 22
+
+        if inventory.has_option(self.hostname, 'ssh_username') and inventory.has_option(self.hostname, 'ssh_password'):
+            self.client.connect(self.hostname, port=port,
+                username=inventory.get(self.hostname, 'ssh_username'),
+                password=inventory.get(self.hostname, 'ssh_password'))
+        elif inventory.has_option(self.hostname, 'ssh_private_key_filename'):
+            if inventory.has_option(self.hostname, 'ssh_private_key_file_password'):
+                self.client.connect(self.hostname, port=port,
+                    pkey=paramiko.pkey.Pkey.from_private_key_file(
+                        inventory.get(self.hostname, 'ssh_private_key_filename'),
+                        password=inventory.get(self.hostname, 'ssh_private_key_file_password')))
+            else:
+                try:
+                    self.client.connect(self.hostname, port=port,
+                        key_filename=inventory.get(self.hostname, 'ssh_private_key_filename'))
+                except PasswordRequiredException:
+                    # retry with password
+                    ssh_private_key_file_password = getpass.getpass('Password for private key file ' +
+                        inventory.get(self.hostname, 'ssh_private_key_filename') + ': ')
+                    self.client.connect(self.hostname, port=port,
+                        pkey=paramiko.pkey.Pkey.from_private_key_file(
+                            inventory.get(self.hostname, 'ssh_private_key_filename'),
+                            password=ssh_private_key_file_password))
+        else:
+            ssh_username = input('Username for host ' + self.hostname + ': ')
+            if ssh_username.strip() == '':
+                raise RuntimeError('No method of authenticating with host ' + self.hostname + ' found')
+            ssh_password = getpass.getpass('Password for host ' + self.hostname + ': ')
+            self.client.connect(self.hostname, port=port, username=ssh_username, password=ssh_password)
 
     def exec_command(self, cmd, sudo=False, enable=False):
         inventory = Inventory()

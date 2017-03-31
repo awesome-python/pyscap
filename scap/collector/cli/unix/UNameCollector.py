@@ -28,9 +28,9 @@ class UNameCollector(Collector):
             self.host.facts['oval_family'] = 'unix'
             # TODO lsb_release -a
 
-            from scap.collector.linux.RootFSUUIDCollector import RootFSUUIDCollector
+            from scap.collector.cli.linux.RootFSUUIDCollector import RootFSUUIDCollector
             self.host.collectors.append(RootFSUUIDCollector(self.host))
-            #from scap.collector.linux.LSHWCollector import LSHWCollector
+            #from scap.collector.cli.linux.LSHWCollector import LSHWCollector
             #self.host.collectors.append(LSHWCollector(self.host))
 
             # TODO ai.circuit
@@ -48,19 +48,19 @@ class UNameCollector(Collector):
                 cpe.set_value('update', m.group(2))
             self.host.facts['o_cpe'] = cpe
 
-            from scap.collector.linux.HostnameAllFQDNsCollector import HostnameAllFQDNsCollector
+            from scap.collector.cli.linux.HostnameAllFQDNsCollector import HostnameAllFQDNsCollector
             self.host.collectors.append(HostnameAllFQDNsCollector(self.host))
 
-            from scap.collector.linux.HostnameCollector import HostnameCollector
+            from scap.collector.cli.linux.HostnameCollector import HostnameCollector
             self.host.collectors.append(HostnameCollector(self.host))
 
-            from scap.collector.linux.IPAddrCollector import IPAddrCollector
+            from scap.collector.cli.linux.IPAddrCollector import IPAddrCollector
             self.host.collectors.append(IPAddrCollector(self.host))
 
-            from scap.collector.linux.IPRouteCollector import IPRouteCollector
+            from scap.collector.cli.linux.IPRouteCollector import IPRouteCollector
             self.host.collectors.append(IPRouteCollector(self.host))
 
-            from scap.collector.linux.NetstatCollector import NetstatCollector
+            from scap.collector.cli.linux.NetstatCollector import NetstatCollector
             self.host.collectors.append(NetstatCollector(self.host))
 
             # TODO ai.database
