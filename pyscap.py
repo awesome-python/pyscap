@@ -158,7 +158,7 @@ elif args.benchmark:
         host.connect()
         host.collect()
 
-        chk = Checker.load(self, content, None, checker_args)
+        chk = Checker.load(host, content, None, checker_args)
         chk.collect()
 
         host.disconnect()
