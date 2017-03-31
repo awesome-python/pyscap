@@ -21,7 +21,10 @@ import re, logging
 logger = logging.getLogger(__name__)
 class HostnameAllFQDNsCollector(Collector):
     def collect(self):
-        # TODO convert to --all-fqdns
-        fqdn = self.host.exec_command('hostname --fqdn')[0].strip()
-        logger.debug('fqdn: ' + str(fqdn))
-        self.host.facts['fqdn'] = fqdn
+        self.host.facts['fqdn'] = []
+        lines = self.host.exec_command('hostname --all-fqdns 2>/dev/null')
+        for fqdn in lines:
+            fqdn = fqdn.strip()
+            if len(fqdn) > 0:
+                logger.debug('fqdn: ' + str(fqdn))
+                self.host.facts['fqdn'].append(fqdn)
