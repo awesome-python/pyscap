@@ -80,16 +80,21 @@ class SSHHost(CLIHost):
         else:
             port = 22
 
+        self.sudo_password = None
+
         if inventory.has_option(self.hostname, 'ssh_username') and inventory.has_option(self.hostname, 'ssh_password'):
             self.client.connect(self.hostname, port=port,
                 username=inventory.get(self.hostname, 'ssh_username'),
                 password=inventory.get(self.hostname, 'ssh_password'))
+            if inventory.has_option(self.hostname, 'sudo_password'):
+                self.sudo_password = inventory.get(self.hostname, 'sudo_password')
+            else:
+                self.sudo_password = inventory.get(self.hostname, 'ssh_password')
         elif inventory.has_option(self.hostname, 'ssh_private_key_filename'):
             if inventory.has_option(self.hostname, 'ssh_private_key_file_password'):
                 self.client.connect(self.hostname, port=port,
-                    pkey=paramiko.pkey.Pkey.from_private_key_file(
-                        inventory.get(self.hostname, 'ssh_private_key_filename'),
-                        password=inventory.get(self.hostname, 'ssh_private_key_file_password')))
+                    key_filename=inventory.get(self.hostname, 'ssh_private_key_filename'),
+                    password=inventory.get(self.hostname, 'ssh_private_key_file_password'))
             else:
                 try:
                     self.client.connect(self.hostname, port=port,
@@ -99,22 +104,35 @@ class SSHHost(CLIHost):
                     ssh_private_key_file_password = getpass.getpass('Password for private key file ' +
                         inventory.get(self.hostname, 'ssh_private_key_filename') + ': ')
                     self.client.connect(self.hostname, port=port,
-                        pkey=paramiko.pkey.Pkey.from_private_key_file(
-                            inventory.get(self.hostname, 'ssh_private_key_filename'),
-                            password=ssh_private_key_file_password))
+                        key_filename=inventory.get(self.hostname, 'ssh_private_key_filename'),
+                        password=ssh_private_key_file_password)
         else:
             ssh_username = input('Username for host ' + self.hostname + ': ')
             if ssh_username.strip() == '':
                 raise RuntimeError('No method of authenticating with host ' + self.hostname + ' found')
             ssh_password = getpass.getpass('Password for host ' + self.hostname + ': ')
+            if inventory.has_option(self.hostname, 'sudo_password'):
+                self.sudo_password = inventory.get(self.hostname, 'sudo_password')
+            else:
+                self.sudo_password = ssh_password
             self.client.connect(self.hostname, port=port, username=ssh_username, password=ssh_password)
 
     def exec_command(self, cmd, sudo=False, enable=False):
         inventory = Inventory()
         if sudo:
-            if not inventory.has_option(self.hostname, 'sudo_password'):
-                raise RuntimeError("Can't run privileged command without sudo_password defined in credentials")
+            if not self.sudo_password:
+                if not inventory.has_option(self.hostname, 'sudo_password'):
+                    self.sudo_password = getpass.getpass('Sudo password for host ' + self.hostname + ': ')
+                else:
+                    self.sudo_password = inventory.get(self.hostname, 'sudo_password')
             cmd = 'sudo -S -- sh -c "' + cmd.replace('"', r'\"') + '"'
+        elif enable:
+            if not self.enable_password:
+                if not inventory.has_option(self.hostname, 'enable_password'):
+                    self.enable_password = getpass.getpass('Enable password for host ' + self.hostname + ': ')
+                else:
+                    self.enable_password = inventory.get(self.hostname, 'enable_password')
+
         else:
             cmd = 'sh -c "' + cmd.replace('"', r'\"') + '"'
 
@@ -123,7 +141,7 @@ class SSHHost(CLIHost):
 
         if sudo:
             logger.debug("Sending sudo_password...")
-            stdin.write(inventory.get(self.hostname, 'sudo_password') + "\n")
+            stdin.write(self.sudo_password + "\n")
             # eat the prompt
             stderr.readline()
 
