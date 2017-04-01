@@ -108,10 +108,6 @@ class LocalHost(CLIHost):
         lines = str.splitlines(out_buf)
         err_lines = str.splitlines(err_buf)
 
-        if sudo:
-            if len(err_lines) > 0 and err_lines[0].startswith(sudo_prompt):
-                del err_lines[0]
-
         if len(err_lines) > 0:
             raise RuntimeError(str(err_lines))
         return lines
