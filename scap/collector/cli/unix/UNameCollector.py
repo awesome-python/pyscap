@@ -30,8 +30,8 @@ class UNameCollector(Collector):
 
             from scap.collector.cli.linux.RootFSUUIDCollector import RootFSUUIDCollector
             self.host.collectors.append(RootFSUUIDCollector(self.host))
-            #from scap.collector.cli.linux.LSHWCollector import LSHWCollector
-            #self.host.collectors.append(LSHWCollector(self.host))
+            from scap.collector.cli.linux.LSHWCollector import LSHWCollector
+            self.host.collectors.append(LSHWCollector(self.host))
 
             # TODO ai.circuit
             # TODO ai.network?; this would likely be  used on routers, switches & other net devices
