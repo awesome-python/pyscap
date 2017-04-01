@@ -24,11 +24,14 @@ import sys
 import binascii
 import os
 import getpass
+import socket
 
 from scap.Inventory import Inventory
 
 logger = logging.getLogger(__name__)
 class SSHHost(CLIHost):
+    SSH_TIMEOUT = 3
+
     class AskHostKeyPolicy(paramiko.client.MissingHostKeyPolicy):
         def missing_host_key(self, client, hostname, key):
             fpt = key.get_fingerprint()
@@ -117,6 +120,28 @@ class SSHHost(CLIHost):
                 self.sudo_password = ssh_password
             self.client.connect(self.hostname, port=port, username=ssh_username, password=ssh_password)
 
+    def _recv(self, chan):
+        try:
+            outs = chan.recv(1024).decode()
+            if len(outs) > 0:
+                logger.debug('Got stdout: ' + outs)
+                self.out_buf += outs
+        except socket.timeout:
+            pass
+
+    def _recv_stderr(self, chan, sudo):
+        try:
+            errs = chan.recv_stderr(1024).decode()
+            if len(errs) > 0:
+                logger.debug('Got stderr: ' + errs)
+                self.err_buf += errs
+            if sudo and self.err_buf.startswith(self.sudo_prompt):
+                logger.debug("Sending sudo_password...")
+                chan.send(self.sudo_password + "\n")
+                self.err_buf = ''
+        except socket.timeout:
+            pass
+
     def exec_command(self, cmd, sudo=False, enable=False):
         inventory = Inventory()
         if sudo:
@@ -126,6 +151,13 @@ class SSHHost(CLIHost):
                 else:
                     self.sudo_password = inventory.get(self.hostname, 'sudo_password')
             cmd = 'sudo -S -- sh -c "' + cmd.replace('"', r'\"') + '"'
+
+            if sys.platform.startswith('linux'):
+                self.sudo_prompt = '[sudo]'
+            elif sys.platform.startswith('darwin'):
+                self.sudo_prompt = 'Password:'
+            else:
+                raise NotImplementedError('sudo prompt unknown for platform ' + sys.platform)
         elif enable:
             if not self.enable_password:
                 if not inventory.has_option(self.hostname, 'enable_password'):
@@ -137,18 +169,36 @@ class SSHHost(CLIHost):
             cmd = 'sh -c "' + cmd.replace('"', r'\"') + '"'
 
         logger.debug("Sending command: " + cmd)
-        stdin, stdout, stderr = self.client.exec_command(cmd)
+        chan = self.client.get_transport().open_session()
+        chan.exec_command(cmd)
+        chan.settimeout(self.SSH_TIMEOUT)
 
-        if sudo:
-            logger.debug("Sending sudo_password...")
-            stdin.write(self.sudo_password + "\n")
-            # eat the prompt
-            stderr.readline()
+        self.out_buf = ''
+        self.err_buf = ''
+        while True:
+            if chan.recv_ready():
+                self._recv(chan)
 
-        err = stderr.read()
-        if err.strip():
-            raise RuntimeError(err)
-        return stdout.readlines()
+            if chan.recv_stderr_ready():
+                self._recv_stderr(chan, sudo)
+
+            if chan.exit_status_ready():
+                self._recv(chan)
+                self._recv_stderr(chan, sudo)
+                break
+
+        chan.close()
+
+        lines = str.splitlines(self.out_buf)
+        for i in range(len(lines)):
+            lines[i] = lines[i].strip()
+        err_lines = str.splitlines(self.err_buf)
+        for i in range(len(err_lines)):
+            err_lines[i] = err_lines[i].strip()
+
+        if len(err_lines) > 0:
+            raise RuntimeError(str(err_lines))
+        return lines
 
     def disconnect(self):
         self.client.close()
