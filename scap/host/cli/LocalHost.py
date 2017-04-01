@@ -18,7 +18,10 @@
 from scap.host.CLIHost import CLIHost
 import logging
 import sys
-import subprocess
+import os
+import selectors
+from subprocess import Popen, PIPE
+import getpass
 from scap.Inventory import Inventory
 
 logger = logging.getLogger(__name__)
@@ -55,17 +58,60 @@ class LocalHost(CLIHost):
 
             cmd = 'sudo -S -- sh -c "' + cmd.replace('"', r'\"') + '"'
 
+            if sys.platform.startswith('linux'):
+                sudo_prompt = '[sudo]'
+            elif sys.platform.startswith('darwin'):
+                sudo_prompt = 'Password:'
+            else:
+                raise NotImplementedError('sudo prompt unknown for platform ' + sys.platform)
+
         logger.debug("Sending command: " + cmd)
-        p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
+        p = Popen(cmd, stdout=PIPE, stdin=PIPE, stderr=PIPE, shell=True, universal_newlines=True)
+
+        # note; can't use p.communicate; have to figure out if we get a prompt
+        # because there isn't if within sudo timeout
+        out_buf = ''
+        err_buf = ''
+        sel = selectors.DefaultSelector()
+        sel.register(p.stdout, selectors.EVENT_READ)
+        sel.register(p.stderr, selectors.EVENT_READ)
+        while True:
+            for (key, events) in sel.select():
+                if key.fileobj is p.stdout and events & selectors.EVENT_READ:
+                    outs = p.stdout.buffer.read1(1024).decode()
+                    if len(outs) > 0:
+                        logger.debug('Got stdout: ' + outs)
+                        out_buf += outs
+                elif key.fileobj is p.stderr and events & selectors.EVENT_READ:
+                    errs = p.stderr.buffer.read1(1024).decode()
+                    if len(errs) > 0:
+                        logger.debug('Got stderr: ' + errs)
+                        err_buf += errs
+                    if sudo and err_buf.startswith(sudo_prompt):
+                        logger.debug("Sending sudo_password...")
+                        p.stdin.write(sudo_password + "\n")
+                        p.stdin.close()
+                        err_buf = ''
+
+            if p.stdout.closed and p.stderr.closed:
+                p.stdin.close()
+                break
+
+            if p.poll() is not None:
+                p.stdin.close()
+                break
+
+        sel.unregister(p.stdout)
+        sel.unregister(p.stderr)
+        sel.close()
+
+        lines = str.splitlines(out_buf)
+        err_lines = str.splitlines(err_buf)
 
         if sudo:
-            logger.debug("Sending sudo_password...")
-            p.stdin.write(sudo_password + "\n")
-            # eat the prompt
-            p.stderr.readline()
+            if len(err_lines) > 0 and err_lines[0].startswith(sudo_prompt):
+                del err_lines[0]
 
-        outs, errs = p.communicate()
-
-        if errs.strip():
-            raise RuntimeError(errs)
-        return str.splitlines(outs)
+        if len(err_lines) > 0:
+            raise RuntimeError(str(err_lines))
+        return lines
