@@ -106,8 +106,8 @@ class LSHWCollector(Collector):
                 else:
                     path[-1][m.group(1)] = m.group(2)
 
-        pp = pprint.PrettyPrinter()
-        logger.debug(pp.pformat(self.host.facts['hardware']))
+        #pp = pprint.PrettyPrinter()
+        #logger.debug(pp.pformat(self.host.facts['hardware']))
 
         for cpe in cpe_uris:
             logger.debug(cpe)
