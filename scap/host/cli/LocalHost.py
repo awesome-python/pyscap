@@ -51,10 +51,12 @@ class LocalHost(CLIHost):
         inventory = Inventory()
 
         if sudo:
-            if inventory.has_option(self.hostname, 'sudo_password'):
-                sudo_password = inventory.get(self.hostname, 'sudo_password')
+            if hasattr(self, 'sudo_password'):
+                pass
+            elif inventory.has_option(self.hostname, 'sudo_password'):
+                self.sudo_password = inventory.get(self.hostname, 'sudo_password')
             else:
-                sudo_password = getpass.getpass('Sudo password for host ' + self.hostname + ': ')
+                self.sudo_password = getpass.getpass('Sudo password for host ' + self.hostname + ': ')
 
             cmd = 'sudo -S -- sh -c "' + cmd.replace('"', r'\"') + '"'
 
@@ -89,7 +91,7 @@ class LocalHost(CLIHost):
                         err_buf += errs
                     if sudo and err_buf.startswith(sudo_prompt):
                         logger.debug("Sending sudo_password...")
-                        p.stdin.write(sudo_password + "\n")
+                        p.stdin.write(self.sudo_password + "\n")
                         p.stdin.close()
                         err_buf = ''
 
