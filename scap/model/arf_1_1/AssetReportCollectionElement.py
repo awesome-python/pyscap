@@ -25,7 +25,7 @@ class AssetReportCollectionElement(RelationshipsContainerType):
         'xml_namespace': 'http://scap.nist.gov/schema/asset-reporting-format/1.1',
         'tag_name': 'asset-report-collection',
         'elements': {
-            '{http://scap.nist.gov/schema/asset-reporting-format/1.1}report-requests': {'class': 'ReportRequestsType', 'min': 0, 'in': 'report_requests'},
+            '{http://scap.nist.gov/schema/asset-reporting-format/1.1}report-requests': {'class': 'ReportRequestsType', 'min': 0},
             '{http://scap.nist.gov/schema/asset-reporting-format/1.1}assets': {'class': 'AssetsType', 'min': 0},
             '{http://scap.nist.gov/schema/asset-reporting-format/1.1}reports': {'class': 'ReportsType'},
             '{http://scap.nist.gov/schema/asset-reporting-format/1.1}extended-infos': {'class': 'ExtendedInfosType', 'min': 0},
