@@ -59,20 +59,8 @@ class LocalHost(CLIHost):
             # eat the prompt
             p.stderr.readline()
 
-        outs = ''
-        errs = ''
-        while True:
-            if p.poll() is None:
-                newout, newerr = p.communicate()
-                outs += newout
-                errs += newerr
-            else:
-                break
+        outs, errs = p.communicate()
 
-        # make sure we get all output
-        newout, newerr = p.communicate()
-        outs += newout
-        errs += newerr
         if errs.strip():
             raise RuntimeError(errs)
         return str.splitlines(outs)
