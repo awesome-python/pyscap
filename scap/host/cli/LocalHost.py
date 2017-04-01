@@ -45,9 +45,14 @@ class LocalHost(CLIHost):
         pass
 
     def exec_command(self, cmd, sudo=False):
+        inventory = Inventory()
+
         if sudo:
-            if not inventory.has_option(self.hostname, 'sudo_password'):
-                raise RuntimeError("Can't run privileged command without sudo_password defined in credentials")
+            if inventory.has_option(self.hostname, 'sudo_password'):
+                sudo_password = inventory.get(self.hostname, 'sudo_password')
+            else:
+                sudo_password = getpass.getpass('Sudo password for host ' + self.hostname + ': ')
+
             cmd = 'sudo -S -- sh -c "' + cmd.replace('"', r'\"') + '"'
 
         logger.debug("Sending command: " + cmd)
@@ -55,7 +60,7 @@ class LocalHost(CLIHost):
 
         if sudo:
             logger.debug("Sending sudo_password...")
-            p.stdin.write(inventory.get(self.hostname, 'sudo_password') + "\n")
+            p.stdin.write(sudo_password + "\n")
             # eat the prompt
             p.stderr.readline()
 
