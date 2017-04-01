@@ -207,7 +207,10 @@ class Model(object):
                         if tag_map['map'] not in list(self.__dict__.keys()):
                             setattr(self, tag_map['map'], {})
                     else:
-                        name = tag_name.replace('-', '_')
+                        if 'in' in tag_map:
+                            name = tag_map['in']
+                        else:
+                            name = tag_name.replace('-', '_')
                         setattr(self, name, None)
 
     def accept(self, visitor):
