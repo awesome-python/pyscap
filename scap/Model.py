@@ -192,7 +192,7 @@ class Model(object):
             else:
                 setattr(self, attr_name, None)
 
-        # initialize structures
+        # initialize structures and attributes
         for t in self.model_map['elements']:
             xml_namespace, tag_name = Model.parse_tag(t)
             for tag in [t, tag_name]:
@@ -206,8 +206,8 @@ class Model(object):
                         # initialze the dict if it doesn't exist
                         if tag_map['map'] not in list(self.__dict__.keys()):
                             setattr(self, tag_map['map'], {})
-                    elif 'class' in tag_map or 'type' in tag_map:
-                        name = tag.replace('-', '_')
+                    else:
+                        name = tag_name.replace('-', '_')
                         setattr(self, name, None)
 
     def accept(self, visitor):
