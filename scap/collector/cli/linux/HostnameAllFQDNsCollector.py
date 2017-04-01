@@ -23,8 +23,7 @@ class HostnameAllFQDNsCollector(Collector):
     def collect(self):
         self.host.facts['fqdn'] = []
         lines = self.host.exec_command('hostname --all-fqdns 2>/dev/null')
-        for fqdn in lines:
-            fqdn = fqdn.strip()
+        for fqdn in lines[0].strip().split(' '):
             if len(fqdn) > 0:
                 logger.debug('fqdn: ' + str(fqdn))
                 self.host.facts['fqdn'].append(fqdn)
