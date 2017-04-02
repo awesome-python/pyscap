@@ -103,6 +103,23 @@ class LocalHost(CLIHost):
                 p.stdin.close()
                 break
 
+        if not p.stdout.closed:
+            outs = p.stdout.buffer.read1(1024).decode()
+            if len(outs) > 0:
+                logger.debug('Got stdout: ' + outs)
+                out_buf += outs
+
+        if not p.stderr.closed:
+            errs = p.stderr.buffer.read1(1024).decode()
+            if len(errs) > 0:
+                logger.debug('Got stderr: ' + errs)
+                err_buf += errs
+            if sudo and err_buf.startswith(sudo_prompt):
+                logger.debug("Sending sudo_password...")
+                p.stdin.write(self.sudo_password + "\n")
+                p.stdin.close()
+                err_buf = ''
+
         sel.unregister(p.stdout)
         sel.unregister(p.stderr)
         sel.close()
