@@ -21,8 +21,8 @@ import xml.etree.ElementTree as ET
 
 logger = logging.getLogger(__name__)
 class RelationshipsType(Model):
-    # abstract
     MODEL_MAP = {
+        'tag_name': 'relationships',
         'xml_namespace': 'http://scap.nist.gov/schema/reporting-core/1.1',
         'elements': {
             '{http://scap.nist.gov/schema/reporting-core/1.1}relationship': {'append': 'relationships', 'class': 'RelationshipType'},
