@@ -25,5 +25,7 @@ class HostnameAllFQDNsCollector(Collector):
         lines = self.host.exec_command('hostname --all-fqdns 2>/dev/null')
         for fqdn in lines[0].strip().split(' '):
             if len(fqdn) > 0:
-                logger.debug('fqdn: ' + str(fqdn))
                 self.host.facts['fqdn'].append(fqdn)
+
+        for fqdn in self.host.facts['fqdn']:
+            logger.debug('FQDN: ' + fqdn)
