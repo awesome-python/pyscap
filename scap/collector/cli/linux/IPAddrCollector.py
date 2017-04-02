@@ -48,3 +48,9 @@ class IPAddrCollector(Collector):
             if m:
                 self.host.facts['network_connections'][dev]['network_addresses'].append({'type': 'ipv6', 'address': m.group(1), 'subnet_mask': m.group(2)})
                 continue
+
+        for dev, netcon in self.host.facts['network_connections'].items():
+            logger.debug('Device: ' + dev)
+            logger.debug('MAC: ' + netcon['mac_address'])
+            for netadd in netcon['network_addresses']:
+                logger.debug('Type: ' + netadd['type'] + ' Address: ' + netadd['address'] + ' Mask: ' + netadd['subnet_mask'])
