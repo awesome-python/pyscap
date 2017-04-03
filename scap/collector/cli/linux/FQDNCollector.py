@@ -19,13 +19,18 @@ from scap.Collector import Collector
 import re, logging
 
 logger = logging.getLogger(__name__)
-class HostnameAllFQDNsCollector(Collector):
+class FQDNCollector(Collector):
     def collect(self):
         self.host.facts['fqdn'] = []
         lines = self.host.exec_command('hostname --all-fqdns 2>/dev/null')
         for fqdn in lines[0].strip().split(' '):
-            if len(fqdn) > 0:
+            if len(fqdn) > 0 and fqdn not in self.host.facts['fqdn']:
                 self.host.facts['fqdn'].append(fqdn)
+
+        # we don't want there to be no fqdns at all
+        if len(self.host.facts['fqdn']) == 0:
+            hostname = self.host.exec_command('hostname')[0].strip()
+            self.host.facts['fqdn'].append(hostname)
 
         for fqdn in self.host.facts['fqdn']:
             logger.debug('FQDN: ' + fqdn)

@@ -135,9 +135,13 @@ if args.collect or args.benchmark or args.list_hosts:
 if args.collect:
     for host in hosts:
         host.connect()
-        host.collect()
+        
+        for collector in host.detect_collectors():
+            collector.collect()
+
         pp = pprint.PrettyPrinter(width=132)
         pp.pprint(host.facts)
+
         host.disconnect()
 elif args.benchmark:
     logger.debug('Loading content file: ' + args.content[0])
@@ -156,7 +160,9 @@ elif args.benchmark:
     from scap.collector.Checker import Checker
     for host in hosts:
         host.connect()
-        host.collect()
+
+        for collector in host.detect_collectors():
+            collector.collect()
 
         chk = Checker.load(host, content, None, checker_args)
         chk.collect()

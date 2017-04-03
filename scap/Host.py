@@ -77,9 +77,7 @@ class Host(object):
         self.hostname = hostname
         self.collectors = []
         self.resources = {}
-        self.facts = {
-            'oval_family': 'undefined',
-        }
+        self.facts = {}
         self.results = {}
 
     def connect(self):
@@ -90,13 +88,6 @@ class Host(object):
         import inspect
         raise NotImplementedError(inspect.stack()[0][3] + '() has not been implemented in subclass: ' + self.__class__.__name__)
 
-    def collect(self):
-        # have to use while vs. for loop so collectors can add other collectors
-        i = 0
-        while i < len(self.collectors):
-            #try:
-            self.collectors[i].collect()
-            #except Exception as e:
-                #import traceback
-                #logger.warning('Fact collector ' + self.collectors[i].__class__.__name__ + ' failed: ' + e.__class__.__name__ + ' ' + str(e) + ':\n' + traceback.format_exc())
-            i += 1
+    def detect_collectors(self):
+        import inspect
+        raise NotImplementedError(inspect.stack()[0][3] + '() has not been implemented in subclass: ' + self.__class__.__name__)

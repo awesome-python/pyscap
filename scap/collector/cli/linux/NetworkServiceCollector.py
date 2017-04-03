@@ -19,7 +19,7 @@ from scap.Collector import Collector
 import re, logging
 
 logger = logging.getLogger(__name__)
-class NetstatCollector(Collector):
+class NetworkServiceCollector(Collector):
     def collect(self):
         self.host.facts['network_services'] = []
         for line in self.host.exec_command('netstat -ln --ip'):

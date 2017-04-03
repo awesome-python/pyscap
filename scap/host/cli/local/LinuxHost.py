@@ -26,11 +26,9 @@ from scap.Inventory import Inventory
 
 logger = logging.getLogger(__name__)
 class LinuxLocalHost(LocalHost):
-    def __init__(self, hostname):
-        super(LinuxLocalHost, self).__init__(hostname)
-
+    def detect_collectors(self):
         from scap.collector.cli.LinuxCollector import LinuxCollector
-        self.collectors.append(LinuxCollector(self))
+        return [LinuxCollector(self)]
 
     def exec_command(self, cmd, sudo=False):
         inventory = Inventory()

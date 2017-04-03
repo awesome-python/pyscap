@@ -75,7 +75,7 @@ class Reporter(object):
             asset = AssetElement()
             arc.assets.assets.append(asset)
 
-            asset.id = 'asset_' + host.facts['unique_id']
+            asset.id = 'asset_' + host.facts['system_uuid']
 
             comp = ComputingDeviceType()
             asset.assets.append(comp)
@@ -83,20 +83,21 @@ class Reporter(object):
             # TODO: if root_uuid is unavailable
             # TODO: fallback to mobo guid, eth0 mac address, eth0 ip address, hostname
 
-            for cpe in host.facts['hw_cpe']:
+            for cpe in host.facts['cpe']:
                 c = CPEType()
                 c.value = cpe.to_uri_string()
                 comp.cpes.append(c)
 
             comp.fqdn = FQDNType()
-            comp.fqdn.value = host.facts['fqdn']
+            # TODO multiple FQDNs
+            comp.fqdn.value = host.facts['fqdn'][0]
 
             comp.hostname = ComputingDeviceHostnameType()
             comp.hostname.value = host.facts['hostname']
 
             try:
                 comp.motherboard_guid = MotherboardGUIDType()
-                comp.motherboard_guid.value = host.facts['hardware']['configuration']['uuid']
+                comp.motherboard_guid.value = host.facts['system_uuid']
             except KeyError:
                 logger.debug("Couldn't parse motherboard-guid")
 
@@ -129,7 +130,8 @@ class Reporter(object):
                 s.host = HostType()
 
                 s.host.fqdn = FQDNType()
-                s.host.fqdn.value = host.facts['fqdn']
+                # TODO multiple FQDNs
+                s.host.fqdn.value = host.facts['fqdn'][0]
 
                 s.host.ip_address = IPAddressType()
                 s.host.ip_address.value = svc['ip_address']

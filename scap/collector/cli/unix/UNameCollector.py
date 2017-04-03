@@ -28,6 +28,8 @@ class UNameCollector(Collector):
             self.host.facts['oval_family'] = 'unix'
             # TODO lsb_release -a
 
+            from scap.collector.cli.linux.SystemUUIDCollector import SystemUUIDCollector
+            self.host.collectors.append(SystemUUIDCollector(self.host))
             from scap.collector.cli.linux.RootFSUUIDCollector import RootFSUUIDCollector
             self.host.collectors.append(RootFSUUIDCollector(self.host))
             from scap.collector.cli.linux.LSHWCollector import LSHWCollector

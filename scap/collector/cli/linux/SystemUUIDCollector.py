@@ -15,20 +15,26 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
+# Based on https://github.com/MyNameIsMeerkat/GetSysUUID/blob/master/GetSysUUID.py
+
 from scap.Collector import Collector
-import re, logging
+import logging
+
 
 logger = logging.getLogger(__name__)
-class IPRouteCollector(Collector):
+class SystemUUIDCollector(Collector):
     def collect(self):
-        ip_route = self.host.exec_command('ip route')
-        logger.debug('ip_route: ' + str(ip_route))
-        for line in ip_route:
-            m = re.match(r'^default via ([0-9.]+) dev\s+([A-Za-z0-9.]+)', line)
-            if m:
-                logger.debug('default-route: ' + m.group(1) + ' for device ' + m.group(2))
-                if 'network_connections' not in self.host.facts:
-                    self.host.facts['network_connections'] = {}
-                if m.group(2) not in self.host.facts['network_connections']:
-                    self.host.facts['network_connections'][m.group(2)] = {}
-                self.host.facts['network_connections'][m.group(2)]['default_route'] = m.group(1)
+        lines = self.host.exec_command('dmidecode --type 1', sudo=True)
+
+        uuid = ''
+        for line in lines:
+            if "UUID" in line:
+                line      = line.replace(" ","")
+                pos       = line.find(":")
+                uuid = line[pos+1:].strip()
+
+        if not uuid:
+            raise RuntimeError('Could not parse system uuid from dmidecode')
+
+        self.host.facts['system_uuid'] = uuid
+        logger.debug('System UUID: ' + self.host.facts['system_uuid'])

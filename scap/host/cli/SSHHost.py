@@ -59,11 +59,9 @@ class SSHHost(CLIHost):
             else:
                 raise RuntimeError('Key for ' + hostname + ' not accepted')
 
-    def __init__(self, hostname):
-        super(SSHHost, self).__init__(hostname)
-
-        from scap.collector.cli.unix.UNameCollector import UNameCollector
-        self.collectors.append(UNameCollector(self))
+    def detect_collectors(self):
+        from scap.collector.cli.SSHCollector import SSHCollector
+        return [SSHCollector(self)]
 
     def connect(self):
         self.client = paramiko.client.SSHClient()

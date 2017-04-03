@@ -23,7 +23,7 @@ import xml.etree.ElementTree as ET
 from scap.model import NAMESPACES
 
 logger = logging.getLogger(__name__)
-#logger.setLevel(logging.INFO)
+logger.setLevel(logging.INFO)
 class Model(object):
     MODEL_MAP = {
         'attributes': {
