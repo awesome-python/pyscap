@@ -15,7 +15,10 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-import inspect, urllib.parse, logging
+import logging
+import inspect
+import sys
+
 from scap.Inventory import Inventory
 
 logger = logging.getLogger(__name__)
@@ -91,9 +94,9 @@ class Host(object):
         # have to use while vs. for loop so collectors can add other collectors
         i = 0
         while i < len(self.collectors):
-            try:
-                self.collectors[i].collect()
-            except Exception as e:
-                import traceback
-                logger.warning('Fact collector ' + self.collectors[i].__class__.__name__ + ' failed: ' + e.__class__.__name__ + ' ' + str(e) + ':\n' + traceback.format_exc())
+            #try:
+            self.collectors[i].collect()
+            #except Exception as e:
+                #import traceback
+                #logger.warning('Fact collector ' + self.collectors[i].__class__.__name__ + ' failed: ' + e.__class__.__name__ + ' ' + str(e) + ':\n' + traceback.format_exc())
             i += 1
