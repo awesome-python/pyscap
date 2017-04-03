@@ -15,11 +15,11 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.Collector import Collector
+from scap.collector.cli.WindowsCollector import WindowsCollector
 import logging
 
 logger = logging.getLogger(__name__)
-class VerCollector(Collector):
+class VerCollector(WindowsCollector):
     def collect(self):
         ver = self.host.exec_command('ver')[1]
         self.host.facts['ver'] = ver

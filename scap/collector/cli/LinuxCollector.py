@@ -15,11 +15,11 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.Collector import Collector
+from scap.collector.CLICollector import CLICollector
 import logging
 
 logger = logging.getLogger(__name__)
-class LinuxCollector(Collector):
+class LinuxCollector(CLICollector):
     def collect(self):
         from scap.collector.cli.linux.SystemUUIDCollector import SystemUUIDCollector
         SystemUUIDCollector(self.host).collect()

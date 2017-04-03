@@ -15,12 +15,12 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.Collector import Collector
+from scap.collector.cli.LinuxCollector import LinuxCollector
 from scap.model.cpe_2_3.CPE import CPE
 import re, logging, pprint
 
 logger = logging.getLogger(__name__)
-class CPECollector(Collector):
+class CPECollector(LinuxCollector):
     def _collect_lshw(self):
         try:
             path = [{}]

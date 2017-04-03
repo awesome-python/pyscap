@@ -17,14 +17,14 @@
 
 # Based on https://github.com/MyNameIsMeerkat/GetSysUUID/blob/master/GetSysUUID.py
 
-from scap.Collector import Collector
+from scap.collector.cli.WindowsCollector import WindowsCollector
 import logging
 import ctypes
 import ctypes.wintypes
 import struct
 
 logger = logging.getLogger(__name__)
-class SystemUUIDCollector(Collector):
+class SystemUUIDCollector(WindowsCollector):
     #FirmwareTableSig = ord('R')
     #FirmwareTableSig = FirmwareTableSig << 8 | ord("S")
     #FirmwareTableSig = FirmwareTableSig << 8 | ord("M")

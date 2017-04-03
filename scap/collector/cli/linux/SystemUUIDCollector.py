@@ -17,12 +17,11 @@
 
 # Based on https://github.com/MyNameIsMeerkat/GetSysUUID/blob/master/GetSysUUID.py
 
-from scap.Collector import Collector
+from scap.collector.cli.LinuxCollector import LinuxCollector
 import logging
 
-
 logger = logging.getLogger(__name__)
-class SystemUUIDCollector(Collector):
+class SystemUUIDCollector(LinuxCollector):
     def collect(self):
         lines = self.host.exec_command('dmidecode --type 1', sudo=True)
 

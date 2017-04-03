@@ -15,11 +15,11 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.Collector import Collector
+from scap.collector.cli.LinuxCollector import LinuxCollector
 import re, logging
 
 logger = logging.getLogger(__name__)
-class NetworkConnectionCollector(Collector):
+class NetworkConnectionCollector(LinuxCollector):
     def collect(self):
         if 'network_connections' not in self.host.facts:
             self.host.facts['network_connections'] = {}
