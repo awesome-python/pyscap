@@ -29,8 +29,8 @@ class LinuxLocalHost(LocalHost):
     def __init__(self, hostname):
         super(LinuxLocalHost, self).__init__(hostname)
 
-        from scap.collector.cli.unix.UNameCollector import UNameCollector
-        self.collectors.append(UNameCollector(self))
+        from scap.collector.cli.LinuxCollector import LinuxCollector
+        self.collectors.append(LinuxCollector(self))
 
     def exec_command(self, cmd, sudo=False):
         inventory = Inventory()

@@ -32,8 +32,8 @@ class WindowsLocalHost(LocalHost):
         super(WindowsLocalHost, self).__init__(hostname)
 
         self.facts['oval_family'] = 'windows'
-        from scap.collector.cli.windows.VerCollector import VerCollector
-        self.collectors.append(VerCollector(self))
+        from scap.collector.cli.WindowsCollector import WindowsCollector
+        self.collectors.append(WindowsCollector(self))
 
     def is_admin():
         try:
