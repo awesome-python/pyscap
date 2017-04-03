@@ -174,6 +174,6 @@ class Reporter(object):
 
         arc_et = ET.ElementTree(element=arc.to_xml())
         sio = StringIO()
-        arc_et.write(sio, encoding='UTF-8', xml_declaration=True)
+        arc_et.write(sio, encoding='unicode', xml_declaration=True)
         sio.write("\n")
         return sio.getvalue()
