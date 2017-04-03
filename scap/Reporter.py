@@ -75,7 +75,7 @@ class Reporter(object):
             asset = AssetElement()
             arc.assets.assets.append(asset)
 
-            asset.id = 'asset_' + host.facts['root_uuid']
+            asset.id = 'asset_' + host.facts['unique_id']
 
             comp = ComputingDeviceType()
             asset.assets.append(comp)
