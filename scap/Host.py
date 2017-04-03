@@ -59,8 +59,14 @@ class Host(object):
             else:
                 raise RuntimeError('Host ' + hostname + ' specified an invalid winrm_auth_method option')
         elif connection_type == 'local':
-                from scap.host.cli.LocalHost import LocalHost
-                return LocalHost(hostname)
+            if sys.platform.startswith('linux') or sys.platform == 'cygwin':
+                from scap.host.cli.local.LinuxLocalHost import LinuxLocalHost
+                return LinuxLocalHost(hostname)
+            elif sys.platform == 'win32':
+                from scap.host.cli.local.WindowsLocalHost import WindowsLocalHost
+                return WindowsLocalHost(hostname)
+            else:
+                raise NotImplementedError('Local connection on ' + sys.platform + ' is not yet supported')
         else:
             raise RuntimeError('Unsupported host connection type: ' + connection_type)
 
