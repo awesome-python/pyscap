@@ -19,7 +19,7 @@ from scap.collector.CLICollector import CLICollector
 import logging
 
 logger = logging.getLogger(__name__)
-class LinuxCollector(CLICollector):
+class WindowsCollector(CLICollector):
     def collect(self):
         from scap.collector.cli.windows.SystemUUIDCollector import SystemUUIDCollector
         SystemUUIDCollector(self.host).collect()
