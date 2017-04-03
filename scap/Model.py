@@ -23,7 +23,7 @@ import xml.etree.ElementTree as ET
 from scap.model import NAMESPACES
 
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
+#logger.setLevel(logging.INFO)
 class Model(object):
     MODEL_MAP = {
         'attributes': {
@@ -124,11 +124,13 @@ class Model(object):
                 try:
                     xml_namespace = class_.MODEL_MAP['xml_namespace']
                 except KeyError:
-                    logger.debug('Class ' + fq_class_name + ' does not have MODEL_MAP[xml_namespace] defined')
+                    #logger.debug('Class ' + fq_class_name + ' does not have MODEL_MAP[xml_namespace] defined')
+                    pass
                 try:
                     tag_name = class_.MODEL_MAP['tag_name']
                 except KeyError:
-                    logger.debug('Class ' + fq_class_name + ' does not have MODEL_MAP[tag_name] defined')
+                    #logger.debug('Class ' + fq_class_name + ' does not have MODEL_MAP[tag_name] defined')
+                    pass
 
                 # update the super class' attribute map with subclass
                 try:
@@ -136,7 +138,8 @@ class Model(object):
                     super_atmap.update(at_map)
                     at_map = super_atmap
                 except KeyError:
-                    logger.debug('Class ' + fq_class_name + ' does not have MODEL_MAP[attributes] defined')
+                    #logger.debug('Class ' + fq_class_name + ' does not have MODEL_MAP[attributes] defined')
+                    pass
 
                 # update the super class' element map with subclass
                 try:
@@ -144,7 +147,8 @@ class Model(object):
                     super_elmap.update(el_map)
                     el_map = super_elmap
                 except KeyError:
-                    logger.debug('Class ' + fq_class_name + ' does not have MODEL_MAP[elements] defined')
+                    #logger.debug('Class ' + fq_class_name + ' does not have MODEL_MAP[elements] defined')
+                    pass
 
             if xml_namespace is None:
                 # try to auto detect from module name
@@ -164,7 +168,6 @@ class Model(object):
 
     def __init__(self):
         self.parent = None
-        self.element = None
 
         self.model_map = Model._get_model_map(self.__class__)
 
@@ -175,7 +178,7 @@ class Model(object):
         if 'tag_name' in self.model_map:
             self.tag_name = self.model_map['tag_name']
 
-        # set default values
+        # initialize attribute values
         for name in self.model_map['attributes']:
             attr_map = self.model_map['attributes'][name]
 
@@ -192,37 +195,43 @@ class Model(object):
             else:
                 setattr(self, attr_name, None)
 
-        # initialize structures and attributes
+        # initialize elements
         for t in self.model_map['elements']:
             xml_namespace, tag_name = Model.parse_tag(t)
             for tag in [t, tag_name]:
+                if tag.endswith('*'):
+                    continue
                 if tag in self.model_map['elements']:
                     tag_map = self.model_map['elements'][tag]
                     if 'append' in tag_map:
                         # initialze the array if it doesn't exist
                         if tag_map['append'] not in list(self.__dict__.keys()):
+                            logger.debug('Initializing ' + tag_map['append'] + ' to empty list')
                             setattr(self, tag_map['append'], [])
                     elif 'map' in tag_map:
                         # initialze the dict if it doesn't exist
                         if tag_map['map'] not in list(self.__dict__.keys()):
+                            logger.debug('Initializing ' + tag_map['map'] + ' to empty hash')
                             setattr(self, tag_map['map'], {})
                     else:
                         if 'in' in tag_map:
                             name = tag_map['in']
                         else:
                             name = tag_name.replace('-', '_')
-                        setattr(self, name, None)
+                        if name not in list(self.__dict__.keys()):
+                            logger.debug('Initializing ' + name + ' to None')
+                            setattr(self, name, None)
 
     def accept(self, visitor):
         visitor.visit(self)
 
     def get_tag_name(self):
-        if 'tag_name' not in self.model_map:
+        if 'tag_name' not in self.model_map or self.model_map['tag_name'] is None:
             raise NotImplementedError('Subclass ' + self.__class__.__name__ + ' does not define tag_name')
         return self.model_map['tag_name']
 
     def get_xml_namespace(self):
-        if 'xml_namespace' not in self.model_map:
+        if 'xml_namespace' not in self.model_map or self.model_map['xml_namespace'] is None:
             raise NotImplementedError('Subclass ' + self.__class__.__name__ + ' does not define namespace')
         return self.model_map['xml_namespace']
 
@@ -298,7 +307,6 @@ class Model(object):
                 sys.exit()
 
     def _parse_value_as_type(self, value, type_):
-        import importlib
         if '.' in type_:
             try:
                 mod = importlib.import_module('scap.model.' + type_)
@@ -505,7 +513,7 @@ class Model(object):
                 logger.debug('Skipping attribute ' + name)
                 return None
 
-        logger.debug('Setting attribute ' + name + ' to ' + value)
+        logger.debug('Setting attribute ' + str(name) + ' to ' + str(value))
         return value
 
     def produce_sub_elements(self, tag):
@@ -513,24 +521,32 @@ class Model(object):
         if tag.endswith('*'):
             return []
 
+        xml_namespace, tag_name = Model.parse_tag(tag)
         tag_map = self.model_map['elements'][tag]
         if 'append' in tag_map:
             lst = getattr(self, tag_map['append'])
+            logger.debug('Appending ' + tag + ' elements from append ' + tag_map['append'])
+
             # check minimum tag count
             if 'min' in tag_map and tag_map['min'] > len(lst):
                 logger.critical(self.__class__.__name__ + ' must have at least ' + tag_map['min'] + ' ' + tag + ' elements')
                 sys.exit()
             # check maximum tag count
-            if 'max' in tag_map and tag_map['max'] <= len(lst):
+            if 'max' in tag_map and tag_map['max'] is not None and tag_map['max'] <= len(lst):
                 logger.critical(self.__class__.__name__ + ' must have at most ' + tag_map['max'] + ' ' + tag + ' elements')
                 sys.exit()
+
             for i in lst:
-                logger.debug('Creating ' + tag + ' for value ' + i)
-                el = ET.Element(tag)
-                el.text = i
-                sub_els.append(el)
+                if 'class' in tag_map or 'type' in tag_map:
+                    sub_els.append(i.to_xml())
+                else:
+                    el = ET.Element(tag)
+                    el.text = i
+                    sub_els.append(el)
         elif 'map' in tag_map:
             dic = getattr(self, tag_map['map'])
+            logger.debug('Appending ' + tag + ' elements from map ' + tag_map['map'])
+
             # check minimum tag count
             if 'min' in tag_map and tag_map['min'] > len(dic):
                 logger.critical(self.__class__.__name__ + ' must have at least ' + tag_map['min'] + ' ' + tag + ' elements')
@@ -544,41 +560,54 @@ class Model(object):
             else:
                 key_name = 'id'
             for k,v in list(dic.items()):
-                el = ET.Element(tag)
-                el.attrib[key_name] = k
-
-                if 'value' in tag_map:
-                    value_name = tag_map['value']
-                    el.attrib[value_name] = v
+                if 'class' in tag_map or 'type' in tag_map:
+                    sub_els.append(v.to_xml())
                 else:
-                    el.text = v
-                sub_els.append(el)
+                    el = ET.Element(tag)
+                    el.attrib[key_name] = k
+
+                    if 'value' in tag_map:
+                        value_name = tag_map['value']
+                        el.attrib[value_name] = v
+                    else:
+                        el.text = v
+                    sub_els.append(el)
         elif 'class' in tag_map:
             if 'in' in tag_map:
                 name = tag_map['in']
             else:
                 name = tag_name.replace('-', '_')
-            sub_els.append(getattr(self, name).to_xml())
+            value = getattr(self, name)
+
+            if value is None:
+                return []
+
+            logger.debug('Appending ' + value.__class__.__name__ + ' to ' + self.get_tag())
+            sub_els.append(value.to_xml())
         elif 'type' in tag_map or 'enum' in tag_map:
             if 'in' in tag_map:
                 name = tag_map['in']
             else:
                 name = tag_name.replace('-', '_')
+            value = getattr(self, name)
+
+            if value is None:
+                return []
+
             el = ET.Element(tag)
             el.text = getattr(self, name)
             sub_els.append(el)
         return sub_els
 
     def to_xml(self):
-        if self.element is None:
-            self.element = ET.Element(self.get_tag())
+        el = ET.Element(self.get_tag())
 
-            for name in self.model_map['attributes']:
-                value = self.produce_attribute(name)
-                if value is not None:
-                    self.element.attrib[name] = value
+        for name in self.model_map['attributes']:
+            value = self.produce_attribute(name)
+            if value is not None:
+                el.attrib[name] = value
 
-            for tag in self.model_map['elements']:
-                self.element.extend(self.produce_sub_elements(tag))
+        for tag in self.model_map['elements']:
+            el.extend(self.produce_sub_elements(tag))
 
-        return self.element
+        return el
