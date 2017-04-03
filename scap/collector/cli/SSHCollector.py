@@ -21,5 +21,19 @@ import logging
 logger = logging.getLogger(__name__)
 class SSHCollector(Collector):
     def collect(self):
-        from scap.collector.cli.LinuxCollector import LinuxCollector
-        LinuxCollector(self.host).collect()
+        try:
+            from scap.collector.cli.UNameCollector import UNameCollector
+            UNameCollector(self.host).collect()
+            if self.host.facts['uname'].startswith('Linux'):
+                from scap.collector.cli.LinuxCollector import LinuxCollector
+                LinuxCollector(self.host).collect()
+            # elif uname.startswith('Darwin'):
+            #     pass
+            elif uname.startswith('Windows NT'):
+                from scap.collector.cli.WindowsCollector import WindowsCollector
+                WindowsCollector(self.host).collect()
+            else:
+                raise NotImplementedError('Host discovery has not been implemented for uname: ' + uname + ' on ' + self.host.hostname)
+        except:
+            # uname didn't work
+            raise NotImplementedError('Host discovery has not been implemented for host: ' + self.host.hostname)

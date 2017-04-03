@@ -14,3 +14,12 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
+
+from scap.Collector import Collector
+from scap.model.cpe_2_3.CPE import CPE
+import re, logging
+
+logger = logging.getLogger(__name__)
+class UNameCollector(Collector):
+    def collect(self):
+        self.host.facts['uname'] = self.host.exec_command('uname -a')[0]

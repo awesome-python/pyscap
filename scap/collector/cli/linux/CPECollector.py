@@ -178,14 +178,16 @@ class CPECollector(Collector):
 
     def _collect_uname(self):
         try:
-            uname = self.host.exec_command('uname -a')[0]
-            if uname.startswith('Linux'):
+            if 'uname' not in self.host.facts:
+                from scap.collector.cli.UnameCollector import UnameCollector
+                UnameCollector(self.host).collect()
+            if self.host.facts['uname'].startswith('Linux'):
                 cpe = CPE()
                 cpe.set_value('part', 'o')
                 cpe.set_value('vendor', 'linux')
                 cpe.set_value('product', 'linux_kernel')
 
-                m = re.match(r'^Linux \S+ ([0-9.]+)-(\S+)', uname)
+                m = re.match(r'^Linux \S+ ([0-9.]+)-(\S+)', self.host.facts['uname'])
                 if m:
                     cpe.set_value('version', m.group(1))
                     cpe.set_value('update', m.group(2))
