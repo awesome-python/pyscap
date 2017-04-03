@@ -16,6 +16,7 @@
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
 # Based on https://github.com/MyNameIsMeerkat/GetSysUUID/blob/master/GetSysUUID.py
+# with documentation at http://www.dmtf.org/sites/default/files/standards/documents/DSP0134_2.6.1.pdf
 
 from scap.collector.cli.WindowsCollector import WindowsCollector
 import logging
