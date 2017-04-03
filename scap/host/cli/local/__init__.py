@@ -14,20 +14,3 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
-
-from scap.host.CLIHost import CLIHost
-import logging
-import sys
-import os
-import selectors
-from subprocess import Popen, PIPE
-import getpass
-from scap.Inventory import Inventory
-
-logger = logging.getLogger(__name__)
-class LocalHost(CLIHost):
-    def connect(self):
-        pass
-
-    def disconnect(self):
-        pass
