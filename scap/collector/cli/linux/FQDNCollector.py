@@ -29,8 +29,10 @@ class FQDNCollector(Collector):
 
         # we don't want there to be no fqdns at all
         if len(self.host.facts['fqdn']) == 0:
-            hostname = self.host.exec_command('hostname')[0].strip()
-            self.host.facts['fqdn'].append(hostname)
+            if 'hostname' not in self.host.facts:
+                from scap.collector.cli.linux.HostnameCollector import HostnameCollector
+                HostnameCollector().collect()
+            self.host.facts['fqdn'].append(self.host.facts['hostname'])
 
         for fqdn in self.host.facts['fqdn']:
             logger.debug('FQDN: ' + fqdn)
