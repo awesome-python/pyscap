@@ -538,7 +538,12 @@ class Model(object):
 
             for i in lst:
                 if 'class' in tag_map or 'type' in tag_map:
-                    sub_els.append(i.to_xml())
+                    if isinstance(i, Model):
+                        sub_els.append(i.to_xml())
+                    elif isinstance(i, ET.Element):
+                        sub_els.append(i)
+                    else:
+                        raise ValueError('Unknown class to add to sub elemetns: ' + i.__class__.__name__)
                 else:
                     el = ET.Element(tag)
                     el.text = i
@@ -577,13 +582,18 @@ class Model(object):
                 name = tag_map['in']
             else:
                 name = tag_name.replace('-', '_')
-            value = getattr(self, name)
 
+            value = getattr(self, name)
             if value is None:
                 return []
 
             logger.debug('Appending ' + value.__class__.__name__ + ' to ' + self.get_tag())
-            sub_els.append(value.to_xml())
+            if isinstance(value, Model):
+                sub_els.append(value.to_xml())
+            elif isinstance(value, ET.Element):
+                sub_els.append(value)
+            else:
+                raise ValueError('Unknown class to add to sub elemetns: ' + i.__class__.__name__)
         elif 'type' in tag_map or 'enum' in tag_map:
             if 'in' in tag_map:
                 name = tag_map['in']
