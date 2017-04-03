@@ -152,12 +152,13 @@ class SSHHost(CLIHost):
                     self.sudo_password = inventory.get(self.hostname, 'sudo_password')
             cmd = 'sudo -S -- sh -c "' + cmd.replace('"', r'\"') + '"'
 
-            if sys.platform.startswith('linux'):
-                self.sudo_prompt = '[sudo]'
-            elif sys.platform.startswith('darwin'):
-                self.sudo_prompt = 'Password:'
-            else:
-                raise NotImplementedError('sudo prompt unknown for platform ' + sys.platform)
+            # TODO need to do platform detection for sudo prompt
+            #if sys.platform.startswith('linux'):
+            self.sudo_prompt = '[sudo]'
+            #elif sys.platform.startswith('darwin'):
+            #    self.sudo_prompt = 'Password:'
+            #else:
+            #    raise NotImplementedError('sudo prompt unknown for platform ' + sys.platform)
         elif enable:
             if not self.enable_password:
                 if not inventory.has_option(self.hostname, 'enable_password'):
