@@ -47,13 +47,16 @@ class WindowsLocalHost(LocalHost):
         else:
             p = subprocess.run(cmd,
                 stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.PIPE,
-                shell=True, universal_newlines=True)
+                shell=True)
 
-        out_buf = p.stdout
-        err_buf = p.stderr
+        #logger.debug('Got stdout: ' + str(p.stdout))
+        #logger.debug('Got stderr: ' + str(p.stderr))
 
-        lines = str.splitlines(out_buf)
-        err_lines = str.splitlines(err_buf)
+        lines = str.splitlines(p.stdout.replace(b'\r\r', b'\r').decode())
+        err_lines = str.splitlines(p.stderr.replace(b'\r\r', b'\r').decode())
+
+        #logger.debug('stdout lines: ' + str(lines))
+        #logger.debug('stderr lines: ' + str(err_lines))
 
         if len(err_lines) > 0:
             raise RuntimeError(str(err_lines))
