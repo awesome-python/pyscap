@@ -135,7 +135,7 @@ if args.collect or args.benchmark or args.list_hosts:
 if args.collect:
     for host in hosts:
         host.connect()
-        
+
         for collector in host.detect_collectors():
             collector.collect()
 
