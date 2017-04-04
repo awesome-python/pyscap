@@ -52,8 +52,8 @@ class WindowsLocalHost(LocalHost):
         #logger.debug('Got stdout: ' + str(p.stdout))
         #logger.debug('Got stderr: ' + str(p.stderr))
 
-        lines = str.splitlines(p.stdout.replace(b'\r\r', b'\r').decode())
-        err_lines = str.splitlines(p.stderr.replace(b'\r\r', b'\r').decode())
+        lines = str.splitlines(p.stdout.replace(b'\r\r', b'\r').decode('cp1252'))
+        err_lines = str.splitlines(p.stderr.replace(b'\r\r', b'\r').decode('cp1252'))
 
         #logger.debug('stdout lines: ' + str(lines))
         #logger.debug('stderr lines: ' + str(err_lines))
