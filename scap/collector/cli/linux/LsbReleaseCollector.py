@@ -43,8 +43,7 @@ class LsbReleaseCollector(LinuxCollector):
                     elif name == 'Release':
                         cpe.set_value('version', value)
                 else:
-                    cpe_uri = cpe.to_uri_string()
-                    if cpe_uri not in self.host.facts['cpe']:
+                    if cpe not in self.host.facts['cpe']:
                         self.host.facts['cpe'].append(cpe)
                     return
         except:

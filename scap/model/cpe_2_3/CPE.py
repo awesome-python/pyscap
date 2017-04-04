@@ -732,6 +732,24 @@ class CPE(object):
     DISJOINT = Relation('DISJOINT')
     UNDEFINED = Relation('UNDEFINED')
 
+    def __gt__(self, obj):
+        if self.superset_of(obj):
+            return True
+        else:
+            return False
+
+    def __lt__(self, obj):
+        if self.subset_of(obj):
+            return True
+        else:
+            return False
+
+    def __eq__(self, obj):
+        if self.equal_to(obj):
+            return True
+        else:
+            return False
+
     def compare(self, other):
         r = {}
         for name in self.INDEX:

@@ -38,8 +38,7 @@ class LshwCollector(LinuxCollector):
                             cpe.set_value('version', path[-1]['version'])
 
                         # we don't add duplicates
-                        cpe_uri = cpe.to_uri_string()
-                        if cpe_uri not in self.host.facts['cpe']:
+                        if cpe not in self.host.facts['cpe']:
                             self.host.facts['cpe'].append(cpe)
 
                     indent = len(m.group(1))
