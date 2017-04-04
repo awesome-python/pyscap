@@ -16,6 +16,7 @@
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
 import logging
+import sys
 
 class ColorFormatter(logging.Formatter):
     FG_BLACK, FG_RED, FG_GREEN, FG_YELLOW, FG_BLUE, FG_MAGENTA, FG_CYAN, FG_WHITE = list(range(30, 38))
@@ -34,8 +35,9 @@ class ColorFormatter(logging.Formatter):
         'DEBUG': [FG_BLUE, BOLD],
     }
     def format(self, record):
-        levelname = record.levelname
-        if levelname in self.COLORS:
-            levelname_color = self.COLOR_SEQ % ';'.join(map(str, self.COLORS[levelname])) + levelname + self.RESET_SEQ
-            record.levelname = levelname_color
+        if sys.platform != 'win32':
+            levelname = record.levelname
+            if levelname in self.COLORS:
+                levelname_color = self.COLOR_SEQ % ';'.join(map(str, self.COLORS[levelname])) + levelname + self.RESET_SEQ
+                record.levelname = levelname_color
         return logging.Formatter.format(self, record)
