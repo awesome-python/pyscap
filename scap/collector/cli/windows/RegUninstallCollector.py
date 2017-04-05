@@ -143,11 +143,11 @@ class RegUninstallCollector(WindowsCollector):
             cpe = CPE(part='a')
 
             if 'publisher' not in entry:
-                logger.warn('Uninstall entry with no publisher: ' + entry['location'])
+                logger.debug('Uninstall entry with no publisher: ' + entry['location'])
                 continue
             cpe.set_value('vendor', entry['publisher'])
             if 'display_name' not in entry:
-                logger.warn('Uninstall entry with no display_name: ' + entry['location'])
+                logger.debug('Uninstall entry with no display_name: ' + entry['location'])
                 continue
             cpe.set_value('product', entry['display_name'])
             if 'display_version' in entry:
