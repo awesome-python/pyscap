@@ -28,7 +28,7 @@ class SystemUUIDCollector(LinuxCollector):
             DmiDecodeCollector(self.host).collect()
         except:
             # fall back to root fs uuid
-            from scap.collector.cli.linux.RootFSUUIDCollector import RootFSUUIDCollector
-            RootFSUUIDCollector(self.host).collect()
+            from scap.collector.cli.linux.RootFsUuidCollector import RootFsUuidCollector
+            RootFsUuidCollector(self.host).collect()
             self.host.facts['system_uuid'] = self.host.facts['root_uuid']
         logger.debug('System UUID: ' + self.host.facts['system_uuid'])
