@@ -27,12 +27,12 @@ class WindowsCollector(CLICollector):
         from scap.collector.cli.windows.CPECollector import CPECollector
         CPECollector(self.host).collect()
 
-        # from scap.collector.cli.windows.FQDNCollector import FQDNCollector
-        # FQDNCollector(self.host).collect()
-        #
-        # from scap.collector.cli.windows.HostnameCollector import HostnameCollector
-        # HostnameCollector(self.host).collect()
-        #
+        from scap.collector.cli.windows.FQDNCollector import FQDNCollector
+        FQDNCollector(self.host).collect()
+
+        from scap.collector.cli.windows.HostnameCollector import HostnameCollector
+        HostnameCollector(self.host).collect()
+
         # from scap.collector.cli.windows.NetworkConnectionCollector import NetworkConnectionCollector
         # NetworkConnectionCollector(self.host).collect()
         #
