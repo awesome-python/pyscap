@@ -21,15 +21,5 @@ import re, logging
 logger = logging.getLogger(__name__)
 class NetworkServiceCollector(LinuxCollector):
     def collect(self):
-        self.host.facts['network_services'] = []
-        for line in self.host.exec_command('netstat -ln --ip'):
-            m = re.match(r'^(tcp|udp)\s+\d+\s+\d+\s+([0-9.]+):([0-9]+)', line)
-            if m:
-                # NOTE: using tcp|udp as the protocol is in conflict with the ai standard's
-                # intent, but since the port #s would not be unique otherwise and it's
-                # almost impossible to accurately figure out what the port is being used
-                # for, we use tcp & udp instead
-                self.host.facts['network_services'].append({'ip_address': m.group(2), 'port': m.group(3), 'protocol': m.group(1)})
-
-        for netsvc in self.host.facts['network_services']:
-            logger.debug('Service: Address: ' + netsvc['ip_address'] + ' Port: ' + netsvc['port'] + ' Protocol: ' + netsvc['protocol'])
+        from scap.collector.cli.linux.NetstatCollector import NetstatCollector
+        NetstatCollector(self.host).collect()
