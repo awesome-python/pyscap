@@ -23,3 +23,6 @@ class NetworkServiceCollector(LinuxCollector):
     def collect(self):
         from scap.collector.cli.linux.NetstatCollector import NetstatCollector
         NetstatCollector(self.host).collect()
+
+        for netsvc in self.host.facts['network_services']:
+            logger.debug('Service: Address: ' + netsvc['ip_address'] + ' Port: ' + netsvc['port'] + ' Protocol: ' + netsvc['protocol'])

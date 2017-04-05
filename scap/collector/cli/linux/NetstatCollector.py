@@ -33,6 +33,3 @@ class NetstatCollector(LinuxCollector):
                 # almost impossible to accurately figure out what the port is being used
                 # for, we use tcp & udp instead
                 self.host.facts['network_services'].append({'ip_address': m.group(2), 'port': m.group(3), 'protocol': m.group(1)})
-
-        for netsvc in self.host.facts['network_services']:
-            logger.debug('Service: Address: ' + netsvc['ip_address'] + ' Port: ' + netsvc['port'] + ' Protocol: ' + netsvc['protocol'])
