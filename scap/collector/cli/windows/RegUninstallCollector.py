@@ -119,7 +119,7 @@ class RegUninstallCollector(WindowsCollector):
                 elif name.startswith('Memento'):
                     pass
                 else:
-                    logger.warning('Unknown uninstall registry subkey: ' + name)
+                    logger.debug('Unknown uninstall registry subkey: ' + name)
 
             m = re.match(r'^\s+(\S+)\s+(\S+)\s+(.+)\s*$', line)
             if m:
@@ -133,9 +133,9 @@ class RegUninstallCollector(WindowsCollector):
                 elif name.startswith('Memento'):
                     pass
                 else:
-                    logger.warning('Unknown uninstall registry subkey: ' + name)
+                    logger.debug('Unknown uninstall registry subkey: ' + name)
             else:
-                #logger.warning('Line with unknown format: ' + line)
+                #logger.debug('Line with unknown format: ' + line)
                 entry[name] += line
 
         for entry in self.host.facts['registry']['uninstall']:
