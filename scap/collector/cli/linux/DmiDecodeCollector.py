@@ -21,14 +21,18 @@ from scap.collector.cli.LinuxCollector import LinuxCollector
 import logging
 
 logger = logging.getLogger(__name__)
-class SystemUUIDCollector(LinuxCollector):
+class DmiDecodeCollector(LinuxCollector):
     def collect(self):
-        try:
-            from scap.collector.cli.linux.DmiDecodeCollector import DmiDecodeCollector
-            DmiDecodeCollector(self.host).collect()
-        except:
-            # fall back to root fs uuid
-            from scap.collector.cli.linux.RootFSUUIDCollector import RootFSUUIDCollector
-            RootFSUUIDCollector(self.host).collect()
-            self.host.facts['system_uuid'] = self.host.facts['root_uuid']
-        logger.debug('System UUID: ' + self.host.facts['system_uuid'])
+        lines = self.host.exec_command('dmidecode --type 1', sudo=True)
+
+        uuid = ''
+        for line in lines:
+            if "UUID" in line:
+                line      = line.replace(" ","")
+                pos       = line.find(":")
+                uuid = line[pos+1:].strip()
+
+        if not uuid:
+            raise RuntimeError('Could not parse system uuid from dmidecode')
+
+        self.host.facts['system_uuid'] = uuid
