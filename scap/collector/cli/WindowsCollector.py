@@ -33,8 +33,8 @@ class WindowsCollector(CLICollector):
         from scap.collector.cli.windows.HostnameCollector import HostnameCollector
         HostnameCollector(self.host).collect()
 
-        # from scap.collector.cli.windows.NetworkConnectionCollector import NetworkConnectionCollector
-        # NetworkConnectionCollector(self.host).collect()
-        #
-        # from scap.collector.cli.windows.NetworkServiceCollector import NetworkServiceCollector
-        # NetworkServiceCollector(self.host).collect()
+        from scap.collector.cli.windows.NetworkConnectionCollector import NetworkConnectionCollector
+        NetworkConnectionCollector(self.host).collect()
+
+        from scap.collector.cli.windows.NetworkServiceCollector import NetworkServiceCollector
+        NetworkServiceCollector(self.host).collect()
