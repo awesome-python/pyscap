@@ -30,7 +30,7 @@ class IpAddrCollector(LinuxCollector):
             if m:
                 dev = m.group(1)
                 if dev not in self.host.facts['network_connections']:
-                self.host.facts['network_connections'][dev] = {}
+                    self.host.facts['network_connections'][dev] = {}
                 continue
 
             # link line
