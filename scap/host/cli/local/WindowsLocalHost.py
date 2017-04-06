@@ -38,7 +38,7 @@ class WindowsLocalHost(LocalHost):
         except:
             return False
 
-    def exec_command(self, cmd, elevate=False, encoding='UTF-8'):
+    def exec_command(self, cmd, elevate=False, encoding='cp437'):
         inventory = Inventory()
 
         logger.debug("Sending command: " + cmd)
