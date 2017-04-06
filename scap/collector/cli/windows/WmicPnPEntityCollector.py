@@ -86,6 +86,8 @@ class WmicPnPEntityCollector(WindowsCollector):
         for entity in self.host.facts['wmic']['pnp_entity']:
             cpe = CPE(part='h')
 
+            if entity['manufacturer'] is None or len(entity['manufacturer']) == 0:
+                continue
             cpe.set_value('vendor', entity['manufacturer'])
             cpe.set_value('product', entity['name'])
 
