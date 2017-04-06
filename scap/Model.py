@@ -38,7 +38,7 @@ class Model(object):
     @staticmethod
     def parse_tag(tag):
         # parse tag
-        if tag[0] == '{':
+        if tag.startswith('{'):
             xml_namespace, tag_name = tag[1:].split('}')
         else:
             return None, tag
@@ -122,12 +122,14 @@ class Model(object):
 
                 # overwrite the super class' ns & tag with what we've already loaded
                 try:
-                    xml_namespace = class_.MODEL_MAP['xml_namespace']
+                    if xml_namespace is None:
+                        xml_namespace = class_.MODEL_MAP['xml_namespace']
                 except KeyError:
                     #logger.debug('Class ' + fq_class_name + ' does not have MODEL_MAP[xml_namespace] defined')
                     pass
                 try:
-                    tag_name = class_.MODEL_MAP['tag_name']
+                    if tag_name is None:
+                        tag_name = class_.MODEL_MAP['tag_name']
                 except KeyError:
                     #logger.debug('Class ' + fq_class_name + ' does not have MODEL_MAP[tag_name] defined')
                     pass
@@ -171,12 +173,12 @@ class Model(object):
 
         self.model_map = Model._get_model_map(self.__class__)
 
+        # must have namespace for concrete classes
         if 'xml_namespace' not in self.model_map or self.model_map['xml_namespace'] is None:
             raise ValueError('No xml_namespace defined for ' + self.__class__.__name__ + ' & could not detect')
+
         if self.model_map['xml_namespace'] not in NAMESPACES:
             raise ValueError('Unknown namespace: ' + self.model_map['xml_namespace'])
-        if 'tag_name' in self.model_map:
-            self.tag_name = self.model_map['tag_name']
 
         # initialize attribute values
         for name in self.model_map['attributes']:
