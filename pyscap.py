@@ -24,6 +24,7 @@ import atexit
 import argparse
 import xml.etree.ElementTree as ET
 import pprint
+from io import StringIO
 
 from scap.ColorFormatter import ColorFormatter
 rootLogger = logging.getLogger()
@@ -86,7 +87,7 @@ elif args[0].benchmark:
     arg_parser.add_argument('--data_stream', nargs=1)
     arg_parser.add_argument('--checklist', nargs=1)
     arg_parser.add_argument('--profile', nargs=1)
-    arg_parser.add_argument('--output', type=argparse.FileType('wb', 0), default='-')
+    arg_parser.add_argument('--output', type=argparse.FileType('w', 0), default='-')
     arg_parser.add_argument('--pretty', action='store_true')
 elif args[0].list_hosts:
     arg_parser.add_argument('--host', nargs='+')
@@ -173,11 +174,15 @@ elif args.benchmark:
     report = Reporter(content, hosts).report()
 
     if args.pretty:
+        sio = StringIO()
+        report.write(sio, encoding='unicode', xml_declaration=True)
+        sio.write("\n")
+
         import xml.dom.minidom
-        pretty_xml = xml.dom.minidom.parseString(report).toprettyxml(indent='  ')
+        pretty_xml = xml.dom.minidom.parseString(sio.getvalue()).toprettyxml(indent='  ')
         args.output.write(pretty_xml)
     else:
-        args.output.write(report)
+        report.write(args.output, encoding='unicode')
 elif args.list_hosts:
     print('Hosts: ')
     for host in hosts:
