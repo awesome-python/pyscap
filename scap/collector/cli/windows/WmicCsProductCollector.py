@@ -19,6 +19,7 @@ from scap.collector.cli.WindowsCollector import WindowsCollector
 import logging
 import re
 from scap.model.cpe_2_3.CPE import CPE
+import uuid
 
 logger = logging.getLogger(__name__)
 class WmicCsProductCollector(WindowsCollector):
@@ -56,6 +57,9 @@ class WmicCsProductCollector(WindowsCollector):
                     # SKUNumber=
                     # UUID=12345678-1234-1234-1234-123456789012
                     if name == 'uuid':
-                        self.host.facts['system_uuid'] = m.group(2)
+                        u = uuid.UUID(m.group(2))
+                        logger.debug('uuid: ' + u.hex)
+                        self.host.facts['unique_id'] = u.hex
+                        self.host.facts['motherboard_uuid'] = self.host.facts['unique_id']
                     # Vendor=VMware, Inc.
                     # Version=None

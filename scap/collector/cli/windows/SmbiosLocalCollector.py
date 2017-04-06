@@ -118,7 +118,8 @@ class SmbiosLocalCollector(WindowsCollector):
                 mfg, prod, vers, serial, u, wakeup, sku, family = struct.unpack("<BBBB16sBBB", buf[4:27])
                 u = uuid.UUID(bytes_le=u)
                 logger.debug('uuid: ' + u.hex)
-                self.host.facts['system_uuid'] = u.hex
+                self.host.facts['unique_id'] = u.hex
+                self.host.facts['motherboard_uuid'] = self.host.facts['unique_id']
             elif type_ == 127: # End-of-Table
                 break
 
@@ -127,5 +128,5 @@ class SmbiosLocalCollector(WindowsCollector):
             unformatted_len = buf.find(b'\000\000') + 2
             buf = buf[unformatted_len:]
 
-        #self.host.facts['system_uuid'] =
-        logger.debug('System UUID: ' + self.host.facts['system_uuid'])
+        #self.host.facts['unique_id'] =
+        logger.debug('System UUID: ' + self.host.facts['unique_id'])

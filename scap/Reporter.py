@@ -74,7 +74,7 @@ class Reporter(object):
             asset = AssetElement()
             arc.assets.assets.append(asset)
 
-            asset.id = 'asset_' + host.facts['system_uuid']
+            asset.id = 'asset_' + host.facts['unique_id']
 
             comp = ComputingDeviceType()
             asset.assets.append(comp)
@@ -96,7 +96,7 @@ class Reporter(object):
 
             try:
                 comp.motherboard_guid = MotherboardGUIDType()
-                comp.motherboard_guid.value = host.facts['system_uuid']
+                comp.motherboard_guid.value = host.facts['motherboard_uuid']
             except KeyError:
                 logger.debug("Couldn't parse motherboard-guid")
 

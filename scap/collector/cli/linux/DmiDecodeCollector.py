@@ -19,6 +19,7 @@
 
 from scap.collector.cli.LinuxCollector import LinuxCollector
 import logging
+import uuid
 
 logger = logging.getLogger(__name__)
 class DmiDecodeCollector(LinuxCollector):
@@ -30,9 +31,11 @@ class DmiDecodeCollector(LinuxCollector):
             if "UUID" in line:
                 line      = line.replace(" ","")
                 pos       = line.find(":")
-                uuid = line[pos+1:].strip()
+                u = line[pos+1:].strip()
 
-        if not uuid:
+        if not u:
             raise RuntimeError('Could not parse system uuid from dmidecode')
 
-        self.host.facts['system_uuid'] = uuid
+        u = uuid.UUID(u)
+        self.host.facts['unique_id'] = u.hex
+        self.host.facts['motherboard_uuid'] = self.host.facts['unique_id']
