@@ -113,13 +113,13 @@ class IpConfigAllCollector(WindowsCollector):
             if 'link_local_ipv6_address' in netcon:
                 self.host.facts['network_connections'][dev]['network_addresses'].append({
                     'type': 'ipv6',
-                    'address': netcon['link_local_ipv6_address'],
+                    'address': netcon['link_local_ipv6_address'].replace(' (Preferred)', ''),
                     'subnet_mask': '/126',
                 })
             if 'ipv4_address' in netcon and 'subnet_mask' in netcon:
                 self.host.facts['network_connections'][dev]['network_addresses'].append({
                     'type': 'ipv4',
-                    'address': netcon['ipv4_address'],
+                    'address': netcon['ipv4_address'].replace(' (Preferred)', ''),
                     'subnet_mask': netcon['subnet_mask'],
                 })
         self.host.facts['fqdn'] = [
