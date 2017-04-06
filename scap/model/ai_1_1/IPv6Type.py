@@ -20,7 +20,7 @@ import logging
 import xml.etree.ElementTree as ET
 
 logger = logging.getLogger(__name__)
-class IPv4Type(Token):
+class IPv6Type(Token):
     # <xs:pattern value="([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}"/>
     MODEL_MAP = {
     }
