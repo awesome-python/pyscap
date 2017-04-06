@@ -97,7 +97,7 @@ class RegUninstallCollector(WindowsCollector):
         self.host.facts['registry']['uninstall'] = []
         entry = None
         last_name = None
-        for line in self.host.exec_command('reg query HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall /s'):
+        for line in self.host.exec_command('reg query HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall /s', encoding='cp437'):
             # skip blank lines
             if re.match(r'^\s*$', line):
                 continue
