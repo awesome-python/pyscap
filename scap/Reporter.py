@@ -26,6 +26,8 @@ from scap.model.ai_1_1.MotherboardGUIDType import MotherboardGUIDType
 from scap.model.ai_1_1.ConnectionsType import ConnectionsType
 from scap.model.ai_1_1.NetworkInterfaceType import NetworkInterfaceType
 from scap.model.ai_1_1.IPAddressType import IPAddressType
+from scap.model.ai_1_1.IPAddressIPv4Type import IPAddressIPv4Type
+from scap.model.ai_1_1.IPAddressIPv6Type import IPAddressIPv6Type
 from scap.model.ai_1_1.MACAddressType import MACAddressType
 from scap.model.ai_1_1.ServiceType import ServiceType
 from scap.model.ai_1_1.HostType import HostType
@@ -96,7 +98,7 @@ class Reporter(object):
 
             try:
                 comp.motherboard_guid = MotherboardGUIDType()
-                comp.motherboard_guid.value = host.facts['motherboard_uuid']
+                comp.motherboard_guid.value = str(uuid.UUID(host.facts['motherboard_uuid']))
             except KeyError:
                 logger.debug("Couldn't parse motherboard-guid")
 
@@ -105,6 +107,7 @@ class Reporter(object):
             for dev, net_con in host.facts['network_connections'].items():
                 logger.debug('Producing Connection for device ' + dev)
                 for address in net_con['network_addresses']:
+                    logger.debug('Producing network address: ' + str(address))
                     conn = NetworkInterfaceType()
                     comp.connections.connections.append(conn)
 
@@ -112,14 +115,22 @@ class Reporter(object):
                     conn.mac_address.value = host.facts['network_connections'][dev]['mac_address']
 
                     conn.ip_address = IPAddressType()
-                    conn.ip_address.value = address['address']
-
-                    conn.subnet_mask = IPAddressType()
-                    conn.subnet_mask.value = address['subnet_mask']
-
-                    if 'default_route' in host.facts['network_connections'][dev]:
-                        conn.default_route = IPAddressType()
-                        conn.default_route.value = host.facts['network_connections'][dev]['default_route']
+                    if address['type'] == 'ipv4':
+                        conn.ip_address.ip_v4 = IPAddressIPv4Type()
+                        conn.ip_address.ip_v4.value = address['address']
+                        conn.subnet_mask = IPAddressIPv4Type()
+                        conn.subnet_mask.value = address['subnet_mask']
+                        if 'default_route' in host.facts['network_connections'][dev]:
+                            conn.default_route = IPAddressIPv4Type()
+                            conn.default_route.value = host.facts['network_connections'][dev]['default_route']
+                    elif address['type'] == 'ipv6':
+                        conn.ip_address.ip_v6 = IPAddressIPv6Type()
+                        conn.ip_address.ip_v6.value = address['address']
+                        conn.subnet_mask = IPAddressIPv6Type()
+                        conn.subnet_mask.value = address['subnet_mask']
+                        if 'default_route' in host.facts['network_connections'][dev]:
+                            conn.default_route = IPAddressIPv6Type()
+                            conn.default_route.value = host.facts['network_connections'][dev]['default_route']
 
             # network services
             for svc in host.facts['network_services']:
@@ -132,8 +143,14 @@ class Reporter(object):
                 # TODO multiple FQDNs
                 s.host.fqdn.value = host.facts['fqdn'][0]
 
+                # TODO fix this to really parse the IP
                 s.host.ip_address = IPAddressType()
-                s.host.ip_address.value = svc['ip_address']
+                if '.' in svc['ip_address']:
+                    s.host.ip_address.ip_v4 = IPAddressIPv4Type()
+                    s.host.ip_address.ip_v4.value = svc['ip_address']
+                elif ':' in svc['ip_address']:
+                    s.host.ip_address.ip_v6 = IPAddressIPv6Type()
+                    s.host.ip_address.ip_v6.value = svc['ip_address']
 
                 port = ServicePortType()
                 port.value = svc['port']
