@@ -17,6 +17,7 @@
 
 from scap.Model import Model
 import logging
+import xml.etree.ElementTree as ET
 
 logger = logging.getLogger(__name__)
 class Simple(Model):
@@ -35,3 +36,21 @@ class Simple(Model):
             self.value = sub_el.text
         else:
             self.value = ''
+
+    def to_xml(self):
+        el = ET.Element(self.get_tag())
+
+        for name in self.model_map['attributes']:
+            value = self.produce_attribute(name)
+            if value is not None:
+                el.set(name, value)
+
+        for tag in self.model_map['elements']:
+            el.extend(self.produce_sub_elements(tag))
+
+        if self.value is not None:
+            if isinstance(self.value, bytes):
+                logger.warning(self.__class__.__name__ + ' has bytes type as value')
+            el.text = self.value
+
+        return el
