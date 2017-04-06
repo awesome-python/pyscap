@@ -41,29 +41,3 @@ class RuleType(SelectableItemType):
             '{http://checklists.nist.gov/xccdf/1.1}signature': {'ignore': True, 'class': 'SignatureType', 'min': 0, 'max': 1},
         },
     }
-
-    # def __init__(self):
-    #     super(RuleType, self).__init__()
-    #
-    #     self.multiple = False
-    #
-    #     self.checks = {}
-    #     self.fixes = []
-    #     self.fixtexts = []
-    #
-    # def parse_element(self, sub_el):
-    #     if sub_el.tag == '{http://checklists.nist.gov/xccdf/1.1}complex-check':
-    #         self.checks[None] = Model.load(self, sub_el)
-    #     elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.1}check':
-    #         check = Model.load(self, sub_el)
-    #         if 'selector' in sub_el.attrib:
-    #             self.checks[sub_el.attrib['selector']] = check
-    #         else:
-    #             self.checks[None] = check
-    #     elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.1}fix':
-    #         self.fixes.append(Model.load(self, sub_el))
-    #     elif sub_el.tag == '{http://checklists.nist.gov/xccdf/1.1}fixtext':
-    #         self.fixtexts.append(Model.load(self, sub_el))
-    #     else:
-    #         return super(RuleType, self).parse_element(sub_el)
-    #     return True

@@ -33,18 +33,7 @@ class Catalog(Model):
             '*': {'ignore': True},
         },
     }
-    # def __init__(self):
-    #     super(Catalog, self).__init__()
-    #
-    #     self.entries = {}
-    #
-    # def parse_element(self, sub_el):
-    #     if sub_el.tag == '{urn:oasis:names:tc:entity:xmlns:xml:catalog}uri':
-    #         self.entries[sub_el.attrib['name']] = sub_el.attrib['uri']
-    #     else:
-    #         return super(SubClass, self).parse_element(sub_el)
-    #     return True
-    #
+
     def to_dict(self):
         logger.debug('Catalog entries: ' + str(self.entries))
         return self.entries
