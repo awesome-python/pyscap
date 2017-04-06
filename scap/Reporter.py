@@ -17,7 +17,6 @@
 
 import logging
 import xml.etree.ElementTree as ET
-from io import StringIO
 import uuid
 
 from scap.model.ai_1_1.ComputingDeviceType import ComputingDeviceType
@@ -175,7 +174,4 @@ class Reporter(object):
             # TODO 'hasMetadata' relationship
 
         arc_et = ET.ElementTree(element=arc.to_xml())
-        sio = StringIO()
-        arc_et.write(sio, encoding='unicode', xml_declaration=True)
-        sio.write("\n")
-        return sio.getvalue()
+        return arc_et
