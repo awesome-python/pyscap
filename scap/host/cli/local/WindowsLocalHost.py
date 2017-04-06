@@ -38,7 +38,7 @@ class WindowsLocalHost(LocalHost):
         except:
             return False
 
-    def exec_command(self, cmd, elevate=False):
+    def exec_command(self, cmd, elevate=False, encoding='UTF-8'):
         inventory = Inventory()
 
         logger.debug("Sending command: " + cmd)
@@ -52,8 +52,8 @@ class WindowsLocalHost(LocalHost):
         #logger.debug('Got stdout: ' + str(p.stdout))
         #logger.debug('Got stderr: ' + str(p.stderr))
 
-        lines = str.splitlines(p.stdout.replace(b'\r\r', b'\r').decode('cp1252'))
-        err_lines = str.splitlines(p.stderr.replace(b'\r\r', b'\r').decode('cp1252'))
+        lines = str.splitlines(p.stdout.replace(b'\r\r', b'\r').decode(encoding))
+        err_lines = str.splitlines(p.stderr.replace(b'\r\r', b'\r').decode(encoding))
 
         #logger.debug('stdout lines: ' + str(lines))
         #logger.debug('stderr lines: ' + str(err_lines))
