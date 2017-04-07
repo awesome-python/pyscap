@@ -40,6 +40,7 @@ class DataStreamElement(Checker):
                 sys.exit()
             checklist_id = comp_ref.id
         logger.info('Selecting checklist ' + checklist_id)
+        self.host.facts['selected_checklist'] = checklist.id
 
         self.checker = Checker.load(host, comp_ref, self, args)
 
