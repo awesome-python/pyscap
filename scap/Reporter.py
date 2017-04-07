@@ -34,6 +34,8 @@ from scap.model.ai_1_1.HostType import HostType
 from scap.model.ai_1_1.ServicePortType import ServicePortType
 from scap.model.ai_1_1.ProtocolType import ProtocolType
 from scap.model.ai_1_1.CPEType import CPEType
+from scap.model.ai_1_1.Source import Source
+from scap.model.ai_1_1.Timestamp import Timestamp
 
 from scap.model.arf_1_1.AssetReportCollectionElement import AssetReportCollectionElement
 from scap.model.arf_1_1.ReportRequestsType import ReportRequestsType
@@ -85,20 +87,16 @@ class Reporter(object):
             # TODO: fallback to mobo guid, eth0 mac address, eth0 ip address, hostname
 
             for cpe in host.facts['cpe']:
-                c = CPEType()
-                c.value = cpe.to_uri_string()
+                c = CPEType(cpe.to_uri_string())
                 comp.cpes.append(c)
 
-            comp.fqdn = FQDNType()
             # TODO multiple FQDNs
-            comp.fqdn.value = host.facts['fqdn'][0]
+            comp.fqdn = FQDNType(host.facts['fqdn'][0])
 
-            comp.hostname = ComputingDeviceHostnameType()
-            comp.hostname.value = host.facts['hostname']
+            comp.hostname = ComputingDeviceHostnameType(host.facts['hostname'])
 
             try:
-                comp.motherboard_guid = MotherboardGUIDType()
-                comp.motherboard_guid.value = str(uuid.UUID(host.facts['motherboard_uuid']))
+                comp.motherboard_guid = MotherboardGUIDType(str(uuid.UUID(host.facts['motherboard_uuid'])))
             except KeyError:
                 logger.debug("Couldn't parse motherboard-guid")
 
@@ -111,26 +109,19 @@ class Reporter(object):
                     conn = NetworkInterfaceType()
                     comp.connections.connections.append(conn)
 
-                    conn.mac_address = MACAddressType()
-                    conn.mac_address.value = host.facts['network_connections'][dev]['mac_address']
+                    conn.mac_address = MACAddressType(host.facts['network_connections'][dev]['mac_address'])
 
                     conn.ip_address = IPAddressType()
                     if address['type'] == 'ipv4':
-                        conn.ip_address.ip_v4 = IPAddressIPv4Type()
-                        conn.ip_address.ip_v4.value = address['address']
-                        conn.subnet_mask = IPAddressIPv4Type()
-                        conn.subnet_mask.value = address['subnet_mask']
+                        conn.ip_address.ip_v4 = IPAddressIPv4Type(address['address'])
+                        conn.subnet_mask = IPAddressIPv4Type(address['subnet_mask'])
                         if 'default_route' in host.facts['network_connections'][dev]:
-                            conn.default_route = IPAddressIPv4Type()
-                            conn.default_route.value = host.facts['network_connections'][dev]['default_route']
+                            conn.default_route = IPAddressIPv4Type(host.facts['network_connections'][dev]['default_route'])
                     elif address['type'] == 'ipv6':
-                        conn.ip_address.ip_v6 = IPAddressIPv6Type()
-                        conn.ip_address.ip_v6.value = address['address']
-                        conn.subnet_mask = IPAddressIPv6Type()
-                        conn.subnet_mask.value = address['subnet_mask']
+                        conn.ip_address.ip_v6 = IPAddressIPv6Type(address['address'])
+                        conn.subnet_mask = IPAddressIPv6Type(address['subnet_mask'])
                         if 'default_route' in host.facts['network_connections'][dev]:
-                            conn.default_route = IPAddressIPv6Type()
-                            conn.default_route.value = host.facts['network_connections'][dev]['default_route']
+                            conn.default_route = IPAddressIPv6Type(host.facts['network_connections'][dev]['default_route'])
 
             # network services
             for svc in host.facts['network_services']:
@@ -139,27 +130,22 @@ class Reporter(object):
 
                 s.host = HostType()
 
-                s.host.fqdn = FQDNType()
                 # TODO multiple FQDNs
-                s.host.fqdn.value = host.facts['fqdn'][0]
+                s.host.fqdn = FQDNType(host.facts['fqdn'][0])
 
                 # TODO fix this to really parse the IP
                 s.host.ip_address = IPAddressType()
                 if '.' in svc['ip_address']:
-                    s.host.ip_address.ip_v4 = IPAddressIPv4Type()
-                    s.host.ip_address.ip_v4.value = svc['ip_address']
+                    s.host.ip_address.ip_v4 = IPAddressIPv4Type(svc['ip_address'])
                 elif ':' in svc['ip_address']:
-                    s.host.ip_address.ip_v6 = IPAddressIPv6Type()
-                    s.host.ip_address.ip_v6.value = svc['ip_address']
+                    s.host.ip_address.ip_v6 = IPAddressIPv6Type(svc['ip_address'])
 
-                port = ServicePortType()
-                port.value = svc['port']
-                # TODO port.source
-                # TODO port.timestamp
+                port = ServicePortType(svc['port'])
+                port.source = Source(svc['source'])
+                port.timestamp = Timestamp(svc['timestamp'])
                 s.ports.append(port)
 
-                s.protocol = ProtocolType()
-                s.protocol.value = svc['protocol']
+                s.protocol = ProtocolType(svc['protocol'])
 
             report = ReportType()
             arc.reports.reports.append(report)
@@ -169,8 +155,7 @@ class Reporter(object):
             arc.relationships.relationships.append(rel)
             rel.subject = report.id
             rel.type = 'isAbout'
-            ref = RefElement()
-            ref.value = asset.id
+            ref = RefElement(asset.id)
             rel.refs.append(ref)
 
             # TODO 'retrievedFrom' relationship
@@ -183,8 +168,7 @@ class Reporter(object):
             arc.relationships.relationships.append(rel)
             rel.subject = report.id
             rel.type = 'createdFor'
-            ref = RefElement()
-            ref.value = report_request.id
+            ref = RefElement(report_request.id)
             rel.refs.append(ref)
 
             # TODO 'hasMetadata' relationship

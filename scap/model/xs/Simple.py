@@ -24,18 +24,25 @@ class Simple(Model):
     def __init__(self, value=None):
         super(Simple, self).__init__()
 
-        self.value = self.parse_value(value)
+        if value is None:
+            self.value = None
+        else:
+            self.parse_value(value)
 
     def parse_value(self, value):
-        return value
+        self.value = value
+        return self.value
+
+    def to_string(self):
+        return str(self.value)
 
     def from_xml(self, parent, sub_el):
         super(Simple, self).from_xml(parent, sub_el)
 
         if sub_el.text:
-            self.value = sub_el.text
+            self.parse_value(sub_el.text)
         else:
-            self.value = ''
+            self.value = None
 
     def to_xml(self):
         el = ET.Element(self.get_tag())
@@ -49,8 +56,6 @@ class Simple(Model):
             el.extend(self.produce_sub_elements(tag))
 
         if self.value is not None:
-            if isinstance(self.value, bytes):
-                logger.warning(self.__class__.__name__ + ' has bytes type as value')
-            el.text = self.value
+            el.text = self.to_string()
 
         return el

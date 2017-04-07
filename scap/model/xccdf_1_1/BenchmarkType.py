@@ -56,7 +56,7 @@ class BenchmarkType(Model):
         super(BenchmarkType, self).from_xml(parent, el)
 
         for notice in list(self.notices.values()):
-            logger.info('Notice: \n' + notice.value)
+            logger.info('Notice: \n' + notice.to_string())
 
         for profile_id in self.profiles:
             logger.debug('found profile ' + profile_id)
