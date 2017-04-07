@@ -33,16 +33,3 @@ class ComponentElement(Model):
             '{http://checklists.nist.gov/xccdf/1.2}Tailoring': {'ignore': True, 'in': 'model', 'min': 0},
         },
     }
-    # def __init__(self):
-    #     super(ComponentType, self).__init__()    # {http://checklists.nist.gov/xccdf/1.2}component
-    #
-    #     self.model = None
-
-    # def parse_element(self, sub_el):
-    #     if sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}Benchmark' \
-    #         or sub_el.tag == '{http://scap.nist.gov/schema/ocil/2.0}ocil' \
-    #         or sub_el.tag == '{http://oval.mitre.org/XMLSchema/oval-definitions-5}oval_definitions':
-    #         self.model = Model.load(self, sub_el)
-    #     else:
-    #         return super(ComponentType, self).parse_element(sub_el)
-    #     return True
