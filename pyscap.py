@@ -171,7 +171,8 @@ elif args.benchmark:
         host.disconnect()
 
     from scap.Reporter import Reporter
-    report = Reporter(content, hosts).report()
+    rep = Reporter.load(content, hosts)
+    report = rep.report()
 
     if args.pretty:
         sio = StringIO()
