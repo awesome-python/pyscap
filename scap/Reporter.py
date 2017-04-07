@@ -18,6 +18,8 @@
 import logging
 import xml.etree.ElementTree as ET
 import uuid
+import sys
+import importlib
 
 from scap.model.ai_1_1.ComputingDeviceType import ComputingDeviceType
 from scap.model.ai_1_1.FQDNType import FQDNType
@@ -52,127 +54,31 @@ from scap.model.rep_core_1_1.RefElement import RefElement
 
 logger = logging.getLogger(__name__)
 class Reporter(object):
-    def __init__(self, content, hosts):
+    @staticmethod
+    def load(content, hosts, args={}):
+        model_namespace = content.__class__.__module__.split('.')[2]
+        rep_module = 'scap.reporter.' + model_namespace + '.' + content.__class__.__name__
+        # try to load the reporter's module
+        if rep_module not in sys.modules:
+            logger.debug('Loading module ' + rep_module)
+            try:
+                mod = importlib.import_module(rep_module)
+            except Exception as e:
+                logger.warning('Could not load module for ' + rep_module + ': ' + str(e))
+                raise
+        else:
+            mod = sys.modules[rep_module]
+
+        # instantiate an instance of the class & load it
+        class_ = getattr(mod, content.__class__.__name__)
+        inst = class_(content, hosts, args)
+
+        return inst
+
+    def __init__(self, content, hosts, args={}):
         self.hosts = hosts
         self.content = content
 
     def report(self):
-        arc = AssetReportCollectionElement()
-        arc.id = 'asset_report_collection_' + uuid.uuid4().hex
-
-        arc.relationships = RelationshipsType()
-        arc.report_requests = ReportRequestsType()
-        arc.assets = AssetsType()
-        arc.reports = ReportsType()
-
-        # TODO arc.extended-infos
-
-        report_request = ReportRequestType()
-        arc.report_requests.report_requests.append(report_request)
-
-        report_request.id = 'report-request_' + uuid.uuid4().hex
-
-        #report_request.content = self.content.to_xml()
-        report_request.content = ET.Element('stuff')
-
-        for host in self.hosts:
-            asset = AssetElement()
-            arc.assets.assets.append(asset)
-
-            asset.id = 'asset_' + host.facts['unique_id']
-
-            comp = ComputingDeviceType()
-            asset.assets.append(comp)
-
-            # TODO: if root_uuid is unavailable
-            # TODO: fallback to mobo guid, eth0 mac address, eth0 ip address, hostname
-
-            for cpe in host.facts['cpe']:
-                c = CPEType(cpe.to_uri_string())
-                comp.cpes.append(c)
-
-            # TODO multiple FQDNs
-            comp.fqdn = FQDNType(host.facts['fqdn'][0])
-
-            comp.hostname = ComputingDeviceHostnameType(host.facts['hostname'])
-
-            try:
-                comp.motherboard_guid = MotherboardGUIDType(str(uuid.UUID(host.facts['motherboard_uuid'])))
-            except KeyError:
-                logger.debug("Couldn't parse motherboard-guid")
-
-            comp.connections = ConnectionsType()
-
-            for dev, net_con in host.facts['network_connections'].items():
-                logger.debug('Producing Connection for device ' + dev)
-                for address in net_con['network_addresses']:
-                    logger.debug('Producing network address: ' + str(address))
-                    conn = NetworkInterfaceType()
-                    comp.connections.connections.append(conn)
-
-                    conn.mac_address = MACAddressType(host.facts['network_connections'][dev]['mac_address'])
-
-                    conn.ip_address = IPAddressType()
-                    if address['type'] == 'ipv4':
-                        conn.ip_address.ip_v4 = IPAddressIPv4Type(address['address'])
-                        conn.subnet_mask = IPAddressIPv4Type(address['subnet_mask'])
-                        if 'default_route' in host.facts['network_connections'][dev]:
-                            conn.default_route = IPAddressIPv4Type(host.facts['network_connections'][dev]['default_route'])
-                    elif address['type'] == 'ipv6':
-                        conn.ip_address.ip_v6 = IPAddressIPv6Type(address['address'])
-                        conn.subnet_mask = IPAddressIPv6Type(address['subnet_mask'])
-                        if 'default_route' in host.facts['network_connections'][dev]:
-                            conn.default_route = IPAddressIPv6Type(host.facts['network_connections'][dev]['default_route'])
-
-            # network services
-            for svc in host.facts['network_services']:
-                s = ServiceType()
-                asset.assets.append(s)
-
-                s.host = HostType()
-
-                # TODO multiple FQDNs
-                s.host.fqdn = FQDNType(host.facts['fqdn'][0])
-
-                # TODO fix this to really parse the IP
-                s.host.ip_address = IPAddressType()
-                if '.' in svc['ip_address']:
-                    s.host.ip_address.ip_v4 = IPAddressIPv4Type(svc['ip_address'])
-                elif ':' in svc['ip_address']:
-                    s.host.ip_address.ip_v6 = IPAddressIPv6Type(svc['ip_address'])
-
-                port = ServicePortType(svc['port'])
-                port.source = svc['source']
-                port.timestamp = svc['timestamp']
-                s.ports.append(port)
-
-                s.protocol = ProtocolType(svc['protocol'])
-
-            report = ReportType()
-            arc.reports.reports.append(report)
-            report.id = 'report_' + uuid.uuid4().hex
-
-            rel = RelationshipType()
-            arc.relationships.relationships.append(rel)
-            rel.subject = report.id
-            rel.type = 'isAbout'
-            ref = RefElement(asset.id)
-            rel.refs.append(ref)
-
-            # TODO 'retrievedFrom' relationship
-            # TODO 'createdBy' relationship
-            # TODO 'hasSource' relationship
-            # TODO 'recordedBy' relationship
-            # TODO 'initiatedBy' relationship
-
-            rel = RelationshipType()
-            arc.relationships.relationships.append(rel)
-            rel.subject = report.id
-            rel.type = 'createdFor'
-            ref = RefElement(report_request.id)
-            rel.refs.append(ref)
-
-            # TODO 'hasMetadata' relationship
-
-        arc_et = ET.ElementTree(element=arc.to_xml())
-        return arc_et
+        import inspect
+        raise NotImplementedError(inspect.stack()[0][3] + '() has not been implemented in subclass: ' + self.__class__.__name__)
