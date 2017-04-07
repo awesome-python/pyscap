@@ -21,10 +21,10 @@ import xml.etree.ElementTree as ET
 
 logger = logging.getLogger(__name__)
 class Simple(Model):
-    def __init__(self):
+    def __init__(self, value=None):
         super(Simple, self).__init__()
 
-        self.value = None
+        self.value = self.parse_value(value)
 
     def parse_value(self, value):
         return value
