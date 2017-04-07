@@ -162,8 +162,6 @@ class Reporter(object):
                 s.protocol.value = svc['protocol']
 
             report = ReportType()
-            arc.reports.reports.append(report)
-
             report.id = 'report_' + uuid.uuid4().hex
 
             rel = RelationshipType()
@@ -189,6 +187,9 @@ class Reporter(object):
             rel.refs.append(ref)
 
             # TODO 'hasMetadata' relationship
+
+            # moved report append to bottom to make it easier to find in the output
+            arc.reports.reports.append(report)
 
         arc_et = ET.ElementTree(element=arc.to_xml())
         return arc_et
