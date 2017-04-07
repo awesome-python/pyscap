@@ -58,6 +58,7 @@ class Reporter(object):
 
     def report(self):
         arc = AssetReportCollectionElement()
+        arc.id = 'asset_report_collection_' + uuid.uuid4().hex
 
         arc.relationships = RelationshipsType()
         arc.report_requests = ReportRequestsType()
@@ -141,8 +142,8 @@ class Reporter(object):
                     s.host.ip_address.ip_v6 = IPAddressIPv6Type(svc['ip_address'])
 
                 port = ServicePortType(svc['port'])
-                port.source = Source(svc['source'])
-                port.timestamp = Timestamp(svc['timestamp'])
+                port.source = svc['source']
+                port.timestamp = svc['timestamp']
                 s.ports.append(port)
 
                 s.protocol = ProtocolType(svc['protocol'])

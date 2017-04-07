@@ -487,12 +487,19 @@ class Model(object):
 
         return False
 
-    def produce_attribute(self, name):
+    def produce_attribute(self, name, el):
         if name.endswith('*'):
-            return None
+            return
 
         xml_namespace, attr_name = Model.parse_tag(name)
         attr_map = self.model_map['attributes'][name]
+
+        if 'ignore' in attr_map and attr_map['ignore']:
+            return
+
+        if 'notImplemented' in attr_map and attr_map['notImplemented']:
+            raise NotImplementedError(name + ' attribute support is not implemented')
+
         if 'in' in attr_map:
             attr_name = attr_map['in']
         else:
@@ -502,14 +509,44 @@ class Model(object):
             value = getattr(self, attr_name)
         except AttributeError:
             if 'required' in attr_map and attr_map['required']:
-                logger.critical(self.__class__.__name__ + ' must assign required attribute ' + attrib)
+                logger.critical(self.__class__.__name__ + ' must assign required attribute ' + attr_name)
                 sys.exit()
             else:
-                logger.debug('Skipping attribute ' + name)
-                return None
+                logger.debug('Skipping attribute ' + attr_name)
+                return
 
-        logger.debug('Setting attribute ' + str(name) + ' to ' + str(value))
-        return value
+        if value is None:
+            if 'required' in attr_map and attr_map['required']:
+                logger.critical(self.__class__.__name__ + ' must assign required attribute ' + attr_name)
+                sys.exit()
+            else:
+                logger.debug('Skipping attribute ' + attr_name)
+                return
+
+        if 'class' in attr_map:
+            if not isinstance(value, Model):
+                raise ValueError('Need a subclass of Model to set attribute ' + attr_name + ' on ' + self.get_tag() + '; got ' + str(value))
+
+            logger.debug('Setting attribute ' + attr_name + ' on ' + self.get_tag() + ' to ' + value.__class__.__name__ + ' value ' + value.to_string())
+            el.set(attr_name, value.to_string())
+        elif 'type' in attr_map:
+            # TODO nillable
+            # if '{http://www.w3.org/2001/XMLSchema-instance}nil' in el.keys() and el.get('{http://www.w3.org/2001/XMLSchema-instance}nil') == 'true':
+            #     # check if we can accept nil
+            #     if 'nillable' in tag_map and tag_map['nillable']:
+            #         value = None
+            #     else:
+            #         raise ValueError(el.tag + ' is nil, but not expecting nil value')
+            logger.debug('Parsing ' + str(value) + ' as ' + attr_map['type'] + ' type')
+            v = self._parse_value_as_type(value, attr_map['type'])
+
+            el.set(attr_name, v)
+        elif 'enum' in attr_map:
+            if value not in attr_map['enum']:
+                raise ValueError(name + ' attribute must be one of ' + str(attr_map['enum']) + ': ' + str(value))
+            el.set(attr_name, value)
+        else:
+            raise ValueError('Unable to produce attribute ' + attr_name + '; no class, type or enum definition')
 
     def produce_sub_elements(self, tag):
         sub_els = []
@@ -560,8 +597,10 @@ class Model(object):
             else:
                 key_name = 'id'
             for k,v in list(dic.items()):
-                if 'class' in tag_map or 'type' in tag_map:
+                if 'class' in tag_map:
                     sub_els.append(v.to_xml())
+                elif 'type' in tag_map:
+                    sub_els.append()
                 else:
                     el = ET.Element(tag)
                     el.set(key_name, k)
@@ -572,7 +611,7 @@ class Model(object):
                     else:
                         el.text = v
                     sub_els.append(el)
-        elif 'class' in tag_map:
+        elif 'class' in tag_map or 'type' in tag_map or 'enum' in tag_map:
             if 'in' in tag_map:
                 name = tag_map['in']
             else:
@@ -589,28 +628,13 @@ class Model(object):
                 sub_els.append(value)
             else:
                 raise ValueError('Unknown class to add to sub elemetns: ' + i.__class__.__name__)
-        elif 'type' in tag_map or 'enum' in tag_map:
-            if 'in' in tag_map:
-                name = tag_map['in']
-            else:
-                name = tag_name.replace('-', '_')
-            value = getattr(self, name)
-
-            if value is None:
-                return []
-
-            el = ET.Element(tag)
-            el.text = getattr(self, name)
-            sub_els.append(el)
         return sub_els
 
     def to_xml(self):
         el = ET.Element(self.get_tag())
 
         for name in self.model_map['attributes']:
-            value = self.produce_attribute(name)
-            if value is not None:
-                el.set(name, value)
+            value = self.produce_attribute(name, el)
 
         for tag in self.model_map['elements']:
             el.extend(self.produce_sub_elements(tag))

@@ -33,6 +33,9 @@ class Simple(Model):
         self.value = value
         return self.value
 
+    def is_none(self):
+        return self.value is None
+
     def to_string(self):
         return str(self.value)
 
@@ -48,14 +51,11 @@ class Simple(Model):
         el = ET.Element(self.get_tag())
 
         for name in self.model_map['attributes']:
-            value = self.produce_attribute(name)
-            if value is not None:
-                el.set(name, value)
+            self.produce_attribute(name, el)
 
-        for tag in self.model_map['elements']:
-            el.extend(self.produce_sub_elements(tag))
+        # should be no subelements as a Simple
 
-        if self.value is not None:
+        if not self.is_none():
             el.text = self.to_string()
 
         return el

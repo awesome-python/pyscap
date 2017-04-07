@@ -19,5 +19,5 @@ from scap.model.xs.Simple import Simple
 import logging
 
 logger = logging.getLogger(__name__)
-class QualifiedName(Simple):
+class QName(Simple):
     pass
