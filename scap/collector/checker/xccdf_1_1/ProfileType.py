@@ -175,25 +175,25 @@ class ProfileType(Checker):
                 logger.debug('Overridden rule ' + rule_id + ' weight: ' + self.rule_weight[rule_id] + ' severity: ' + self.rule_severity[rule_id] + ' role: ' + self.rule_role[rule_id] + ' check: ' + str(self.rule_check[rule_id]))
 
     def _package_result(self, rule_id, metadata, check_result):
-            r = {
-                'result': check_result['result'],
-                #skip override
-                'idents': self.rule_content[rule_id].idents,
-                'metadata': metadata,
-                'messages': check_result['messages'],
-                'instances': check_result['instances'],
-                'idref': rule_id,
-                'role': self.rule_role[rule_id],
-                'severity': self.rule_severity[rule_id],
-                'time': datetime.now(timezone.utc).isoformat('T'),
-                'idents': self.rule_content[rule_id].idents,
-                'weight': self.rule_weight[rule_id],
-            }
+        r = {
+            'result': check_result['result'],
+            #skip override
+            'idents': self.rule_content[rule_id].idents,
+            'metadata': metadata,
+            'messages': check_result['messages'],
+            'instances': check_result['instances'],
+            'idref': rule_id,
+            'role': self.rule_role[rule_id],
+            'severity': self.rule_severity[rule_id],
+            'time': datetime.now(timezone.utc).isoformat('T'),
+            'idents': self.rule_content[rule_id].idents,
+            'weight': self.rule_weight[rule_id],
+        }
 
-            if self.rule_content[rule_id].version:
-                r['version'] = self.rule_content[rule_id].version.get_text()
+        if self.rule_content[rule_id].version:
+            r['version'] = self.rule_content[rule_id].version.get_text()
 
-            return r
+        return r
 
     def collect(self):
         results = []
