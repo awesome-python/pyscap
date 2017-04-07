@@ -16,7 +16,9 @@
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
 from scap.collector.cli.LinuxCollector import LinuxCollector
-import re, logging
+import re
+import logging
+import time
 
 logger = logging.getLogger(__name__)
 class NetstatCollector(LinuxCollector):
@@ -32,4 +34,10 @@ class NetstatCollector(LinuxCollector):
                 # intent, but since the port #s would not be unique otherwise and it's
                 # almost impossible to accurately figure out what the port is being used
                 # for, we use tcp & udp instead
-                self.host.facts['network_services'].append({'ip_address': m.group(2), 'port': m.group(3), 'protocol': m.group(1)})
+                self.host.facts['network_services'].append({
+                    'ip_address': m.group(2),
+                    'port': m.group(3),
+                    'protocol': m.group(1),
+                    'source': 'netstat -n -a',
+                    'timestamp': time.strftime('%a, %d %b %Y %H:%M:%S %z', time.gmtime()),
+                })

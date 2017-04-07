@@ -25,4 +25,4 @@ class NetworkServiceCollector(WindowsCollector):
         NetstatCollector(self.host).collect()
 
         for netsvc in self.host.facts['network_services']:
-            logger.debug('Service: Address: ' + netsvc['ip_address'] + ' Port: ' + netsvc['port'] + ' Protocol: ' + netsvc['protocol'])
+            logger.debug('Service: Address: ' + netsvc['ip_address'] + ' Port: ' + netsvc['port'] + ' Protocol: ' + netsvc['protocol'] + ' Source: ' + netsvc['source'] + ' Timestamp: ' + netsvc['timestamp'])

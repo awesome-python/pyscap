@@ -19,6 +19,7 @@ from scap.collector.cli.WindowsCollector import WindowsCollector
 import logging
 import re
 from scap.model.cpe_2_3.CPE import CPE
+import time
 
 logger = logging.getLogger(__name__)
 class NetstatCollector(WindowsCollector):
@@ -57,4 +58,6 @@ class NetstatCollector(WindowsCollector):
                         'ip_address': local_address,
                         'port': local_port,
                         'protocol': proto,
+                        'source': 'netstat -n -a',
+                        'timestamp': time.strftime('%a, %d %b %Y %H:%M:%S %z', time.gmtime()),
                     })
