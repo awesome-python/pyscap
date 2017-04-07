@@ -50,6 +50,10 @@ class Checker(Collector):
         self.parent = parent
         self.ref_mapping = {}
 
+    def collect(self):
+        import inspect
+        raise NotImplementedError(inspect.stack()[0][3] + '() has not been implemented in subclass: ' + self.__class__.__name__)
+
     def resolve_reference(self, ref):
         if not self.parent:
             raise RuntimeError("Got to null parent without resolving reference")
