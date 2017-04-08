@@ -21,43 +21,17 @@ import re, logging, pprint
 
 logger = logging.getLogger(__name__)
 class CPECollector(LinuxCollector):
-    def _collect_uname(self):
-        try:
-            if 'uname' not in self.host.facts:
-                from scap.collector.cli.UnameCollector import UnameCollector
-                UnameCollector(self.host).collect()
-
-            if self.host.facts['uname'].startswith('Linux'):
-                cpe = CPE()
-                cpe.set_value('part', 'o')
-                cpe.set_value('vendor', 'linux')
-                cpe.set_value('product', 'linux_kernel')
-
-                m = re.match(r'^Linux \S+ ([0-9.]+)-(\S+)', self.host.facts['uname'])
-                if m:
-                    cpe.set_value('version', m.group(1))
-                    cpe.set_value('update', m.group(2))
-            elif uname.startswith('Darwin'):
-                return
-            elif uname.startswith('Windows NT'):
-                return
-
-            if cpe not in self.host.facts['cpe']:
-                self.host.facts['cpe'].append(cpe)
-        except:
-            pass
-
     def collect(self):
         self.host.facts['cpe'] = []
 
         # hardware
-        from scap.collector.cli.LshwCollector import LshwCollector
+        from scap.collector.cli.linux.LshwCollector import LshwCollector
         LshwCollector(self.host).collect()
 
-        from scap.collector.cli.LspciCollector import LspciCollector
+        from scap.collector.cli.linux.LspciCollector import LspciCollector
         LspciCollector(self.host).collect()
 
-        from scap.collector.cli.LscpuCollector import LscpuCollector
+        from scap.collector.cli.linux.LscpuCollector import LscpuCollector
         LscpuCollector(self.host).collect()
 
         # TODO hwinfo
@@ -66,10 +40,11 @@ class CPECollector(LinuxCollector):
         # TODO hdparm
 
         # os
-        from scap.collector.cli.LsbReleaseCollector import LsbReleaseCollector
+        from scap.collector.cli.linux.LsbReleaseCollector import LsbReleaseCollector
         LsbReleaseCollector(self.host).collect()
 
-        self._collect_uname()
+        from scap.collector.cli.linux.UNameCollector import UNameCollector
+        UNameCollector(self.host).collect()
 
         # application
         # TODO rpm -qa
