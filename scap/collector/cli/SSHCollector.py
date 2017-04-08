@@ -29,11 +29,11 @@ class SSHCollector(CLICollector):
                 LinuxCollector(self.host).collect()
             # elif uname.startswith('Darwin'):
             #     pass
-            elif uname.startswith('Windows NT'):
+            elif self.host.facts['uname'].startswith('Windows NT'):
                 from scap.collector.cli.WindowsCollector import WindowsCollector
                 WindowsCollector(self.host).collect()
             else:
-                raise NotImplementedError('Host discovery has not been implemented for uname: ' + uname + ' on ' + self.host.hostname)
+                raise NotImplementedError('Host discovery has not been implemented for uname: ' + self.host.facts['uname'] + ' on ' + self.host.hostname)
         except:
             # uname didn't work
             raise NotImplementedError('Host discovery has not been implemented for host: ' + self.host.hostname)
