@@ -26,7 +26,7 @@ class DmiDecodeCollector(LinuxCollector):
     def collect(self):
         lines = self.host.exec_command('dmidecode --type 1', sudo=True)
 
-        uuid = ''
+        u = ''
         for line in lines:
             if "UUID" in line:
                 line      = line.replace(" ","")
