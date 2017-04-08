@@ -65,12 +65,12 @@ class LinuxLocalHost(LocalHost):
                 if key.fileobj is p.stdout and events & selectors.EVENT_READ:
                     outs = p.stdout.buffer.read1(1024).decode()
                     if len(outs) > 0:
-                        logger.debug('Got stdout: ' + outs)
+                        #logger.debug('Got stdout: ' + outs)
                         out_buf += outs
                 elif key.fileobj is p.stderr and events & selectors.EVENT_READ:
                     errs = p.stderr.buffer.read1(1024).decode()
                     if len(errs) > 0:
-                        logger.debug('Got stderr: ' + errs)
+                        #logger.debug('Got stderr: ' + errs)
                         err_buf += errs
                     if sudo and err_buf.startswith(sudo_prompt):
                         logger.debug("Sending sudo_password...")
@@ -89,13 +89,13 @@ class LinuxLocalHost(LocalHost):
         if not p.stdout.closed:
             outs = p.stdout.buffer.read1(1024).decode()
             if len(outs) > 0:
-                logger.debug('Got stdout: ' + outs)
+                #logger.debug('Got stdout: ' + outs)
                 out_buf += outs
 
         if not p.stderr.closed:
             errs = p.stderr.buffer.read1(1024).decode()
             if len(errs) > 0:
-                logger.debug('Got stderr: ' + errs)
+                #logger.debug('Got stderr: ' + errs)
                 err_buf += errs
             if sudo and err_buf.startswith(sudo_prompt):
                 logger.debug("Sending sudo_password...")
