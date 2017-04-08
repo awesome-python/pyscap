@@ -19,7 +19,7 @@ from scap.collector.cli.LinuxCollector import LinuxCollector
 import re, logging
 
 logger = logging.getLogger(__name__)
-class NetworkConnectionCollector(LinuxCollector):
+class IpRouteCollector(LinuxCollector):
     def collect(self):
         if 'network_connections' not in self.host.facts:
             self.host.facts['network_connections'] = {}

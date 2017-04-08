@@ -30,7 +30,9 @@ class IpAddrCollector(LinuxCollector):
             if m:
                 dev = m.group(1)
                 if dev not in self.host.facts['network_connections']:
-                    self.host.facts['network_connections'][dev] = {}
+                    self.host.facts['network_connections'][dev] = {
+                        'network_addresses': []
+                    }
                 continue
 
             # link line
@@ -47,7 +49,11 @@ class IpAddrCollector(LinuxCollector):
                     self.host.facts['network_connections'][dev]['network_addresses'] = []
                 addr = m.group(1)
                 subnet_mask = m.group(2)
-                self.host.facts['network_connections'][dev]['network_addresses'].append({'type': 'ipv4', 'address': addr, 'subnet_mask': subnet_mask})
+                self.host.facts['network_connections'][dev]['network_addresses'].append({
+                    'type': 'ipv4',
+                    'address': addr,
+                    'subnet_mask': subnet_mask,
+                })
                 continue
 
             # inet6 line
@@ -57,5 +63,9 @@ class IpAddrCollector(LinuxCollector):
                     self.host.facts['network_connections'][dev]['network_addresses'] = []
                 addr = m.group(1)
                 subnet_mask = m.group(2)
-                self.host.facts['network_connections'][dev]['network_addresses'].append({'type': 'ipv6', 'address': addr, 'subnet_mask': subnet_mask})
+                self.host.facts['network_connections'][dev]['network_addresses'].append({
+                    'type': 'ipv6',
+                    'address': addr,
+                    'subnet_mask': subnet_mask,
+                })
                 continue
