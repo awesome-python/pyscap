@@ -170,7 +170,8 @@ class Model(object):
 
     def __init__(self):
         self.parent = None
-
+        self.text = None
+        self.tail = None
         self.model_map = Model._get_model_map(self.__class__)
 
         # must have namespace for concrete classes
@@ -247,19 +248,21 @@ class Model(object):
         return '{' + self.get_xml_namespace() + '}' + self.get_tag_name()
 
     def get_text(self):
-        return self.element.text
+        return self.text
 
     def get_tail(self):
-        return self.element.tail
+        return self.tail
 
     def from_xml(self, parent, el):
         self.parent = parent
-        self.element = el
 
         logger.debug('Parsing ' + el.tag + ' element into ' + self.__class__.__module__ + '.' + self.__class__.__name__ + ' class')
 
         for attrib in self.model_map['attributes']:
-            if 'required' in self.model_map['attributes'][attrib] and self.model_map['attributes'][attrib]['required'] and attrib not in el.keys() and 'default' not in self.model_map['attributes'][attrib]:
+            if 'required' in self.model_map['attributes'][attrib] \
+            and self.model_map['attributes'][attrib]['required'] \
+            and attrib not in el.keys() \
+            and 'default' not in self.model_map['attributes'][attrib]:
                 logger.critical(el.tag + ' must define ' + attrib + ' attribute')
                 sys.exit()
 
@@ -304,6 +307,8 @@ class Model(object):
             elif tag in sub_el_counts and sub_el_counts[tag] > max_:
                 logger.critical(self.__class__.__name__ + ' must have at most ' + str(max_) + ' ' + tag + ' elements')
                 sys.exit()
+
+        self.text = el.text
 
     def _parse_value_as_type(self, value, type_):
         if '.' in type_:
@@ -487,6 +492,17 @@ class Model(object):
 
         return False
 
+    def to_xml(self):
+        el = ET.Element(self.get_tag())
+
+        for name in self.model_map['attributes']:
+            value = self.produce_attribute(name, el)
+
+        for tag in self.model_map['elements']:
+            el.extend(self.produce_sub_elements(tag))
+
+        return el
+
     def produce_attribute(self, name, el):
         if name.endswith('*'):
             return
@@ -629,14 +645,3 @@ class Model(object):
             else:
                 raise ValueError('Unknown class to add to sub elemetns: ' + i.__class__.__name__)
         return sub_els
-
-    def to_xml(self):
-        el = ET.Element(self.get_tag())
-
-        for name in self.model_map['attributes']:
-            value = self.produce_attribute(name, el)
-
-        for tag in self.model_map['elements']:
-            el.extend(self.produce_sub_elements(tag))
-
-        return el
