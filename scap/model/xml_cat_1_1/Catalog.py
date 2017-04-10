@@ -19,7 +19,7 @@ from scap.Model import Model
 import logging
 
 logger = logging.getLogger(__name__)
-class Catalog(Model):
+class Catalog(Model, collections.abc.MutableMapping):
     MODEL_MAP = {
         'xml_namespace': 'urn:oasis:names:tc:entity:xmlns:xml:catalog',
         'tag_name': 'catalog',
@@ -34,9 +34,21 @@ class Catalog(Model):
         },
     }
 
-    def to_dict(self):
-        logger.debug('Catalog entries: ' + str(self.entries))
-        return self.entries
 
-    def from_dict(self, dict_):
-        self.entries = dict_
+    def __delitem__(self, key):
+        del self.entries[key]
+
+    def __getitem__(self, key):
+        return self.entries[key]
+
+    def __setitem__(self, key, value):
+        self.entries[key] = value
+
+    def __contains__(self, item):
+        return item in self.entries
+
+    def __len__(self):
+        return len(self.entries)
+
+    def __iter__(self):
+        return iter(self.entries.keys())

@@ -28,5 +28,3 @@ class DatabaseType(ITAssetType):
             '{http://scap.nist.gov/schema/asset-identification/1.1}instance-name': {'class': 'InstanceNameType', 'min': 0},
         }
     }
-    def __init__(self):
-        super(DatabaseType, self).__init__('{http://scap.nist.gov/schema/asset-identification/1.1}database')    #

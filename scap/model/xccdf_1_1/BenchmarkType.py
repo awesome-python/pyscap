@@ -51,12 +51,3 @@ class BenchmarkType(Model):
             'style-href': {'ignore': True, 'type': 'AnyURI'},
         },
     }
-
-    def from_xml(self, parent, el):
-        super(BenchmarkType, self).from_xml(parent, el)
-
-        for notice in list(self.notices.values()):
-            logger.info('Notice: \n' + notice.to_string())
-
-        for profile_id in self.profiles:
-            logger.debug('found profile ' + profile_id)

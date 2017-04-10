@@ -40,6 +40,9 @@ class BenchmarkType(Checker):
                 sys.exit()
         logger.info('Selecting profile ' + profile.id)
 
+        for notice in list(self.content.notices.values()):
+            logger.info('Notice: \n' + notice.to_string())
+
         self.profile_checker = Checker.load(host, profile, self, args)
 
     def collect(self):

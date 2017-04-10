@@ -21,6 +21,7 @@ import logging
 logger = logging.getLogger(__name__)
 class ItemType(Model):
     MODEL_MAP = {
+        # abstract
         'attributes': {
             'abstract': {'ignore': True, 'type': 'Boolean', 'default': False},
             'cluster-id': {'ignore': True, 'type': 'NCName'},
@@ -41,14 +42,3 @@ class ItemType(Model):
             '{http://checklists.nist.gov/xccdf/1.1}metadata': {'append': 'metadata', 'min': 0, 'max': None, 'class': 'MetadataType', 'ignore': True},
         },
     }
-    # abstract
-    # def __init__(self):
-    #     super(ItemType, self).__init__()
-    #
-    #     self.warnings = []
-    #
-    def from_xml(self, parent, el):
-        super(ItemType, self).from_xml(parent, el)
-
-        for warning in self.warnings:
-            logger.warning('Warning:\n' + warning)

@@ -32,9 +32,3 @@ class GroupType(SelectableItemType):
             '{http://checklists.nist.gov/xccdf/1.1}signature': {'ignore': True, 'class': 'SignatureType', 'min': 0, 'max': 1},
         },
     }
-
-    # def __init__(self):
-    #     super(GroupType, self).__init__()
-    #     self.values = {}
-    #     self.rules = {}
-    #     self.groups = {}
