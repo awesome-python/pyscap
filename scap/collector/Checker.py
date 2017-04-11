@@ -33,8 +33,6 @@ class Checker(Collector):
 
     def __init__(self, host, args, content):
         super(Checker, self).__init__(host, args)
-        self.host = host
-        self.args = args
         self.content = content
 
     def collect(self):
