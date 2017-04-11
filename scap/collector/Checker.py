@@ -26,8 +26,8 @@ class Checker(Collector):
     @staticmethod
     def load(host, args, content):
         if content.tag == '{http://checklists.nist.gov/xccdf/1.1}Benchmark':
-            from scap.collector.checker.xccdf_1_1.BenchmarkCollector import BenchmarkCollector
-            return BenchmarkCollector(host, args, content)
+            from scap.collector.checker.xccdf_1_1.BenchmarkChecker import BenchmarkChecker
+            return BenchmarkChecker(host, args, content)
         else:
             raise NotImplementedError('Checking with ' + content.tag + ' content has not been implemented')
 
