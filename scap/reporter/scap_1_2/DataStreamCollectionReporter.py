@@ -28,9 +28,9 @@ from scap.model.arf_1_1.ReportsType import ReportsType
 from scap.model.arf_1_1.ReportRequestType import ReportRequestType
 
 logger = logging.getLogger(__name__)
-class DataStreamCollectionElement(Reporter):
-    def __init__(self, content, hosts, args={}):
-        super(DataStreamCollectionElement, self).__init__(content, hosts, args)
+class DataStreamCollectionReporter(Reporter):
+    def __init__(self, hosts, args, content):
+        super(DataStreamCollectionReporter, self).__init__(hosts, args, content)
 
         benchmark = content.components[self.hosts[0].facts['selected_checklist']].model
         self.reporter = Reporter.load(benchmark, hosts, args)
