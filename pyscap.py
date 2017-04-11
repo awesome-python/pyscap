@@ -145,6 +145,15 @@ if args.collect:
         pp = pprint.PrettyPrinter(width=132)
         pp.pprint(host.facts)
 elif args.benchmark:
+    ### Loading.Import
+    # Import the XCCDF document into the program and build an initial internal
+    # representation of the Benchmark object, Groups, Rules, and other objects.
+    # If the file cannot be read or parsed, then Loading fails. (At the
+    # beginning of this step, any inclusion processing specified with XInclude
+    # elements should be performed. The resulting XML information set should be
+    # validated against the XCCDF schema given in Appendix A.) Go to the next
+    # step: Loading.Noticing.
+    
     logger.debug('Loading content file: ' + args.content[0])
     with open(args.content[0], mode='r', encoding='utf_8') as f:
         content = Model.load(None, ET.parse(f).getroot())
