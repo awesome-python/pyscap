@@ -28,9 +28,9 @@ from scap.Inventory import Inventory
 
 logger = logging.getLogger(__name__)
 class WindowsLocalHost(LocalHost):
-    def detect_collectors(self):
+    def detect_collectors(self, args):
         from scap.collector.cli.WindowsCollector import WindowsCollector
-        return [WindowsCollector(self)]
+        return [WindowsCollector(self, args)]
 
     def is_admin():
         try:

@@ -35,7 +35,6 @@ from scap.Inventory import Inventory
 from scap.collector.Checker import Checker
 from scap.Reporter import Reporter
 
-
 rootLogger = logging.getLogger()
 rootLogger.setLevel(logging.DEBUG)
 ch = logging.StreamHandler()
@@ -139,40 +138,26 @@ if args.collect or args.benchmark or args.list_hosts:
 if args.collect:
     for host in hosts:
         host.connect()
-
-        for collector in host.detect_collectors():
+        for collector in host.detect_collectors(args):
             collector.collect()
+        host.disconnect()
 
         pp = pprint.PrettyPrinter(width=132)
         pp.pprint(host.facts)
-
-        host.disconnect()
 elif args.benchmark:
     logger.debug('Loading content file: ' + args.content[0])
     with open(args.content[0], mode='r', encoding='utf_8') as f:
         content = Model.load(None, ET.parse(f).getroot())
 
-    # convert args to hash for use by checkers
-    checker_args = {}
-    if args.data_stream:
-        checker_args['data_stream'] = args.data_stream[0]
-    if args.checklist:
-        checker_args['checklist'] = args.checklist[0]
-    if args.profile:
-        checker_args['profile'] = args.profile[0]
-
     for host in hosts:
         host.connect()
-
-        for collector in host.detect_collectors():
+        for collector in host.detect_collectors(args):
             collector.collect()
-
-        chk = Checker.load(host, content, None, checker_args)
+        chk = Checker.load(host, args, content)
         chk.collect()
-
         host.disconnect()
 
-    rep = Reporter.load(content, hosts)
+    rep = Reporter.load(hosts, content, args)
     report = rep.report()
 
     if args.pretty:

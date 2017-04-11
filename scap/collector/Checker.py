@@ -24,39 +24,19 @@ logger = logging.getLogger(__name__)
 #logger.setLevel(logging.INFO)
 class Checker(Collector):
     @staticmethod
-    def load(host, content, parent, args={}):
-        model_namespace = content.__class__.__module__.split('.')[2]
-        collector_module = 'scap.collector.checker.' + model_namespace + '.' + content.__class__.__name__
-        # try to load the collector's module
-        if collector_module not in sys.modules:
-            logger.debug('Loading module ' + collector_module)
-            try:
-                mod = importlib.import_module(collector_module)
-            except Exception as e:
-                logger.warning('Could not load module for ' + collector_module + ': ' + str(e))
-                raise
+    def load(host, args, content):
+        if content.tag == '{http://checklists.nist.gov/xccdf/1.1}Benchmark':
+            from scap.collector.checker.xccdf_1_1.BenchmarkCollector import BenchmarkCollector
+            return BenchmarkCollector(host, args, content)
         else:
-            mod = sys.modules[collector_module]
+            raise NotImplementedError('Checking with ' + content.tag + ' content has not been implemented')
 
-        # instantiate an instance of the class & load it
-        class_ = getattr(mod, content.__class__.__name__)
-        inst = class_(host, content, parent, args)
-
-        return inst
-
-    def __init__(self, host, content, parent, args={}):
+    def __init__(self, host, args, content):
         super(Checker, self).__init__(host, args)
+        self.host = host
+        self.args = args
         self.content = content
-        self.parent = parent
-        self.ref_mapping = {}
 
     def collect(self):
         import inspect
         raise NotImplementedError(inspect.stack()[0][3] + '() has not been implemented in subclass: ' + self.__class__.__name__)
-
-    def resolve_reference(self, ref):
-        if not self.parent:
-            raise RuntimeError("Got to null parent without resolving reference")
-
-        logger.debug('Reference ' + ref + ' not in ' + self.__class__.__name__ + ' continuing to parent ' + self.parent.__class__.__name__)
-        return self.parent.resolve_reference(ref)
