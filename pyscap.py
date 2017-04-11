@@ -25,8 +25,17 @@ import argparse
 import xml.etree.ElementTree as ET
 import pprint
 from io import StringIO
+import xml.dom.minidom
 
 from scap.ColorFormatter import ColorFormatter
+from scap.Model import Model
+from scap.model import NAMESPACES
+from scap.Host import Host
+from scap.Inventory import Inventory
+from scap.collector.Checker import Checker
+from scap.Reporter import Reporter
+
+
 rootLogger = logging.getLogger()
 rootLogger.setLevel(logging.DEBUG)
 ch = logging.StreamHandler()
@@ -105,14 +114,8 @@ else:
 args = arg_parser.parse_args()
 
 # configure ElementTree
-from scap.Model import Model
-from scap.model import NAMESPACES
 for k,v in list(NAMESPACES.items()):
     ET.register_namespace(v, k)
-
-# perform the operations
-from scap.Host import Host
-from scap.Inventory import Inventory
 
 # expand the hosts
 if args.collect or args.benchmark or args.list_hosts:
@@ -158,7 +161,6 @@ elif args.benchmark:
     if args.profile:
         checker_args['profile'] = args.profile[0]
 
-    from scap.collector.Checker import Checker
     for host in hosts:
         host.connect()
 
@@ -170,7 +172,6 @@ elif args.benchmark:
 
         host.disconnect()
 
-    from scap.Reporter import Reporter
     rep = Reporter.load(content, hosts)
     report = rep.report()
 
@@ -179,7 +180,6 @@ elif args.benchmark:
         report.write(sio, encoding='unicode', xml_declaration=True)
         sio.write("\n")
 
-        import xml.dom.minidom
         pretty_xml = xml.dom.minidom.parseString(sio.getvalue()).toprettyxml(indent='  ')
         args.output.write(pretty_xml)
     else:
