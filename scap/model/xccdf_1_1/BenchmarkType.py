@@ -46,7 +46,7 @@ class BenchmarkType(Model):
         'attributes': {
             'id': {'required': True, 'type': 'BenchmarkIDPattern'},
             'Id': {'ignore': True, 'type': 'ID'},
-            'resolved': {'ignore': True, 'type': 'Boolean', 'default': False},
+            'resolved': {'type': 'Boolean', 'default': False},
             'style': {'ignore': True, 'type': 'String'},
             'style-href': {'ignore': True, 'type': 'AnyURI'},
         },
