@@ -16,9 +16,8 @@
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
 class Collector(object):
-    def __init__(self, host, args = {}):
+    def __init__(self, host, args):
         self.host = host
-        self.args = args
 
     def collect(self):
         import inspect

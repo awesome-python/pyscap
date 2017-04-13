@@ -32,26 +32,3 @@ class ComplexCheckType(Model):
             '{http://checklists.nist.gov/xccdf/1.2}complex-check': {'class': 'ComplexCheckType', 'min': 0, 'max': None, 'append': 'checks'},
         },
     }
-
-    # def __init__(self):
-    #     super(ComplexCheckType, self).__init__()
-    #     self.checks = []
-    #     self.negate = False
-    #     self.operator = 'AND'
-    #
-    # def parse_attribute(self, name, value):
-    #     if name == 'negate':
-    #         self.negate = self.parse_boolean(value)
-    #     elif name == 'operator':
-    #         self.negate = value
-    #     else:
-    #         return super(ComplexCheckType, self).parse_attribute(name, value)
-    #     return True
-    #
-    # def parse_element(self, sub_el):
-    #     if sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}complex-check' \
-    #         or sub_el.tag == '{http://checklists.nist.gov/xccdf/1.2}check':
-    #         self.checks.append(Model.load(self, sub_el))
-    #     else:
-    #         return super(ComplexCheckType, self).parse_element(sub_el)
-    #     return True

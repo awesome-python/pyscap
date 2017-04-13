@@ -25,7 +25,7 @@ class ComponentRefElement(Checker):
 
         comp = self.parent.resolve_reference(content.href).model
 
-        self.reference_mapping = content.catalog.to_dict()
+        self.reference_mapping = content.catalog
         self.checker = Checker.load(host, comp, self, args)
 
     def collect(self):

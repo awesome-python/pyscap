@@ -14,3 +14,11 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
+
+from scap.Reporter import Reporter
+import logging
+
+logger = logging.getLogger(__name__)
+class BenchmarkReporter(Reporter):
+    def report(self, host):
+        return self.reporter.report(host)

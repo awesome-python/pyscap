@@ -55,27 +55,14 @@ from scap.model.rep_core_1_1.RefElement import RefElement
 logger = logging.getLogger(__name__)
 class Reporter(object):
     @staticmethod
-    def load(content, hosts, args={}):
-        model_namespace = content.__class__.__module__.split('.')[2]
-        rep_module = 'scap.reporter.' + model_namespace + '.' + content.__class__.__name__
-        # try to load the reporter's module
-        if rep_module not in sys.modules:
-            logger.debug('Loading module ' + rep_module)
-            try:
-                mod = importlib.import_module(rep_module)
-            except Exception as e:
-                logger.warning('Could not load module for ' + rep_module + ': ' + str(e))
-                raise
+    def load(hosts, args, content):
+        if content.tag == '{http://checklists.nist.gov/xccdf/1.1}Benchmark':
+            from scap.reporter.xccdf_1_1.BenchmarkReporter import BenchmarkReporter
+            return BenchmarkReporter(hosts, args, content)
         else:
-            mod = sys.modules[rep_module]
+            raise NotImplementedError('Reporting with ' + content.tag + ' content has not been implemented')
 
-        # instantiate an instance of the class & load it
-        class_ = getattr(mod, content.__class__.__name__)
-        inst = class_(content, hosts, args)
-
-        return inst
-
-    def __init__(self, content, hosts, args={}):
+    def __init__(self, hosts, args, content):
         self.hosts = hosts
         self.content = content
 

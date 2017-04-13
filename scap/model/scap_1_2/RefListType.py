@@ -28,7 +28,7 @@ class RefListType(Model, collections.abc.MutableMapping):
         },
     }
 
-    def __delitem__(self, ):
+    def __delitem__(self, key):
         del self.component_refs[key]
 
     def __getitem__(self, key):

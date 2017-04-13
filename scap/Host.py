@@ -88,6 +88,6 @@ class Host(object):
         import inspect
         raise NotImplementedError(inspect.stack()[0][3] + '() has not been implemented in subclass: ' + self.__class__.__name__)
 
-    def detect_collectors(self):
+    def detect_collectors(self, args):
         import inspect
         raise NotImplementedError(inspect.stack()[0][3] + '() has not been implemented in subclass: ' + self.__class__.__name__)

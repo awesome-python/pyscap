@@ -25,8 +25,16 @@ import argparse
 import xml.etree.ElementTree as ET
 import pprint
 from io import StringIO
+import xml.dom.minidom
 
 from scap.ColorFormatter import ColorFormatter
+from scap.Model import Model
+from scap.model import NAMESPACES
+from scap.Host import Host
+from scap.Inventory import Inventory
+from scap.collector.Checker import Checker
+from scap.Reporter import Reporter
+
 rootLogger = logging.getLogger()
 rootLogger.setLevel(logging.DEBUG)
 ch = logging.StreamHandler()
@@ -105,14 +113,8 @@ else:
 args = arg_parser.parse_args()
 
 # configure ElementTree
-from scap.Model import Model
-from scap.model import NAMESPACES
 for k,v in list(NAMESPACES.items()):
     ET.register_namespace(v, k)
-
-# perform the operations
-from scap.Host import Host
-from scap.Inventory import Inventory
 
 # expand the hosts
 if args.collect or args.benchmark or args.list_hosts:
@@ -136,42 +138,35 @@ if args.collect or args.benchmark or args.list_hosts:
 if args.collect:
     for host in hosts:
         host.connect()
-
-        for collector in host.detect_collectors():
+        for collector in host.detect_collectors(args):
             collector.collect()
+        host.disconnect()
 
         pp = pprint.PrettyPrinter(width=132)
         pp.pprint(host.facts)
-
-        host.disconnect()
 elif args.benchmark:
+    ### Loading.Import
+    # Import the XCCDF document into the program and build an initial internal
+    # representation of the Benchmark object, Groups, Rules, and other objects.
+    # If the file cannot be read or parsed, then Loading fails. (At the
+    # beginning of this step, any inclusion processing specified with XInclude
+    # elements should be performed. The resulting XML information set should be
+    # validated against the XCCDF schema given in Appendix A.) Go to the next
+    # step: Loading.Noticing.
+    
     logger.debug('Loading content file: ' + args.content[0])
     with open(args.content[0], mode='r', encoding='utf_8') as f:
         content = Model.load(None, ET.parse(f).getroot())
 
-    # convert args to hash for use by checkers
-    checker_args = {}
-    if args.data_stream:
-        checker_args['data_stream'] = args.data_stream[0]
-    if args.checklist:
-        checker_args['checklist'] = args.checklist[0]
-    if args.profile:
-        checker_args['profile'] = args.profile[0]
-
-    from scap.collector.Checker import Checker
     for host in hosts:
         host.connect()
-
-        for collector in host.detect_collectors():
+        for collector in host.detect_collectors(args):
             collector.collect()
-
-        chk = Checker.load(host, content, None, checker_args)
+        chk = Checker.load(host, args, content)
         chk.collect()
-
         host.disconnect()
 
-    from scap.Reporter import Reporter
-    rep = Reporter.load(content, hosts)
+    rep = Reporter.load(hosts, content, args)
     report = rep.report()
 
     if args.pretty:
@@ -179,7 +174,6 @@ elif args.benchmark:
         report.write(sio, encoding='unicode', xml_declaration=True)
         sio.write("\n")
 
-        import xml.dom.minidom
         pretty_xml = xml.dom.minidom.parseString(sio.getvalue()).toprettyxml(indent='  ')
         args.output.write(pretty_xml)
     else:

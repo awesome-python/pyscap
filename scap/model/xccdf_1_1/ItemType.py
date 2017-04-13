@@ -21,6 +21,7 @@ import logging
 logger = logging.getLogger(__name__)
 class ItemType(Model):
     MODEL_MAP = {
+        # abstract
         'attributes': {
             'abstract': {'ignore': True, 'type': 'Boolean', 'default': False},
             'cluster-id': {'ignore': True, 'type': 'NCName'},
@@ -41,14 +42,26 @@ class ItemType(Model):
             '{http://checklists.nist.gov/xccdf/1.1}metadata': {'append': 'metadata', 'min': 0, 'max': None, 'class': 'MetadataType', 'ignore': True},
         },
     }
-    # abstract
-    # def __init__(self):
-    #     super(ItemType, self).__init__()
-    #
-    #     self.warnings = []
-    #
-    def from_xml(self, parent, el):
-        super(ItemType, self).from_xml(parent, el)
 
-        for warning in self.warnings:
-            logger.warning('Warning:\n' + warning)
+    def resolve(self, benchmark):
+        """
+        Loading.Resolve.Items
+        For each Item in the Benchmark that has an extends property, resolve
+        it by using the following steps:
+        (1) if the Item is Group, resolve all the enclosed Items,
+        (2) resolve the extended Item,
+        (3) prepend the property sequence from the extended Item to the
+        extending Item,
+        (4) if the Item is a Group, assign values for the id properties of
+        Items copied from the extended Group,
+        (5) remove duplicate properties and apply property overrides, and
+        (6) remove the extends property.
+        If any Item’s extends property identifier does not match the
+        identifier of a visible Item of the same type, then Loading fails. If
+        the directed graph formed by the extends properties includes a loop,
+        then Loading fails. Otherwise, go to the next step:
+        Loading.Resolve.Profiles.
+        """
+
+        import inspect
+        raise NotImplementedError(inspect.stack()[0][3] + '() has not been implemented in subclass: ' + self.__class__.__name__)

@@ -36,7 +36,7 @@ class Simple(Model):
     def is_none(self):
         return self.value is None
 
-    def to_string(self):
+    def __str__(self):
         return str(self.value)
 
     def from_xml(self, parent, sub_el):
@@ -56,6 +56,6 @@ class Simple(Model):
         # should be no subelements as a Simple
 
         if not self.is_none():
-            el.text = self.to_string()
+            el.text = str(self)
 
         return el

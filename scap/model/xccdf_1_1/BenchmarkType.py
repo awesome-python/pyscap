@@ -37,26 +37,17 @@ class BenchmarkType(Model):
             '{http://checklists.nist.gov/xccdf/1.1}metadata': {'append': 'metadata', 'class': 'MetadataType', 'min': 0, 'max': None, 'ignore': True},
             '{http://checklists.nist.gov/xccdf/1.1}model': {'append': 'models', 'class': 'ModelType', 'min': 0, 'max': None, 'ignore': True},
             '{http://checklists.nist.gov/xccdf/1.1}Profile': {'class': 'ProfileType', 'min': 0, 'max': None, 'map': 'profiles'},
-            '{http://checklists.nist.gov/xccdf/1.1}Value': {'class': 'ValueType', 'min': 0, 'max': None, 'map': 'values'},
-            '{http://checklists.nist.gov/xccdf/1.1}Group': {'class': 'GroupType', 'min': 0, 'max': None, 'map': 'groups'},
-            '{http://checklists.nist.gov/xccdf/1.1}Rule': {'class': 'RuleType', 'min': 0, 'max': None, 'map': 'rules'},
-            '{http://checklists.nist.gov/xccdf/1.1}TestResult': {'class': 'TestResultType', 'min': 0, 'max': None, 'map': 'tests'},
+            '{http://checklists.nist.gov/xccdf/1.1}Value': {'class': 'ValueType', 'min': 0, 'max': None, 'map': 'items'},
+            '{http://checklists.nist.gov/xccdf/1.1}Group': {'class': 'GroupType', 'min': 0, 'max': None, 'map': 'items'},
+            '{http://checklists.nist.gov/xccdf/1.1}Rule': {'class': 'RuleType', 'min': 0, 'max': None, 'map': 'items'},
+            '{http://checklists.nist.gov/xccdf/1.1}TestResult': {'class': 'TestResultType', 'min': 0, 'max': None, 'map': 'test_results'},
             '{http://checklists.nist.gov/xccdf/1.1}signature': {'class': 'SignatureType', 'min': 0, 'max': 1, 'ignore': True},
         },
         'attributes': {
             'id': {'required': True, 'type': 'BenchmarkIDPattern'},
             'Id': {'ignore': True, 'type': 'ID'},
-            'resolved': {'ignore': True, 'type': 'Boolean', 'default': False},
+            'resolved': {'type': 'Boolean', 'default': False},
             'style': {'ignore': True, 'type': 'String'},
             'style-href': {'ignore': True, 'type': 'AnyURI'},
         },
     }
-
-    def from_xml(self, parent, el):
-        super(BenchmarkType, self).from_xml(parent, el)
-
-        for notice in list(self.notices.values()):
-            logger.info('Notice: \n' + notice.to_string())
-
-        for profile_id in self.profiles:
-            logger.debug('found profile ' + profile_id)
