@@ -41,3 +41,37 @@ class RuleType(SelectableItemType):
             '{http://checklists.nist.gov/xccdf/1.1}signature': {'ignore': True, 'class': 'SignatureType', 'min': 0, 'max': 1},
         },
     }
+
+    def process(self, benchmark):
+        super(RuleType, self).process(benchmark)
+
+        ### Rule.Content
+
+        # If the Item is a Rule, then process the properties of the Rule.
+        # TODO
+
+        ### Default Model
+        # urn:xccdf:scoring:default
+
+            ### Score.Rule
+
+            ### Score.Group.Init
+
+            ### Score.Group.Recurse
+
+            ### Score.Group.Normalize
+
+            ### Score.Weight
+
+        ### Flat Model
+        # urn:xccdf:scoring:flat
+
+            ### Score.Init
+
+            ### Score.Rules
+
+        ### Flat Unweighted Model
+        # urn:xccdf:scoring:flat-unweighted
+
+        ### Absolute Model
+        # urn:xccdf:scoring:absolute

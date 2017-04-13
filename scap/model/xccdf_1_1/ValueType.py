@@ -48,3 +48,11 @@ class ValueType(ItemType):
             '{http://checklists.nist.gov/xccdf/1.1}signature': {'ignore': True, 'class': 'SignatureType', 'min': 0, 'max': None},
         },
     }
+
+    def process(self, benchmark):
+        ### Value.Content
+
+        # If the Item is a Value, then process the properties of the Value.
+        # TODO
+
+        pass

@@ -26,9 +26,64 @@ class GroupType(SelectableItemType):
             'id': {'required': True, 'type': 'GroupIDPattern'},
         },
         'elements': {
-            '{http://checklists.nist.gov/xccdf/1.1}Value': {'class': 'ValueType', 'map': 'values', 'min': 0, 'max': None},
-            '{http://checklists.nist.gov/xccdf/1.1}Group': {'class': 'GroupType', 'map': 'groups', 'min': 0, 'max': None},
-            '{http://checklists.nist.gov/xccdf/1.1}Rule': {'class': 'RuleType', 'map': 'rules', 'min': 0, 'max': None},
+            '{http://checklists.nist.gov/xccdf/1.1}Value': {'class': 'ValueType', 'map': 'items', 'min': 0, 'max': None},
+            '{http://checklists.nist.gov/xccdf/1.1}Group': {'class': 'GroupType', 'map': 'items', 'min': 0, 'max': None},
+            '{http://checklists.nist.gov/xccdf/1.1}Rule': {'class': 'RuleType', 'map': 'items', 'min': 0, 'max': None},
             '{http://checklists.nist.gov/xccdf/1.1}signature': {'ignore': True, 'class': 'SignatureType', 'min': 0, 'max': 1},
         },
     }
+
+    def resolve(self, benchmark):
+        ### Loading.Resolve.Items
+
+        # For each Item in the Benchmark that has an extends property, resolve
+        # it by using the following steps:
+        if self.extends == '':
+            return
+
+        # (1) if the Item is Group, resolve all the enclosed Items,
+        for item_id in self.items:
+            self.items[item_id].resolve(benchmark)
+
+        # (2) resolve the extended Item,
+        # TODO
+
+        # (3) prepend the property sequence from the extended Item to the
+        # extending Item,
+        # TODO
+
+        # (4) if the Item is a Group, assign values for the id properties of
+        # Items copied from the extended Group,
+        # TODO
+
+        # (5) remove duplicate properties and apply property overrides, and
+        # TODO
+
+        # (6) remove the extends property.
+        # TODO
+
+        # If any Item’s extends property identifier does not match the
+        # identifier of a visible Item of the same type, then Loading fails.
+        # TODO
+
+        # If the directed graph formed by the extends properties includes a
+        # loop, then Loading fails.
+        # TODO
+
+        # Otherwise, go to the next step: Loading.Resolve.Profiles.
+
+        pass
+
+    def process(self, benchmark):
+        super(GroupType, self).process(benchmark)
+
+        ### Group.Front
+
+        # If the Item is a Group, then process the properties of the Group.
+        # TODO
+
+        ### Group.Content
+
+        # If the Item is a Group, then for each Item in the Group’s items
+        # property, initiate Item.Process.
+        # TODO

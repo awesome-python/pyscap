@@ -32,4 +32,35 @@ class SelectableItemType(ItemType):
             '{http://checklists.nist.gov/xccdf/1.1}conflicts': {'append': 'conflicts', 'ignore': True, 'min': 0, 'max': None, 'class': 'IDRefType'},
         },
     }
-    # abstract
+
+    def process(self, benchmark):
+        ### Item.Process
+
+        # Check the contents of the requires and conflicts properties, and if
+        # any required Items are unselected or any conflicting Items are
+        # selected, then set the selected and allowChanges properties to false.
+        # TODO
+
+        ### Item.Select
+
+        # If any of the following conditions holds, cease processing of this
+        # Item:
+
+        # 1. The processing type is Tailoring, and the optional property and
+        # selected property are both false.
+        # TODO
+
+        # 2. The processing type is Document Generation, and the hidden property
+        # is true.
+        # TODO
+
+        # 3. The processing type is Compliance Checking, and the selected
+        # property is false.
+        # TODO
+
+        # 4. The processing type is Compliance Checking, and the current
+        # platform (if known by the tool) is not a member of the set of
+        # platforms for this Item.
+        # TODO
+
+        pass
