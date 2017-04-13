@@ -51,3 +51,85 @@ class BenchmarkType(Model):
             'style-href': {'ignore': True, 'type': 'AnyURI'},
         },
     }
+
+    def noticing(self):
+        ### Loading.Noticing
+
+        # For each notice property of the Benchmark object, add the notice to
+        # the tool’s set of legal notices. If a notice with an identical id
+        # value is already a member of the set, then replace it. If the
+        # Benchmark’s resolved property is set, then Loading succeeds, otherwise
+        # go to the next step: Loading.Resolve.Items.
+
+        for notice in list(self.notices.values()):
+            logger.info('Notice: \n' + str(notice))
+
+    def resolve(self):
+        ### Loading.Resolve.Items
+
+        for item in self.items.values():
+            item.resolve(self, benchmark)
+
+        ### Loading.Resolve.Profiles
+
+        for profile_id in self.profiles:
+            if self.profiles[profile_id].extends:
+                self.profiles[profile_id].resolve(self)
+
+        ### Loading.Resolve.Abstract
+
+        # For each Item in the Benchmark for which the abstract property is
+        # true, remove the Item.
+        for item_id in self.items:
+            if self.items[item_id].abstract:
+                del self.items[item_id]
+
+        # For each Profile in the Benchmark for which the abstract property is
+        # true, remove the Profile. Go to the next step:
+        # Loading.Resolve.Finalize
+        for profile_id in self.profiles:
+            if self.profiles[profile_id].abstract:
+                del self.profiles[profile_id]
+
+        ### Loading.Resolve.Finalize
+
+        # Set the Benchmark resolved property to true; Loading succeeds.
+        self.resolved = True
+
+    def process(self, selected_profile=None):
+        ### Benchmark.Front
+
+        # Process the properties of the Benchmark object
+        # TODO
+
+        ### Benchmark.Profile
+
+        if selected_profile is None:
+            if len(self.profiles) == 0:
+                # No profiles; skip the step
+                pass
+            elif len(self.profiles) == 1:
+                selected_profile = list(self.profiles.keys())[0]
+            else:
+                logger.critical('No --profile specified and unable to implicitly choose one. Available profiles: ' + str(list(content.profiles.keys())))
+                import sys
+                sys.exit()
+        else:
+            if selected_profile not in self.profiles:
+                raise ValueError('Specified --profile, ' + selected_profile + ', not found in content. Available profiles: ' + str(list(content.profiles.keys())))
+
+        if selected_profile is not None:
+            logger.info('Selecting profile ' + selected_profile)
+            self.profiles[selected_profile].apply(self.items)
+
+        ### Benchmark.Content
+
+        # For each Item in the Benchmark object’s items property, initiate
+        # Item.Process
+        for item in self.items.values():
+            item.process(self)
+
+        ### Benchmark.Back
+
+        # Perform any additional processing of the Benchmark object properties
+        # TODO
