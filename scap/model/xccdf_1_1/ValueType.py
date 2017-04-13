@@ -60,10 +60,13 @@ class ValueType(ItemType):
         self.choice_selector = None
 
     def process(self, benchmark):
+        super(ValueType, self).process(benchmark)
+
+        if not self._continue_processing():
+            return
+
         ### Value.Content
 
         # If the Item is a Value, then process the properties of the Value.
-        # TODO
-
         import inspect
         raise NotImplementedError(inspect.stack()[0][3] + '() has not been implemented in subclass: ' + self.__class__.__name__)

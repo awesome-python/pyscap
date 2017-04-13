@@ -23,7 +23,7 @@ class SelChoicesType(Model):
     MODEL_MAP = {
         'attributes': {
             'mustMatch': {'type': 'Boolean'},
-            'selector': {'type': 'String', 'default': ''},
+            'selector': {'type': 'String', 'default': None},
         },
         'elements': {
             # TODO at least one choice/complex-choice

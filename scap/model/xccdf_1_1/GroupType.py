@@ -105,6 +105,10 @@ class GroupType(SelectableItemType):
     def process(self, benchmark):
         super(GroupType, self).process(benchmark)
 
+
+        if not self._continue_processing():
+            return
+
         ### Group.Front
 
         # If the Item is a Group, then process the properties of the Group.

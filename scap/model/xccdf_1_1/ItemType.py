@@ -27,7 +27,7 @@ class ItemType(Extendable):
             'cluster-id': {'ignore': True, 'type': 'NCName'},
             'extends': {'type': 'NCName'},
             'hidden': {'type': 'Boolean', 'default': False},
-            'prohibitChanges': {'ignore': True, 'type': 'Boolean', 'default': False},
+            'prohibitChanges': {'type': 'Boolean', 'default': False},
             'Id': {'ignore': True, 'type': 'ID'},
         },
         'elements': {

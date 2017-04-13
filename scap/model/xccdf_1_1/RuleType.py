@@ -50,6 +50,9 @@ class RuleType(SelectableItemType):
     def process(self, benchmark):
         super(RuleType, self).process(benchmark)
 
+        if not self._continue_processing():
+            return
+
         ### Rule.Content
 
         # If the Item is a Rule, then process the properties of the Rule.

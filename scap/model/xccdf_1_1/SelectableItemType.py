@@ -17,6 +17,7 @@
 
 from scap.model.xccdf_1_1.ItemType import ItemType
 import logging
+import re
 
 logger = logging.getLogger(__name__)
 class SelectableItemType(ItemType):
@@ -28,19 +29,19 @@ class SelectableItemType(ItemType):
         'elements': {
             '{http://checklists.nist.gov/xccdf/1.1}rationale': {'append': 'rationales', 'ignore': True, 'min': 0, 'max': None, 'class': 'HTMLTextWithSubType'},
             '{http://checklists.nist.gov/xccdf/1.1}platform': {'append': 'platforms', 'ignore': True, 'min': 0, 'max': None, 'class': 'OverrideableCPE2IDRefType'},
-            '{http://checklists.nist.gov/xccdf/1.1}requires': {'append': 'requires', 'ignore': True, 'min': 0, 'max': None, 'class': 'IDRefListType'},
-            '{http://checklists.nist.gov/xccdf/1.1}conflicts': {'append': 'conflicts', 'ignore': True, 'min': 0, 'max': None, 'class': 'IDRefType'},
+            '{http://checklists.nist.gov/xccdf/1.1}requires': {'append': 'requires', 'min': 0, 'max': None, 'class': 'IDRefListType'},
+            '{http://checklists.nist.gov/xccdf/1.1}conflicts': {'append': 'conflicts', 'min': 0, 'max': None, 'class': 'IDRefType'},
         },
     }
 
-    def process(self, benchmark):
-        ### Item.Process
+    def _require_one_item(self, benchmark, item_ids):
+        for item_id in item_ids:
+            item = benchmark.items[item_id]
+            if item.selected:
+                return True
+        return False
 
-        # Check the contents of the requires and conflicts properties, and if
-        # any required Items are unselected or any conflicting Items are
-        # selected, then set the selected and allowChanges properties to false.
-        # TODO
-
+    def _continue_processing(self):
         ### Item.Select
 
         # If any of the following conditions holds, cease processing of this
@@ -56,11 +57,35 @@ class SelectableItemType(ItemType):
 
         # 3. The processing type is Compliance Checking, and the selected
         # property is false.
-        # TODO
+        if not self.selected:
+            return False
 
         # 4. The processing type is Compliance Checking, and the current
         # platform (if known by the tool) is not a member of the set of
         # platforms for this Item.
         # TODO
 
-        pass
+        return True
+
+
+    def process(self, benchmark):
+        ### Item.Process
+
+        # Check the contents of the requires and conflicts properties, and if
+        # any required Items are unselected or any conflicting Items are
+        # selected, then set the selected and allowChanges properties to false.
+        for required_item in self.requires:
+            # at least one
+            required_item_ids = re.split(r'\S+', required_item.value)
+            logger.debug('Checking that one of ' + str(required_item_ids) + ' is selected')
+            if not self._require_one_item(benchmark, required_item_ids):
+                self.selected = False
+                self.prohibitChanges = True
+                break
+
+        for conflicting_item in self.conflicts:
+            item = benchmark.items[conflicting_item.value]
+            if item.selected:
+                self.selected = False
+                self.prohibitChanges = True
+                break
