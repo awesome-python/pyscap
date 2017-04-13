@@ -24,7 +24,7 @@ class BenchmarkChecker(Checker):
     def __init__(self, host, args, model):
         super(BenchmarkChecker, self).__init__(host, args, model)
 
-        host.facts['benchmark'] = {'start_time': datetime.datetime.utcnow()}
+        self.host.facts['benchmark'] = {'start_time': datetime.datetime.utcnow()}
 
         self.model.noticing()
 
@@ -38,4 +38,4 @@ class BenchmarkChecker(Checker):
     def collect(self):
         self.model.process(self.selected_profile)
 
-        host.facts['benchmark']['end_time'] = datetime.datetime.utcnow()
+        self.host.facts['benchmark']['end_time'] = datetime.datetime.utcnow()

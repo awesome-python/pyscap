@@ -26,8 +26,8 @@ class RuleType(SelectableItemType):
     MODEL_MAP = {
         'attributes': {
             'id': {'required': True, 'type': 'RuleIDPattern'},
-            'role': {'ignore': True, 'enum': ROLE_ENUMERATION, 'default': 'full'},
-            'severity': {'ignore': True, 'enum': SEVERITY_ENUMERATION, 'default': 'unknown'},
+            'role': {'enum': ROLE_ENUMERATION, 'default': 'full'},
+            'severity': {'enum': SEVERITY_ENUMERATION, 'default': 'unknown'},
             'multiple': {'type': 'Boolean', 'default': False},
         },
         'elements': {
@@ -41,6 +41,11 @@ class RuleType(SelectableItemType):
             '{http://checklists.nist.gov/xccdf/1.1}signature': {'ignore': True, 'class': 'SignatureType', 'min': 0, 'max': 1},
         },
     }
+
+    def __init__(self):
+        super(RuleType, self).__init__()
+
+        self.check_selector = None
 
     def process(self, benchmark):
         super(RuleType, self).process(benchmark)
@@ -75,3 +80,5 @@ class RuleType(SelectableItemType):
 
         ### Absolute Model
         # urn:xccdf:scoring:absolute
+        import inspect
+        raise NotImplementedError(inspect.stack()[0][3] + '() has not been implemented in subclass: ' + self.__class__.__name__)

@@ -29,3 +29,11 @@ class ProfileSelectType(Model):
             '{http://checklists.nist.gov/xccdf/1.1}remark': {'ignore': True, 'class': 'TextType', 'append': 'remarks', 'min': 0, 'max': None},
         },
     }
+
+    def apply(self, item):
+        if self.selected:
+            logger.debug('Selecting item ' + item.id)
+            item.selected = True
+        else:
+            logger.debug('Unselecting item ' + item.id)
+            item.selected = False

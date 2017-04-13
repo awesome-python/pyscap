@@ -65,15 +65,19 @@ class BenchmarkType(Model):
             logger.info('Notice: \n' + str(notice))
 
     def resolve(self):
+        if self.resolved:
+            return
         ### Loading.Resolve.Items
 
-        for item in self.items.values():
-            item.resolve(self, benchmark)
+        for item_id in self.items:
+            logger.debug('Resolving item: ' + item_id)
+            self.items[item_id].resolve(self)
 
         ### Loading.Resolve.Profiles
 
         for profile_id in self.profiles:
             if self.profiles[profile_id].extends:
+                logger.debug('Resolving profile: ' + profile_id)
                 self.profiles[profile_id].resolve(self)
 
         ### Loading.Resolve.Abstract
@@ -82,6 +86,7 @@ class BenchmarkType(Model):
         # true, remove the Item.
         for item_id in self.items:
             if self.items[item_id].abstract:
+                logger.debug('Deleting abstract item: ' + item_id)
                 del self.items[item_id]
 
         # For each Profile in the Benchmark for which the abstract property is
@@ -89,6 +94,7 @@ class BenchmarkType(Model):
         # Loading.Resolve.Finalize
         for profile_id in self.profiles:
             if self.profiles[profile_id].abstract:
+                logger.debug('Deleting abstract profile: ' + profile_id)
                 del self.profiles[profile_id]
 
         ### Loading.Resolve.Finalize

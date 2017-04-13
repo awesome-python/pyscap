@@ -15,11 +15,11 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.Model import Model
+from scap.model.xccdf_1_1.Extendable import Extendable
 import logging
 
 logger = logging.getLogger(__name__)
-class ProfileType(Model):
+class ProfileType(Extendable):
     MODEL_MAP = {
         'attributes': {
             'id': {'required': True, 'type': 'ProfileIDPattern'},
@@ -38,72 +38,37 @@ class ProfileType(Model):
             '{http://checklists.nist.gov/xccdf/1.1}reference': {'ignore': True, 'class': 'ReferenceType', 'append': 'references', 'min': 0, 'max': None},
             '{http://checklists.nist.gov/xccdf/1.1}platform': {'ignore': True, 'class': 'OverrideableCPE2IDRefType', 'append': 'platforms', 'min': 0, 'max': None},
 
-            '{http://checklists.nist.gov/xccdf/1.1}select': {'class': 'ProfileSelectType', 'map': 'selects', 'key': 'idref', 'min': 0, 'max': None},
-            '{http://checklists.nist.gov/xccdf/1.1}set-complex-value': {'class': 'ProfileSetComplexValueType', 'map': 'set_complex_values', 'key': 'idref', 'min': 0, 'max': None},
-            '{http://checklists.nist.gov/xccdf/1.1}set-value': {'class': 'ProfileSetValueType', 'map': 'set_values', 'key': 'idref', 'min': 0, 'max': None},
-            '{http://checklists.nist.gov/xccdf/1.1}refine-value': {'class': 'ProfileRefineValueType', 'map': 'refine_values', 'key': 'idref', 'min': 0, 'max': None},
-            '{http://checklists.nist.gov/xccdf/1.1}refine-rule': {'class': 'ProfileRefineRuleType', 'map': 'refine_rules', 'key': 'idref', 'min': 0, 'max': None},
+            '{http://checklists.nist.gov/xccdf/1.1}select': {'class': 'ProfileSelectType', 'map': 'settings', 'key': 'idref', 'min': 0, 'max': None},
+            '{http://checklists.nist.gov/xccdf/1.1}set-value': {'class': 'ProfileSetValueType', 'map': 'settings', 'key': 'idref', 'min': 0, 'max': None},
+            '{http://checklists.nist.gov/xccdf/1.1}refine-value': {'class': 'ProfileRefineValueType', 'map': 'settings', 'key': 'idref', 'min': 0, 'max': None},
+            '{http://checklists.nist.gov/xccdf/1.1}refine-rule': {'class': 'ProfileRefineRuleType', 'map': 'settings', 'key': 'idref', 'min': 0, 'max': None},
 
             '{http://checklists.nist.gov/xccdf/1.1}metadata': {'ignore': True, 'class': 'MetadataType', 'append': 'metadata', 'min': 0, 'max': None},
             '{http://checklists.nist.gov/xccdf/1.1}signature': {'ignore': True, 'class': 'SignatureType', 'min': 0, 'max': 1},
         },
     }
 
-    def resolve(self, benchmark):
-        ### Loading.Resolve.Profiles
-
-        # For each Profile in the Benchmark that has an extends property,
-        if self.extends == '':
-            return
-
+    def get_extended(self, benchmark):
         try:
-            extended_profile = benchmark.profiles[self.extends]
-
-            # resolve the set of properties in the extending Profile by applying the
-            # following steps:
-            # (1) resolve the extended Profile,
-            extended_profile.resolve(benchmark)
-
-            # (2) prepend the property sequence from the extended Profile to that of
-            # the extending Profile,
-            # (3) remove all but the last instance of duplicate properties.
-            selects = extended_profile.selects.copy()
-            selects.update(self.selects)
-            self.selects = selects
-
-            set_complex_values = extended_profile.selects.copy()
-            set_complex_values.update(self.set_complex_values)
-            self.set_complex_values = set_complex_values
-
-            set_values = extended_profile.selects.copy()
-            set_values.update(self.set_values)
-            self.set_values = set_values
-
-            refine_values = extended_profile.selects.copy()
-            refine_values.update(self.refine_values)
-            self.refine_values = refine_values
-
-            refine_rules = extended_profile.selects.copy()
-            refine_rules.update(self.refine_rules)
-            self.refine_rules = refine_rules
+            extended = benchmark.profile[self.extends]
         except AttributeError:
-
             # If any Profile’s extends property identifier does not match the
-            # identifier of another Profile in the Benchmark, then Loading fails.
-            raise ValueError('Profile ' + self.id + ' unable to extend unknown profile: ' + self.extends)
+            # identifier of another Profile in the Benchmark, then Loading
+            # fails.
+            raise ValueError('Profile ' + self.id + ' unable to extend unknown profile id: ' + self.extends)
 
-        # If the directed graph formed by the extends properties of Profiles
-        # includes a loop, then Loading fails.
-        # TODO
-
-        # Otherwise, go to Loading.Resolve.Abstract.
+        return extended
 
     def apply(self, items):
         ### Benchmark.Profile
 
         # If a Profile id was specified, then apply the settings in the Profile
         # to the Items of the Benchmark
-        # TODO
+        for setting_idref in self.settings:
+            setting = self.settings[setting_idref]
+            try:
+                item = items[setting_idref]
+            except KeyError:
+                raise ValueError('Unable to apply profile setting to idref ' + setting_idref)
 
-        import inspect
-        raise NotImplementedError(inspect.stack()[0][3] + '() has not been implemented in subclass: ' + self.__class__.__name__)
+            setting.apply(item)

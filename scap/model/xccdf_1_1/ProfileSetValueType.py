@@ -25,3 +25,11 @@ class ProfileSetValueType(String):
             'idref': {'type': 'NCName', 'required': True},
         }
     }
+
+    def apply(self, item):
+        from scap.model.xccdf_1_1.ValueType import ValueType
+        if not isinstance(item, ValueType):
+            raise ValueError('Trying to set value (' + self.idref + ') on an item of the wrong type: ' + item.__class__.__name__)
+
+        logger.debug('Setting value ' + item.id + ' to ' + self.value)
+        item.value = self.value

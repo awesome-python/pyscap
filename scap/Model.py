@@ -184,6 +184,8 @@ class Model(object):
         # initialize attribute values
         for name in self.model_map['attributes']:
             attr_map = self.model_map['attributes'][name]
+            if 'ignore' in attr_map and attr_map['ignore']:
+                continue
 
             if 'in' in attr_map:
                 attr_name = attr_map['in']
@@ -199,31 +201,33 @@ class Model(object):
                 setattr(self, attr_name, None)
 
         # initialize elements
-        for t in self.model_map['elements']:
-            xml_namespace, tag_name = Model.parse_tag(t)
-            for tag in [t, tag_name]:
-                if tag.endswith('*'):
-                    continue
-                if tag in self.model_map['elements']:
-                    tag_map = self.model_map['elements'][tag]
-                    if 'append' in tag_map:
-                        # initialze the array if it doesn't exist
-                        if tag_map['append'] not in list(self.__dict__.keys()):
-                            logger.debug('Initializing ' + tag_map['append'] + ' to empty list')
-                            setattr(self, tag_map['append'], [])
-                    elif 'map' in tag_map:
-                        # initialze the dict if it doesn't exist
-                        if tag_map['map'] not in list(self.__dict__.keys()):
-                            logger.debug('Initializing ' + tag_map['map'] + ' to empty hash')
-                            setattr(self, tag_map['map'], {})
-                    else:
-                        if 'in' in tag_map:
-                            name = tag_map['in']
-                        else:
-                            name = tag_name.replace('-', '_')
-                        if name not in list(self.__dict__.keys()):
-                            logger.debug('Initializing ' + name + ' to None')
-                            setattr(self, name, None)
+        for tag in self.model_map['elements']:
+            xml_namespace, tag_name = Model.parse_tag(tag)
+            if tag.endswith('*'):
+                continue
+
+            tag_map = self.model_map['elements'][tag]
+            if 'ignore' in tag_map and tag_map['ignore']:
+                continue
+
+            if 'append' in tag_map:
+                # initialze the array if it doesn't exist
+                if tag_map['append'] not in list(self.__dict__.keys()):
+                    logger.debug('Initializing ' + tag_map['append'] + ' to empty list')
+                    setattr(self, tag_map['append'], [])
+            elif 'map' in tag_map:
+                # initialze the dict if it doesn't exist
+                if tag_map['map'] not in list(self.__dict__.keys()):
+                    logger.debug('Initializing ' + tag_map['map'] + ' to empty hash')
+                    setattr(self, tag_map['map'], {})
+            else:
+                if 'in' in tag_map:
+                    name = tag_map['in']
+                else:
+                    name = tag_name.replace('-', '_')
+                if name not in list(self.__dict__.keys()):
+                    logger.debug('Initializing ' + name + ' to None')
+                    setattr(self, name, None)
 
     def accept(self, visitor):
         visitor.visit(self)

@@ -34,3 +34,24 @@ class ProfileRefineRuleType(Model):
             '{http://checklists.nist.gov/xccdf/1.1}remark': {'ignore': True, 'type': 'TextType', 'append': 'remarks', 'min': 0, 'max': None},
         },
     }
+
+    def apply(self, item):
+        from scap.model.xccdf_1_1.RuleType import RuleType
+        if not isinstance(item, RuleType):
+            raise ValueError('Trying to refine rule (' + self.idref + ') on an item of the wrong type: ' + item.__class__.__name__)
+
+        if self.weight is not None:
+            logger.debug('Refining rule ' + item.id + ' weight to ' + self.weight)
+            item.weight = float(self.weight)
+
+        if self.selector is not None:
+            logger.debug('Refining rule ' + item.id + ' check to ' + self.selector)
+            item.check_selector = self.selector
+
+        if self.severity is not None:
+            logger.debug('Refining rule ' + item.id + ' severity to ' + self.severity)
+            item.severity = self.severity
+
+        if self.role is not None:
+            logger.debug('Refining rule ' + item.id + ' role to ' + self.role)
+            item.role = self.role

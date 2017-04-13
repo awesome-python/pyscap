@@ -34,20 +34,30 @@ class ValueType(ItemType):
         'elements': {
             # TODO: at least one value
             # TODO: since order matters in xml (and for values) we might need a list vs. dict here
-            '{http://checklists.nist.gov/xccdf/1.1}value': {'class': 'SelStringType', 'map': 'values', 'key': 'selector', 'min': 0, 'max': None},
-            '{http://checklists.nist.gov/xccdf/1.1}complex-value': {'class': 'SelComplexValueType', 'map': 'complex_values', 'key': 'selector', 'min': 0, 'max': None},
-            # choice of below
-            '{http://checklists.nist.gov/xccdf/1.1}default': {'class': 'SelStringType', 'min': 0, 'max': None, 'map': 'defaults', 'key': 'selector'},
-            '{http://checklists.nist.gov/xccdf/1.1}complex-default': {'class': 'SelComplexValueType', 'min': 0, 'max': None, 'map': 'complex_defaults', 'key': 'selector'},
 
+            '{http://checklists.nist.gov/xccdf/1.1}value': {'class': 'SelStringType', 'map': 'values', 'key': 'selector', 'min': 0, 'max': None},
+            '{http://checklists.nist.gov/xccdf/1.1}default': {'class': 'SelStringType', 'min': 0, 'max': None, 'map': 'defaults', 'key': 'selector'},
             '{http://checklists.nist.gov/xccdf/1.1}match': {'class': 'SelStringType', 'map': 'matches', 'key': 'selector', 'min': 0, 'max': None},
             '{http://checklists.nist.gov/xccdf/1.1}lower-bound': {'class': 'SelNumType', 'map': 'lower_bounds', 'key': 'selector', 'min': 0, 'max': None},
             '{http://checklists.nist.gov/xccdf/1.1}upper-bound': {'class': 'SelNumType', 'map': 'upper_bounds', 'key': 'selector', 'min': 0, 'max': None},
             '{http://checklists.nist.gov/xccdf/1.1}choices': {'class': 'SelChoicesType', 'map': 'choices', 'key': 'selector', 'min': 0, 'max': None},
+
             '{http://checklists.nist.gov/xccdf/1.1}source': {'class': 'URIRefType', 'append': 'sources', 'min': 0, 'max': None},
             '{http://checklists.nist.gov/xccdf/1.1}signature': {'ignore': True, 'class': 'SignatureType', 'min': 0, 'max': None},
         },
     }
+
+    def __init__(self):
+        super(ValueType, self).__init__()
+
+        self.value = None
+
+        self.value_selector = None
+        self.default_selector = None
+        self.match_selector = None
+        self.lower_bound_selector = None
+        self.upper_bound_selector = None
+        self.choice_selector = None
 
     def process(self, benchmark):
         ### Value.Content
@@ -55,4 +65,5 @@ class ValueType(ItemType):
         # If the Item is a Value, then process the properties of the Value.
         # TODO
 
-        pass
+        import inspect
+        raise NotImplementedError(inspect.stack()[0][3] + '() has not been implemented in subclass: ' + self.__class__.__name__)

@@ -38,7 +38,7 @@ class GroupType(SelectableItemType):
 
         # For each Item in the Benchmark that has an extends property, resolve
         # it by using the following steps:
-        if self.extends == '':
+        if self.extends is None:
             return
 
         # (1) if the Item is Group, resolve all the enclosed Items,
@@ -46,25 +46,53 @@ class GroupType(SelectableItemType):
             self.items[item_id].resolve(benchmark)
 
         # (2) resolve the extended Item,
-        # TODO
+        extended = self.get_extended(benchmark)
+        extended.resolve(benchmark)
 
         # (3) prepend the property sequence from the extended Item to the
         # extending Item,
-        # TODO
+        # (5) remove duplicate properties and apply property overrides, and
+        for name in self.model_map['attributes']:
+            attr_map = self.model_map['attributes'][name]
+            if 'ignore' in attr_map and attr_map['ignore']:
+                continue
+
+            if 'in' in attr_map:
+                attr_name = attr_map['in']
+            else:
+                xml_namespace, attr_name = Model.parse_tag(name)
+                attr_name = attr_name.replace('-', '_')
+            self.resolve_property(extended, attr_name)
+
+        for tag in self.model_map['elements']:
+            xml_namespace, tag_name = Model.parse_tag(tag)
+            if tag.endswith('*'):
+                continue
+
+            tag_map = self.model_map['elements'][tag]
+            if 'ignore' in tag_map and tag_map['ignore']:
+                continue
+
+            if 'append' in tag_map:
+                self.resolve_property(extended, tag_map['append'])
+            elif 'map' in tag_map:
+                self.resolve_property(extended, tag_map['map'])
+            else:
+                if 'in' in tag_map:
+                    name = tag_map['in']
+                else:
+                    name = tag_name.replace('-', '_')
+            self.resolve_property(extended, name)
 
         # (4) if the Item is a Group, assign values for the id properties of
         # Items copied from the extended Group,
-        # TODO
-
-        # (5) remove duplicate properties and apply property overrides, and
-        # TODO
+        if hasattr(extended, 'items') and len(extended.items) > 0:
+            for ext_item in extended.items:
+                # make a copy of the item and append to our items
+                self.items.append(ext_item.copy())
 
         # (6) remove the extends property.
-        # TODO
-
-        # If any Item’s extends property identifier does not match the
-        # identifier of a visible Item of the same type, then Loading fails.
-        # TODO
+        self.extends = None
 
         # If the directed graph formed by the extends properties includes a
         # loop, then Loading fails.
@@ -87,3 +115,5 @@ class GroupType(SelectableItemType):
         # If the Item is a Group, then for each Item in the Group’s items
         # property, initiate Item.Process.
         # TODO
+        import inspect
+        raise NotImplementedError(inspect.stack()[0][3] + '() has not been implemented in subclass: ' + self.__class__.__name__)
