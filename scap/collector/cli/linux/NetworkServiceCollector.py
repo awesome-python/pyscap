@@ -22,7 +22,7 @@ logger = logging.getLogger(__name__)
 class NetworkServiceCollector(LinuxCollector):
     def collect(self):
         from scap.collector.cli.linux.NetstatCollector import NetstatCollector
-        NetstatCollector(self.host).collect()
+        NetstatCollector(self.host, self.args).collect()
 
         for netsvc in self.host.facts['network_services']:
             logger.debug('Service: Address: ' + netsvc['ip_address'] + ' Port: ' + netsvc['port'] + ' Protocol: ' + netsvc['protocol'] + ' Source: ' + netsvc['source'] + ' Timestamp: ' + netsvc['timestamp'])

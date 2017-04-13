@@ -26,15 +26,15 @@ class CPECollector(WindowsCollector):
 
         # hardware
         from scap.collector.cli.windows.WmicPnPEntityCollector import WmicPnPEntityCollector
-        WmicPnPEntityCollector(self.host).collect()
+        WmicPnPEntityCollector(self.host, self.args).collect()
 
         # os
         from scap.collector.cli.windows.SystemInfoCollector import SystemInfoCollector
-        SystemInfoCollector(self.host).collect()
+        SystemInfoCollector(self.host, self.args).collect()
 
         # application
         from scap.collector.cli.windows.RegUninstallCollector import RegUninstallCollector
-        RegUninstallCollector(self.host).collect()
+        RegUninstallCollector(self.host, self.args).collect()
 
         for cpe in self.host.facts['cpe']:
             logger.debug(cpe.to_uri_string())

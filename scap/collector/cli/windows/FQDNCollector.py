@@ -24,4 +24,4 @@ class FQDNCollector(WindowsCollector):
         self.host.facts['fqdn'] = []
 
         from scap.collector.cli.windows.IpConfigAllCollector import IpConfigAllCollector
-        IpConfigAllCollector(self.host).collect()
+        IpConfigAllCollector(self.host, self.args).collect()

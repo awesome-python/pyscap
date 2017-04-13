@@ -22,19 +22,19 @@ logger = logging.getLogger(__name__)
 class LinuxCollector(CLICollector):
     def collect(self):
         from scap.collector.cli.linux.SystemUUIDCollector import SystemUUIDCollector
-        SystemUUIDCollector(self.host).collect()
+        SystemUUIDCollector(self.host, self.args).collect()
 
         from scap.collector.cli.linux.CPECollector import CPECollector
-        CPECollector(self.host).collect()
+        CPECollector(self.host, self.args).collect()
 
         from scap.collector.cli.linux.HostnameCollector import HostnameCollector
-        HostnameCollector(self.host).collect()
+        HostnameCollector(self.host, self.args).collect()
 
         from scap.collector.cli.linux.FQDNCollector import FQDNCollector
-        FQDNCollector(self.host).collect()
+        FQDNCollector(self.host, self.args).collect()
 
         from scap.collector.cli.linux.NetworkConnectionCollector import NetworkConnectionCollector
-        NetworkConnectionCollector(self.host).collect()
+        NetworkConnectionCollector(self.host, self.args).collect()
 
         from scap.collector.cli.linux.NetworkServiceCollector import NetworkServiceCollector
-        NetworkServiceCollector(self.host).collect()
+        NetworkServiceCollector(self.host, self.args).collect()

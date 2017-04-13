@@ -29,4 +29,4 @@ logger = logging.getLogger(__name__)
 class SystemUUIDCollector(WindowsCollector):
     def collect(self):
         from scap.collector.cli.windows.WmicCsProductCollector import WmicCsProductCollector
-        WmicCsProductCollector(self.host).collect()
+        WmicCsProductCollector(self.host, self.args).collect()

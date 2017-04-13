@@ -22,9 +22,9 @@ logger = logging.getLogger(__name__)
 class NetworkConnectionCollector(LinuxCollector):
     def collect(self):
         from scap.collector.cli.linux.IpAddrCollector import IpAddrCollector
-        IpAddrCollector(self.host).collect()
+        IpAddrCollector(self.host, self.args).collect()
         from scap.collector.cli.linux.IpRouteCollector import IpRouteCollector
-        IpRouteCollector(self.host).collect()
+        IpRouteCollector(self.host, self.args).collect()
 
         for dev, netcon in self.host.facts['network_connections'].items():
             logger.debug('Device: ' + dev)

@@ -26,13 +26,13 @@ class CPECollector(LinuxCollector):
 
         # hardware
         from scap.collector.cli.linux.LshwCollector import LshwCollector
-        LshwCollector(self.host).collect()
+        LshwCollector(self.host, self.args).collect()
 
         from scap.collector.cli.linux.LspciCollector import LspciCollector
-        LspciCollector(self.host).collect()
+        LspciCollector(self.host, self.args).collect()
 
         from scap.collector.cli.linux.LscpuCollector import LscpuCollector
-        LscpuCollector(self.host).collect()
+        LscpuCollector(self.host, self.args).collect()
 
         # TODO hwinfo
         # TODO lsusb
@@ -41,10 +41,10 @@ class CPECollector(LinuxCollector):
 
         # os
         from scap.collector.cli.linux.LsbReleaseCollector import LsbReleaseCollector
-        LsbReleaseCollector(self.host).collect()
+        LsbReleaseCollector(self.host, self.args).collect()
 
         from scap.collector.cli.linux.UNameCollector import UNameCollector
-        UNameCollector(self.host).collect()
+        UNameCollector(self.host, self.args).collect()
 
         # application
         # TODO rpm -qa

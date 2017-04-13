@@ -22,19 +22,19 @@ logger = logging.getLogger(__name__)
 class WindowsCollector(CLICollector):
     def collect(self):
         from scap.collector.cli.windows.SystemUUIDCollector import SystemUUIDCollector
-        SystemUUIDCollector(self.host).collect()
+        SystemUUIDCollector(self.host, self.args).collect()
 
         from scap.collector.cli.windows.CPECollector import CPECollector
-        CPECollector(self.host).collect()
+        CPECollector(self.host, self.args).collect()
 
         from scap.collector.cli.windows.FQDNCollector import FQDNCollector
-        FQDNCollector(self.host).collect()
+        FQDNCollector(self.host, self.args).collect()
 
         from scap.collector.cli.windows.HostnameCollector import HostnameCollector
-        HostnameCollector(self.host).collect()
+        HostnameCollector(self.host, self.args).collect()
 
         from scap.collector.cli.windows.NetworkConnectionCollector import NetworkConnectionCollector
-        NetworkConnectionCollector(self.host).collect()
+        NetworkConnectionCollector(self.host, self.args).collect()
 
         from scap.collector.cli.windows.NetworkServiceCollector import NetworkServiceCollector
-        NetworkServiceCollector(self.host).collect()
+        NetworkServiceCollector(self.host, self.args).collect()
