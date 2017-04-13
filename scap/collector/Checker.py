@@ -19,21 +19,22 @@ import importlib
 import logging
 import sys
 from scap.Collector import Collector
+import scap.model.xccdf_1_1.BenchmarkType
 
 logger = logging.getLogger(__name__)
 #logger.setLevel(logging.INFO)
 class Checker(Collector):
     @staticmethod
-    def load(host, args, content):
-        if content.tag == '{http://checklists.nist.gov/xccdf/1.1}Benchmark':
+    def load(host, args, model):
+        if isinstance(model, scap.model.xccdf_1_1.BenchmarkType.BenchmarkType):
             from scap.collector.checker.xccdf_1_1.BenchmarkChecker import BenchmarkChecker
-            return BenchmarkChecker(host, args, content)
+            return BenchmarkChecker(host, args, model)
         else:
-            raise NotImplementedError('Checking with ' + content.tag + ' content has not been implemented')
+            raise NotImplementedError('Checking with ' + model.__class__.__name__ + ' content has not been implemented')
 
-    def __init__(self, host, args, content):
+    def __init__(self, host, args, model):
         super(Checker, self).__init__(host, args)
-        self.content = content
+        self.model = model
 
     def collect(self):
         import inspect

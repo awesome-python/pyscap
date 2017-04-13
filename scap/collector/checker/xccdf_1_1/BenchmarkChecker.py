@@ -21,23 +21,21 @@ import datetime
 
 logger = logging.getLogger(__name__)
 class BenchmarkChecker(Checker):
-    def __init__(self, host, args, benchmark):
-        super(BenchmarkChecker, self).__init__(host, host, args, benchmark)
+    def __init__(self, host, args, model):
+        super(BenchmarkChecker, self).__init__(host, args, model)
 
-        host.facts['benchmark'] = {'start_time': datetime.utcnow()}
+        host.facts['benchmark'] = {'start_time': datetime.datetime.utcnow()}
 
-        benchmark.noticing()
+        self.model.noticing()
 
         if args.profile:
             self.selected_profile = args.profile[0]
         else:
             self.selected_profile = None
 
-        benchmark.resolve()
+        self.model.resolve()
 
     def collect(self):
-        benchmark = self.content
+        self.model.process(self.selected_profile)
 
-        benchmark.process(self.selected_profile)
-
-        host.facts['benchmark']['end_time'] = datetime.utcnow()
+        host.facts['benchmark']['end_time'] = datetime.datetime.utcnow()
