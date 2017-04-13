@@ -17,11 +17,14 @@
 
 from scap.collector.Checker import Checker
 import logging
+import datetime
 
 logger = logging.getLogger(__name__)
 class BenchmarkChecker(Checker):
     def __init__(self, host, args, benchmark):
         super(BenchmarkChecker, self).__init__(host, host, args, benchmark)
+
+        host.facts['benchmark'] = {'start_time': datetime.now()}
 
         benchmark.noticing()
 
@@ -36,3 +39,5 @@ class BenchmarkChecker(Checker):
         benchmark = self.content
 
         benchmark.process(self.selected_profile)
+
+        host.facts['benchmark']['end_time'] = datetime.now()
