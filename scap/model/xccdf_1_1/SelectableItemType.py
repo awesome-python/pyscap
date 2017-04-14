@@ -68,7 +68,7 @@ class SelectableItemType(ItemType):
         return True
 
 
-    def process(self, benchmark):
+    def process(self, benchmark, host):
         ### Item.Process
 
         # Check the contents of the requires and conflicts properties, and if
