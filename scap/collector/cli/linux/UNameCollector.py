@@ -24,7 +24,7 @@ class UNameCollector(LinuxCollector):
     def collect(self):
         if 'uname' not in self.host.facts:
             from scap.collector.cli.UNameCollector import UNameCollector
-            UNameCollector(self.host).collect()
+            UNameCollector(self.host, self.args).collect()
 
         if not self.host.facts['uname'].startswith('Linux'):
             raise ValueError('Linux UnameCollector did not get linux uname')
