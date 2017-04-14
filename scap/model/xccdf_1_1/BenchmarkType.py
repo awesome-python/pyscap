@@ -102,11 +102,17 @@ class BenchmarkType(Model):
         # Set the Benchmark resolved property to true; Loading succeeds.
         self.resolved = True
 
-    def process(self, selected_profile=None):
+    def process(self, host, selected_profile=None):
         ### Benchmark.Front
 
         # Process the properties of the Benchmark object
         # TODO
+
+        # TODO check that if this group has a platform specification identified,
+        # that the  target system matches
+
+        # TODO check that if this group has a platform identified, that the
+        # target system matches
 
         ### Benchmark.Profile
 
@@ -126,14 +132,14 @@ class BenchmarkType(Model):
 
         if selected_profile is not None:
             logger.info('Selecting profile ' + selected_profile)
-            self.profiles[selected_profile].apply(self.items)
+            self.profiles[selected_profile].apply(self.items, host)
 
         ### Benchmark.Content
 
         # For each Item in the Benchmark object’s items property, initiate
         # Item.Process
         for item in self.items.values():
-            item.process(self)
+            item.process(self, host)
 
         ### Benchmark.Back
 
