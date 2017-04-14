@@ -59,8 +59,11 @@ class ProfileType(Extendable):
 
         return extended
 
-    def apply(self, items):
+    def apply(self, items, host):
         ### Benchmark.Profile
+
+        # TODO check that if this group has a platform identified, that the
+        # target system matches
 
         # If a Profile id was specified, then apply the settings in the Profile
         # to the Items of the Benchmark
