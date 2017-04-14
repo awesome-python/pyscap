@@ -36,6 +36,6 @@ class BenchmarkChecker(Checker):
         self.model.resolve()
 
     def collect(self):
-        self.model.process(self.selected_profile)
+        self.model.process(self.selected_profile, self.host)
 
         self.host.facts['benchmark']['end_time'] = datetime.datetime.utcnow()
