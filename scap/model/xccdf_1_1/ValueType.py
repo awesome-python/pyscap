@@ -59,7 +59,7 @@ class ValueType(ItemType):
         self.upper_bound_selector = None
         self.choice_selector = None
 
-    def process(self, benchmark):
+    def process(self, benchmark, host):
         super(ValueType, self).process(benchmark)
 
         if not self._continue_processing():
