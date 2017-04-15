@@ -457,7 +457,7 @@ class CPE(object):
 
     @staticmethod
     def from_string(s):
-        cpe = CPE(s)
+        return CPE(s)
 
     def __init__(self, s=None, **kwargs):
         self.values = {}
