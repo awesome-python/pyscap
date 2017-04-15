@@ -16,7 +16,7 @@
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
 from scap.Model import Model
-from scap.model.xccdf_1_1.CheckOperatorEnumeration import CHECK_OPERATOR_ENUMERATION
+from scap.model.xccdf_1_1.CheckOperatorEnumeration import CHECK_OPERATOR_ENUMERATION, AND, OR, negate
 import logging
 
 logger = logging.getLogger(__name__)
@@ -32,3 +32,29 @@ class ComplexCheckType(Model):
             '{http://checklists.nist.gov/xccdf/1.1}complex-check': {'class': 'ComplexCheckType', 'min': 0, 'max': None, 'append': 'checks'},
         },
     }
+
+
+    def check(self, benchmark, host):
+        if len(self.checks) < 1:
+            raise ValueError('No sub-checks with complex-check')
+
+        check_results = []
+        for check in self.checks:
+            check_results += check.check(benchmark, host)
+
+        # apply the operator
+        if self.operator == 'AND':
+            result = AND([x['result'] for x in check_results])
+        elif self.operator == 'OR':
+            result = OR([x['result'] for x in check_results])
+        else:
+            raise ValueError('Unknown check operator: ' + self.operator)
+
+        if self.negate:
+            result = negate(result)
+
+        return {
+            'result': result,
+            'message': 'Complex check results',
+            'imports': {}
+        }

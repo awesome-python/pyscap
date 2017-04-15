@@ -57,10 +57,13 @@ class RuleType(SelectableItemType):
 
     def _check(self, benchmark, host):
         check = None
-        if self.check_selector is None:
-            check = self.checks[None]
-        else:
-            check = self.checks[self.check_selector]
+        if len(self.checks) != 0:
+            if self.check_selector is None:
+                check = self.checks[None]
+            else:
+                check = self.checks[self.check_selector]
+        elif self.complex_check is not None:
+            check = self.complex_check
 
         check_result = {
             'result': 'notchecked',
