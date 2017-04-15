@@ -61,8 +61,8 @@ class CheckType(Model):
     def check(self, benchmark, host):
         if self.system not in self.SYSTEM_ENUMERATION:
             return {
-                'result': 'notchecked',
-                'message': 'System ' + self.system + ' is not supported',
+                'result': 'error',
+                'message': 'Unknown system ' + self.system,
                 'imports': {}
             }
 

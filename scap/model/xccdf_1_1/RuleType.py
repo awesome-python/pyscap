@@ -18,6 +18,7 @@
 import logging
 import os.path
 import shutil
+import sys
 
 from scap.Model import Model
 
@@ -97,7 +98,14 @@ class RuleType(SelectableItemType):
         # TODO check that if this group has a platform identified, that the
         # target system matches
 
-        check_result = self._check(benchmark, host)
+        try:
+            check_result = self._check(benchmark, host)
+        except:
+            check_result = {
+                'result': 'error',
+                'message': 'Exception while checking ' + sys.exc_info()[0],
+                'imports': {}
+            }
 
         # if it fails and there's a fix available
         if check_result['result'] == 'fail':
