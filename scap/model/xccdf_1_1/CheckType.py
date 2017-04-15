@@ -37,9 +37,8 @@ class CheckType(Model):
     }
 
     SUPPORTED_SYSTEM_ENUMERATION = [
-        'http://oval.mitre.org/XMLSchema/oval-definitions-5',
-        'http://scap.nist.gov/schema/ocil/2.0',
-        'http://scap.nist.gov/schema/ocil/2',
+        'http://oval.mitre.org/XMLSchema/oval',
+        'http://www.cisecurity.org/xccdf/interactive/1.0',
     ]
 
     def __str__(self):
