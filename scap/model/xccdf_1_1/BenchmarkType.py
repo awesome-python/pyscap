@@ -123,12 +123,12 @@ class BenchmarkType(Model):
             elif len(self.profiles) == 1:
                 selected_profile = list(self.profiles.keys())[0]
             else:
-                logger.critical('No --profile specified and unable to implicitly choose one. Available profiles: ' + str(list(content.profiles.keys())))
+                logger.critical('No --profile specified and unable to implicitly choose one. Available profiles: ' + str(list(self.profiles.keys())))
                 import sys
                 sys.exit()
         else:
             if selected_profile not in self.profiles:
-                raise ValueError('Specified --profile, ' + selected_profile + ', not found in content. Available profiles: ' + str(list(content.profiles.keys())))
+                raise ValueError('Specified --profile, ' + selected_profile + ', not found in content. Available profiles: ' + str(list(self.profiles.keys())))
 
         if selected_profile is not None:
             logger.info('Selecting profile ' + selected_profile)
