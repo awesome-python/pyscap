@@ -133,9 +133,15 @@ class RuleType(SelectableItemType):
         host.facts['rule_results'][self.id] = check_result
 
     def score(self, host, model = 'urn:xccdf:scoring:default'):
+        ### Score.Rule
+
+        # If the node is a Rule, then assign a count of 1, and if the test
+        # result is ‘pass’, assign the node a score of 100, otherwise assign a
+        # score of 0.
+
         if host.facts['rule_results'][self.id]['result'] in ['pass', 'fixed']:
-            return {rule.id: {'model': model, 'score': 100.0, 'weight': self.weight}}
+            return {self.id: {'model': model, 'score': 100.0, 'weight': self.weight, 'count': 1}}
         elif host.facts['rule_results'][self.id]['result'] in ['error', 'unknown']:
-            return {rule.id: {'model': model, 'score': 0.0, 'weight': self.weight}}
+            return {self.id: {'model': model, 'score': 0.0, 'weight': self.weight, 'count': 1}}
         else:
-            return {rule.id: {'model': model, 'score': None, 'weight': self.weight}}
+            return {self.id: {'model': model, 'score': None, 'weight': self.weight, 'count': 1}}
