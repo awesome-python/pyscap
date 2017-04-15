@@ -102,8 +102,8 @@ class GroupType(SelectableItemType):
 
         pass
 
-    def process(self, benchmark):
-        super(GroupType, self).process(benchmark)
+    def process(self, benchmark, host):
+        super(GroupType, self).process(benchmark, host)
 
 
         if not self._continue_processing():
@@ -114,10 +114,12 @@ class GroupType(SelectableItemType):
         # If the Item is a Group, then process the properties of the Group.
         # TODO
 
+        # TODO check that if this group has a platform identified, that the
+        # target system matches
+
         ### Group.Content
 
         # If the Item is a Group, then for each Item in the Group’s items
         # property, initiate Item.Process.
-        # TODO
-        import inspect
-        raise NotImplementedError(inspect.stack()[0][3] + '() has not been implemented in subclass: ' + self.__class__.__name__)
+        for item_id in self.items:
+            self.items[item_id].process(benchmark, host)
