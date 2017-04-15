@@ -100,8 +100,6 @@ class GroupType(SelectableItemType):
 
         # Otherwise, go to the next step: Loading.Resolve.Profiles.
 
-        pass
-
     def process(self, benchmark, host):
         super(GroupType, self).process(benchmark, host)
 
