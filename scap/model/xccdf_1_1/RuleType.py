@@ -15,12 +15,19 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
+import logging
+import os.path
+import shutil
+
+from scap.Model import Model
+
+from scap.model.cpe_2_3.CPE import CPE
+
 from scap.model.xccdf_1_1.SelectableItemType import SelectableItemType
 from scap.model.xccdf_1_1.RoleEnumeration import ROLE_ENUMERATION
 from scap.model.xccdf_1_1.SeverityEnumeration import SEVERITY_ENUMERATION
 from scap.model.xccdf_1_1.ScoringModelEnumeration import SCORING_MODEL_ENUMERATION
-from scap.Model import Model
-import logging
+
 
 logger = logging.getLogger(__name__)
 class RuleType(SelectableItemType):
@@ -48,6 +55,32 @@ class RuleType(SelectableItemType):
 
         self.check_selector = None
 
+    def _check(self, benchmark, host):
+        check = None
+        if self.check_selector is None:
+            check = self.checks[None]
+        else:
+            check = self.checks[self.check_selector]
+
+        check_result = {
+            'result': 'notchecked',
+            'message': 'No applicable checks found',
+            'imports': {}
+        }
+        if check is None:
+            for ext in ['.sh', '.ps1', '.bat']:
+                path = os.path.join('script', 'check', benchmark.id, self.id + ext)
+                if os.path.isfile(path):
+                    logger.debug('Found check script: ' + path)
+                    # TODO transfer script & get results
+        else:
+            # call the check
+            logger.debug('Running check ' + str(check))
+            check_result = check.check(benchmark, host)
+
+        logger.debug('Check result: ' + str(check_result))
+        return check_result
+
     def process(self, benchmark, host):
         super(RuleType, self).process(benchmark, host)
 
@@ -61,15 +94,7 @@ class RuleType(SelectableItemType):
         # TODO check that if this group has a platform identified, that the
         # target system matches
 
-        if self.check_selector is None:
-            check = self.checks[None]
-        else:
-            check = self.checks[self.check_selector]
-
-        # call the check
-        logger.debug('Running check ' + str(check))
-        check_result = check.check(benchmark, host)
-        logger.debug('Check result: ' + str(check_result))
+        check_result = self._check(benchmark, host)
 
         # if it fails and there's a fix available
         if check_result['result'] == 'fail':
@@ -79,17 +104,38 @@ class RuleType(SelectableItemType):
                 fix.fix(benchmark, host)
 
                 # call the check again
-                logger.debug('Re-running check ' + str(check))
-                check_result = check.check(benchmark, host)
-                logger.debug('Check result: ' + str(check_result))
+                check_result = self._check(benchmark, host)
 
                 # if successful, mark as fixed
                 if check_result['result'] == 'pass':
                     check_result['result'] = 'fixed'
                     break
 
-        # TODO result retention
+        # if no fixes worked/are available, check if we have a script available
+        if check_result['result'] == 'fail':
+            for ext in ['.sh', '.ps1', '.bat']:
+                path = os.path.join('script', 'fix', benchmark.id, self.id + ext)
+                if os.path.isfile(path):
+                    logger.debug('Found fix script: ' + path)
+                    # TODO transfer script & run
 
-    def score(self, host):
-        # TODO scoring
-        raise NotImplementedError('rule scoring is not yet implemented')
+                    # call the check again
+                    check_result = self._check(benchmark, host)
+
+                    # if successful, mark as fixed
+                    if check_result['result'] == 'pass':
+                        check_result['result'] = 'fixed'
+                        break
+
+        # result retention
+        if 'rule_results' not in host.facts:
+            host.facts['rule_results'] = {}
+        host.facts['rule_results'][self.id] = check_result
+
+    def score(self, host, model = 'urn:xccdf:scoring:default'):
+        if host.facts['rule_results'][self.id]['result'] in ['pass', 'fixed']:
+            return 100.0
+        elif host.facts['rule_results'][self.id]['result'] in ['error', 'unknown']:
+            return 0.0
+        else:
+            return None
