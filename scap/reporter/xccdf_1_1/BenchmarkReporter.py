@@ -20,5 +20,5 @@ import logging
 
 logger = logging.getLogger(__name__)
 class BenchmarkReporter(Reporter):
-    def report(self, host):
+    def report(self):
         return self.reporter.report(host)
