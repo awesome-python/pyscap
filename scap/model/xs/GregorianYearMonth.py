@@ -20,4 +20,10 @@ import logging
 
 logger = logging.getLogger(__name__)
 class GregorianYearMonth(Simple):
-    pass
+    def parse_value(self, value):
+        for sep in ['-', '/', '.', ' ', ',']:
+            if sep in value:
+                year, month = value.split(sep)
+                self.value = (year, month)
+                return self.value
+        raise ValueError('Unable to parse YearMonth')

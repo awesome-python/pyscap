@@ -20,4 +20,6 @@ import logging
 
 logger = logging.getLogger(__name__)
 class GregorianDay(Simple):
-    pass
+    def parse_value(self, value):
+        self.value = int(value)
+        return self.value

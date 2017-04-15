@@ -15,9 +15,32 @@
 # You should have received a copy of the GNU General Public License
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
-from scap.model.xs.Simple import Simple
+import datetime
 import logging
+
+from scap.model.xs.Simple import Simple
 
 logger = logging.getLogger(__name__)
 class Time(Simple):
-    pass
+    def parse_value(self, value):
+        m = re.match(r'((-?\d\d):(\d\d):(\d\d)(\.(\s+))?((([-+])(\d\d):(\d\d))|Z)?', value)
+        if m:
+            hour, minute, second = m.group(1, 2, 3)
+            if m.group(4) is not None and m.group(5) is not None:
+                microsecond = m.group(5)
+            else:
+                microsecond = 0
+            if m.group(6) is not None and m.group(6) == 'Z':
+                tz = datetime.timezone.utc
+            else:
+                if m.group(7) is not None:
+                    sign, hours, minutes = m.groups(8, 9, 10)
+                    if sign == '-':
+                        tz = datetime.timezone(- datetime.timedelta(hours=hours, minutes=minutes))
+                    else:
+                        tz = datetime.timezone(datetime.timedelta(hours=hours, minutes=minutes))
+                else:
+                    tz = datetime.timezone.utc
+
+        self.value = datetime.datetime(year, month, day, hour, minute, second, microsecond, tz)
+        return self.value

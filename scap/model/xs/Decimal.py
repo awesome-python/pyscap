@@ -20,4 +20,6 @@ import logging
 
 logger = logging.getLogger(__name__)
 class Decimal(Simple):
-    pass
+    def parse_value(self, value):
+        self.value = float(value)
+        return self.value

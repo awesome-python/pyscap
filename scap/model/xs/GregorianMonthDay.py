@@ -20,4 +20,10 @@ import logging
 
 logger = logging.getLogger(__name__)
 class GregorianMonthDay(Simple):
-    pass
+    def parse_value(self, value):
+        for sep in ['-', '/', '.', ' ', ',']:
+            if sep in value:
+                month, day = value.split(sep)
+                self.value = (month, day)
+                return self.value
+        raise ValueError('Unable to parse MonthDay')
