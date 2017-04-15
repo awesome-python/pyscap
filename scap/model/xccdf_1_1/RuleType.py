@@ -18,6 +18,7 @@
 from scap.model.xccdf_1_1.SelectableItemType import SelectableItemType
 from scap.model.xccdf_1_1.RoleEnumeration import ROLE_ENUMERATION
 from scap.model.xccdf_1_1.SeverityEnumeration import SEVERITY_ENUMERATION
+from scap.model.xccdf_1_1.ScoringModelEnumeration import SCORING_MODEL_ENUMERATION
 from scap.Model import Model
 import logging
 
@@ -41,18 +42,6 @@ class RuleType(SelectableItemType):
             '{http://checklists.nist.gov/xccdf/1.1}signature': {'ignore': True, 'class': 'SignatureType', 'min': 0, 'max': 1},
         },
     }
-
-    SCORING_MODEL_ENUMERATION = [
-        'urn:xccdf:scoring:default',
-        # This specifies the default (XCCDF 1.0) scoring model.
-        'urn:xccdf:scoring:flat',
-        # This specifies the flat, weighted scoring model.
-        'urn:xccdf:scoring:flat-unweighted',
-        # This specifies the flat scoring model with weights ignored (all
-        # weights set to 1).
-        'urn:xccdf:scoring:absolute',
-        # This specifies the absolute (1 or 0) scoring model.
-    ]
 
     def __init__(self):
         super(RuleType, self).__init__()
