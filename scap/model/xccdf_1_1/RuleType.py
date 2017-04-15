@@ -42,13 +42,25 @@ class RuleType(SelectableItemType):
         },
     }
 
+    SCORING_MODEL_ENUMERATION = [
+        'urn:xccdf:scoring:default',
+        # This specifies the default (XCCDF 1.0) scoring model.
+        'urn:xccdf:scoring:flat',
+        # This specifies the flat, weighted scoring model.
+        'urn:xccdf:scoring:flat-unweighted',
+        # This specifies the flat scoring model with weights ignored (all
+        # weights set to 1).
+        'urn:xccdf:scoring:absolute',
+        # This specifies the absolute (1 or 0) scoring model.
+    ]
+
     def __init__(self):
         super(RuleType, self).__init__()
 
         self.check_selector = None
 
-    def process(self, benchmark):
-        super(RuleType, self).process(benchmark)
+    def process(self, benchmark, host):
+        super(RuleType, self).process(benchmark, host)
 
         if not self._continue_processing():
             return
@@ -56,32 +68,64 @@ class RuleType(SelectableItemType):
         ### Rule.Content
 
         # If the Item is a Rule, then process the properties of the Rule.
-        # TODO
 
-        ### Default Model
-        # urn:xccdf:scoring:default
+        # TODO check that if this group has a platform identified, that the
+        # target system matches
 
-            ### Score.Rule
+        if self.check_selector is None:
+            check = self.checks[None]
+        else:
+            check = self.checks[self.check_selector]
 
-            ### Score.Group.Init
+        # call the check
+        logger.debug('Running check ' + str(check))
+        check_result = check.check(benchmark, host)
+        logger.debug('Check result: ' + str(check_result))
 
-            ### Score.Group.Recurse
+        # if it fails and there's a fix available
+        if check_result['result'] == 'fail':
+            for fix in self.fixes:
+                # call the fix
+                logger.debug('Attempting to fix with ' + str(fix))
+                fix.fix(benchmark, host)
 
-            ### Score.Group.Normalize
+                # call the check again
+                logger.debug('Re-running check ' + str(check))
+                check_result = check.check(benchmark, host)
+                logger.debug('Check result: ' + str(check_result))
 
-            ### Score.Weight
+                # if successful, mark as fixed
+                if check_result['result'] == 'pass':
+                    check_result['result'] = 'fixed'
+                    break
 
-        ### Flat Model
-        # urn:xccdf:scoring:flat
+        # TODO scoring
 
-            ### Score.Init
+        # TODO result retention
 
-            ### Score.Rules
 
-        ### Flat Unweighted Model
-        # urn:xccdf:scoring:flat-unweighted
+### Default Model
+# urn:xccdf:scoring:default
 
-        ### Absolute Model
-        # urn:xccdf:scoring:absolute
-        import inspect
-        raise NotImplementedError(inspect.stack()[0][3] + '() has not been implemented in subclass: ' + self.__class__.__name__)
+    ### Score.Rule
+
+    ### Score.Group.Init
+
+    ### Score.Group.Recurse
+
+    ### Score.Group.Normalize
+
+    ### Score.Weight
+
+### Flat Model
+# urn:xccdf:scoring:flat
+
+    ### Score.Init
+
+    ### Score.Rules
+
+### Flat Unweighted Model
+# urn:xccdf:scoring:flat-unweighted
+
+### Absolute Model
+# urn:xccdf:scoring:absolute
