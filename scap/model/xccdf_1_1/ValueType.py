@@ -60,7 +60,7 @@ class ValueType(ItemType):
         self.choice_selector = None
 
     def process(self, benchmark, host):
-        super(ValueType, self).process(benchmark)
+        super(ValueType, self).process(benchmark, host)
 
         if not self._continue_processing():
             return
