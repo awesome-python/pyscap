@@ -88,33 +88,8 @@ class RuleType(SelectableItemType):
                     check_result['result'] = 'fixed'
                     break
 
-        # TODO scoring
-
         # TODO result retention
 
-
-### Default Model
-# urn:xccdf:scoring:default
-
-    ### Score.Rule
-
-    ### Score.Group.Init
-
-    ### Score.Group.Recurse
-
-    ### Score.Group.Normalize
-
-    ### Score.Weight
-
-### Flat Model
-# urn:xccdf:scoring:flat
-
-    ### Score.Init
-
-    ### Score.Rules
-
-### Flat Unweighted Model
-# urn:xccdf:scoring:flat-unweighted
-
-### Absolute Model
-# urn:xccdf:scoring:absolute
+    def score(self, host):
+        # TODO scoring
+        raise NotImplementedError('rule scoring is not yet implemented')
