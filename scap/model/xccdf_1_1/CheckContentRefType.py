@@ -26,3 +26,9 @@ class CheckContentRefType(Model):
             'name': {'type': 'String'},
         },
     }
+
+    def check(self, host):
+        # TODO load the href
+        # TODO find the named content
+        # TODO apply content
+        return {'result': 'error', 'message': 'CheckContentRefType.check not implemented'}

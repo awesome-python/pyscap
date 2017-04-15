@@ -23,9 +23,5 @@ class CheckImportType(Model):
     MODEL_MAP = {
         'attributes': {
             'import-name': {'type': 'String', 'required': True},
-            'import-xpath': {'type': 'String'}
-        },
-        'elements': {
-            '*': {'ignore': True, 'min': 0},
         },
     }

@@ -26,3 +26,26 @@ class CheckExportType(Model):
             'export-name': {'type': 'String', 'required': True},
         },
     }
+
+    def map(self, benchmark):
+        from scap.model.xccdf_1_1.BenchmarkType import BenchmarkType
+        from scap.model.xccdf_1_1.GroupType import GroupType
+        # go through parents till we find value referenced by
+        # check_export.value_id
+        parent = self.parent
+        v = None
+        while(not isinstance(parent, Model)):
+            if isinstance(parent, BenchmarkType) \
+            or isinstance(parent, GroupType):
+                if parent.has_value(self.value_id):
+                    v = parent.values[self.value_id]
+                    break
+            parent = parent.parent
+
+        if v is None:
+            raise ValueError('Could not find Value ' + self.value_id)
+
+        # get the resolved value
+        value = v.value
+
+        return {self.export_name: value}

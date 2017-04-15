@@ -22,6 +22,10 @@ logger = logging.getLogger(__name__)
 class CheckContentType(Model):
     MODEL_MAP = {
         'elements': {
-            '*': {'ignore': True, 'min': 0, 'max': None}
+            '*': {'min': 0, 'max': None}
         },
     }
+
+    def check(self, host):
+        # TODO apply content
+        return {'result': 'error', 'message': 'CheckContentType.check not implemented'}

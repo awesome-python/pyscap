@@ -18,11 +18,6 @@
 from scap.Model import Model
 import logging
 
-SYSTEM_ENUMERATION = [
-    'http://oval.mitre.org/XMLSchema/oval-definitions-5',
-    'http://scap.nist.gov/schema/ocil/2.0',
-    'http://scap.nist.gov/schema/ocil/2',
-]
 logger = logging.getLogger(__name__)
 class CheckType(Model):
     MODEL_MAP = {
@@ -41,6 +36,12 @@ class CheckType(Model):
         },
     }
 
+    SUPPORTED_SYSTEM_ENUMERATION = [
+        'http://oval.mitre.org/XMLSchema/oval-definitions-5',
+        'http://scap.nist.gov/schema/ocil/2.0',
+        'http://scap.nist.gov/schema/ocil/2',
+    ]
+
     def __str__(self):
         if self.system == 'http://oval.mitre.org/XMLSchema/oval-definitions-5':
             s = 'oval-definitions-5:'
@@ -51,9 +52,60 @@ class CheckType(Model):
         else:
             return self.system
 
-        if hasattr(self, 'id'):
-            s += self.id + ':'
+        s += self.id + ':'
 
         if len(self.check_content_refs) > 0:
             s += str([ref.href + ('' if not hasattr(ref, 'name') else '#' + ref.name) for ref in self.check_content_refs])
         return s
+
+    def check(self, benchmark, host):
+        if self.system not in self.SUPPORTED_SYSTEM_ENUMERATION:
+            return {
+                'result': 'notchecked',
+                'message': 'System ' + self.system + ' is not supported',
+                'imports': {}
+            }
+
+        # This element identifies a value to be retrieved from the checking
+        # system during testing of a target system. The value-id attribute is
+        # merely a locally unique id. It must match the id attribute of a Value
+        # object in the Benchmark.
+        import_names = []
+        for check_import in self.check_imports:
+            import_names += check_import.import_name
+
+        # This specifies a mapping from an XCCDF Value object to a checking
+        # system variable. The value-id attribute must match the id attribute of
+        # a Value object in the Benchmark.
+        exports = {}
+        for check_export in self.check_exports:
+            exports.update(check_export.map(benchmark))
+
+        # If two or more check-content-ref elements appear, then they represent
+        # alternative locations from which a tool may obtain the check content.
+        # Tools should process the alternatives in order, and use the first one
+        # found.
+        result = {
+            'result': 'notchecked',
+            'message': 'No checks available',
+            'imports': {}
+        }
+        for check_ref in self.check_content_refs:
+            result = check_ref.check(host, exports, import_names)
+            if result['result'] not in ['error', 'unknown', 'notchecked']:
+                break
+            # otherwise, we keep trying check_refs
+
+        # If both check-content-ref elements and check-content elements appear,
+        # tools should use the check-content only if all references are
+        # inaccessible.
+        if result['result'] not in ['error', 'unknown', 'notchecked']:
+            # try check content
+            result = self.check_content.check(host)
+
+        for check_import in self.check_imports:
+            if 'imports' not in result \
+            or check_import.import_name not in result['imports']:
+                raise ValueError('Expected import not returned by check: ' + check_import.import_name)
+
+        return result
