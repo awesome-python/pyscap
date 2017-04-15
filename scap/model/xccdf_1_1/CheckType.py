@@ -36,7 +36,7 @@ class CheckType(Model):
         },
     }
 
-    SUPPORTED_SYSTEM_ENUMERATION = [
+    SYSTEM_ENUMERATION = [
         'http://oval.mitre.org/XMLSchema/oval',
         'http://www.cisecurity.org/xccdf/interactive/1.0',
     ]
@@ -59,7 +59,7 @@ class CheckType(Model):
         return s
 
     def check(self, benchmark, host):
-        if self.system not in self.SUPPORTED_SYSTEM_ENUMERATION:
+        if self.system not in self.SYSTEM_ENUMERATION:
             return {
                 'result': 'notchecked',
                 'message': 'System ' + self.system + ' is not supported',
