@@ -123,3 +123,9 @@ class GroupType(SelectableItemType):
         # property, initiate Item.Process.
         for item_id in self.items:
             self.items[item_id].process(benchmark, host)
+
+        # TODO result retention
+
+    def score(self, host):
+        # TODO scoring
+        raise NotImplementedError('group scoring is not yet implemented')
