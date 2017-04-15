@@ -37,5 +37,5 @@ class CPECollector(WindowsCollector):
         RegUninstallCollector(self.host, self.args).collect()
 
         for cpe_part in self.host.facts['cpe']:
-            for cpe in self.host.facts['cpe'][cpe_part]
+            for cpe in self.host.facts['cpe'][cpe_part]:
                 logger.debug(cpe.to_uri_string())
