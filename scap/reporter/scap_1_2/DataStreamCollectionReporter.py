@@ -21,11 +21,36 @@ import uuid
 
 from scap.Reporter import Reporter
 
+from scap.model.ai_1_1.ComputingDeviceType import ComputingDeviceType
+from scap.model.ai_1_1.FQDNType import FQDNType
+from scap.model.ai_1_1.ComputingDeviceHostnameType import ComputingDeviceHostnameType
+from scap.model.ai_1_1.MotherboardGUIDType import MotherboardGUIDType
+from scap.model.ai_1_1.ConnectionsType import ConnectionsType
+from scap.model.ai_1_1.NetworkInterfaceType import NetworkInterfaceType
+from scap.model.ai_1_1.IPAddressType import IPAddressType
+from scap.model.ai_1_1.IPAddressIPv4Type import IPAddressIPv4Type
+from scap.model.ai_1_1.IPAddressIPv6Type import IPAddressIPv6Type
+from scap.model.ai_1_1.MACAddressType import MACAddressType
+from scap.model.ai_1_1.ServiceType import ServiceType
+from scap.model.ai_1_1.HostType import HostType
+from scap.model.ai_1_1.ServicePortType import ServicePortType
+from scap.model.ai_1_1.ProtocolType import ProtocolType
+from scap.model.ai_1_1.CPEType import CPEType
+from scap.model.ai_1_1.Source import Source
+from scap.model.ai_1_1.Timestamp import Timestamp
+
 from scap.model.arf_1_1.AssetReportCollectionElement import AssetReportCollectionElement
 from scap.model.arf_1_1.ReportRequestsType import ReportRequestsType
 from scap.model.arf_1_1.AssetsType import AssetsType
 from scap.model.arf_1_1.ReportsType import ReportsType
 from scap.model.arf_1_1.ReportRequestType import ReportRequestType
+from scap.model.arf_1_1.AssetElement import AssetElement
+from scap.model.arf_1_1.ReportType import ReportType
+from scap.model.arf_1_1.RelationshipTypeEnumeration import RELATIONSHIP_TYPE_ENUMERATION
+
+from scap.model.rep_core_1_1.RelationshipsType import RelationshipsType
+from scap.model.rep_core_1_1.RelationshipType import RelationshipType
+from scap.model.rep_core_1_1.RefElement import RefElement
 
 logger = logging.getLogger(__name__)
 class DataStreamCollectionReporter(Reporter):
