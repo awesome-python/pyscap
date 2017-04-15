@@ -457,16 +457,7 @@ class CPE(object):
 
     @staticmethod
     def from_string(s):
-        cpe = CPE()
-        if s.startswith('wfn:'):
-            cpe.from_wfn_string(s)
-        elif s.startswith('cpe:2.3:'):
-            cpe.from_fs_string(s)
-        elif s.startswith('cpe:/'):
-            cpe.from_uri_string(s)
-        else:
-            raise RuntimeError('Could not parse CPE from ' + s)
-        return cpe
+        cpe = CPE(s)
 
     def __init__(self, s=None, **kwargs):
         self.values = {}
