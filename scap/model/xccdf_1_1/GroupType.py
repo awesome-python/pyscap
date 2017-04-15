@@ -105,7 +105,6 @@ class GroupType(SelectableItemType):
     def process(self, benchmark, host):
         super(GroupType, self).process(benchmark, host)
 
-
         if not self._continue_processing():
             return
 
@@ -126,6 +125,64 @@ class GroupType(SelectableItemType):
 
         # TODO result retention
 
-    def score(self, host):
-        # TODO scoring
-        raise NotImplementedError('group scoring is not yet implemented')
+    def score(self, host, model = 'urn:xccdf:scoring:default'):
+        from scap.model.xccdf_1_1.RuleType import RuleType
+        
+        if model == 'urn:xccdf:scoring:default':
+            ### Score.Group.Init
+
+            # If the node is a Group or the Benchmark, assign a count of 0, a
+            # score s of 0.0, and an accumulator a of 0.0.
+            count = 0
+            score = 0.0
+            accumulator = 0.0
+
+            ### Score.Group.Recurse
+
+            # For each selected child of this Group or Benchmark, do the following:
+            # (1) compute the count and weighted score for the child using this
+            # algorithm,
+            # (2) if the child’s count value is not 0, then add the child’s
+            # weighted score to this node’s score s, add 1 to this node’s count,
+            # and add the child’s weight value to the accumulator a.
+            for item_id in self.items:
+                if not item.selected:
+                    continue
+
+                if not isinstance(item, GroupType) \
+                and not isinstance(item, RuleType):
+                    continue
+
+                item_score = self.items[item_id].score(host)
+                if item_score[item_id]['score'] is None:
+                    continue
+
+                if item_score[item_id]['count'] != 0:
+                    score += item_score[item_id]['score'] * item_score[item_id]['weight']
+                    count += 1
+                    accumulator += item_score[item_id]['weight']
+
+            ### Score.Group.Normalize
+
+            # Normalize this node’s score: compute s = s / a.
+            score = score / accumulator
+
+            ### Score.Weight
+
+            # Assign the node a weighted score equal to the product of its score
+            # and its weight.
+            # (done upstream)
+
+            return {self.id: {'model': model, 'score': score, 'weight': self.weight, 'count': count}}
+
+        elif model == 'urn:xccdf:scoring:flat' \
+        or model == 'urn:xccdf:scoring:flat-unweighted' \
+        or model == 'urn:xccdf:scoring:absolute':
+            scores = {}
+            for item_id in self.items:
+                # just pass the scores upstream for processing
+                scores.update(self.items[item_id].score(host))
+            return scores
+
+        else:
+            raise NotImplementedError('Scoring model ' + model + ' is not implemented')
