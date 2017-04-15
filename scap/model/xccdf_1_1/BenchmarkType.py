@@ -145,3 +145,31 @@ class BenchmarkType(Model):
 
         # Perform any additional processing of the Benchmark object properties
         # TODO
+
+    def score(self, host):
+        ### Default Model
+        # urn:xccdf:scoring:default
+
+            ### Score.Rule
+
+            ### Score.Group.Init
+
+            ### Score.Group.Recurse
+
+            ### Score.Group.Normalize
+
+            ### Score.Weight
+
+        ### Flat Model
+        # urn:xccdf:scoring:flat
+
+            ### Score.Init
+
+            ### Score.Rules
+
+        ### Flat Unweighted Model
+        # urn:xccdf:scoring:flat-unweighted
+
+        ### Absolute Model
+        # urn:xccdf:scoring:absolute
+        raise NotImplementedError('scoring is not yet implemented')
