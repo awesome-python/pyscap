@@ -134,8 +134,8 @@ class RuleType(SelectableItemType):
 
     def score(self, host, model = 'urn:xccdf:scoring:default'):
         if host.facts['rule_results'][self.id]['result'] in ['pass', 'fixed']:
-            return 100.0
+            return {rule.id: {'model': model, 'score': 100.0}}
         elif host.facts['rule_results'][self.id]['result'] in ['error', 'unknown']:
-            return 0.0
+            return {rule.id: {'model': model, 'score': 0.0}}
         else:
-            return None
+            return {rule.id: {'model': model, 'score': None}}
