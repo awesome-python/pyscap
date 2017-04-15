@@ -39,7 +39,7 @@ class UNameCollector(LinuxCollector):
             cpe.set_value('update', m.group(2))
 
         if 'cpe' not in self.host.facts:
-            self.host.facts['cpe'] = []
+            self.host.facts['cpe'] = {'os', 'application', 'hardware'}
 
-        if cpe not in self.host.facts['cpe']:
-            self.host.facts['cpe'].append(cpe)
+        if cpe not in self.host.facts['cpe']['os']:
+            self.host.facts['cpe']['os'].append(cpe)

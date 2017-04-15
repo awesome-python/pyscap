@@ -38,8 +38,8 @@ class LshwCollector(LinuxCollector):
                             cpe.set_value('version', path[-1]['version'])
 
                         # we don't add duplicates
-                        if cpe not in self.host.facts['cpe']:
-                            self.host.facts['cpe'].append(cpe)
+                        if cpe not in self.host.facts['cpe']['hardware']:
+                            self.host.facts['cpe']['hardware'].append(cpe)
 
                     indent = len(m.group(1))
                     hw_class = m.group(2)

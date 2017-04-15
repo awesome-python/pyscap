@@ -22,7 +22,7 @@ import re, logging, pprint
 logger = logging.getLogger(__name__)
 class CPECollector(LinuxCollector):
     def collect(self):
-        self.host.facts['cpe'] = []
+        self.host.facts['cpe'] = {'os', 'application', 'hardware'}
 
         # hardware
         from scap.collector.cli.linux.LshwCollector import LshwCollector
@@ -49,5 +49,6 @@ class CPECollector(LinuxCollector):
         # application
         # TODO rpm -qa
 
-        for cpe in self.host.facts['cpe']:
-            logger.debug(cpe.to_uri_string())
+        for cpe_part in self.host.facts['cpe']:
+            for cpe in self.host.facts['cpe'][cpe_part]
+                logger.debug(cpe.to_uri_string())

@@ -39,8 +39,8 @@ class LscpuCollector(LinuxCollector):
                     elif name == 'Model':
                         cpe.set_value('update', value)
                 else:
-                    if cpe not in self.host.facts['cpe']:
-                        self.host.facts['cpe'].append(cpe)
+                    if cpe not in self.host.facts['cpe']['hardware']:
+                        self.host.facts['cpe']['hardware'].append(cpe)
                     cpe = CPE(part='h')
         except:
             pass

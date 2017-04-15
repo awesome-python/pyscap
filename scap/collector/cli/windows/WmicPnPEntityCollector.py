@@ -91,5 +91,5 @@ class WmicPnPEntityCollector(WindowsCollector):
             cpe.set_value('vendor', entity['manufacturer'])
             cpe.set_value('product', entity['name'])
 
-            if cpe not in self.host.facts['cpe']:
-                self.host.facts['cpe'].append(cpe)
+            if cpe not in self.host.facts['cpe']['hardware']:
+                self.host.facts['cpe']['hardware'].append(cpe)

@@ -153,5 +153,5 @@ class RegUninstallCollector(WindowsCollector):
             if 'display_version' in entry:
                 cpe.set_value('version', entry['display_version'])
 
-            if cpe not in self.host.facts['cpe']:
-                self.host.facts['cpe'].append(cpe)
+            if cpe not in self.host.facts['cpe']['application']:
+                self.host.facts['cpe']['application'].append(cpe)

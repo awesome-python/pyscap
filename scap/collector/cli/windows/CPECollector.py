@@ -22,7 +22,7 @@ import re, logging, pprint
 logger = logging.getLogger(__name__)
 class CPECollector(WindowsCollector):
     def collect(self):
-        self.host.facts['cpe'] = []
+        self.host.facts['cpe'] = {'os', 'application', 'hardware'}
 
         # hardware
         from scap.collector.cli.windows.WmicPnPEntityCollector import WmicPnPEntityCollector
@@ -36,5 +36,6 @@ class CPECollector(WindowsCollector):
         from scap.collector.cli.windows.RegUninstallCollector import RegUninstallCollector
         RegUninstallCollector(self.host, self.args).collect()
 
-        for cpe in self.host.facts['cpe']:
-            logger.debug(cpe.to_uri_string())
+        for cpe_part in self.host.facts['cpe']:
+            for cpe in self.host.facts['cpe'][cpe_part]
+                logger.debug(cpe.to_uri_string())

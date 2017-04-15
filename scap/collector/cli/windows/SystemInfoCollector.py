@@ -164,7 +164,9 @@ class SystemInfoCollector(WindowsCollector):
                 self.host.facts['systeminfo'][SystemInfoCollector.SECTION_MAP[m.group(1)]] = m.group(2)
                 if m.group(1) == 'OS Name':
                     if m.group(2) in SystemInfoCollector.OS_NAME_MAP:
-                        self.host.facts['cpe'].append(CPE.from_string(SystemInfoCollector.OS_NAME_MAP[m.group(2)]))
+                        cpe = CPE.from_string(SystemInfoCollector.OS_NAME_MAP[m.group(2)])
+                        if cpe not in self.host.facts['cpe']['os']:
+                        self.host.facts['cpe']['os'].append(cpe)
                     else:
                         logger.warn('Unable to determine CPE from OS name: ' + m.group(2))
             else:
