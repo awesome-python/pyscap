@@ -127,7 +127,7 @@ class GroupType(SelectableItemType):
 
     def score(self, host, model = 'urn:xccdf:scoring:default'):
         from scap.model.xccdf_1_1.RuleType import RuleType
-        
+
         if model == 'urn:xccdf:scoring:default':
             ### Score.Group.Init
 
@@ -146,6 +146,8 @@ class GroupType(SelectableItemType):
             # weighted score to this node’s score s, add 1 to this node’s count,
             # and add the child’s weight value to the accumulator a.
             for item_id in self.items:
+                item = self.items[item_id]
+
                 if not item.selected:
                     continue
 
@@ -153,7 +155,7 @@ class GroupType(SelectableItemType):
                 and not isinstance(item, RuleType):
                     continue
 
-                item_score = self.items[item_id].score(host)
+                item_score = item.score(host)
                 if item_score[item_id]['score'] is None:
                     continue
 
@@ -164,8 +166,14 @@ class GroupType(SelectableItemType):
 
             ### Score.Group.Normalize
 
-            # Normalize this node’s score: compute s = s / a.
-            score = score / accumulator
+            # Normalize this node’s score: compute s = s / a
+            if accumulator == 0.0:
+                if score != 0.0:
+                    raise ValueError('Got to score normalization with score ' + str(score) + ' / ' + str(accumulator))
+                else:
+                    score = 0.0
+            else:
+                score = score / accumulator
 
             ### Score.Weight
 
@@ -180,8 +188,17 @@ class GroupType(SelectableItemType):
         or model == 'urn:xccdf:scoring:absolute':
             scores = {}
             for item_id in self.items:
+                item = self.items[item_id]
+
+                if not item.selected:
+                    continue
+
+                if not isinstance(item, GroupType) \
+                and not isinstance(item, RuleType):
+                    continue
+
                 # just pass the scores upstream for processing
-                scores.update(self.items[item_id].score(host))
+                scores.update(item.score(host))
             return scores
 
         else:

@@ -35,7 +35,7 @@ class BenchmarkType(Model):
             '{http://checklists.nist.gov/xccdf/1.1}platform': {'class': 'CPE2IDRefType', 'min': 0, 'max': None, 'ignore': True},
             '{http://checklists.nist.gov/xccdf/1.1}version': {'class': 'VersionType', 'min': 1, 'max': 1, 'ignore': True},
             '{http://checklists.nist.gov/xccdf/1.1}metadata': {'append': 'metadata', 'class': 'MetadataType', 'min': 0, 'max': None, 'ignore': True},
-            '{http://checklists.nist.gov/xccdf/1.1}model': {'append': 'models', 'class': 'ModelType', 'min': 0, 'max': None, 'ignore': True},
+            '{http://checklists.nist.gov/xccdf/1.1}model': {'append': 'models', 'class': 'ModelType', 'min': 0, 'max': None},
             '{http://checklists.nist.gov/xccdf/1.1}Profile': {'class': 'ProfileType', 'min': 0, 'max': None, 'map': 'profiles'},
             '{http://checklists.nist.gov/xccdf/1.1}Value': {'class': 'ValueType', 'min': 0, 'max': None, 'map': 'items'},
             '{http://checklists.nist.gov/xccdf/1.1}Group': {'class': 'GroupType', 'min': 0, 'max': None, 'map': 'items'},
@@ -146,30 +146,154 @@ class BenchmarkType(Model):
         # Perform any additional processing of the Benchmark object properties
         # TODO
 
-    def score(self, host):
-        ### Default Model
-        # urn:xccdf:scoring:default
 
-            ### Score.Rule
+    def _score_model(self, host, model_system, params):
+        from scap.model.xccdf_1_1.GroupType import GroupType
+        from scap.model.xccdf_1_1.RuleType import RuleType
 
+        if 'scores' not in host.facts:
+            host.facts['scores'] = []
+
+        if model_system == 'urn:xccdf:scoring:default':
             ### Score.Group.Init
+
+            # If the node is a Group or the Benchmark, assign a count of 0, a
+            # score s of 0.0, and an accumulator a of 0.0.
+            count = 0
+            score = 0.0
+            accumulator = 0.0
 
             ### Score.Group.Recurse
 
+            # For each selected child of this Group or Benchmark, do the following:
+            # (1) compute the count and weighted score for the child using this
+            # algorithm,
+            # (2) if the child’s count value is not 0, then add the child’s
+            # weighted score to this node’s score s, add 1 to this node’s count,
+            # and add the child’s weight value to the accumulator a.
+            for item_id in self.items:
+                item = self.items[item_id]
+
+                if not item.selected:
+                    continue
+
+                if not isinstance(item, GroupType) \
+                and not isinstance(item, RuleType):
+                    continue
+
+                item_score = item.score(host)
+                if item_score[item_id]['score'] is None:
+                    continue
+
+                if item_score[item_id]['count'] != 0:
+                    score += item_score[item_id]['score'] * item_score[item_id]['weight']
+                    count += 1
+                    accumulator += item_score[item_id]['weight']
+
             ### Score.Group.Normalize
 
-            ### Score.Weight
+            # Normalize this node’s score: compute s = s / a.
+            if accumulator == 0.0:
+                if score != 0.0:
+                    raise ValueError('Got to score normalization with score ' + str(score) + ' / ' + str(accumulator))
+                else:
+                    score = 0.0
+            else:
+                score = score / accumulator
 
-        ### Flat Model
-        # urn:xccdf:scoring:flat
+            logger.debug(model_system + ' score: ' + str(score))
+            host.facts['scores'].append({'score': score, 'system': model_system})
 
-            ### Score.Init
+        elif model_system == 'urn:xccdf:scoring:flat':
+            scores = {}
+            for item_id in self.items:
+                item = self.items[item_id]
 
-            ### Score.Rules
+                if not isinstance(item, GroupType) \
+                and not isinstance(item, RuleType):
+                    continue
 
-        ### Flat Unweighted Model
-        # urn:xccdf:scoring:flat-unweighted
+                # just pass the scores upstream for processing
+                scores.update(item.score(host))
 
-        ### Absolute Model
-        # urn:xccdf:scoring:absolute
-        raise NotImplementedError('scoring is not yet implemented')
+            score = 0.0
+            max_score = 0.0
+            for rule_id in scores:
+                if scores[rule_id]['result'] in ['notapplicable', 'notchecked', 'informational', 'notselected']:
+                    continue
+
+                max_score += scores[rule_id]['weight']
+                if scores[rule_id]['result'] in ['pass', 'fixed']:
+                    score += scores[rule_id]['weight']
+
+            logger.debug(model_system + ' score: ' + str(score) + ' / ' + str(max_score))
+            host.facts['scores'].append({'score': score, 'max_score': max_score, 'system': model_system})
+
+        elif model_system == 'urn:xccdf:scoring:flat-unweighted':
+            scores = {}
+            for item_id in self.items:
+                item = self.items[item_id]
+
+                if not isinstance(item, GroupType) \
+                and not isinstance(item, RuleType):
+                    continue
+
+                # just pass the scores upstream for processing
+                scores.update(item.score(host))
+
+            score = 0.0
+            max_score = 0.0
+            for rule_id in scores:
+                if scores[rule_id]['result'] in ['notapplicable', 'notchecked', 'informational', 'notselected']:
+                    continue
+
+                max_score += 1.0
+                if scores[rule_id]['result'] in ['pass', 'fixed']:
+                    score += 1.0
+
+            logger.debug(model_system + ' score: ' + str(score) + ' / ' + str(max_score))
+            host.facts['scores'].append({'score': score, 'max_score': max_score, 'system': model_system})
+
+        elif model_system == 'urn:xccdf:scoring:absolute':
+            scores = {}
+            for item_id in self.items:
+                item = self.items[item_id]
+
+                if not isinstance(item, GroupType) \
+                and not isinstance(item, RuleType):
+                    continue
+
+                # just pass the scores upstream for processing
+                scores.update(item.score(host))
+
+            score = 0.0
+            max_score = 0.0
+            for rule_id in scores:
+                if scores[rule_id]['result'] in ['notapplicable', 'notchecked', 'informational', 'notselected']:
+                    continue
+
+                max_score += scores[rule_id]['weight']
+                if scores[rule_id]['result'] in ['pass', 'fixed']:
+                    score += scores[rule_id]['weight']
+
+            if score == max_score:
+                score = 1.0
+            else:
+                score = 0.0
+
+            logger.debug(model_system + ' score: ' + str(score))
+            host.facts['scores'].append({'score': score, 'system': model_system})
+
+        else:
+            raise NotImplementedError('Scoring model ' + model_system + ' is not implemented')
+
+    def score(self, host):
+        if len(self.models) == 0:
+            self._score_model(host, 'urn:xccdf:scoring:default', [])
+            return
+
+        for model in self.models:
+            params = {}
+            for p in model.params:
+                params[p.name] = p.value
+            self._score_model(host, model.system, params)
