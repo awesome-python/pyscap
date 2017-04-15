@@ -68,13 +68,15 @@ class FixType(Model):
     ]
 
     def __str__(self):
-        s = self.system + ':'
+        s = 'FixType '
+        if self.system is not None:
+            s += self.system + ':'
 
         if self.id is not None:
             s += self.id + ':'
 
-        if len(self.check_content_refs) > 0:
-            s += str([ref.href + ('' if not hasattr(ref, 'name') else '#' + ref.name) for ref in self.check_content_refs])
+        if self.platform is not None:
+            s += ' on ' + self.platform
         return s
 
     def fix(self, benchmark, host):
