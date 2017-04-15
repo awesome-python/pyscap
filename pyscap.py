@@ -91,7 +91,7 @@ elif args[0].benchmark:
     logger.info("Benchmark operation")
     arg_parser.add_argument('--inventory', nargs='+')
     arg_parser.add_argument('--host', nargs='+')
-    arg_parser.add_argument('--content', required=True, nargs=1)
+    arg_parser.add_argument('--content', required=True, nargs='+')
     arg_parser.add_argument('--data_stream', nargs=1)
     arg_parser.add_argument('--checklist', nargs=1)
     arg_parser.add_argument('--profile', nargs=1)
@@ -153,10 +153,11 @@ elif args.benchmark:
     # elements should be performed. The resulting XML information set should be
     # validated against the XCCDF schema given in Appendix A.) Go to the next
     # step: Loading.Noticing.
-    
-    logger.debug('Loading content file: ' + args.content[0])
-    with open(args.content[0], mode='r', encoding='utf_8') as f:
-        content = Model.load(None, ET.parse(f).getroot())
+
+    for uri in args.content:
+        logger.debug('Loading content file: ' + uri)
+        with open(uri, mode='r', encoding='utf_8') as f:
+            content = Model.load(None, ET.parse(f).getroot(), uri)
 
     for host in hosts:
         host.connect()

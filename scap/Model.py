@@ -34,6 +34,7 @@ class Model(object):
     }
 
     model_maps = {}
+    content_cache = {}
 
     @staticmethod
     def parse_tag(tag):
@@ -50,7 +51,7 @@ class Model(object):
         return xml_namespace, tag_name
 
     @staticmethod
-    def load(parent, child_el):
+    def load(parent, child_el, uri=None):
         xml_namespace, tag_name = Model.parse_tag(child_el.tag)
 
         if xml_namespace not in NAMESPACES:
@@ -93,6 +94,9 @@ class Model(object):
         class_ = getattr(mod, module_name)
         inst = class_()
         inst.from_xml(parent, child_el)
+
+        if parent is None:
+            Model.content_cache[uri] = inst
 
         return inst
 
