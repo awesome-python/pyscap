@@ -50,9 +50,10 @@ class CheckType(Model):
         elif self.system == 'http://scap.nist.gov/schema/ocil/2':
             s = 'ocil-2:'
         else:
-            return self.system
+            s = self.system + ':'
 
-        s += self.id + ':'
+        if self.id is not None:
+            s += self.id + ':'
 
         if len(self.check_content_refs) > 0:
             s += str([ref.href + ('' if not hasattr(ref, 'name') else '#' + ref.name) for ref in self.check_content_refs])
