@@ -663,6 +663,9 @@ class CPE(object):
         comps.reverse()
         return s + ':'.join(comps)
 
+    def __str__(self):
+        return self.to_uri_string()
+
     ####### FS #######
     FS_INDEX = [
         'part',
