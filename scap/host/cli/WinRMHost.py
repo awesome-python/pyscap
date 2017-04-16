@@ -22,7 +22,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 class WinRMHost(CLIHost):
-    def __init__(self, hostname, args = {}):
+    def __init__(self, hostname, args):
         super(WinRMHost, self).__init__(hostname, args)
 
         self.facts['oval_family'] = 'windows'
@@ -34,7 +34,7 @@ class WinRMHost(CLIHost):
 
     def exec_command(self, cmd, args):
         if not isinstance(cmd, str) or not isinstance(args, tuple):
-            raise RuntimeError('WinRM Host needs a str for a command then args tuple')
+            raise ValueError('WinRM Host needs a str for a command then args tuple')
         command_id = self.protocol.run_command(self.shell_id, cmd, list(args))
         std_out, std_err, status_code = self.protocol.get_command_output(self.shell_id, command_id)
         self.protocol.cleanup_command(self.shell_id, command_id)

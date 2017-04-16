@@ -18,14 +18,15 @@
 # along with PySCAP.  If not, see <http://www.gnu.org/licenses/>.
 
 # set up logging
-import logging
-import time
-import atexit
 import argparse
-import xml.etree.ElementTree as ET
-import pprint
+import atexit
 from io import StringIO
+import logging
+import pprint
+import sys
+import time
 import xml.dom.minidom
+import xml.etree.ElementTree as ET
 
 from scap.ColorFormatter import ColorFormatter
 from scap.Model import Model
@@ -50,6 +51,7 @@ rootLogger.addHandler(fh)
 logger = logging.getLogger(__name__)
 logger.debug('Start: ' + time.asctime(time.localtime()))
 def end_func():
+    output.close()
     logger.debug('End: ' + time.asctime(time.localtime()))
 atexit.register(end_func)
 
@@ -95,7 +97,7 @@ elif args[0].benchmark:
     arg_parser.add_argument('--data_stream', nargs=1)
     arg_parser.add_argument('--checklist', nargs=1)
     arg_parser.add_argument('--profile', nargs=1)
-    arg_parser.add_argument('--output', type=argparse.FileType('w', 0), default='-')
+    arg_parser.add_argument('--output', nargs='?', default='-')
     arg_parser.add_argument('--pretty', action='store_true')
 elif args[0].list_hosts:
     arg_parser.add_argument('--host', nargs='+')
@@ -110,32 +112,38 @@ else:
     arg_parser.error('No valid operation was given')
 
 # final argument parsing
-args = arg_parser.parse_args()
+args = vars(arg_parser.parse_args())
 
 # configure ElementTree
 for k,v in list(NAMESPACES.items()):
     ET.register_namespace(v, k)
 
 # expand the hosts
-if args.collect or args.benchmark or args.list_hosts:
+if 'collect' in args or 'benchmark' in args or 'list_hosts' in args:
     hosts = []
     inventory = Inventory()
-    if args.inventory:
-        for filename in args.inventory:
+    if 'inventory' in args:
+        for filename in args['inventory']:
             try:
                 with open(filename, 'r') as fp:
                     logger.debug('Loading inventory from ' + filename)
                     Inventory().readfp(fp)
             except IOError:
                 logger.error('Could not read from inventory file ' + filename)
-    if args.host:
-        for hostname in args.host:
+    if 'host' in args:
+        for hostname in args['host']:
             host = Host.load(hostname)
             hosts.append(host)
     else:
-        arg_parser.error('Host not specified (--host)')
+        arg_parser.error('No host specified (--host)')
 
-if args.collect:
+# open output if it's not stdout
+if 'output' in args and args['output'] != '-':
+    output = open(uri, mode='w')
+else:
+    output = sys.stdout
+
+if 'collect' in args:
     for host in hosts:
         host.connect()
         for collector in host.detect_collectors(args):
@@ -144,7 +152,7 @@ if args.collect:
 
         pp = pprint.PrettyPrinter(width=132)
         pp.pprint(host.facts)
-elif args.benchmark:
+elif 'benchmark' in args:
     ### Loading.Import
     # Import the XCCDF document into the program and build an initial internal
     # representation of the Benchmark object, Groups, Rules, and other objects.
@@ -154,7 +162,10 @@ elif args.benchmark:
     # validated against the XCCDF schema given in Appendix A.) Go to the next
     # step: Loading.Noticing.
 
-    for uri in args.content:
+    if 'content' not in args:
+        arg_parser.error('No content specified (--content)')
+
+    for uri in args['content']:
         logger.debug('Loading content file: ' + uri)
         with open(uri, mode='r', encoding='utf_8') as f:
             content = Model.load(None, ET.parse(f).getroot(), uri)
@@ -170,20 +181,20 @@ elif args.benchmark:
     rep = Reporter.load(hosts, content, args)
     report = rep.report()
 
-    if args.pretty:
+    if 'pretty' in args:
         sio = StringIO()
         report.write(sio, encoding='unicode', xml_declaration=True)
         sio.write("\n")
 
         pretty_xml = xml.dom.minidom.parseString(sio.getvalue()).toprettyxml(indent='  ')
-        args.output.write(pretty_xml)
+        output.write(pretty_xml)
     else:
-        report.write(args.output, encoding='unicode')
-elif args.list_hosts:
+        report.write(output, encoding='unicode')
+elif 'list_hosts' in args:
     print('Hosts: ')
     for host in hosts:
         print(host.hostname)
-elif args.test:
+elif 'test' in args:
     arg_parser.error('Unimplemented')
 else:
     arg_parser.error('No valid operation was given')

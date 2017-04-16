@@ -24,7 +24,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 class PSExecHost(CLIHost):
-    def __init__(self, hostname, args = {}):
+    def __init__(self, hostname, args):
         super(PSExecHost, self).__init__(hostname, args)
 
         # TODO initialize collectors
