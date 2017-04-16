@@ -29,10 +29,10 @@ class BenchmarkChecker(Checker):
         self.model.noticing()
 
         # TODO multiple profiles?
-        if 'profile' in args:
-            self.selected_profile = args['profile']
-        else:
+        if len(args['profile']) == 0:
             self.selected_profile = None
+        else:
+            self.selected_profile = args['profile'][0]
 
         self.model.resolve()
 

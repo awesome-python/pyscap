@@ -119,40 +119,41 @@ for k,v in list(NAMESPACES.items()):
     ET.register_namespace(v, k)
 
 # expand the hosts
-if 'collect' in args or 'benchmark' in args or 'list_hosts' in args:
-    hosts = []
+if args['collect'] or args['benchmark'] or args['list_hosts']:
     inventory = Inventory()
-    if 'inventory' in args:
-        for filename in args['inventory']:
-            try:
-                with open(filename, 'r') as fp:
-                    logger.debug('Loading inventory from ' + filename)
-                    Inventory().readfp(fp)
-            except IOError:
-                logger.error('Could not read from inventory file ' + filename)
-    if 'host' in args:
-        for hostname in args['host']:
-            host = Host.load(hostname)
-            hosts.append(host)
-    else:
+    for filename in args['inventory']:
+        try:
+            with open(filename, 'r') as fp:
+                logger.debug('Loading inventory from ' + filename)
+                Inventory().readfp(fp)
+        except IOError:
+            logger.error('Could not read from inventory file ' + filename)
+
+    if len(args['host']) == 0:
         arg_parser.error('No host specified (--host)')
 
+    hosts = []
+    for hostname in args['host']:
+        host = Host.load(hostname)
+        hosts.append(host)
+
 # open output if it's not stdout
-if 'output' in args and args['output'] != '-':
+if args['output'] != '-':
     output = open(uri, mode='w')
 else:
     output = sys.stdout
 
-if 'collect' in args:
+if args['collect']:
     for host in hosts:
         host.connect()
         for collector in host.detect_collectors(args):
             collector.collect()
         host.disconnect()
 
+        logger.info('Fact collection dump:')
         pp = pprint.PrettyPrinter(width=132)
         pp.pprint(host.facts)
-elif 'benchmark' in args:
+elif args['benchmark']:
     ### Loading.Import
     # Import the XCCDF document into the program and build an initial internal
     # representation of the Benchmark object, Groups, Rules, and other objects.
@@ -162,7 +163,7 @@ elif 'benchmark' in args:
     # validated against the XCCDF schema given in Appendix A.) Go to the next
     # step: Loading.Noticing.
 
-    if 'content' not in args:
+    if len(args['content']) == 0:
         arg_parser.error('No content specified (--content)')
 
     for uri in args['content']:
@@ -181,7 +182,7 @@ elif 'benchmark' in args:
     rep = Reporter.load(hosts, content, args)
     report = rep.report()
 
-    if 'pretty' in args:
+    if args['pretty']:
         sio = StringIO()
         report.write(sio, encoding='unicode', xml_declaration=True)
         sio.write("\n")
@@ -190,11 +191,11 @@ elif 'benchmark' in args:
         output.write(pretty_xml)
     else:
         report.write(output, encoding='unicode')
-elif 'list_hosts' in args:
+elif args['list_hosts']:
     print('Hosts: ')
     for host in hosts:
         print(host.hostname)
-elif 'test' in args:
+elif args['test']:
     arg_parser.error('Unimplemented')
 else:
     arg_parser.error('No valid operation was given')

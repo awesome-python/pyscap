@@ -108,10 +108,10 @@ class BenchmarkType(Model):
         # Process the properties of the Benchmark object
         # TODO
 
-        # TODO check that if this group has a platform specification identified,
+        # TODO check that if this benchmark has a platform specification identified,
         # that the  target system matches
 
-        # TODO check that if this group has a platform identified, that the
+        # TODO check that if this benchmark has a platform identified, that the
         # target system matches
 
         ### Benchmark.Profile
@@ -121,18 +121,17 @@ class BenchmarkType(Model):
                 # No profiles; skip the step
                 pass
             elif len(self.profiles) == 1:
-                selected_profile = list(self.profiles.keys())[0]
+                selected_profile = self.profiles.keys()[0]
             else:
-                logger.critical('No --profile specified and unable to implicitly choose one. Available profiles: ' + str(list(self.profiles.keys())))
+                logger.critical('No --profile specified and unable to implicitly choose one. Available profiles: ' + str(self.profiles.keys()))
                 import sys
                 sys.exit()
         else:
             if selected_profile not in self.profiles:
-                raise ValueError('Specified --profile, ' + selected_profile + ', not found in content. Available profiles: ' + str(list(self.profiles.keys())))
+                raise ValueError('Specified --profile, ' + selected_profile + ', not found in content. Available profiles: ' + str(self.profiles.keys()))
 
-        if selected_profile is not None:
-            logger.info('Selecting profile ' + selected_profile)
-            self.profiles[selected_profile].apply(self.items, host)
+        logger.info('Selecting profile ' + str(selected_profile))
+        self.profiles[selected_profile].apply(self.items, host)
 
         ### Benchmark.Content
 
