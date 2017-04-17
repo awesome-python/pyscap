@@ -175,11 +175,11 @@ class BenchmarkType(Model):
             for item_id in self.items:
                 item = self.items[item_id]
 
-                if not item.selected:
-                    continue
-
                 if not isinstance(item, GroupType) \
                 and not isinstance(item, RuleType):
+                    continue
+
+                if not item.selected:
                     continue
 
                 item_score = item.score(host)
