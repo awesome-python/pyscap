@@ -695,7 +695,7 @@ class Model(object):
                     for item in _list:
                         if isinstance(item, Model):
                             item_found = item.find_reference(ref)
-                            if item_find is not None:
+                            if item_found is not None:
                                 return item_found
 
                 elif 'map' in tag_map:
@@ -708,7 +708,7 @@ class Model(object):
                     for item in _dict.values():
                         if isinstance(item, Model):
                             item_found = item.find_reference(ref)
-                            if item_find is not None:
+                            if item_found is not None:
                                 return item_found
 
             parent = parent.parent
