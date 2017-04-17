@@ -23,7 +23,7 @@ class ItemType(Extendable):
     MODEL_MAP = {
         # abstract
         'attributes': {
-            'id': {'type': 'NCName', 'required': True}
+            'id': {'type': 'NCName', 'required': True},
             'abstract': {'type': 'Boolean', 'default': False},
             'cluster-id': {'ignore': True, 'type': 'NCName'},
             'extends': {'type': 'NCName'},
