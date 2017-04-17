@@ -37,7 +37,7 @@ class BenchmarkType(Model):
             '{http://checklists.nist.gov/xccdf/1.1}metadata': {'append': 'metadata', 'class': 'MetadataType', 'min': 0, 'max': None, 'ignore': True},
             '{http://checklists.nist.gov/xccdf/1.1}model': {'append': 'models', 'class': 'ModelType', 'min': 0, 'max': None},
             '{http://checklists.nist.gov/xccdf/1.1}Profile': {'class': 'ProfileType', 'min': 0, 'max': None, 'map': 'profiles'},
-            '{http://checklists.nist.gov/xccdf/1.1}Value': {'class': 'ValueType', 'min': 0, 'max': None, 'map': 'items'},
+            '{http://checklists.nist.gov/xccdf/1.1}Value': {'class': 'ValueType', 'min': 0, 'max': None, 'map': 'items', 'referable': True},
             '{http://checklists.nist.gov/xccdf/1.1}Group': {'class': 'GroupType', 'min': 0, 'max': None, 'map': 'items'},
             '{http://checklists.nist.gov/xccdf/1.1}Rule': {'class': 'RuleType', 'min': 0, 'max': None, 'map': 'items'},
             '{http://checklists.nist.gov/xccdf/1.1}TestResult': {'class': 'TestResultType', 'min': 0, 'max': None, 'map': 'test_results'},
@@ -51,6 +51,9 @@ class BenchmarkType(Model):
             'style-href': {'ignore': True, 'type': 'AnyURI'},
         },
     }
+
+    def __str__(self):
+        return self.__class__.__name__ + ' # ' + self.id
 
     def noticing(self):
         ### Loading.Noticing
@@ -106,7 +109,6 @@ class BenchmarkType(Model):
         ### Benchmark.Front
 
         # Process the properties of the Benchmark object
-        # TODO
 
         # TODO check that if this benchmark has a platform specification identified,
         # that the  target system matches
@@ -121,7 +123,7 @@ class BenchmarkType(Model):
                 # No profiles; skip the step
                 pass
             elif len(self.profiles) == 1:
-                selected_profile = self.profiles.keys()[0]
+                selected_profile = list(self.profiles.keys())[0]
             else:
                 logger.critical('No --profile specified and unable to implicitly choose one. Available profiles: ' + str(self.profiles.keys()))
                 import sys
@@ -131,7 +133,7 @@ class BenchmarkType(Model):
                 raise ValueError('Specified --profile, ' + selected_profile + ', not found in content. Available profiles: ' + str(self.profiles.keys()))
 
         logger.info('Selecting profile ' + str(selected_profile))
-        self.profiles[selected_profile].apply(self.items, host)
+        self.profiles[selected_profile].apply(self, host)
 
         ### Benchmark.Content
 

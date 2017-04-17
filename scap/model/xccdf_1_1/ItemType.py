@@ -44,6 +44,9 @@ class ItemType(Extendable):
         },
     }
 
+    def __str__(self):
+        return self.__class__.__name__ + ' # ' + self.id
+
     def get_extended(self, benchmark):
         try:
             extended = benchmark.item[self.extends]

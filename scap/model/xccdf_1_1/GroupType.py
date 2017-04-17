@@ -26,7 +26,7 @@ class GroupType(SelectableItemType):
             'id': {'required': True, 'type': 'GroupIDPattern'},
         },
         'elements': {
-            '{http://checklists.nist.gov/xccdf/1.1}Value': {'class': 'ValueType', 'map': 'items', 'min': 0, 'max': None},
+            '{http://checklists.nist.gov/xccdf/1.1}Value': {'class': 'ValueType', 'map': 'items', 'min': 0, 'max': None, 'referable': True},
             '{http://checklists.nist.gov/xccdf/1.1}Group': {'class': 'GroupType', 'map': 'items', 'min': 0, 'max': None},
             '{http://checklists.nist.gov/xccdf/1.1}Rule': {'class': 'RuleType', 'map': 'items', 'min': 0, 'max': None},
             '{http://checklists.nist.gov/xccdf/1.1}signature': {'ignore': True, 'class': 'SignatureType', 'min': 0, 'max': 1},
@@ -38,14 +38,16 @@ class GroupType(SelectableItemType):
 
         # For each Item in the Benchmark that has an extends property, resolve
         # it by using the following steps:
-        if self.extends is None:
-            return
 
         # (1) if the Item is Group, resolve all the enclosed Items,
         for item_id in self.items:
+            logger.debug('Resolving item: ' + item_id)
             self.items[item_id].resolve(benchmark)
 
         # (2) resolve the extended Item,
+        if self.extends is None:
+            return
+
         extended = self.get_extended(benchmark)
         extended.resolve(benchmark)
 

@@ -161,9 +161,6 @@ class Extendable(Model):
         raise NotImplementedError(inspect.stack()[0][3] + '() has not been implemented in subclass: ' + self.__class__.__name__)
 
     def resolve(self, benchmark):
-        if self.resolved:
-            logger.debug('Extendable already resolved: ' + self.id)
-            return
         ### Loading.Resolve.Items
 
         # For each Item in the Benchmark that has an extends property, resolve

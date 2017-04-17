@@ -660,14 +660,24 @@ class Model(object):
                 raise ValueError('Unknown class to add to sub elemetns: ' + i.__class__.__name__)
         return sub_els
 
+    def is_reference(self, ref):
+        if hasattr(self, 'id') and self.id == ref:
+            return True
+        return False
+
     def find_reference(self, ref):
+        if self.is_reference(ref):
+            return self
+
         parent = self
         while(parent is not None):
             # go through the model's attributes
             for name in self.model_map['attributes']:
                 attr_map = self.model_map['attributes'][name]
 
-                if 'ignore' in attr_map and attr_map['ignore']:
+                if ('ignore' in attr_map and attr_map['ignore']) \
+                or 'referable' not in attr_map \
+                or not attr_map['referable']:
                     continue
 
                 if 'in' in attr_map:
@@ -685,7 +695,11 @@ class Model(object):
             # go through the model's elements
             for tag in self.model_map['elements']:
                 tag_map = self.model_map['elements'][tag]
-                if tag.endswith('*') or 'ignore' in tag_map and tag_map['ignore']:
+
+                if tag.endswith('*') \
+                or ('ignore' in tag_map and tag_map['ignore']) \
+                or 'referable' not in tag_map \
+                or not tag_map['referable']:
                     continue
 
                 if 'append' in tag_map:
@@ -701,9 +715,6 @@ class Model(object):
                 elif 'map' in tag_map:
                     # check all the dict (map) items for the ref
                     _dict = getattr(self, tag_map['map'])
-
-                    if ref in _dict:
-                        return _dict[ref]
 
                     for item in _dict.values():
                         if isinstance(item, Model):

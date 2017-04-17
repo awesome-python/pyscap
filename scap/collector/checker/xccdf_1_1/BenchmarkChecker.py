@@ -18,6 +18,7 @@
 from scap.collector.Checker import Checker
 import logging
 import datetime
+import sys
 
 logger = logging.getLogger(__name__)
 class BenchmarkChecker(Checker):
@@ -29,7 +30,7 @@ class BenchmarkChecker(Checker):
         self.model.noticing()
 
         # TODO multiple profiles?
-        if len(args['profile']) == 0:
+        if args['profile'] is None or len(args['profile']) == 0:
             self.selected_profile = None
         else:
             self.selected_profile = args['profile'][0]

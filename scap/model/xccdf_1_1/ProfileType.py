@@ -48,6 +48,9 @@ class ProfileType(Extendable):
         },
     }
 
+    def __str__(self):
+        return self.__class__.__name__ + ' # ' + self.id
+
     def get_extended(self, benchmark):
         try:
             extended = benchmark.profile[self.extends]
@@ -59,7 +62,7 @@ class ProfileType(Extendable):
 
         return extended
 
-    def apply(self, items, host):
+    def apply(self, benchmark, host):
         ### Benchmark.Profile
 
         # TODO check that if this group has a platform identified, that the
@@ -69,9 +72,10 @@ class ProfileType(Extendable):
         # to the Items of the Benchmark
         for setting_idref in self.settings:
             setting = self.settings[setting_idref]
-            try:
-                item = items[setting_idref]
-            except KeyError:
-                raise ValueError('Unable to apply profile setting to idref ' + setting_idref)
+            logger.debug('Looking for ' + setting_idref + ' in ' + str(benchmark))
+            item = benchmark.find_reference(setting_idref)
+            if item is None:
+                raise ValueError('Unable to find idref ' + setting_idref + ' in ' + str(self) + ' setting application')
 
+            logger.debug(str(self) + ' applying ' + setting.__class__.__name__ + ' to ' + str(item))
             setting.apply(item)

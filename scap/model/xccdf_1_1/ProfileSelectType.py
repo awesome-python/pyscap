@@ -32,8 +32,8 @@ class ProfileSelectType(Model):
 
     def apply(self, item):
         if self.selected:
-            logger.debug('Selecting item ' + item.id)
+            logger.debug('Selecting item ' + str(item))
             item.selected = True
         else:
-            logger.debug('Unselecting item ' + item.id)
+            logger.debug('Unselecting item ' + str(item))
             item.selected = False
