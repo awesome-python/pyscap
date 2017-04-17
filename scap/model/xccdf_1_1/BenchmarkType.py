@@ -182,7 +182,7 @@ class BenchmarkType(Model):
                 if not item.selected:
                     continue
 
-                item_score = item.score(host)
+                item_score = item.score(host, model_system)
                 if item_score[item_id]['score'] is None:
                     continue
 
@@ -215,7 +215,7 @@ class BenchmarkType(Model):
                     continue
 
                 # just pass the scores upstream for processing
-                scores.update(item.score(host))
+                scores.update(item.score(host, model_system))
 
             score = 0.0
             max_score = 0.0
@@ -240,7 +240,7 @@ class BenchmarkType(Model):
                     continue
 
                 # just pass the scores upstream for processing
-                scores.update(item.score(host))
+                scores.update(item.score(host, model_system))
 
             score = 0.0
             max_score = 0.0
@@ -265,7 +265,7 @@ class BenchmarkType(Model):
                     continue
 
                 # just pass the scores upstream for processing
-                scores.update(item.score(host))
+                scores.update(item.score(host, model_system))
 
             score = 0.0
             max_score = 0.0

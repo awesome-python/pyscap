@@ -151,8 +151,26 @@ class RuleType(SelectableItemType):
         # score of 0.
 
         if host.facts['rule_results'][self.id]['result'] in ['pass', 'fixed']:
-            return {self.id: {'model': model, 'score': 100.0, 'weight': self.weight, 'count': 1}}
+            return {self.id: {
+                'result': host.facts['rule_results'][self.id]['result'],
+                'model': model,
+                'score': 100.0,
+                'weight': self.weight,
+                'count': 1,
+            }}
         elif host.facts['rule_results'][self.id]['result'] in ['error', 'unknown']:
-            return {self.id: {'model': model, 'score': 0.0, 'weight': self.weight, 'count': 1}}
+            return {self.id: {
+                'result': host.facts['rule_results'][self.id]['result'],
+                'model': model,
+                'score': 0.0,
+                'weight': self.weight,
+                'count': 1,
+            }}
         else:
-            return {self.id: {'model': model, 'score': None, 'weight': self.weight, 'count': 1}}
+            return {self.id: {
+                'result': host.facts['rule_results'][self.id]['result'],
+                'model': model,
+                'score': None,
+                'weight': self.weight,
+                'count': 1,
+            }}

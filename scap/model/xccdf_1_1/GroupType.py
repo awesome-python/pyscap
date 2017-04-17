@@ -155,7 +155,7 @@ class GroupType(SelectableItemType):
                 if not item.selected:
                     continue
 
-                item_score = item.score(host)
+                item_score = item.score(host, model)
                 if item_score[item_id]['score'] is None:
                     continue
 
@@ -190,15 +190,15 @@ class GroupType(SelectableItemType):
             for item_id in self.items:
                 item = self.items[item_id]
 
-                if not item.selected:
-                    continue
-
                 if not isinstance(item, GroupType) \
                 and not isinstance(item, RuleType):
                     continue
 
+                if not item.selected:
+                    continue
+
                 # just pass the scores upstream for processing
-                scores.update(item.score(host))
+                scores.update(item.score(host, model))
             return scores
 
         else:
