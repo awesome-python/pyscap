@@ -28,7 +28,16 @@ class CheckContentRefType(Model):
     }
 
     def check(self, host):
-        # TODO load the href
-        # TODO find the named content
-        # TODO apply content
-        return {'result': 'error', 'message': 'CheckContentRefType.check not implemented'}
+        content = Model.find_content(self.href)
+        if content is None:
+            raise ValueError(self.href + ' was not loaded by a --content argument')
+
+        # find the named content
+        if self.name is not None:
+            content = content.find_reference(self.name)
+
+            if content is None:
+                raise ValueError('Unable to locate ' + self.name + ' in ' + self.href)
+
+        # apply content
+        return content.check(host)

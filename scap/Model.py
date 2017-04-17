@@ -172,8 +172,16 @@ class Model(object):
             }
         return Model.model_maps[fq_model_class_name]
 
+    @staticmethod
+    def find_content(uri):
+        if uri in Model.content_cache:
+            return Model.content_cache[uri]
+        else:
+            return None
+
     def __init__(self):
         self.parent = None
+        self.sub_references = {}
         self.text = None
         self.tail = None
         self.model_map = Model._get_model_map(self.__class__)
@@ -207,11 +215,9 @@ class Model(object):
         # initialize elements
         for tag in self.model_map['elements']:
             xml_namespace, tag_name = Model.parse_tag(tag)
-            if tag.endswith('*'):
-                continue
-
             tag_map = self.model_map['elements'][tag]
-            if 'ignore' in tag_map and tag_map['ignore']:
+
+            if tag.endswith('*') or 'ignore' in tag_map and tag_map['ignore']:
                 continue
 
             if 'append' in tag_map:
@@ -653,3 +659,59 @@ class Model(object):
             else:
                 raise ValueError('Unknown class to add to sub elemetns: ' + i.__class__.__name__)
         return sub_els
+
+    def find_reference(self, ref):
+        parent = self
+        while(parent is not None):
+            # go through the model's attributes
+            for name in self.model_map['attributes']:
+                attr_map = self.model_map['attributes'][name]
+
+                if 'ignore' in attr_map and attr_map['ignore']:
+                    continue
+
+                if 'in' in attr_map:
+                    attr_name = attr_map['in']
+                else:
+                    xml_namespace, attr_name = Model.parse_tag(name)
+                    attr_name = attr_name.replace('-', '_')
+
+                attr = getattr(self, attr_name)
+                if isinstance(attr, Model):
+                    attr_found = attr.find_reference(ref)
+                    if attr_found is not None:
+                        return attr_found
+
+            # go through the model's elements
+            for tag in self.model_map['elements']:
+                tag_map = self.model_map['elements'][tag]
+                if tag.endswith('*') or 'ignore' in tag_map and tag_map['ignore']:
+                    continue
+
+                if 'append' in tag_map:
+                    # check all the list items for the ref
+                    _list = getattr(self, tag_map['append'])
+
+                    for item in _list:
+                        if isinstance(item, Model):
+                            item_found = item.find_reference(ref)
+                            if item_find is not None:
+                                return item_found
+
+                elif 'map' in tag_map:
+                    # check all the dict (map) items for the ref
+                    _dict = getattr(self, tag_map['map'])
+
+                    if ref in _dict:
+                        return _dict[ref]
+
+                    for item in _dict.values():
+                        if isinstance(item, Model):
+                            item_found = item.find_reference(ref)
+                            if item_find is not None:
+                                return item_found
+
+            parent = parent.parent
+
+        # last ditch attempt, try the content_cache
+        return Model.find_content(ref)
