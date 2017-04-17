@@ -55,7 +55,11 @@ class CheckType(Model):
             s += self.id + ':'
 
         if len(self.check_content_refs) > 0:
-            s += str([ref.href + ('' if not hasattr(ref, 'name') else '#' + ref.name) for ref in self.check_content_refs])
+            for ref in self.check_content_refs:
+                if ref.name is None:
+                    s += ref.href
+                else:
+                    s += ref.href + '#' + ref.name
         return s
 
     def check(self, benchmark, host):
