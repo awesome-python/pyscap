@@ -103,7 +103,7 @@ class RuleType(SelectableItemType):
         except:
             check_result = {
                 'result': 'error',
-                'message': 'Exception while checking ' + sys.exc_info()[0],
+                'message': 'Exception while checking ' + str(self) + ': ' + str(sys.exc_info()[0]),
                 'imports': {}
             }
 
