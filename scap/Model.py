@@ -33,8 +33,9 @@ class Model(object):
         },
     }
 
-    model_maps = {}
+    maps = {}
     content_cache = {}
+    index = {}
 
     @staticmethod
     def parse_tag(tag):
@@ -103,7 +104,7 @@ class Model(object):
     @staticmethod
     def _get_model_map(model_class):
         fq_model_class_name = model_class.__module__ + '.' + model_class.__name__
-        if fq_model_class_name not in Model.model_maps:
+        if fq_model_class_name not in Model.maps:
             at_map = {}
             el_map = {}
             xml_namespace = None
@@ -164,13 +165,13 @@ class Model(object):
                     logger.debug('Found xml namespace ' + NAMESPACES_reverse[module_parts[2]] + ' for model namespace ' + module_parts[2])
                     xml_namespace = NAMESPACES_reverse[module_parts[2]]
 
-            Model.model_maps[fq_model_class_name] = {
+            Model.maps[fq_model_class_name] = {
                 'xml_namespace': xml_namespace,
                 'tag_name': tag_name,
                 'attributes': at_map,
                 'elements': el_map,
             }
-        return Model.model_maps[fq_model_class_name]
+        return Model.maps[fq_model_class_name]
 
     @staticmethod
     def find_content(uri):
@@ -238,6 +239,14 @@ class Model(object):
                 if name not in list(self.__dict__.keys()):
                     logger.debug('Initializing ' + name + ' to None')
                     setattr(self, name, None)
+
+    def __setattr__(self, name, value):
+        object.__setattr__(self, name, value)
+
+        if name == 'id':
+            if self.__class__.__name__ not in Model.index:
+                Model.index[self.__class__.__name__] = {}
+            Model.index[self.__class__.__name__][value] = self
 
     def accept(self, visitor):
         visitor.visit(self)
@@ -666,63 +675,9 @@ class Model(object):
         return False
 
     def find_reference(self, ref):
-        if self.is_reference(ref):
-            return self
-
-        parent = self
-        while(parent is not None):
-            # go through the model's attributes
-            for name in self.model_map['attributes']:
-                attr_map = self.model_map['attributes'][name]
-
-                if ('ignore' in attr_map and attr_map['ignore']) \
-                or 'referable' not in attr_map \
-                or not attr_map['referable']:
-                    continue
-
-                if 'in' in attr_map:
-                    attr_name = attr_map['in']
-                else:
-                    xml_namespace, attr_name = Model.parse_tag(name)
-                    attr_name = attr_name.replace('-', '_')
-
-                attr = getattr(self, attr_name)
-                if isinstance(attr, Model):
-                    attr_found = attr.find_reference(ref)
-                    if attr_found is not None:
-                        return attr_found
-
-            # go through the model's elements
-            for tag in self.model_map['elements']:
-                tag_map = self.model_map['elements'][tag]
-
-                if tag.endswith('*') \
-                or ('ignore' in tag_map and tag_map['ignore']) \
-                or 'referable' not in tag_map \
-                or not tag_map['referable']:
-                    continue
-
-                if 'append' in tag_map:
-                    # check all the list items for the ref
-                    _list = getattr(self, tag_map['append'])
-
-                    for item in _list:
-                        if isinstance(item, Model):
-                            item_found = item.find_reference(ref)
-                            if item_found is not None:
-                                return item_found
-
-                elif 'map' in tag_map:
-                    # check all the dict (map) items for the ref
-                    _dict = getattr(self, tag_map['map'])
-
-                    for item in _dict.values():
-                        if isinstance(item, Model):
-                            item_found = item.find_reference(ref)
-                            if item_found is not None:
-                                return item_found
-
-            parent = parent.parent
+        for _class in Model.index:
+            if ref in Model.index[_class]:
+                return Model.index[_class][ref]
 
         # last ditch attempt, try the content_cache
         return Model.find_content(ref)
