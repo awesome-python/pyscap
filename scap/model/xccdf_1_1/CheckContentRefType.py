@@ -27,7 +27,7 @@ class CheckContentRefType(Model):
         },
     }
 
-    def check(self, host):
+    def check(self, host, exports, import_names):
         content = Model.find_content(self.href)
         if content is None:
             raise ValueError(self.href + ' was not loaded by a --content argument')
@@ -40,4 +40,4 @@ class CheckContentRefType(Model):
                 raise ValueError('Unable to locate ' + self.name + ' in ' + self.href)
 
         # apply content
-        return content.check(host)
+        return content.check(host, exports, import_names)

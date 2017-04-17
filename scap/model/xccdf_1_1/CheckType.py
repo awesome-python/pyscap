@@ -37,30 +37,35 @@ class CheckType(Model):
     }
 
     SYSTEM_ENUMERATION = [
-        'http://oval.mitre.org/XMLSchema/oval',
-        'http://www.cisecurity.org/xccdf/interactive/1.0',
+        'http://oval.mitre.org/XMLSchema/oval-definitions-5',
+        'http://scap.nist.gov/schema/ocil/2.0',
+        'http://scap.nist.gov/schema/ocil/2',
     ]
 
     def __str__(self):
-        if self.system == 'http://oval.mitre.org/XMLSchema/oval-definitions-5':
-            s = 'oval-definitions-5:'
-        elif self.system == 'http://scap.nist.gov/schema/ocil/2.0':
-            s = 'ocil-2.0:'
-        elif self.system == 'http://scap.nist.gov/schema/ocil/2':
-            s = 'ocil-2:'
-        else:
-            s = self.system + ':'
+        s = self.__class__.__name__ + ' '
+
 
         if self.id is not None:
             s += self.id + ':'
 
+        if self.system == 'http://oval.mitre.org/XMLSchema/oval-definitions-5':
+            s += 'oval-definitions-5:'
+        elif self.system == 'http://scap.nist.gov/schema/ocil/2.0':
+            s += 'ocil-2.0:'
+        elif self.system == 'http://scap.nist.gov/schema/ocil/2':
+            s += 'ocil-2:'
+        else:
+            s += self.system + ':'
+
+        s += '['
         if len(self.check_content_refs) > 0:
             for ref in self.check_content_refs:
                 if ref.name is None:
-                    s += ref.href
+                    s += ref.href + ', '
                 else:
-                    s += ref.href + '#' + ref.name
-        return s
+                    s += ref.href + '#' + ref.name + ', '
+        return s + ']'
 
     def check(self, benchmark, host):
         if self.system not in self.SYSTEM_ENUMERATION:

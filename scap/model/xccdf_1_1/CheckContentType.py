@@ -26,6 +26,6 @@ class CheckContentType(Model):
         },
     }
 
-    def check(self, host):
+    def check(self, host, exports, import_names):
         # TODO apply content
         return {'result': 'error', 'message': 'CheckContentType.check not implemented'}

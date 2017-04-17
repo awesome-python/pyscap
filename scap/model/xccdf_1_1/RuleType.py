@@ -59,10 +59,10 @@ class RuleType(SelectableItemType):
     def _check(self, benchmark, host):
         check = None
         if len(self.checks) != 0:
-            if self.check_selector is None:
-                check = self.checks[None]
-            else:
+            if self.check_selector in self.checks:
                 check = self.checks[self.check_selector]
+            else:
+                check = self.checks['']
         elif self.complex_check is not None:
             check = self.complex_check
 
@@ -98,12 +98,14 @@ class RuleType(SelectableItemType):
         # TODO check that if this group has a platform identified, that the
         # target system matches
 
+        logger.debug('Checking for ' + str(self))
         try:
             check_result = self._check(benchmark, host)
         except:
+            type_, value = sys.exc_info()[0:2]
             check_result = {
                 'result': 'error',
-                'message': 'Exception while checking ' + str(self) + ': ' + str(sys.exc_info()[0]),
+                'message': 'Exception while checking ' + str(self) + ': ' + str(type_) + ': ' + str(value),
                 'imports': {}
             }
 
@@ -139,6 +141,7 @@ class RuleType(SelectableItemType):
                         break
 
         # result retention
+        logger.debug('Rule result: ' + str(check_result))
         if 'rule_results' not in host.facts:
             host.facts['rule_results'] = {}
         host.facts['rule_results'][self.id] = check_result
